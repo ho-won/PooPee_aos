@@ -1,0 +1,149 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/root_view"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFFFFF">
+
+    <RelativeLayout
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/actionbar_height">
+
+        <LinearLayout
+            android:id="@+id/layout_category"
+            android:layout_width="wrap_content"
+            android:layout_height="28dp"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:background="@drawable/gallery_bg_dir_select"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/tv_category"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:gravity="center"
+                android:maxEms="10"
+                android:maxLines="1"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp"
+                android:textColor="#565656"
+                android:textSize="12sp" />
+
+            <View
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="4dp"
+                android:layout_marginTop="4dp"
+                android:background="@color/main_line" />
+
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:padding="4dp"
+                android:src="@drawable/gallery_ic_dropdown_32" />
+
+        </LinearLayout>
+
+        <ImageButton
+            android:id="@+id/btn_camera"
+            style="?android:attr/borderlessButtonStyle"
+            android:layout_width="@dimen/toolbar_main_height"
+            android:layout_height="@dimen/toolbar_main_height"
+            android:layout_alignParentRight="true"
+            android:padding="@dimen/toolbar_btn_icon_padding"
+            android:scaleType="fitCenter"
+            android:src="@drawable/gallery_btn_camera"
+            android:tint="@color/primary" />
+
+    </RelativeLayout>
+
+    <View
+        android:id="@+id/line_01"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/main_line_height"
+        android:layout_below="@+id/toolbar"
+        android:background="@color/main_line" />
+
+    <RelativeLayout
+        android:id="@+id/layout_back"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_below="@+id/line_01"
+        android:background="@drawable/gallery_btn_white"
+        android:visibility="gone">
+
+        <ImageView
+            android:id="@+id/iv_image"
+            android:layout_width="28dp"
+            android:layout_height="28dp"
+            android:layout_margin="10dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/gallery_ic_dir_back_48" />
+
+        <TextView
+            android:id="@+id/tv_name"
+            android:layout_width="match_parent"
+            android:layout_height="47dp"
+            android:layout_toRightOf="@+id/iv_image"
+            android:gravity="center_vertical"
+            android:paddingRight="10dp"
+            android:text="@string/gallery_back_to_dir"
+            android:textColor="@color/text_main"
+            android:textSize="14sp" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/main_line_height"
+            android:layout_alignParentBottom="true"
+            android:layout_toRightOf="@+id/iv_image"
+            android:background="@color/main_line" />
+
+    </RelativeLayout>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/main_background"
+        android:layout_above="@+id/layout_bottom"
+        android:layout_below="@+id/layout_back"
+        android:scrollbars="none" />
+
+    <RelativeLayout
+        android:id="@+id/layout_bottom"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/actionbar_height"
+        android:layout_alignParentBottom="true"
+        android:background="@color/main_content_background"
+        android:visibility="gone">
+
+        <TextView
+            android:id="@+id/tv_count"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_centerVertical="true"
+            android:layout_toLeftOf="@+id/tv_send"
+            android:background="@drawable/gallery_bg_img_select"
+            android:gravity="center"
+            android:textColor="@color/text_white"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/tv_send"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:gravity="center"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:text="@string/gallery_upload"
+            android:textColor="@color/text_main"
+            android:textSize="16sp" />
+
+    </RelativeLayout>
+
+</RelativeLayout>

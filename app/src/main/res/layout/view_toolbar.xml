@@ -1,0 +1,104 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/root_view"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/toolbar_main_height">
+
+    <LinearLayout
+        android:id="@+id/layout_left"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/toolbar_main_height"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <ImageButton
+            android:id="@+id/btn_left_one"
+            style="?android:attr/borderlessButtonStyle"
+            android:layout_width="@dimen/toolbar_main_height"
+            android:layout_height="@dimen/toolbar_main_height"
+            android:padding="@dimen/toolbar_btn_icon_padding"
+            android:scaleType="fitCenter"
+            android:visibility="gone" />
+
+        <ImageButton
+            android:id="@+id/btn_left_two"
+            style="?android:attr/borderlessButtonStyle"
+            android:layout_width="@dimen/toolbar_main_height"
+            android:layout_height="@dimen/toolbar_main_height"
+            android:padding="@dimen/toolbar_btn_icon_padding"
+            android:scaleType="fitCenter"
+            android:visibility="gone" />
+
+    </LinearLayout>
+
+    <RelativeLayout
+        android:id="@+id/layout_title"
+        android:layout_width="160dp"
+        android:layout_height="@dimen/toolbar_main_height"
+        android:layout_centerHorizontal="true"
+        android:gravity="center">
+
+        <ImageView
+            android:id="@+id/iv_logo"
+            android:layout_width="wrap_content"
+            android:layout_height="15dp"
+            android:layout_centerInParent="true"
+            android:adjustViewBounds="true"
+            android:scaleType="fitCenter"
+            android:visibility="gone" />
+
+        <HorizontalScrollView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:scrollbars="none">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:scrollHorizontally="true">
+
+                <TextView
+                    android:id="@+id/tv_toolbar_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:maxLines="1"
+                    android:textColor="@color/toolbar_title"
+                    android:textSize="@dimen/toolbar_title_sp"
+                    android:textStyle="bold"
+                    android:visibility="gone" />
+
+            </LinearLayout>
+
+        </HorizontalScrollView>
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/toolbar_main_height"
+        android:layout_alignParentRight="true"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <ImageButton
+            android:id="@+id/btn_right_two"
+            style="?android:attr/borderlessButtonStyle"
+            android:layout_width="@dimen/toolbar_main_height"
+            android:layout_height="@dimen/toolbar_main_height"
+            android:padding="@dimen/toolbar_btn_icon_padding"
+            android:scaleType="fitCenter"
+            android:visibility="gone" />
+
+        <ImageButton
+            android:id="@+id/btn_right_one"
+            style="?android:attr/borderlessButtonStyle"
+            android:layout_width="@dimen/toolbar_main_height"
+            android:layout_height="@dimen/toolbar_main_height"
+            android:padding="@dimen/toolbar_btn_icon_padding"
+            android:scaleType="fitCenter"
+            android:visibility="gone" />
+
+    </LinearLayout>
+
+</RelativeLayout>

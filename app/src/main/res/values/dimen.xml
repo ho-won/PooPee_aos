@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- main -->
+    <dimen name="actionbar_height">48dp</dimen>
+    <dimen name="main_line_height">0.5dp</dimen>
+    <dimen name="main_tab_height">45dp</dimen>
+    <dimen name="popup_title_height">53dp</dimen>
+    <dimen name="search_view_height">40dp</dimen>
+
+    <!-- toolbar -->
+    <dimen name="toolbar_main_height">52dp</dimen>
+    <dimen name="toolbar_btn_icon_padding">0dp</dimen>
+    <dimen name="toolbar_title_sp">18sp</dimen>
+
+    <!-- dialog -->
+    <dimen name="dialog_main_width">310dp</dimen>
+    <dimen name="dialog_max_height">312dp</dimen>
+    <dimen name="dialog_content_height">48dp</dimen>
+    <dimen name="dialog_title_sp">16sp</dimen>
+    <dimen name="dialog_content_sp">14sp</dimen>
+    <dimen name="dialog_content_sub_sp">14sp</dimen>
+    <dimen name="dialog_button_height">40dp</dimen>
+
+    <!-- button -->
+    <dimen name="btn_main_width">260dp</dimen>
+    <dimen name="btn_main_height">48dp</dimen>
+    <dimen name="btn_main_padding">16dp</dimen>
+    <dimen name="btn_main_text_sp">16sp</dimen>
+
+    <!-- home -->
+    <dimen name="home_menu_width">280dp</dimen>
+
+</resources>

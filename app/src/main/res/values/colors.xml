@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- main -->
+    <color name="primary">#2470ff</color>
+    <color name="main_line">#DFDFDF</color>
+    <color name="main_background">#F2F2F2</color>
+    <color name="main_content_background">#FFFFFF</color>
+    <color name="popup_transparent">#46000000</color>
+    <color name="main_hint">#CCCCCC</color>
+
+    <!-- font -->
+    <color name="text_main">#3F526A</color>
+    <color name="text_white">#FFFFFF</color>
+    <color name="text_gray">#9D9D9D</color>
+
+    <!-- dialog -->
+    <color name="dialog_btn_blue">#2875E5</color>
+    <color name="dialog_btn_gray">#3F3F3F</color>
+    <color name="dialog_btn_background">#FFFFFF</color>
+    <color name="dialog_text_title">#424242</color>
+    <color name="dialog_text_content">#424242</color>
+    <color name="dialog_text_content_sub">#9D9D9D</color>
+    <color name="dialog_text_btn_left">#424242</color>
+    <color name="dialog_text_btn_right">#FF5713</color>
+
+    <!-- toolbar -->
+    <color name="toolbar_title">#FFFFFF</color>
+
+</resources>

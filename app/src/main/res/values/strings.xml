@@ -1,0 +1,29 @@
+<resources>
+    <string name="app_name">PooPee</string>
+
+    <!-- toast -->
+    <string name="toast_loading_fail">불러오는데 실패했습니다</string>
+    <string name="toast_network_not_connected">네트워크 상태를 확인 후 다시 시도하세요</string>
+    <string name="toast_alphanumeric">영문자와 숫자만 허용합니다.</string>
+    <string name="toast_alphanumeric_hangul">영문자와 숫자, 한글만 허용합니다.</string>
+
+    <!-- gallery -->
+    <string name="gallery_select_dir">폴더선택</string>
+    <string name="gallery_show_all">전체보기</string>
+    <string name="gallery_back_to_dir">이전 폴더로 이동</string>
+    <string name="gallery_upload">올리기</string>
+
+    <!-- toast -->
+    <string name="toast_please_permission">권한이 필요한 작업입니다</string>
+
+    <!-- nav -->
+    <string name="nav_text_01">로그인</string>
+    <string name="nav_text_02">로그아웃</string>
+    <string name="nav_text_03">회원정보</string>
+    <string name="nav_text_04">공지사항</string>
+    <string name="nav_text_05">건의사항</string>
+
+    <!-- home -->
+    <string name="home_text_01">장소,주소 검색</string>
+
+</resources>

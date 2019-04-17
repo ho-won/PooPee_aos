@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/drawer_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_alignParentStart="true"
+    android:layout_alignParentTop="true"
+    android:focusable="true"
+    android:focusableInTouchMode="true">
+
+    <RelativeLayout
+        android:id="@+id/root_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <kr.ho1.poopee.common.view.ToolbarView
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/main_content_background" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@+id/layout_ad_mob"
+            android:layout_below="@+id/toolbar"
+            android:background="@color/main_background">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="44dp"
+                android:layout_margin="16dp"
+                android:background="@drawable/bg_search_layout"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    android:layout_marginStart="9dp"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/ic_search" />
+
+                <EditText
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@null"
+                    android:hint="@string/home_text_01"
+                    android:maxLines="1"
+                    android:paddingStart="4dp"
+                    android:textColor="@color/text_main"
+                    android:textColorHint="@color/main_hint"
+                    android:textSize="15sp" />
+
+                <ImageButton
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    android:layout_marginEnd="8dp"
+                    android:background="@null"
+                    android:src="@drawable/ic_search_delete" />
+
+            </LinearLayout>
+
+            <ImageButton
+                android:layout_width="52dp"
+                android:layout_height="52dp"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentEnd="true"
+                android:layout_margin="16dp"
+                android:background="@null"
+                android:src="@drawable/ic_current_location" />
+
+        </RelativeLayout>
+
+        <FrameLayout
+            android:id="@+id/layout_ad_mob"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_alignParentBottom="true">
+
+        </FrameLayout>
+
+    </RelativeLayout>
+
+    <kr.ho1.poopee.home.view.NavMainView
+        android:id="@+id/nav_view"
+        android:layout_width="@dimen/home_menu_width"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        android:background="@color/main_content_background"
+        android:fitsSystemWindows="true" />
+
+</android.support.v4.widget.DrawerLayout>

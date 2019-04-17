@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/root_view"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    android:gravity="center">
+
+    <LinearLayout
+        android:id="@+id/layout_dialog"
+        android:layout_width="@dimen/dialog_main_width"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:background="@drawable/bg_base_dialog"
+        android:orientation="vertical"
+        android:paddingLeft="28dp"
+        android:paddingRight="16dp">
+
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:textColor="@color/dialog_text_title"
+            android:textSize="@dimen/dialog_title_sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/tv_content"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="22dp"
+            android:textColor="@color/dialog_text_content"
+            android:textSize="@dimen/dialog_content_sp" />
+
+        <TextView
+            android:id="@+id/tv_content_sub"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/dialog_text_content_sub"
+            android:textSize="@dimen/dialog_content_sub_sp" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0dp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="12dp"
+            android:layout_marginTop="12dp"
+            android:orientation="horizontal">
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="@dimen/dialog_button_height"
+                android:layout_weight="1" />
+
+            <TextView
+                android:id="@+id/btn_left"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/dialog_button_height"
+                android:gravity="center"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp"
+                android:textAllCaps="false"
+                android:textColor="@color/dialog_text_btn_left"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/btn_center"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/dialog_button_height"
+                android:gravity="center"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp"
+                android:textAllCaps="false"
+                android:textColor="@color/dialog_text_btn_left"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/btn_right"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/dialog_button_height"
+                android:gravity="center"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp"
+                android:textAllCaps="false"
+                android:textColor="@color/dialog_text_btn_right"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</RelativeLayout>
