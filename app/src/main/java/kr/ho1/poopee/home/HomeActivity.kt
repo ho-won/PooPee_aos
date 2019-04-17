@@ -6,12 +6,9 @@ import kotlinx.android.synthetic.main.activity_home.*
 import kr.ho1.poopee.R
 import kr.ho1.poopee.common.ObserverManager
 import kr.ho1.poopee.common.base.BaseActivity
-import kr.ho1.poopee.common.http.RetrofitClient
-import kr.ho1.poopee.common.http.RetrofitJSONObject
-import kr.ho1.poopee.common.http.RetrofitParams
-import kr.ho1.poopee.common.http.RetrofitService
-import org.json.JSONException
+import kr.ho1.poopee.common.util.MyUtil
 
+@Suppress("DEPRECATION")
 class HomeActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -23,34 +20,25 @@ class HomeActivity : BaseActivity() {
         setListener()
     }
 
-    private fun init() {
+    override fun onResume() {
+        super.onResume()
+        nav_view.refresh()
+    }
 
+    private fun init() {
+        root_view.setOnClickListener {
+            MyUtil.keyboardHide(edt_search)
+        }
+        btn_search_delete.setOnClickListener {
+            edt_search.setText("")
+        }
+        btn_current_location.setOnClickListener {
+
+        }
     }
 
     private fun setListener() {
 
-    }
-
-    private fun task() {
-        val params = RetrofitParams()
-        params.put("", "")
-
-        val request = RetrofitClient.getClient(RetrofitService.BASE_APP).create(RetrofitService::class.java).test(params.getParams())
-
-        RetrofitJSONObject(request,
-                onSuccess = {
-                    try {
-                        if (it.getInt("rst_code") == 0) {
-
-                        }
-                    } catch (e: JSONException) {
-                        e.printStackTrace()
-                    }
-                },
-                onFailed = {
-
-                }
-        )
     }
 
     override fun setToolbar() {

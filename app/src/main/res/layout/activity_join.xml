@@ -12,4 +12,84 @@
         android:layout_height="wrap_content"
         android:background="@color/main_content_background" />
 
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/toolbar"
+        android:animateLayoutChanges="true"
+        android:scrollbars="none">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <EditText
+                android:id="@+id/edt_user_id"
+                style="@style/base_edt"
+                android:background="@color/main_content_background"
+                android:hint="@string/login_01"
+                android:padding="10dp" />
+
+            <EditText
+                android:id="@+id/edt_user_pw"
+                style="@style/base_edt"
+                android:layout_marginTop="10dp"
+                android:background="@color/main_content_background"
+                android:hint="@string/login_02"
+                android:inputType="textPassword"
+                android:padding="10dp" />
+
+            <EditText
+                android:id="@+id/edt_user_pw_confirm"
+                style="@style/base_edt"
+                android:layout_marginTop="10dp"
+                android:background="@color/main_content_background"
+                android:hint="@string/login_02"
+                android:inputType="textPassword"
+                android:padding="10dp" />
+
+            <EditText
+                android:id="@+id/edt_name"
+                style="@style/base_edt"
+                android:layout_marginTop="10dp"
+                android:background="@color/main_content_background"
+                android:hint="@string/login_04"
+                android:padding="10dp" />
+
+            <RadioGroup
+                android:id="@+id/rg_gender"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_marginTop="10dp"
+                android:orientation='horizontal'>
+
+                <RadioButton
+                    android:id="@+id/rb_man"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:text="@string/man" />
+
+                <RadioButton
+                    android:id="@+id/rb_woman"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="10dp"
+                    android:text="@string/women" />
+
+            </RadioGroup>
+
+            <Button
+                android:id="@+id/btn_join"
+                style="@style/base_btn"
+                android:layout_marginTop="10dp"
+                android:background="@color/primary"
+                android:text="@string/join_member"
+                android:textColor="@color/text_white" />
+
+        </LinearLayout>
+
+    </ScrollView>
+
 </RelativeLayout>

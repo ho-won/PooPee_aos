@@ -24,7 +24,7 @@ class RetrofitParams {
     }
 
     fun put(key: String, value: Any) {
-        params[key] = value ?: ""
+        params[key] = value
     }
 
     fun putFile(key: String, path: String) {

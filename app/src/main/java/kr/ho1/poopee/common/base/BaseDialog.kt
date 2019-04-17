@@ -23,7 +23,7 @@ abstract class BaseDialog : DialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         if (isCancelable) {
-            view!!.setOnClickListener({ dismiss() })
+            view.setOnClickListener({ dismiss() })
         }
     }
 

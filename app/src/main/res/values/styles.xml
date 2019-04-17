@@ -25,6 +25,17 @@
         <item name="android:background">@color/main_line</item>
     </style>
 
+    <style name="base_edt">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">48dp</item>
+        <item name="android:background">@null</item>
+        <item name="android:inputType">text</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:textColor">@color/text_main</item>
+        <item name="android:textColorHint">@color/main_hint</item>
+        <item name="android:textSize">15sp</item>
+    </style>
+
     <style name="base_btn" parent="@style/Widget.AppCompat.Button.Borderless">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">@dimen/btn_main_height</item>

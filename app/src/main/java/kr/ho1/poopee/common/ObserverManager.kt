@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Environment
 import kr.ho1.poopee.common.base.BaseActivity
+import kr.ho1.poopee.common.data.SharedManager
 import java.io.File
 
 @SuppressLint("StaticFieldLeak")
