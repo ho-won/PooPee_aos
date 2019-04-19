@@ -20,9 +20,11 @@
     <string name="email">이메일</string>
     <string name="phone_number">휴대폰번호</string>
     <string name="delete">삭제</string>
+    <string name="send">전송</string>
     <string name="send_mail">메일보내기</string>
     <string name="man">남자</string>
     <string name="women">여자</string>
+    <string name="close">닫기</string>
 
     <!-- toast -->
     <string name="toast_loading_fail">불러오는데 실패했습니다</string>
@@ -52,6 +54,11 @@
 
     <!-- home -->
     <string name="home_text_01">장소,주소 검색</string>
+    <string name="home_text_02">상세보기</string>
+    <string name="home_text_03" formatted="false">댓글수 %s</string>
+    <string name="home_text_04" formatted="false">좋아요수 %s</string>
+    <string name="home_text_05">댓글입력</string>
+    <string name="home_text_06">삭제하시겠습니까?</string>
 
     <!-- login -->
     <string name="login_01">아이디 입력</string>

@@ -46,7 +46,7 @@
                 style="@style/base_edt"
                 android:layout_marginTop="10dp"
                 android:background="@color/main_content_background"
-                android:hint="@string/login_02"
+                android:hint="@string/login_03"
                 android:inputType="textPassword"
                 android:padding="10dp" />
 

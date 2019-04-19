@@ -64,9 +64,15 @@ class NavMainView : NavigationView {
             }
         }
         btn_my_info.setOnClickListener {
-            ObserverManager.root!!.startActivity(Intent(ObserverManager.context!!, MyInfoActivity::class.java)
-                    .setFlags(Intent.FLAG_ACTIVITY_NO_USER_ACTION)
-            )
+            if (SharedManager.isLoginCheck()) {
+                ObserverManager.root!!.startActivity(Intent(ObserverManager.context!!, MyInfoActivity::class.java)
+                        .setFlags(Intent.FLAG_ACTIVITY_NO_USER_ACTION)
+                )
+            } else {
+                ObserverManager.root!!.startActivity(Intent(ObserverManager.context!!, LoginActivity::class.java)
+                        .setFlags(Intent.FLAG_ACTIVITY_NO_USER_ACTION)
+                )
+            }
         }
         btn_notice.setOnClickListener {
             ObserverManager.root!!.startActivity(Intent(ObserverManager.context!!, NoticeActivity::class.java)

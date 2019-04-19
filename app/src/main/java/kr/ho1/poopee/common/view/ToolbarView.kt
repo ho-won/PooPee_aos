@@ -6,8 +6,8 @@ import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.RelativeLayout
-import kr.ho1.poopee.R
 import kotlinx.android.synthetic.main.view_toolbar.view.*
+import kr.ho1.poopee.R
 
 class ToolbarView : RelativeLayout {
     private lateinit var onBtnLeftOne: (() -> Unit)
@@ -44,6 +44,11 @@ class ToolbarView : RelativeLayout {
         this.onBtnLeftTwo = onBtnLeftTwo
         this.onBtnRightTwo = onBtnRightTwo
         this.onBtnRightOne = onBtnRightOne
+    }
+
+    fun setTitle(title: String) {
+        tv_toolbar_title.visibility = View.VISIBLE
+        tv_toolbar_title.text = title
     }
 
     fun setImageLeftOne(drawable: Drawable?) {

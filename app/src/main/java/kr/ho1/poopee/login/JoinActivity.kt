@@ -14,6 +14,7 @@ import kr.ho1.poopee.common.util.MyUtil
 import kr.ho1.poopee.common.util.StringFilter
 import org.json.JSONException
 
+@Suppress("DEPRECATION")
 class JoinActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -76,7 +77,8 @@ class JoinActivity : BaseActivity() {
     }
 
     override fun setToolbar() {
-        toolbar.setImageLeftOne(ObserverManager.context!!.resources.getDrawable(R.drawable.ic_toolbar_back))
+        toolbar.setTitle(ObserverManager.context!!.resources.getString(R.string.join_member))
+        toolbar.setImageLeftOne(ObserverManager.context!!.resources.getDrawable(R.drawable.ic_bar_back))
         toolbar.setSelectedListener(
                 onBtnLeftOne = {
                     finish()

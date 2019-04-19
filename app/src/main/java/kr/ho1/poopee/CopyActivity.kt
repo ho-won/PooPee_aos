@@ -1,15 +1,16 @@
 package kr.ho1.poopee
 
 import android.os.Bundle
-import kr.ho1.poopee.common.base.BaseActivity
+import kotlinx.android.synthetic.main.activity_copy.*
 import kr.ho1.poopee.common.ObserverManager
+import kr.ho1.poopee.common.base.BaseActivity
 import kr.ho1.poopee.common.http.RetrofitClient
 import kr.ho1.poopee.common.http.RetrofitJSONObject
 import kr.ho1.poopee.common.http.RetrofitParams
 import kr.ho1.poopee.common.http.RetrofitService
-import kotlinx.android.synthetic.main.activity_copy.*
 import org.json.JSONException
 
+@Suppress("DEPRECATION")
 class CopyActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -52,7 +53,7 @@ class CopyActivity : BaseActivity() {
     }
 
     override fun setToolbar() {
-        toolbar.setImageLeftOne(ObserverManager.context!!.resources.getDrawable(R.drawable.ic_toolbar_back))
+        toolbar.setImageLeftOne(ObserverManager.context!!.resources.getDrawable(R.drawable.ic_bar_back))
         toolbar.setSelectedListener(
                 onBtnLeftOne = {
                     finish()

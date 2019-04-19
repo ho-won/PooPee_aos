@@ -13,6 +13,7 @@
     <color name="text_main">#292D34</color>
     <color name="text_white">#FFFFFF</color>
     <color name="text_gray">#9D9D9D</color>
+    <color name="text_gray_dark">#555555</color>
 
     <!-- dialog -->
     <color name="dialog_btn_blue">#2875E5</color>
@@ -25,6 +26,6 @@
     <color name="dialog_text_btn_right">#FF5713</color>
 
     <!-- toolbar -->
-    <color name="toolbar_title">#FFFFFF</color>
+    <color name="toolbar_title">#292D34</color>
 
 </resources>

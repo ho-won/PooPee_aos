@@ -7,6 +7,8 @@ import kr.ho1.poopee.R
 import kr.ho1.poopee.common.ObserverManager
 import kr.ho1.poopee.common.base.BaseActivity
 import kr.ho1.poopee.common.util.MyUtil
+import kr.ho1.poopee.home.model.Toilet
+import kr.ho1.poopee.home.view.ToiletDialog
 
 @Suppress("DEPRECATION")
 class HomeActivity : BaseActivity() {
@@ -26,6 +28,10 @@ class HomeActivity : BaseActivity() {
     }
 
     private fun init() {
+
+    }
+
+    private fun setListener() {
         root_view.setOnClickListener {
             MyUtil.keyboardHide(edt_search)
         }
@@ -33,16 +39,18 @@ class HomeActivity : BaseActivity() {
             edt_search.setText("")
         }
         btn_current_location.setOnClickListener {
+            val toilet = Toilet()
+            toilet.title = "공중화장실"
+            toilet.content = "화장실 상세정보"
 
+            val dialog = ToiletDialog()
+            dialog.setToilet(toilet)
+            dialog.show(supportFragmentManager, "ToiletDialog")
         }
     }
 
-    private fun setListener() {
-
-    }
-
     override fun setToolbar() {
-        toolbar.setImageLeftOne(ObserverManager.context!!.resources.getDrawable(R.drawable.ic_toolbar_menu))
+        toolbar.setImageLeftOne(ObserverManager.context!!.resources.getDrawable(R.drawable.ic_bar_menu))
         toolbar.setSelectedListener(
                 onBtnLeftOne = {
                     drawer_layout.openDrawer(Gravity.START)

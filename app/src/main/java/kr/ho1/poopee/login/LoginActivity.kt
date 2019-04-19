@@ -79,7 +79,8 @@ class LoginActivity : BaseActivity() {
     }
 
     override fun setToolbar() {
-        toolbar.setImageLeftOne(ObserverManager.context!!.resources.getDrawable(R.drawable.ic_toolbar_back))
+        toolbar.setTitle(ObserverManager.context!!.resources.getString(R.string.login))
+        toolbar.setImageLeftOne(ObserverManager.context!!.resources.getDrawable(R.drawable.ic_bar_back))
         toolbar.setSelectedListener(
                 onBtnLeftOne = {
                     finish()
