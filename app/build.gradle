@@ -20,6 +20,11 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    sourceSets.main {
+        //
+        jniLibs.srcDir 'src/main/libs'
+        //jni.srcDirs = [] //important!!!! disable automatic ndk-build call
+    }
 }
 
 dependencies {
@@ -38,5 +43,7 @@ dependencies {
     implementation 'com.google.code.gson:gson:2.8.5'
     implementation 'com.squareup.retrofit2:retrofit:2.5.0'
     implementation 'com.squareup.retrofit2:converter-gson:2.5.0'
+
+    implementation files('src/main/libs/libDaumMapAndroid.jar')
 
 }

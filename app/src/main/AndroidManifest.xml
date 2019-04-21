@@ -8,6 +8,7 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
     <application
         android:name=".common.base.BaseApp"
@@ -17,6 +18,8 @@
         android:largeHeap="true"
         android:supportsRtl="true"
         android:theme="@style/AppThemeWhite">
+
+        <meta-data android:name="com.kakao.sdk.AppKey" android:value="53565fe7d8355fff626939459a32e7d0"/>
 
         <activity
             android:name=".common.MainActivity"

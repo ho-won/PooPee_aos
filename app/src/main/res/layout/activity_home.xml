@@ -25,11 +25,10 @@
             android:layout_below="@+id/toolbar"
             android:background="@color/main_background">
 
-            <ImageView
+            <RelativeLayout
+                android:id="@+id/map_view"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:scaleType="centerCrop"
-                android:src="@drawable/img_map" />
+                android:layout_height="match_parent" />
 
             <LinearLayout
                 android:layout_width="match_parent"

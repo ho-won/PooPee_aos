@@ -1,6 +1,9 @@
 package kr.ho1.poopee.home
 
+import android.content.pm.PackageManager
 import android.os.Bundle
+import android.util.Base64
+import android.util.Log
 import android.view.Gravity
 import kotlinx.android.synthetic.main.activity_home.*
 import kr.ho1.poopee.R
@@ -9,9 +12,13 @@ import kr.ho1.poopee.common.base.BaseActivity
 import kr.ho1.poopee.common.util.MyUtil
 import kr.ho1.poopee.home.model.Toilet
 import kr.ho1.poopee.home.view.ToiletDialog
+import net.daum.mf.map.api.MapPOIItem
+import net.daum.mf.map.api.MapPoint
+import net.daum.mf.map.api.MapView
+import java.security.MessageDigest
 
 @Suppress("DEPRECATION")
-class HomeActivity : BaseActivity() {
+class HomeActivity : BaseActivity(), MapView.POIItemEventListener, MapView.MapViewEventListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,7 +35,38 @@ class HomeActivity : BaseActivity() {
     }
 
     private fun init() {
+        // java code
+        val mapView = MapView(this)
 
+        map_view.addView(mapView)
+
+        // 중심점 변경
+        mapView.setMapCenterPoint(MapPoint.mapPointWithGeoCoord(37.53737528, 127.00557633), true);
+
+        // 줌 레벨 변경
+//        mapView.setZoomLevel(7, true);
+
+        // 중심점 변경 + 줌 레벨 변경
+//        mapView.setMapCenterPointAndZoomLevel(MapPoint.mapPointWithGeoCoord(33.41, 126.52), 9, true);
+
+        // 줌 인
+//        mapView.zoomIn(true);
+
+        // 줌 아웃
+//        mapView.zoomOut(true);
+
+        val marker = MapPOIItem()
+        marker.itemName = "Default Marker"
+        marker.tag = 0
+        marker.mapPoint = MapPoint.mapPointWithGeoCoord(37.53737528, 127.00557633)
+        marker.markerType = MapPOIItem.MarkerType.BluePin // 기본으로 제공하는 BluePin 마커 모양.
+        marker.selectedMarkerType = MapPOIItem.MarkerType.RedPin // 마커를 클릭했을때, 기본으로 제공하는 RedPin 마커 모양.
+
+
+        mapView.addPOIItem(marker)
+
+        mapView.setPOIItemEventListener(this)
+        mapView.setMapViewEventListener(this)
     }
 
     private fun setListener() {
@@ -47,6 +85,63 @@ class HomeActivity : BaseActivity() {
             dialog.setToilet(toilet)
             dialog.show(supportFragmentManager, "ToiletDialog")
         }
+    }
+
+    override fun onMapViewDoubleTapped(p0: MapView?, p1: MapPoint?) {
+    }
+
+    override fun onMapViewInitialized(p0: MapView?) {
+    }
+
+    override fun onMapViewDragStarted(p0: MapView?, p1: MapPoint?) {
+    }
+
+    override fun onMapViewMoveFinished(p0: MapView?, p1: MapPoint?) {
+        val latitude = p0!!.mapCenterPoint.mapPointGeoCoord.latitude
+        val longitude = p0!!.mapCenterPoint.mapPointGeoCoord.longitude
+        Log.e("MapView_MoveFinished", "latitude: $latitude longitude: $longitude")
+    }
+
+    override fun onMapViewCenterPointMoved(p0: MapView?, p1: MapPoint?) {
+    }
+
+    override fun onMapViewDragEnded(p0: MapView?, p1: MapPoint?) {
+    }
+
+    override fun onMapViewSingleTapped(p0: MapView?, p1: MapPoint?) {
+    }
+
+    override fun onMapViewZoomLevelChanged(p0: MapView?, p1: Int) {
+    }
+
+    override fun onMapViewLongPressed(p0: MapView?, p1: MapPoint?) {
+    }
+
+    override fun onCalloutBalloonOfPOIItemTouched(p0: MapView?, p1: MapPOIItem?) {
+    }
+
+    override fun onCalloutBalloonOfPOIItemTouched(p0: MapView?, p1: MapPOIItem?, p2: MapPOIItem.CalloutBalloonButtonType?) {
+    }
+
+    override fun onDraggablePOIItemMoved(p0: MapView?, p1: MapPOIItem?, p2: MapPoint?) {
+    }
+
+    override fun onPOIItemSelected(p0: MapView?, p1: MapPOIItem?) {
+    }
+
+    fun getHashKey() {
+        try {
+            val info = packageManager.getPackageInfo(packageName, PackageManager.GET_SIGNATURES)
+            for (signature in info.signatures) {
+                val md: MessageDigest = MessageDigest.getInstance("SHA")
+                md.update(signature.toByteArray())
+                val key = String(Base64.encode(md.digest(), 0))
+                Log.d("Hash key:", key)
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+
     }
 
     override fun setToolbar() {
