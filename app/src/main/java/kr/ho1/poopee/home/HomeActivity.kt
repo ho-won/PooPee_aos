@@ -41,7 +41,7 @@ class HomeActivity : BaseActivity(), MapView.POIItemEventListener, MapView.MapVi
         map_view.addView(mapView)
 
         // 중심점 변경
-        mapView.setMapCenterPoint(MapPoint.mapPointWithGeoCoord(37.53737528, 127.00557633), true);
+        mapView.setMapCenterPoint(MapPoint.mapPointWithGeoCoord(37.53737528, 127.00557633), true)
 
         // 줌 레벨 변경
 //        mapView.setZoomLevel(7, true);
@@ -57,10 +57,14 @@ class HomeActivity : BaseActivity(), MapView.POIItemEventListener, MapView.MapVi
 
         val marker = MapPOIItem()
         marker.itemName = "Default Marker"
-        marker.tag = 0
+        marker.tag = 1001
         marker.mapPoint = MapPoint.mapPointWithGeoCoord(37.53737528, 127.00557633)
-        marker.markerType = MapPOIItem.MarkerType.BluePin // 기본으로 제공하는 BluePin 마커 모양.
-        marker.selectedMarkerType = MapPOIItem.MarkerType.RedPin // 마커를 클릭했을때, 기본으로 제공하는 RedPin 마커 모양.
+//        marker.markerType = MapPOIItem.MarkerType.BluePin // 기본으로 제공하는 BluePin 마커 모양.
+        marker.markerType = MapPOIItem.MarkerType.CustomImage // 마커타입을 커스텀 마커로 지정.
+        marker.customImageResourceId = R.drawable.ic_marker // 마커 이미지.
+        marker.selectedMarkerType = MapPOIItem.MarkerType.CustomImage // 마커를 클릭했을때, 기본으로 제공하는 RedPin 마커 모양.
+        marker.customSelectedImageResourceId = R.drawable.ic_marker // 마커 이미지.
+        marker.isShowCalloutBalloonOnTouch = false
 
 
         mapView.addPOIItem(marker)
@@ -77,13 +81,7 @@ class HomeActivity : BaseActivity(), MapView.POIItemEventListener, MapView.MapVi
             edt_search.setText("")
         }
         btn_current_location.setOnClickListener {
-            val toilet = Toilet()
-            toilet.title = "공중화장실"
-            toilet.content = "화장실 상세정보"
 
-            val dialog = ToiletDialog()
-            dialog.setToilet(toilet)
-            dialog.show(supportFragmentManager, "ToiletDialog")
         }
     }
 
@@ -98,7 +96,7 @@ class HomeActivity : BaseActivity(), MapView.POIItemEventListener, MapView.MapVi
 
     override fun onMapViewMoveFinished(p0: MapView?, p1: MapPoint?) {
         val latitude = p0!!.mapCenterPoint.mapPointGeoCoord.latitude
-        val longitude = p0!!.mapCenterPoint.mapPointGeoCoord.longitude
+        val longitude = p0.mapCenterPoint.mapPointGeoCoord.longitude
         Log.e("MapView_MoveFinished", "latitude: $latitude longitude: $longitude")
     }
 
@@ -127,21 +125,14 @@ class HomeActivity : BaseActivity(), MapView.POIItemEventListener, MapView.MapVi
     }
 
     override fun onPOIItemSelected(p0: MapView?, p1: MapPOIItem?) {
-    }
+        Log.e("onPOIItemSelected", "tag: ${p1!!.tag}")
+        val toilet = Toilet()
+        toilet.title = "공중화장실"
+        toilet.content = "화장실 상세정보"
 
-    fun getHashKey() {
-        try {
-            val info = packageManager.getPackageInfo(packageName, PackageManager.GET_SIGNATURES)
-            for (signature in info.signatures) {
-                val md: MessageDigest = MessageDigest.getInstance("SHA")
-                md.update(signature.toByteArray())
-                val key = String(Base64.encode(md.digest(), 0))
-                Log.d("Hash key:", key)
-            }
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
-
+        val dialog = ToiletDialog()
+        dialog.setToilet(toilet)
+        dialog.show(supportFragmentManager, "ToiletDialog")
     }
 
     override fun setToolbar() {

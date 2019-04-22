@@ -1,18 +1,14 @@
 package kr.ho1.poopee.common.util
 
 import android.content.Context
-import android.graphics.Color
-import android.graphics.Typeface
-import android.text.Spannable
-import android.text.SpannableStringBuilder
-import android.text.style.AbsoluteSizeSpan
-import android.text.style.ForegroundColorSpan
-import android.text.style.StyleSpan
-import android.text.style.UnderlineSpan
+import android.content.pm.PackageManager
+import android.util.Base64
+import android.util.Log
 import android.util.TypedValue
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import kr.ho1.poopee.common.ObserverManager
+import java.security.MessageDigest
 
 object MyUtil {
 
@@ -42,6 +38,20 @@ object MyUtil {
     fun keyboardHide(view: View) {
         val imm = ObserverManager.context!!.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         imm.hideSoftInputFromWindow(view.windowToken, 0)
+    }
+
+    fun getHashKey() {
+        try {
+            val info = ObserverManager.context!!.packageManager.getPackageInfo(ObserverManager.context!!.packageName, PackageManager.GET_SIGNATURES)
+            for (signature in info.signatures) {
+                val md: MessageDigest = MessageDigest.getInstance("SHA")
+                md.update(signature.toByteArray())
+                val key = String(Base64.encode(md.digest(), 0))
+                Log.d("Hash key:", key)
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
     }
 
 }
