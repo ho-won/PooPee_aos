@@ -1,24 +1,24 @@
 package kr.ho1.poopee.home
 
-import android.content.pm.PackageManager
 import android.os.Bundle
-import android.util.Base64
 import android.util.Log
 import android.view.Gravity
 import kotlinx.android.synthetic.main.activity_home.*
 import kr.ho1.poopee.R
 import kr.ho1.poopee.common.ObserverManager
 import kr.ho1.poopee.common.base.BaseActivity
+import kr.ho1.poopee.common.util.LocationManager
 import kr.ho1.poopee.common.util.MyUtil
 import kr.ho1.poopee.home.model.Toilet
 import kr.ho1.poopee.home.view.ToiletDialog
 import net.daum.mf.map.api.MapPOIItem
 import net.daum.mf.map.api.MapPoint
 import net.daum.mf.map.api.MapView
-import java.security.MessageDigest
 
 @Suppress("DEPRECATION")
 class HomeActivity : BaseActivity(), MapView.POIItemEventListener, MapView.MapViewEventListener {
+
+    private lateinit var mMapView: MapView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,25 +35,23 @@ class HomeActivity : BaseActivity(), MapView.POIItemEventListener, MapView.MapVi
     }
 
     private fun init() {
-        // java code
-        val mapView = MapView(this)
-
-        map_view.addView(mapView)
+        mMapView = MapView(this)
+        map_view.addView(mMapView)
 
         // 중심점 변경
-        mapView.setMapCenterPoint(MapPoint.mapPointWithGeoCoord(37.53737528, 127.00557633), true)
+        mMapView.setMapCenterPoint(MapPoint.mapPointWithGeoCoord(37.53737528, 127.00557633), true)
 
         // 줌 레벨 변경
-//        mapView.setZoomLevel(7, true);
+//        mMapView.setZoomLevel(7, true);
 
         // 중심점 변경 + 줌 레벨 변경
-//        mapView.setMapCenterPointAndZoomLevel(MapPoint.mapPointWithGeoCoord(33.41, 126.52), 9, true);
+//        mMapView.setMapCenterPointAndZoomLevel(MapPoint.mapPointWithGeoCoord(33.41, 126.52), 9, true);
 
         // 줌 인
-//        mapView.zoomIn(true);
+//        mMapView.zoomIn(true);
 
         // 줌 아웃
-//        mapView.zoomOut(true);
+//        mMapView.zoomOut(true);
 
         val marker = MapPOIItem()
         marker.itemName = "Default Marker"
@@ -67,10 +65,10 @@ class HomeActivity : BaseActivity(), MapView.POIItemEventListener, MapView.MapVi
         marker.isShowCalloutBalloonOnTouch = false
 
 
-        mapView.addPOIItem(marker)
+        mMapView.addPOIItem(marker)
 
-        mapView.setPOIItemEventListener(this)
-        mapView.setMapViewEventListener(this)
+        mMapView.setPOIItemEventListener(this)
+        mMapView.setMapViewEventListener(this)
     }
 
     private fun setListener() {
@@ -81,7 +79,9 @@ class HomeActivity : BaseActivity(), MapView.POIItemEventListener, MapView.MapVi
             edt_search.setText("")
         }
         btn_current_location.setOnClickListener {
-
+            if (LocationManager.latitude > 0) {
+                mMapView.setMapCenterPoint(MapPoint.mapPointWithGeoCoord(LocationManager.latitude, LocationManager.longitude), true)
+            }
         }
     }
 
@@ -163,6 +163,7 @@ class HomeActivity : BaseActivity(), MapView.POIItemEventListener, MapView.MapVi
             return
         }
 
+        LocationManager.removeLocationUpdate()
         finish()
     }
 
