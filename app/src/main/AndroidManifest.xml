@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="kr.ho1.poopee">
 
     <uses-permission android:name="android.permission.INTERNET" />
@@ -14,17 +15,26 @@
     <application
         android:name=".common.base.BaseApp"
         android:allowBackup="true"
+        android:appComponentFactory="whateverString"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:largeHeap="true"
         android:supportsRtl="true"
-        android:theme="@style/AppThemeWhite">
+        android:theme="@style/AppThemeWhite"
+        android:usesCleartextTraffic="true"
+        tools:ignore="AllowBackup,GoogleAppIndexingWarning,UnusedAttribute"
+        tools:replace="android:appComponentFactory">
 
-        <meta-data android:name="com.kakao.sdk.AppKey" android:value="53565fe7d8355fff626939459a32e7d0"/>
+        <uses-library
+            android:name="org.apache.http.legacy"
+            android:required="false" />
+
+        <meta-data
+            android:name="com.kakao.sdk.AppKey"
+            android:value="53565fe7d8355fff626939459a32e7d0" />
 
         <activity
-            android:name=".common.MainActivity"
-            android:theme="@style/AppThemePrimary">
+            android:name=".common.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -69,7 +79,7 @@
             android:windowSoftInputMode="adjustResize|stateHidden" />
 
         <provider
-            android:name="android.support.v4.content.FileProvider"
+            android:name="androidx.core.content.FileProvider"
             android:authorities="kr.ho1.poopee.fileprovider"
             android:exported="false"
             android:grantUriPermissions="true">

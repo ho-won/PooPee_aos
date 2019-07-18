@@ -6,12 +6,14 @@ import android.graphics.Rect
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
-import android.support.v4.content.FileProvider
-import android.support.v7.widget.GridLayoutManager
-import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.FileProvider
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import kotlinx.android.synthetic.main.gallery_activity.*
+import kotlinx.android.synthetic.main.gallery_item_photo.view.*
 import kr.ho1.poopee.R
 import kr.ho1.poopee.common.ObserverManager
 import kr.ho1.poopee.common.base.BaseActivity
@@ -20,8 +22,6 @@ import kr.ho1.poopee.gallery.model.GalleryDir
 import kr.ho1.poopee.gallery.util.ImageManager
 import kr.ho1.poopee.gallery.util.PhotoLoader
 import kr.ho1.poopee.gallery.view.DirSelectDialog
-import kotlinx.android.synthetic.main.gallery_activity.*
-import kotlinx.android.synthetic.main.gallery_item_photo.view.*
 import java.io.File
 import java.util.*
 
@@ -170,7 +170,7 @@ class GalleryPhotoActivity : BaseActivity(), DirSelectDialog.DialogListener {
      */
     inner class SpacesItemDecoration(private val space: Int) : RecyclerView.ItemDecoration() {
 
-        override fun getItemOffsets(outRect: Rect, view: View, parent: RecyclerView, state: RecyclerView.State?) {
+        override fun getItemOffsets(outRect: Rect, view: View, parent: RecyclerView, state: RecyclerView.State) {
             outRect.left = space
             outRect.right = space
             outRect.bottom = space

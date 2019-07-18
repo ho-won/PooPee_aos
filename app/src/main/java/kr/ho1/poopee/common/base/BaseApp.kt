@@ -6,8 +6,8 @@ import android.content.IntentFilter
 import android.content.pm.PackageManager
 import android.net.ConnectivityManager
 import android.os.Bundle
-import android.support.multidex.MultiDexApplication
-import android.support.v4.app.ActivityCompat
+import androidx.core.app.ActivityCompat
+import androidx.multidex.MultiDexApplication
 import kr.ho1.poopee.common.ObserverManager
 import kr.ho1.poopee.common.receiver.NetworkCheckReceiver
 

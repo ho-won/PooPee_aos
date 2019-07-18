@@ -1,9 +1,9 @@
 package kr.ho1.poopee.common.base
 
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
 import android.view.View
 import android.widget.RelativeLayout
+import androidx.appcompat.app.AppCompatActivity
 import kr.ho1.poopee.R
 import kr.ho1.poopee.common.ObserverManager
 

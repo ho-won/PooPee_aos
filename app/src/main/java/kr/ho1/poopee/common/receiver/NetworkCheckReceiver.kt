@@ -6,12 +6,10 @@ import android.content.Context
 import android.content.Intent
 import android.net.ConnectivityManager
 import android.os.Build
-import android.support.annotation.RequiresApi
 import kr.ho1.poopee.common.ObserverManager
 
 class NetworkCheckReceiver : BroadcastReceiver() {
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun onReceive(context: Context?, intent: Intent?) {
         val action = intent!!.action
 

@@ -2,9 +2,9 @@ package kr.ho1.poopee.common.base
 
 import android.app.Dialog
 import android.os.Bundle
-import android.support.v4.app.DialogFragment
 import android.view.View
 import android.view.WindowManager
+import androidx.fragment.app.DialogFragment
 import kr.ho1.poopee.R
 
 abstract class BaseDialog : DialogFragment() {

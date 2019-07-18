@@ -6,13 +6,19 @@ import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
 import android.os.AsyncTask
 import android.provider.MediaStore
-import android.support.v4.util.LruCache
 import android.widget.ImageView
+import androidx.collection.LruCache
 import kr.ho1.poopee.R
 import kr.ho1.poopee.common.ObserverManager
 import kr.ho1.poopee.gallery.model.FileInfo
 
-class PhotoLoader {
+@Suppress("DEPRECATION")
+class PhotoLoader// Get max available VM memory, exceeding this amount will throw an
+// OutOfMemory exception. Stored in kilobytes as LruCache takes an
+// int in its constructor.
+
+// Use 1/8th of the available memory for this memory cache.
+() {
     private var loadingDrawable: Drawable // 로딩중 표현할 Drawable
     private var bitmapCache: LruCache<Int, Bitmap>? = null // 이미지캐시목록
 
@@ -26,25 +32,16 @@ class PhotoLoader {
                 }
     }
 
-    constructor() {
-        // Get max available VM memory, exceeding this amount will throw an
-        // OutOfMemory exception. Stored in kilobytes as LruCache takes an
-        // int in its constructor.
+    init {
         val maxMemory = (Runtime.getRuntime().maxMemory() / 1024).toInt()
-
-        // Use 1/8th of the available memory for this memory cache.
         val cacheSize = maxMemory / 4
         bitmapCache = object : LruCache<Int, Bitmap>(cacheSize) {
-            override fun sizeOf(key: Int?, bitmap: Bitmap?): Int {
-
-                // The cache size will be measured in kilobytes rather than
-                // number of items.
-                return bitmap!!.byteCount / 1024
+            override fun sizeOf(key: Int, bitmap: Bitmap): Int {
+                return bitmap.byteCount / 1024
             }
         }
         bitmapCache = LruCache(cacheSize)
         loadingDrawable = ColorDrawable(ObserverManager.context!!.resources.getColor(R.color.text_gray))
-
     }
 
     /**

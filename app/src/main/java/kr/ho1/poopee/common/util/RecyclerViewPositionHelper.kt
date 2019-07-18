@@ -1,15 +1,14 @@
 package kr.ho1.poopee.common.util
 
-import android.support.v7.widget.OrientationHelper
-import android.support.v7.widget.RecyclerView
 import android.view.View
+import androidx.recyclerview.widget.OrientationHelper
+import androidx.recyclerview.widget.RecyclerView
 
-class RecyclerViewPositionHelper {
-    var recyclerView: RecyclerView? = null
+class RecyclerViewPositionHelper(recyclerView: RecyclerView) {
+    var recyclerView: RecyclerView? = recyclerView
     var layoutManager: RecyclerView.LayoutManager? = null
 
-    constructor(recyclerView: RecyclerView) {
-        this.recyclerView = recyclerView
+    init {
         this.layoutManager = recyclerView.layoutManager
     }
 

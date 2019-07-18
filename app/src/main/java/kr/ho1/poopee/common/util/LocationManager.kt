@@ -8,8 +8,8 @@ import android.os.Bundle
 import kr.ho1.poopee.common.ObserverManager
 
 object LocationManager {
-    var locationManager: LocationManager? = null
-    var locationListener: LocationListener? = null
+    private var locationManager: LocationManager? = null
+    private var locationListener: LocationListener? = null
     var latitude: Double = 0.0
     var longitude: Double = 0.0
 

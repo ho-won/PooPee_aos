@@ -31,7 +31,13 @@ class HomeActivity : BaseActivity(), MapView.POIItemEventListener, MapView.MapVi
 
     override fun onResume() {
         super.onResume()
+        LocationManager.setLocationListener() // 현재위치 리스너 추가
         nav_view.refresh()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        LocationManager.removeLocationUpdate()
     }
 
     private fun init() {
@@ -57,7 +63,6 @@ class HomeActivity : BaseActivity(), MapView.POIItemEventListener, MapView.MapVi
         marker.itemName = "Default Marker"
         marker.tag = 1001
         marker.mapPoint = MapPoint.mapPointWithGeoCoord(37.53737528, 127.00557633)
-//        marker.markerType = MapPOIItem.MarkerType.BluePin // 기본으로 제공하는 BluePin 마커 모양.
         marker.markerType = MapPOIItem.MarkerType.CustomImage // 마커타입을 커스텀 마커로 지정.
         marker.customImageResourceId = R.drawable.ic_marker // 마커 이미지.
         marker.selectedMarkerType = MapPOIItem.MarkerType.CustomImage // 마커를 클릭했을때, 기본으로 제공하는 RedPin 마커 모양.
@@ -163,7 +168,6 @@ class HomeActivity : BaseActivity(), MapView.POIItemEventListener, MapView.MapVi
             return
         }
 
-        LocationManager.removeLocationUpdate()
         finish()
     }
 

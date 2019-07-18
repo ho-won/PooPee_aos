@@ -8,13 +8,13 @@ import android.graphics.drawable.Drawable
 import android.graphics.drawable.LevelListDrawable
 import android.os.AsyncTask
 import android.os.Bundle
-import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
 import android.text.Html
 import android.text.method.LinkMovementMethod
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.activity_notice.*
 import kotlinx.android.synthetic.main.item_notice.view.*
 import kr.ho1.poopee.R

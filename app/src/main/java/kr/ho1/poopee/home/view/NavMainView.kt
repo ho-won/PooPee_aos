@@ -2,9 +2,9 @@ package kr.ho1.poopee.home.view
 
 import android.content.Context
 import android.content.Intent
-import android.support.design.widget.NavigationView
 import android.util.AttributeSet
 import android.view.LayoutInflater
+import com.google.android.material.navigation.NavigationView
 import kotlinx.android.synthetic.main.nav_main.view.*
 import kr.ho1.poopee.R
 import kr.ho1.poopee.common.ObserverManager
