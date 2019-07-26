@@ -6,6 +6,7 @@ import androidx.core.content.ContextCompat
 import kr.ho1.poopee.common.ObserverManager
 
 object PermissionManager {
+    const val ACCESS_FINE_LOCATION = 9001
 
     fun permissionCheck(permission: String): Boolean {
         val permissionCheck = ContextCompat.checkSelfPermission(ObserverManager.context!!, permission)

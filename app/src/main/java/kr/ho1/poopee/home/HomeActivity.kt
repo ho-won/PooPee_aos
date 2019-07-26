@@ -2,7 +2,7 @@ package kr.ho1.poopee.home
 
 import android.os.Bundle
 import android.util.Log
-import android.view.Gravity
+import androidx.core.view.GravityCompat
 import kotlinx.android.synthetic.main.activity_home.*
 import kr.ho1.poopee.R
 import kr.ho1.poopee.common.ObserverManager
@@ -144,7 +144,7 @@ class HomeActivity : BaseActivity(), MapView.POIItemEventListener, MapView.MapVi
         toolbar.setImageLeftOne(ObserverManager.context!!.resources.getDrawable(R.drawable.ic_bar_menu))
         toolbar.setSelectedListener(
                 onBtnLeftOne = {
-                    drawer_layout.openDrawer(Gravity.START)
+                    drawer_layout.openDrawer(GravityCompat.START)
                 },
                 onBtnLeftTwo = {
 
@@ -163,8 +163,8 @@ class HomeActivity : BaseActivity(), MapView.POIItemEventListener, MapView.MapVi
             return
         }
 
-        if (drawer_layout.isDrawerOpen(Gravity.START)) {
-            drawer_layout.closeDrawer(Gravity.START)
+        if (drawer_layout.isDrawerOpen(GravityCompat.START)) {
+            drawer_layout.closeDrawer(GravityCompat.START)
             return
         }
 

@@ -6,10 +6,12 @@ import android.os.Bundle
 import android.view.animation.AccelerateInterpolator
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
+import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_main.*
 import kr.ho1.poopee.R
 import kr.ho1.poopee.common.base.BaseActivity
 import kr.ho1.poopee.common.base.BaseApp
+import kr.ho1.poopee.common.util.PermissionManager
 import kr.ho1.poopee.common.util.SleepTask
 import kr.ho1.poopee.home.HomeActivity
 
@@ -44,10 +46,15 @@ class MainActivity : BaseActivity() {
                             finish()
                         } else {
                             val sleepTask = SleepTask(1000, onFinish = {
-                                startActivity(Intent(ObserverManager.context!!, HomeActivity::class.java)
-                                        .setFlags(Intent.FLAG_ACTIVITY_NO_USER_ACTION)
-                                )
-                                finish()
+                                // 퍼미션 체크
+                                if (PermissionManager.permissionCheck(Manifest.permission.ACCESS_FINE_LOCATION)) {
+                                    startActivity(Intent(ObserverManager.context!!, HomeActivity::class.java)
+                                            .setFlags(Intent.FLAG_ACTIVITY_NO_USER_ACTION)
+                                    )
+                                    finish()
+                                } else {
+                                    PermissionManager.requestPermissions(arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), PermissionManager.ACCESS_FINE_LOCATION)
+                                }
                             })
                             sleepTask.execute()
                         }
@@ -65,6 +72,26 @@ class MainActivity : BaseActivity() {
             }
         })
         layout_drop.startAnimation(animation)
+    }
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
+        var result = 0
+        for (grantResult in grantResults) {
+            result += grantResult
+        }
+
+        if (result == 0) {
+            when (requestCode) {
+                PermissionManager.ACCESS_FINE_LOCATION -> {
+                    startActivity(Intent(ObserverManager.context!!, HomeActivity::class.java)
+                            .setFlags(Intent.FLAG_ACTIVITY_NO_USER_ACTION)
+                    )
+                    finish()
+                }
+            }
+        } else {
+            Toast.makeText(ObserverManager.context, ObserverManager.context!!.resources.getString(R.string.toast_please_permission), Toast.LENGTH_SHORT).show()
+        }
     }
 
 }

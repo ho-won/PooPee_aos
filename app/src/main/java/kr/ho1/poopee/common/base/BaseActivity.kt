@@ -1,5 +1,6 @@
 package kr.ho1.poopee.common.base
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.View
 import android.widget.RelativeLayout
@@ -10,7 +11,7 @@ import kr.ho1.poopee.common.ObserverManager
 abstract class BaseActivity : AppCompatActivity() {
     private var progressView: RelativeLayout? = null
 
-    var parentRoot: BaseActivity? = null; // 직전 Activity
+    private var parentRoot: BaseActivity? = null // 직전 Activity
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,10 +28,7 @@ abstract class BaseActivity : AppCompatActivity() {
         ObserverManager.root = this
     }
 
-    override fun finish() {
-        super.finish()
-    }
-
+    @SuppressLint("InflateParams")
     fun showLoading() {
         if (progressView == null) {
             progressView = layoutInflater.inflate(R.layout.view_progress, null) as RelativeLayout
@@ -47,20 +45,6 @@ abstract class BaseActivity : AppCompatActivity() {
 
     fun isShowLoading(): Boolean {
         return progressView != null && progressView!!.visibility == View.VISIBLE
-    }
-
-    /**
-     * Fcm message 가 왔을 경우 호출.
-     */
-    open fun onFcm() {
-
-    }
-
-    /**
-     * Network 가 변경됐을 경우 호출.
-     */
-    open fun onNetworkChanged() {
-
     }
 
     open fun setToolbar() {

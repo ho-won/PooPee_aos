@@ -1,4 +1,5 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/root_view"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -18,7 +19,8 @@
             android:layout_marginRight="10dp"
             android:background="@drawable/gallery_bg_dir_select"
             android:gravity="center_vertical"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            tools:ignore="RelativeOverlap">
 
             <TextView
                 android:id="@+id/tv_category"
@@ -44,7 +46,8 @@
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:padding="4dp"
-                android:src="@drawable/gallery_ic_dropdown_32" />
+                android:src="@drawable/gallery_ic_dropdown_32"
+                tools:ignore="ContentDescription" />
 
         </LinearLayout>
 
@@ -53,11 +56,12 @@
             style="?android:attr/borderlessButtonStyle"
             android:layout_width="@dimen/toolbar_main_height"
             android:layout_height="@dimen/toolbar_main_height"
-            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
             android:padding="@dimen/toolbar_btn_icon_padding"
             android:scaleType="fitCenter"
             android:src="@drawable/gallery_btn_camera"
-            android:tint="@color/primary" />
+            android:tint="@color/primary"
+            tools:ignore="ContentDescription" />
 
     </RelativeLayout>
 
@@ -82,15 +86,16 @@
             android:layout_height="28dp"
             android:layout_margin="10dp"
             android:scaleType="centerCrop"
-            android:src="@drawable/gallery_ic_dir_back_48" />
+            android:src="@drawable/gallery_ic_dir_back_48"
+            tools:ignore="ContentDescription" />
 
         <TextView
             android:id="@+id/tv_name"
             android:layout_width="match_parent"
             android:layout_height="47dp"
-            android:layout_toRightOf="@+id/iv_image"
+            android:layout_toEndOf="@+id/iv_image"
             android:gravity="center_vertical"
-            android:paddingRight="10dp"
+            android:paddingEnd="10dp"
             android:text="@string/gallery_back_to_dir"
             android:textColor="@color/text_main"
             android:textSize="14sp" />

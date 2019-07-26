@@ -1,6 +1,5 @@
 package kr.ho1.poopee.common.util
 
-import android.content.Context
 import android.os.AsyncTask
 
 class SleepTask() : AsyncTask<String, String, String>() {
@@ -10,10 +9,6 @@ class SleepTask() : AsyncTask<String, String, String>() {
     constructor(millis: Int, onFinish: (() -> Unit)) : this() {
         this.millis = millis
         this.onFinish = onFinish
-    }
-
-    override fun onPreExecute() {
-        super.onPreExecute()
     }
 
     override fun doInBackground(vararg params: String): String {

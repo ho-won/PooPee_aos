@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
@@ -31,7 +32,8 @@
                 android:background="@color/main_content_background"
                 android:hint="@string/login_02"
                 android:inputType="textPassword"
-                android:padding="10dp" />
+                android:padding="10dp"
+                tools:ignore="Autofill" />
 
             <EditText
                 android:id="@+id/edt_user_pw_confirm"
@@ -40,7 +42,8 @@
                 android:background="@color/main_content_background"
                 android:hint="@string/login_03"
                 android:inputType="textPassword"
-                android:padding="10dp" />
+                android:padding="10dp"
+                tools:ignore="Autofill" />
 
             <EditText
                 android:id="@+id/edt_name"
@@ -48,7 +51,8 @@
                 android:layout_marginTop="10dp"
                 android:background="@color/main_content_background"
                 android:hint="@string/login_04"
-                android:padding="10dp" />
+                android:padding="10dp"
+                tools:ignore="Autofill" />
 
             <RadioGroup
                 android:id="@+id/rg_gender"

@@ -1,15 +1,11 @@
 package kr.ho1.poopee.common.base
 
 import android.app.Activity
-import android.app.Application
-import android.content.IntentFilter
 import android.content.pm.PackageManager
-import android.net.ConnectivityManager
 import android.os.Bundle
 import androidx.core.app.ActivityCompat
 import androidx.multidex.MultiDexApplication
 import kr.ho1.poopee.common.ObserverManager
-import kr.ho1.poopee.common.receiver.NetworkCheckReceiver
 
 class BaseApp : MultiDexApplication() {
     companion object {
@@ -23,10 +19,6 @@ class BaseApp : MultiDexApplication() {
         super.onCreate()
 
         ObserverManager.context = this // context 저장
-
-        // 네트워크 변경 체크
-        val receiver = NetworkCheckReceiver()
-        registerReceiver(receiver, IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION))
 
         // 앱 BACKGROUND, RETURNED_TO_FOREGROUND, FOREGROUND 체크
         registerActivityLifecycleCallbacks(MyActivityLifecycleCallback())
@@ -49,20 +41,13 @@ class BaseApp : MultiDexApplication() {
         }
     }
 
-    /**
-     * 앱 Foreground 체크.
-     */
-    fun isReturnedToForeground(): Boolean {
-        return APP_STATUS.ordinal == AppStatus.RETURNED_TO_FOREGROUND.ordinal
-    }
-
     enum class AppStatus {
         BACKGROUND,
         RETURNED_TO_FOREGROUND,
         FOREGROUND
     }
 
-    inner class MyActivityLifecycleCallback : Application.ActivityLifecycleCallbacks {
+    inner class MyActivityLifecycleCallback : ActivityLifecycleCallbacks {
         private var running = 0
 
         override fun onActivityPaused(activity: Activity?) {

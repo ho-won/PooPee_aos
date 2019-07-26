@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <kr.ho1.poopee.common.view.SquareFrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:square="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     square:square_height="1"
@@ -11,15 +12,17 @@
         android:id="@+id/iv_image"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:scaleType="centerCrop" />
+        android:scaleType="centerCrop"
+        tools:ignore="ContentDescription" />
 
     <ImageView
         android:layout_width="24dp"
         android:layout_height="24dp"
-        android:layout_gravity="right"
+        android:layout_gravity="end"
         android:layout_margin="8dp"
         android:scaleType="fitXY"
-        android:src="@drawable/gallery_ic_img_select_48" />
+        android:src="@drawable/gallery_ic_img_select_48"
+        tools:ignore="ContentDescription" />
 
     <FrameLayout
         android:id="@+id/layout_select"
@@ -31,7 +34,7 @@
             android:id="@+id/tv_index"
             android:layout_width="24dp"
             android:layout_height="24dp"
-            android:layout_gravity="right|top"
+            android:layout_gravity="end|top"
             android:layout_margin="8dp"
             android:background="@drawable/gallery_bg_img_select"
             android:gravity="center"
@@ -42,7 +45,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:src="@drawable/gallery_ic_img_select_center_80x115" />
+            android:src="@drawable/gallery_ic_img_select_center_80x115"
+            tools:ignore="ContentDescription" />
 
     </FrameLayout>
 

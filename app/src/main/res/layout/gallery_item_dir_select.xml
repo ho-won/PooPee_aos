@@ -23,7 +23,8 @@
         android:layout_alignParentEnd="true"
         android:padding="2dp"
         android:scaleType="fitXY"
-        android:src="@drawable/gallery_ic_dir_select_80" />
+        android:src="@drawable/gallery_ic_dir_select_80"
+        tools:ignore="ContentDescription" />
 
     <FrameLayout
         android:layout_width="match_parent"

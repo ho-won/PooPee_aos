@@ -1,4 +1,5 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/root_view"
     android:layout_width="match_parent"
     android:layout_height="@dimen/toolbar_main_height">
@@ -17,7 +18,8 @@
             android:layout_height="@dimen/toolbar_main_height"
             android:padding="@dimen/toolbar_btn_icon_padding"
             android:scaleType="fitCenter"
-            android:visibility="gone" />
+            android:visibility="gone"
+            tools:ignore="ContentDescription" />
 
         <ImageButton
             android:id="@+id/btn_left_two"
@@ -26,7 +28,8 @@
             android:layout_height="@dimen/toolbar_main_height"
             android:padding="@dimen/toolbar_btn_icon_padding"
             android:scaleType="fitCenter"
-            android:visibility="gone" />
+            android:visibility="gone"
+            tools:ignore="ContentDescription" />
 
     </LinearLayout>
 
@@ -44,7 +47,8 @@
             android:layout_centerInParent="true"
             android:adjustViewBounds="true"
             android:scaleType="fitCenter"
-            android:visibility="gone" />
+            android:visibility="gone"
+            tools:ignore="ContentDescription" />
 
         <HorizontalScrollView
             android:layout_width="wrap_content"
@@ -77,7 +81,7 @@
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="@dimen/toolbar_main_height"
-        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
         android:gravity="center_vertical"
         android:orientation="horizontal">
 
@@ -88,7 +92,8 @@
             android:layout_height="@dimen/toolbar_main_height"
             android:padding="@dimen/toolbar_btn_icon_padding"
             android:scaleType="fitCenter"
-            android:visibility="gone" />
+            android:visibility="gone"
+            tools:ignore="ContentDescription" />
 
         <ImageButton
             android:id="@+id/btn_right_one"
@@ -97,7 +102,8 @@
             android:layout_height="@dimen/toolbar_main_height"
             android:padding="@dimen/toolbar_btn_icon_padding"
             android:scaleType="fitCenter"
-            android:visibility="gone" />
+            android:visibility="gone"
+            tools:ignore="ContentDescription" />
 
     </LinearLayout>
 
