@@ -13,7 +13,10 @@ object SharedManager {
     private const val MEMBER_USER_ID = "MEMBER_USER_ID" // 유저 아이디
     private const val MEMBER_USER_PW = "MEMBER_USER_PW" // 유저 비밀번호
     private const val MEMBER_NAME = "MEMBER_NAME" // 유저 닉네임
-    private const val MEMBER_GENDER = "MEMBER_GENDER" // 유저 성별 남자(1), 여자(2)
+    private const val MEMBER_GENDER = "MEMBER_GENDER" // 유저 성별 1(남자) 2(여자)
+
+    private const val ETC = "ETC"
+    private const val NOTICE_DATE = "NOTICE_DATE" // 서버공지 다시보지않기 체크시간(Y-m-d)
 
     fun isLoginCheck(): Boolean {
         val pref = ObserverManager.context!!.getSharedPreferences(LOGIN, Context.MODE_PRIVATE)
@@ -84,6 +87,18 @@ object SharedManager {
         val pref = ObserverManager.context!!.getSharedPreferences(MEMBER, Context.MODE_PRIVATE)
         val editor = pref.edit()
         editor.putString(MEMBER_GENDER, value)
+        editor.apply()
+    }
+
+    fun getNoticeDate(): String {
+        val pref = ObserverManager.context!!.getSharedPreferences(ETC, Context.MODE_PRIVATE)
+        return pref.getString(NOTICE_DATE, "2000-01-01")
+    }
+
+    fun setNoticeDate(value: String) {
+        val pref = ObserverManager.context!!.getSharedPreferences(ETC, Context.MODE_PRIVATE)
+        val editor = pref.edit()
+        editor.putString(NOTICE_DATE, value)
         editor.apply()
     }
 

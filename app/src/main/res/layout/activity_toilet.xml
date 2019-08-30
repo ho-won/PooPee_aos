@@ -36,7 +36,7 @@
         android:orientation="horizontal">
 
         <EditText
-            android:id="@+id/edt_name"
+            android:id="@+id/edt_content"
             style="@style/base_edt"
             tools:ignore="Autofill"
             android:layout_width="0dp"
@@ -64,7 +64,7 @@
             android:layout_marginBottom="4dp">
 
             <Button
-                android:id="@+id/btn_join"
+                android:id="@+id/btn_send"
                 android:layout_width="64dp"
                 android:layout_height="match_parent"
                 android:background="@color/primary"

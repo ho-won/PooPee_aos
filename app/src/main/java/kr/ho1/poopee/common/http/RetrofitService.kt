@@ -8,9 +8,10 @@ import retrofit2.http.*
 
 interface RetrofitService {
     companion object {
-        val BASE_APP = if (ObserverManager.testServer) "http://test5.car2b.com/api/" else "http://test5.car2b.com/api/"
+        val BASE_APP = if (ObserverManager.testServer) "http://49.236.137.205/PooPee_server/" else "http://49.236.137.205/PooPee_server/"
 
         const val TEST_API = "test.php" // test
+        const val SERVER_CHECK = "etcs/serverCheck" // 서버상태체크
         const val LOGIN = "poopeeTest/login.php" // 로그인
         const val JOIN = "poopeeTest/join.php" // 회원가입
         const val NOTICE_LIST = "poopeeTest/noticeList.php" // 공지사항목록
@@ -28,6 +29,9 @@ interface RetrofitService {
     @Multipart
     @POST(TEST_API)
     fun testImage(@QueryMap params: Map<String, @JvmSuppressWildcards Any>, @Part files: List<MultipartBody.Part>): Call<ResponseBody>
+
+    @GET(SERVER_CHECK)
+    fun serverCheck(@QueryMap params: Map<String, @JvmSuppressWildcards Any>): Call<ResponseBody>
 
     @GET(LOGIN)
     fun login(@QueryMap params: Map<String, @JvmSuppressWildcards Any>): Call<ResponseBody>

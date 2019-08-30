@@ -54,7 +54,11 @@ class ToiletActivity : BaseActivity() {
     }
 
     private fun setListener() {
-
+        btn_send.setOnClickListener {
+            if (edt_content.text.isNotEmpty()) {
+                taskCommentCreate()
+            }
+        }
     }
 
     private fun taskCommentList() {
@@ -73,7 +77,7 @@ class ToiletActivity : BaseActivity() {
                             mToilet.like_check = it.getString("like_check") == "1"
 
                             val jsonArray = it.getJSONArray("comments")
-                            mCommentList = arrayListOf()
+                            mCommentList = ArrayList()
 
                             val content = Comment()
                             content.view_type = Toilet.VIEW_CONTENT
@@ -116,6 +120,30 @@ class ToiletActivity : BaseActivity() {
                     try {
                         if (it.getInt("rst_code") == 0) {
 
+                        }
+                    } catch (e: JSONException) {
+                        e.printStackTrace()
+                    }
+                },
+                onFailed = {
+
+                }
+        )
+    }
+
+    private fun taskCommentCreate() {
+        val params = RetrofitParams()
+        params.put("member_id", SharedManager.getMemberId())
+        params.put("toilet_id", mToilet.id)
+        params.put("content", edt_content.text)
+
+        val request = RetrofitClient.getClient(RetrofitService.BASE_APP).create(RetrofitService::class.java).commentCreate(params.getParams())
+
+        RetrofitJSONObject(request,
+                onSuccess = {
+                    try {
+                        if (it.getInt("rst_code") == 0) {
+                            taskCommentList()
                         }
                     } catch (e: JSONException) {
                         e.printStackTrace()
