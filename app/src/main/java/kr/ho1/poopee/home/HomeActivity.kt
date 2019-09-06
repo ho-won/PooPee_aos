@@ -27,6 +27,7 @@ import kr.ho1.poopee.common.util.MyUtil
 import kr.ho1.poopee.database.ToiletSQLiteManager
 import kr.ho1.poopee.home.model.KaKaoKeyword
 import kr.ho1.poopee.home.model.Toilet
+import kr.ho1.poopee.home.view.PopupDialog
 import kr.ho1.poopee.home.view.ToiletDialog
 import net.daum.mf.map.api.MapPOIItem
 import net.daum.mf.map.api.MapPoint
@@ -81,6 +82,8 @@ class HomeActivity : BaseActivity(), MapView.POIItemEventListener, MapView.MapVi
 
         mMapView.setPOIItemEventListener(this)
         mMapView.setMapViewEventListener(this)
+
+        checkPopup()
     }
 
     private fun setListener() {
@@ -193,6 +196,13 @@ class HomeActivity : BaseActivity(), MapView.POIItemEventListener, MapView.MapVi
         marker.customSelectedImageResourceId = R.drawable.ic_marker // 마커 이미지.
         marker.isShowCalloutBalloonOnTouch = false
         mMapView.addPOIItem(marker)
+    }
+
+    private fun checkPopup() {
+        if (SharedManager.getNoticeImage().count() > 0) {
+            val dialog = PopupDialog()
+            dialog.show(supportFragmentManager, "PopupDialog")
+        }
     }
 
     /**

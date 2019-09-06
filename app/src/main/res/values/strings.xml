@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">PooPee</string>
+    <string name="contentDescription">contentDescription</string>
 
     <!-- word -->
     <string name="yes">예</string>
@@ -31,6 +32,7 @@
     <string name="dialog_assign_new_version_update">새로운 업데이트가 있습니다. 원활한 사용을 위해서 업데이트를 추천합니다.\n업데이트 하시겠습니까?</string>
     <string name="dialog_force_new_version_update">새로운 업데이트가 있습니다. 업데이트 후에 사용할 수 있습니다.\n업데이트 하시겠습니까?</string>
     <string name="dialog_download_request">화장실정보 다운로드가 필요합니다. 통신환경을 확인 후 재시도해주세요.</string>
+    <string name="dialog_no_show">다시보지않기</string>
 
     <!-- toast -->
     <string name="toast_checking_service">서비스점검중입니다</string>

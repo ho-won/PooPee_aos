@@ -15,6 +15,7 @@ import kr.ho1.poopee.common.base.BaseApp
 import kr.ho1.poopee.common.data.SharedManager
 import kr.ho1.poopee.common.dialog.BasicDialog
 import kr.ho1.poopee.common.http.*
+import kr.ho1.poopee.common.util.LocationManager
 import kr.ho1.poopee.common.util.PermissionManager
 import kr.ho1.poopee.common.util.SleepTask
 import kr.ho1.poopee.home.HomeActivity
@@ -52,16 +53,13 @@ class MainActivity : BaseActivity() {
                             // 앱종료
                             finish()
                         } else {
-                            val sleepTask = SleepTask(1000, onFinish = {
-                                // 퍼미션 체크
-                                if (PermissionManager.permissionCheck(Manifest.permission.ACCESS_FINE_LOCATION)
-                                        && PermissionManager.permissionCheck(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
-                                    onServiceCheck()
-                                } else {
-                                    PermissionManager.requestPermissions(arrayOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.WRITE_EXTERNAL_STORAGE), PermissionManager.Permission)
-                                }
-                            })
-                            sleepTask.execute()
+                            // 퍼미션 체크
+                            if (PermissionManager.permissionCheck(Manifest.permission.ACCESS_FINE_LOCATION)
+                                    && PermissionManager.permissionCheck(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+                                onServiceCheck()
+                            } else {
+                                PermissionManager.requestPermissions(arrayOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.WRITE_EXTERNAL_STORAGE), PermissionManager.Permission)
+                            }
                         }
                     }
 
@@ -80,6 +78,7 @@ class MainActivity : BaseActivity() {
     }
 
     private fun onServiceCheck() {
+        LocationManager.setLocationListener() // 현재위치 리스너 추가
         DBVersionTask(progress_file_download,
                 onSuccess = {
                     taskServerCheck()
@@ -196,10 +195,12 @@ class MainActivity : BaseActivity() {
      * 홈 화면으로 이동.
      */
     private fun gotoHomeActivity() {
-        startActivity(Intent(ObserverManager.context!!, HomeActivity::class.java)
-                .setFlags(Intent.FLAG_ACTIVITY_NO_USER_ACTION)
-        )
-        finish()
+        SleepTask(1000, onFinish = {
+            startActivity(Intent(ObserverManager.context!!, HomeActivity::class.java)
+                    .setFlags(Intent.FLAG_ACTIVITY_NO_USER_ACTION)
+            )
+            finish()
+        }).execute()
     }
 
     /**
@@ -252,6 +253,7 @@ class MainActivity : BaseActivity() {
                 onSuccess = {
                     try {
                         if (it.getString("server") == "success") {
+                            SharedManager.setNoticeImage(it.getString("notice_image"))
                             onVersionCheck(it) // 버전체크
                         } else {
                             Toast.makeText(ObserverManager.context!!, it.getString("server"), Toast.LENGTH_SHORT).show()

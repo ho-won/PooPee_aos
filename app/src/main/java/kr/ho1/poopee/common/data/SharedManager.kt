@@ -18,6 +18,7 @@ object SharedManager {
     private const val ETC = "ETC"
     private const val DB_VER = "DB_VER" // toilet db 버전
     private const val NOTICE_DATE = "NOTICE_DATE" // 서버공지 다시보지않기 체크시간(Y-m-d)
+    private const val NOTICE_IMAGE = "NOTICE_IMAGE" // 서버공지 이미지
     private const val LATITUDE = "LATITUDE" // latitude
     private const val LONGITUDE = "LONGITUDE" // longitude
 
@@ -114,6 +115,18 @@ object SharedManager {
         val pref = ObserverManager.context!!.getSharedPreferences(ETC, Context.MODE_PRIVATE)
         val editor = pref.edit()
         editor.putString(NOTICE_DATE, value)
+        editor.apply()
+    }
+
+    fun getNoticeImage(): String {
+        val pref = ObserverManager.context!!.getSharedPreferences(ETC, Context.MODE_PRIVATE)
+        return pref.getString(NOTICE_IMAGE, "")
+    }
+
+    fun setNoticeImage(value: String) {
+        val pref = ObserverManager.context!!.getSharedPreferences(ETC, Context.MODE_PRIVATE)
+        val editor = pref.edit()
+        editor.putString(NOTICE_IMAGE, value)
         editor.apply()
     }
 

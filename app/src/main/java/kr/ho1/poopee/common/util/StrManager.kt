@@ -3,6 +3,7 @@ package kr.ho1.poopee.common.util
 import android.annotation.SuppressLint
 import java.text.ParseException
 import java.text.SimpleDateFormat
+import java.util.*
 
 object StrManager {
 
@@ -24,5 +25,12 @@ object StrManager {
 
         return result
     }
+
+    @SuppressLint("SimpleDateFormat")
+    fun getCurrentDate(): String {
+        val date = Date(System.currentTimeMillis())
+        return (SimpleDateFormat("yyyy-MM-dd")).format(date)
+    }
+
 
 }
