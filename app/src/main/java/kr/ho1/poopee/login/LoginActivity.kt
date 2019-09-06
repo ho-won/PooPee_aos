@@ -14,6 +14,7 @@ import kr.ho1.poopee.common.http.RetrofitParams
 import kr.ho1.poopee.common.http.RetrofitService
 import kr.ho1.poopee.common.util.MyUtil
 import org.json.JSONException
+import retrofit2.http.POST
 
 @Suppress("DEPRECATION")
 class LoginActivity : BaseActivity() {
@@ -33,10 +34,10 @@ class LoginActivity : BaseActivity() {
 
     private fun setListener() {
         btn_login.setOnClickListener {
-            if (edt_user_id.text.toString().isEmpty() || edt_user_pw.text.toString().isEmpty()) {
+            if (edt_username.text.toString().isEmpty() || edt_password.text.toString().isEmpty()) {
                 Toast.makeText(ObserverManager.context!!, ObserverManager.context!!.resources.getString(R.string.toast_login_condition), Toast.LENGTH_SHORT).show()
             } else {
-                taskLogin(edt_user_id.text.toString(), edt_user_pw.text.toString())
+                taskLogin(edt_username.text.toString(), edt_password.text.toString())
             }
         }
         btn_join.setOnClickListener {
@@ -46,11 +47,16 @@ class LoginActivity : BaseActivity() {
         }
     }
 
-    private fun taskLogin(user_id: String, user_pw: String) {
+    /**
+     * [POST] 로그인
+     */
+    private fun taskLogin(username: String, password: String) {
         showLoading()
         val params = RetrofitParams()
-        params.put("user_id", user_id)
-        params.put("user_pw", user_pw)
+        params.put("username", username)
+        params.put("password", password)
+        params.put("pushkey", "test")
+        params.put("os", "aos")
 
         val request = RetrofitClient.getClient(RetrofitService.BASE_APP).create(RetrofitService::class.java).login(params.getParams())
 
@@ -59,13 +65,15 @@ class LoginActivity : BaseActivity() {
                     try {
                         if (it.getInt("rst_code") == 0) {
                             SharedManager.setLoginCheck(true)
-                            SharedManager.setMemberId(it.getString("id"))
-                            SharedManager.setMemberUserId(it.getString("user_id"))
-                            SharedManager.setMemberUserPw(it.getString("user_pw"))
+                            SharedManager.setMemberId(it.getString("member_id"))
+                            SharedManager.setMemberUsername(username)
+                            SharedManager.setMemberPassword(password)
                             SharedManager.setMemberName(it.getString("name"))
                             SharedManager.setMemberGender(it.getString("gender"))
-                            MyUtil.keyboardHide(edt_user_id)
+                            MyUtil.keyboardHide(edt_username)
                             finish()
+                        } else {
+                            Toast.makeText(ObserverManager.context!!, ObserverManager.context!!.resources.getString(R.string.toast_login_fail), Toast.LENGTH_SHORT).show()
                         }
                     } catch (e: JSONException) {
                         e.printStackTrace()

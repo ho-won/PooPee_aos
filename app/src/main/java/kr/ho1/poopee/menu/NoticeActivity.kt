@@ -58,6 +58,9 @@ class NoticeActivity : BaseActivity() {
 
     }
 
+    /**
+     * [GET] 공지사항목록
+     */
     private fun taskNoticeList() {
         showLoading()
         val params = RetrofitParams()
@@ -73,10 +76,10 @@ class NoticeActivity : BaseActivity() {
                             for (i in 0 until jsonArray.length()) {
                                 val jsonObject = jsonArray.getJSONObject(i)
                                 val notice = Notice()
-                                notice.id = jsonObject.getString("id")
+                                notice.notice_id = jsonObject.getString("notice_id")
                                 notice.title = jsonObject.getString("title")
                                 notice.content = jsonObject.getString("content")
-                                notice.date = jsonObject.getString("datetime").substring(5, 10)
+                                notice.created = jsonObject.getString("created").substring(5, 10)
 
                                 mNoticeList.add(notice)
                             }
@@ -118,10 +121,10 @@ class NoticeActivity : BaseActivity() {
         inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView), Html.ImageGetter {
 
             fun update(position: Int) {
-                val sizeString: Array<String> = arrayOf(mNoticeList[position].date)
-                val colorString: Array<String> = arrayOf(mNoticeList[position].date)
+                val sizeString: Array<String> = arrayOf(mNoticeList[position].created)
+                val colorString: Array<String> = arrayOf(mNoticeList[position].created)
 
-                val span = MySpannableString(mNoticeList[position].title + " " + mNoticeList[position].date)
+                val span = MySpannableString(mNoticeList[position].title + " " + mNoticeList[position].created)
                 span.setSize(sizeString, 10)
                 span.setColor(colorString, "#999999")
                 itemView.tv_title.text = span.getSpannableString()

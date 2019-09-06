@@ -14,15 +14,13 @@ import kr.ho1.poopee.common.base.BaseActivity
 import kr.ho1.poopee.common.base.BaseApp
 import kr.ho1.poopee.common.data.SharedManager
 import kr.ho1.poopee.common.dialog.BasicDialog
-import kr.ho1.poopee.common.http.RetrofitClient
-import kr.ho1.poopee.common.http.RetrofitJSONObject
-import kr.ho1.poopee.common.http.RetrofitParams
-import kr.ho1.poopee.common.http.RetrofitService
+import kr.ho1.poopee.common.http.*
 import kr.ho1.poopee.common.util.PermissionManager
 import kr.ho1.poopee.common.util.SleepTask
 import kr.ho1.poopee.home.HomeActivity
 import org.json.JSONException
 import org.json.JSONObject
+import retrofit2.http.POST
 
 class MainActivity : BaseActivity() {
 
@@ -56,10 +54,11 @@ class MainActivity : BaseActivity() {
                         } else {
                             val sleepTask = SleepTask(1000, onFinish = {
                                 // 퍼미션 체크
-                                if (PermissionManager.permissionCheck(Manifest.permission.ACCESS_FINE_LOCATION)) {
-                                    taskServerCheck()
+                                if (PermissionManager.permissionCheck(Manifest.permission.ACCESS_FINE_LOCATION)
+                                        && PermissionManager.permissionCheck(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+                                    onServiceCheck()
                                 } else {
-                                    PermissionManager.requestPermissions(arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), PermissionManager.ACCESS_FINE_LOCATION)
+                                    PermissionManager.requestPermissions(arrayOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.WRITE_EXTERNAL_STORAGE), PermissionManager.Permission)
                                 }
                             })
                             sleepTask.execute()
@@ -78,6 +77,31 @@ class MainActivity : BaseActivity() {
             }
         })
         layout_drop.startAnimation(animation)
+    }
+
+    private fun onServiceCheck() {
+        DBVersionTask(progress_file_download,
+                onSuccess = {
+                    taskServerCheck()
+                },
+                onFailed = {
+                    val dialog = BasicDialog(
+                            onLeftButton = {
+
+                            },
+                            onCenterButton = {
+
+                            },
+                            onRightButton = {
+                                finish()
+                            }
+                    )
+                    dialog.isCancelable = false
+                    dialog.setTextContent(ObserverManager.context!!.resources.getString(R.string.dialog_force_new_version_update))
+                    dialog.setBtnRight(ObserverManager.context!!.resources.getString(R.string.yes))
+                    dialog.show(supportFragmentManager, "BasicDialog")
+                }
+        )
     }
 
     /**
@@ -114,7 +138,7 @@ class MainActivity : BaseActivity() {
                     // 두번째 자리 버전 업데이트로 업데이트 팝업 선택 후 앱 실행
                     val dialog = BasicDialog(
                             onLeftButton = {
-                                gotoHomeActivity()
+                                loginCheck()
                             },
                             onCenterButton = {
 
@@ -131,9 +155,9 @@ class MainActivity : BaseActivity() {
                     dialog.show(supportFragmentManager, "BasicDialog")
                 }
                 Integer.parseInt(versions[0]) < Integer.parseInt(appVersions[0]) -> // 세번째 자리 버전 업데이트로 무시하고 앱실행
-                    gotoHomeActivity()
+                    loginCheck()
                 else -> // 현재 앱버전이 최신버전일경우
-                    gotoHomeActivity()
+                    loginCheck()
             }
         } catch (e: JSONException) {
             e.printStackTrace()
@@ -158,6 +182,17 @@ class MainActivity : BaseActivity() {
     }
 
     /**
+     * 로그인 체크
+     */
+    private fun loginCheck() {
+        if (SharedManager.isLoginCheck()) {
+            taskLogin()
+        } else {
+            gotoHomeActivity()
+        }
+    }
+
+    /**
      * 홈 화면으로 이동.
      */
     private fun gotoHomeActivity() {
@@ -167,6 +202,46 @@ class MainActivity : BaseActivity() {
         finish()
     }
 
+    /**
+     * [POST] 로그인
+     */
+    private fun taskLogin() {
+        val params = RetrofitParams()
+        params.put("username", SharedManager.getMemberUsername())
+        params.put("password", SharedManager.getMemberPassword())
+        params.put("pushkey", "test")
+        params.put("os", "aos")
+
+        val request = RetrofitClient.getClient(RetrofitService.BASE_APP).create(RetrofitService::class.java).login(params.getParams())
+
+        RetrofitJSONObject(request,
+                onSuccess = {
+                    try {
+                        if (it.getInt("rst_code") == 0) {
+                            SharedManager.setMemberId(it.getString("member_id"))
+                            SharedManager.setMemberName(it.getString("name"))
+                            SharedManager.setMemberGender(it.getString("gender"))
+                            gotoHomeActivity()
+                        } else {
+                            ObserverManager.logout()
+                            gotoHomeActivity()
+                        }
+                    } catch (e: JSONException) {
+                        e.printStackTrace()
+                        ObserverManager.logout()
+                        gotoHomeActivity()
+                    }
+                },
+                onFailed = {
+                    ObserverManager.logout()
+                    gotoHomeActivity()
+                }
+        )
+    }
+
+    /**
+     * [GET] 서버상태체크
+     */
     private fun taskServerCheck() {
         val params = RetrofitParams()
         params.put("date", SharedManager.getNoticeDate())
@@ -203,11 +278,8 @@ class MainActivity : BaseActivity() {
 
         if (result == 0) {
             when (requestCode) {
-                PermissionManager.ACCESS_FINE_LOCATION -> {
-                    startActivity(Intent(ObserverManager.context!!, HomeActivity::class.java)
-                            .setFlags(Intent.FLAG_ACTIVITY_NO_USER_ACTION)
-                    )
-                    finish()
+                PermissionManager.Permission -> {
+                    onServiceCheck()
                 }
             }
         } else {

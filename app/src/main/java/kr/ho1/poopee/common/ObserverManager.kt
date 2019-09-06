@@ -22,10 +22,12 @@ object ObserverManager {
     }
 
     fun logout() {
-        context!!.startActivity(Intent(context, MainActivity::class.java)
-                .setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_NO_USER_ACTION)
-        )
-        root!!.finish()
+        SharedManager.setLoginCheck(false)
+        SharedManager.setMemberId("")
+        SharedManager.setMemberUsername("")
+        SharedManager.setMemberPassword("")
+        SharedManager.setMemberName("")
+        SharedManager.setMemberGender("1")
     }
 
     fun restart() {

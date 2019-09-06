@@ -6,11 +6,12 @@ import android.os.Bundle
 import androidx.core.app.ActivityCompat
 import androidx.multidex.MultiDexApplication
 import kr.ho1.poopee.common.ObserverManager
+import kotlin.system.exitProcess
 
 class BaseApp : MultiDexApplication() {
     companion object {
-        const val ACTION_EXIT = "kr.co.oncar.hiautoclub.EXIT"
-        const val ACTION_RESTART = "kr.co.oncar.hiautoclub.RESTART"
+        const val ACTION_EXIT = "kr.ho1.poopee.EXIT"
+        const val ACTION_RESTART = "kr.ho1.poopee.RESTART"
         var APP_VERSION = "0" // 앱 버전
         var APP_STATUS = AppStatus.FOREGROUND // 앱 BACKGROUND, RETURNED_TO_FOREGROUND, FOREGROUND 상태
     }
@@ -36,7 +37,7 @@ class BaseApp : MultiDexApplication() {
         if (ObserverManager.serverException) {
             Thread.setDefaultUncaughtExceptionHandler { _, _ ->
                 ActivityCompat.finishAffinity(ObserverManager.root!!)
-                System.exit(0)
+                exitProcess(0)
             }
         }
     }

@@ -10,13 +10,16 @@ object SharedManager {
 
     private const val MEMBER = "MEMBER"
     private const val MEMBER_ID = "MEMBER_ID" // 멤버 아이디
-    private const val MEMBER_USER_ID = "MEMBER_USER_ID" // 유저 아이디
-    private const val MEMBER_USER_PW = "MEMBER_USER_PW" // 유저 비밀번호
+    private const val MEMBER_USERNAME = "MEMBER_USERNAME" // 유저 아이디
+    private const val MEMBER_PASSWORD = "MEMBER_PASSWORD" // 유저 비밀번호
     private const val MEMBER_NAME = "MEMBER_NAME" // 유저 닉네임
     private const val MEMBER_GENDER = "MEMBER_GENDER" // 유저 성별 1(남자) 2(여자)
 
     private const val ETC = "ETC"
+    private const val DB_VER = "DB_VER" // toilet db 버전
     private const val NOTICE_DATE = "NOTICE_DATE" // 서버공지 다시보지않기 체크시간(Y-m-d)
+    private const val LATITUDE = "LATITUDE" // latitude
+    private const val LONGITUDE = "LONGITUDE" // longitude
 
     fun isLoginCheck(): Boolean {
         val pref = ObserverManager.context!!.getSharedPreferences(LOGIN, Context.MODE_PRIVATE)
@@ -42,27 +45,27 @@ object SharedManager {
         editor.apply()
     }
 
-    fun getMemberUserId(): String {
+    fun getMemberUsername(): String {
         val pref = ObserverManager.context!!.getSharedPreferences(MEMBER, Context.MODE_PRIVATE)
-        return pref.getString(MEMBER_USER_ID, "")
+        return pref.getString(MEMBER_USERNAME, "")
     }
 
-    fun setMemberUserId(value: String) {
+    fun setMemberUsername(value: String) {
         val pref = ObserverManager.context!!.getSharedPreferences(MEMBER, Context.MODE_PRIVATE)
         val editor = pref.edit()
-        editor.putString(MEMBER_USER_ID, value)
+        editor.putString(MEMBER_USERNAME, value)
         editor.apply()
     }
 
-    fun getMemberUserPw(): String {
+    fun getMemberPassword(): String {
         val pref = ObserverManager.context!!.getSharedPreferences(MEMBER, Context.MODE_PRIVATE)
-        return pref.getString(MEMBER_USER_PW, "")
+        return pref.getString(MEMBER_PASSWORD, "")
     }
 
-    fun setMemberUserPw(value: String) {
+    fun setMemberPassword(value: String) {
         val pref = ObserverManager.context!!.getSharedPreferences(MEMBER, Context.MODE_PRIVATE)
         val editor = pref.edit()
-        editor.putString(MEMBER_USER_PW, value)
+        editor.putString(MEMBER_PASSWORD, value)
         editor.apply()
     }
 
@@ -90,6 +93,18 @@ object SharedManager {
         editor.apply()
     }
 
+    fun getDbVer(): Int {
+        val pref = ObserverManager.context!!.getSharedPreferences(ETC, Context.MODE_PRIVATE)
+        return pref.getInt(DB_VER, 0)
+    }
+
+    fun setDbVer(value: Int) {
+        val pref = ObserverManager.context!!.getSharedPreferences(ETC, Context.MODE_PRIVATE)
+        val editor = pref.edit()
+        editor.putInt(DB_VER, value)
+        editor.apply()
+    }
+
     fun getNoticeDate(): String {
         val pref = ObserverManager.context!!.getSharedPreferences(ETC, Context.MODE_PRIVATE)
         return pref.getString(NOTICE_DATE, "2000-01-01")
@@ -99,6 +114,30 @@ object SharedManager {
         val pref = ObserverManager.context!!.getSharedPreferences(ETC, Context.MODE_PRIVATE)
         val editor = pref.edit()
         editor.putString(NOTICE_DATE, value)
+        editor.apply()
+    }
+
+    fun getLatitude(): Double {
+        val pref = ObserverManager.context!!.getSharedPreferences(ETC, Context.MODE_PRIVATE)
+        return pref.getString(LATITUDE, "0.0").toDouble()
+    }
+
+    fun setLatitude(value: Double) {
+        val pref = ObserverManager.context!!.getSharedPreferences(ETC, Context.MODE_PRIVATE)
+        val editor = pref.edit()
+        editor.putString(LATITUDE, value.toString())
+        editor.apply()
+    }
+
+    fun getLongitude(): Double {
+        val pref = ObserverManager.context!!.getSharedPreferences(ETC, Context.MODE_PRIVATE)
+        return pref.getString(LONGITUDE, "0.0").toDouble()
+    }
+
+    fun setLongitude(value: Double) {
+        val pref = ObserverManager.context!!.getSharedPreferences(ETC, Context.MODE_PRIVATE)
+        val editor = pref.edit()
+        editor.putString(LONGITUDE, value.toString())
         editor.apply()
     }
 

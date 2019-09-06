@@ -29,13 +29,15 @@ class ToiletDialog : BaseDialog() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        tv_title.text = mToilet.title
+        tv_title.text = mToilet.name
 
         init()
         setListener()
     }
 
     private fun init() {
+        tv_comment_count.text = String.format(ObserverManager.context!!.resources.getString(R.string.home_text_03), mToilet.comment_count)
+        tv_like_count.text = String.format(ObserverManager.context!!.resources.getString(R.string.home_text_04), mToilet.like_count)
         taskToiletCount()
     }
 
@@ -60,7 +62,7 @@ class ToiletDialog : BaseDialog() {
         val params = RetrofitParams()
         params.put("toilet_id", mToilet.toilet_id)
 
-        val request = RetrofitClient.getClient(RetrofitService.BASE_APP).create(RetrofitService::class.java).toiletCount(params.getParams())
+        val request = RetrofitClient.getClient(RetrofitService.BASE_APP).create(RetrofitService::class.java).toiletInfo(params.getParams())
 
         RetrofitJSONObject(request,
                 onSuccess = {

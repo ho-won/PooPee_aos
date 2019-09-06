@@ -54,6 +54,15 @@
                 android:textColor="@color/text_main"
                 android:textSize="12sp" />
 
+            <TextView
+                android:id="@+id/tv_report"
+                android:layout_width="40dp"
+                android:layout_height="24dp"
+                android:gravity="center"
+                android:text="@string/report"
+                android:textColor="@color/text_main"
+                android:textSize="12sp" />
+
         </LinearLayout>
 
         <TextView

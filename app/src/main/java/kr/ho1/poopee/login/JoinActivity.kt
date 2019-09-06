@@ -27,31 +27,34 @@ class JoinActivity : BaseActivity() {
     }
 
     private fun init() {
-        edt_user_id.filters = StringFilter.getAlphanumericHangul(10)
-        edt_user_pw.filters = StringFilter.getAlphanumeric(20)
-        edt_user_pw_confirm.filters = StringFilter.getAlphanumeric(20)
+        edt_username.filters = StringFilter.getAlphanumericHangul(10)
+        edt_password.filters = StringFilter.getAlphanumeric(20)
+        edt_password_confirm.filters = StringFilter.getAlphanumeric(20)
         edt_name.filters = StringFilter.getAlphanumericHangul(10)
     }
 
     private fun setListener() {
         btn_join.setOnClickListener {
-            if (edt_user_id.text.toString().isEmpty() || edt_user_pw.text.toString().isEmpty() || edt_user_pw.text.toString().isEmpty() || edt_name.text.toString().isEmpty()) {
+            if (edt_username.text.toString().isEmpty() || edt_password.text.toString().isEmpty() || edt_password_confirm.text.toString().isEmpty() || edt_name.text.toString().isEmpty()) {
                 Toast.makeText(ObserverManager.context!!, ObserverManager.context!!.resources.getString(R.string.toast_please_all_input), Toast.LENGTH_SHORT).show()
-            } else if (edt_user_pw.text.toString() != edt_user_pw.text.toString()) {
+            } else if (edt_password.text.toString() != edt_password_confirm.text.toString()) {
                 Toast.makeText(ObserverManager.context!!, ObserverManager.context!!.resources.getString(R.string.toast_join_condition_01), Toast.LENGTH_SHORT).show()
             } else if (!rb_man.isChecked && !rb_woman.isChecked) {
                 Toast.makeText(ObserverManager.context!!, ObserverManager.context!!.resources.getString(R.string.toast_join_condition_02), Toast.LENGTH_SHORT).show()
             } else {
-                taskJoin(edt_user_id.text.toString(), edt_user_pw.text.toString(), edt_name.text.toString(), if (rb_man.isChecked) "1" else "2")
+                taskJoin(edt_username.text.toString(), edt_password.text.toString(), edt_name.text.toString(), if (rb_man.isChecked) "1" else "2")
             }
         }
     }
 
-    private fun taskJoin(user_id: String, user_pw: String, name: String, gender: String) {
+    /**
+     * [POST] 회원가입
+     */
+    private fun taskJoin(username: String, password: String, name: String, gender: String) {
         showLoading()
         val params = RetrofitParams()
-        params.put("user_id", user_id)
-        params.put("user_pw", user_pw)
+        params.put("username", username)
+        params.put("password", password)
         params.put("name", name)
         params.put("gender", gender)
 
@@ -62,8 +65,10 @@ class JoinActivity : BaseActivity() {
                     try {
                         if (it.getInt("rst_code") == 0) {
                             Toast.makeText(ObserverManager.context!!, ObserverManager.context!!.resources.getString(R.string.toast_join_complete), Toast.LENGTH_SHORT).show()
-                            MyUtil.keyboardHide(edt_user_id)
+                            MyUtil.keyboardHide(edt_username)
                             finish()
+                        } else if (it.getInt("rst_code") == 1) {
+                            Toast.makeText(ObserverManager.context!!, ObserverManager.context!!.resources.getString(R.string.toast_join_id_fail), Toast.LENGTH_SHORT).show()
                         }
                     } catch (e: JSONException) {
                         e.printStackTrace()

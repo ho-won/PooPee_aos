@@ -27,8 +27,8 @@ class MyInfoActivity : BaseActivity() {
     }
 
     private fun init() {
-        edt_user_pw.filters = StringFilter.getAlphanumeric(20)
-        edt_user_pw_confirm.filters = StringFilter.getAlphanumeric(20)
+        edt_password.filters = StringFilter.getAlphanumeric(20)
+        edt_password_confirm.filters = StringFilter.getAlphanumeric(20)
         edt_name.filters = StringFilter.getAlphanumericHangul(10)
 
         edt_name.setText(SharedManager.getMemberName())
@@ -41,33 +41,44 @@ class MyInfoActivity : BaseActivity() {
 
     private fun setListener() {
         btn_modified.setOnClickListener {
-            if (edt_user_pw.text.toString() != edt_user_pw.text.toString()) {
+            if (edt_password.text.toString() != edt_password_confirm.text.toString()) {
                 Toast.makeText(ObserverManager.context!!, ObserverManager.context!!.resources.getString(R.string.toast_join_condition_01), Toast.LENGTH_SHORT).show()
             } else if (!rb_man.isChecked && !rb_woman.isChecked) {
                 Toast.makeText(ObserverManager.context!!, ObserverManager.context!!.resources.getString(R.string.toast_join_condition_02), Toast.LENGTH_SHORT).show()
             } else {
-                taskUpdate(edt_user_pw.text.toString(), edt_name.text.toString(), if (rb_man.isChecked) "1" else "2")
+                taskUpdateUser(edt_password.text.toString(), edt_name.text.toString(), if (rb_man.isChecked) "1" else "2")
             }
         }
     }
 
-    private fun taskUpdate(user_pw: String, name: String, gender: String) {
+    /**
+     * [PUT] 회원정보수정
+     */
+    private fun taskUpdateUser(password: String, name: String, gender: String) {
         showLoading()
         val params = RetrofitParams()
-        params.put("id", SharedManager.getMemberId())
-        params.put("user_pw", user_pw)
+        params.put("member_id", SharedManager.getMemberId())
+
+        var pw = SharedManager.getMemberPassword()
+        if (password.isNotEmpty()) {
+            pw = password
+        }
+        params.put("password", pw)
+
         params.put("name", name)
         params.put("gender", gender)
 
-        val request = RetrofitClient.getClient(RetrofitService.BASE_APP).create(RetrofitService::class.java).test(params.getParams())
+        val request = RetrofitClient.getClient(RetrofitService.BASE_APP).create(RetrofitService::class.java).updateUser(params.getParams())
 
         RetrofitJSONObject(request,
                 onSuccess = {
                     try {
                         if (it.getInt("rst_code") == 0) {
-                            SharedManager.setMemberUserPw(user_pw)
+                            SharedManager.setMemberPassword(pw)
                             SharedManager.setMemberName(name)
                             SharedManager.setMemberGender(gender)
+                            Toast.makeText(ObserverManager.context!!, ObserverManager.context!!.resources.getString(R.string.toast_update_complete), Toast.LENGTH_SHORT).show()
+                            finish()
                         }
                     } catch (e: JSONException) {
                         e.printStackTrace()

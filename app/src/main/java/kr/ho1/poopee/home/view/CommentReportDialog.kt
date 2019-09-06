@@ -5,8 +5,10 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import kotlinx.android.synthetic.main.dialog_comment_update.*
+import android.widget.Toast
+import kotlinx.android.synthetic.main.dialog_comment_report.*
 import kr.ho1.poopee.R
+import kr.ho1.poopee.common.ObserverManager
 import kr.ho1.poopee.common.base.BaseDialog
 import kr.ho1.poopee.common.data.SharedManager
 import kr.ho1.poopee.common.http.RetrofitClient
@@ -15,14 +17,14 @@ import kr.ho1.poopee.common.http.RetrofitParams
 import kr.ho1.poopee.common.http.RetrofitService
 import kr.ho1.poopee.home.model.Comment
 import org.json.JSONException
-import retrofit2.http.PUT
+import retrofit2.http.POST
 
 @SuppressLint("ValidFragment")
-class CommentUpdateDialog(private var onUpdate: ((comment: Comment) -> Unit)) : BaseDialog() {
+class CommentReportDialog : BaseDialog() {
     private var mComment: Comment = Comment()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.dialog_comment_update, container, false)
+        return inflater.inflate(R.layout.dialog_comment_report, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -33,13 +35,12 @@ class CommentUpdateDialog(private var onUpdate: ((comment: Comment) -> Unit)) : 
     }
 
     private fun init() {
-        edt_content.setText(mComment.content)
+
     }
 
     private fun setListener() {
-        btn_update.setOnClickListener {
-            mComment.content = edt_content.text.toString()
-            taskCommentUpdate()
+        btn_report.setOnClickListener {
+            taskCommentReport()
         }
 
         btn_close.setOnClickListener {
@@ -52,21 +53,21 @@ class CommentUpdateDialog(private var onUpdate: ((comment: Comment) -> Unit)) : 
     }
 
     /**
-     * [PUT] 댓글수정
+     * [POST] 댓글신고
      */
-    private fun taskCommentUpdate() {
+    private fun taskCommentReport() {
         val params = RetrofitParams()
         params.put("member_id", SharedManager.getMemberId())
         params.put("comment_id", mComment.comment_id)
-        params.put("content", mComment.content)
+        params.put("content", edt_content.text)
 
-        val request = RetrofitClient.getClient(RetrofitService.BASE_APP).create(RetrofitService::class.java).commentUpdate(params.getParams())
+        val request = RetrofitClient.getClient(RetrofitService.BASE_APP).create(RetrofitService::class.java).createCommentReport(params.getParams())
 
         RetrofitJSONObject(request,
                 onSuccess = {
                     try {
                         if (it.getInt("rst_code") == 0) {
-                            onUpdate(mComment)
+                            Toast.makeText(ObserverManager.context!!, ObserverManager.context!!.resources.getString(R.string.toast_report_complete), Toast.LENGTH_SHORT).show()
                             dismiss()
                         }
                     } catch (e: JSONException) {

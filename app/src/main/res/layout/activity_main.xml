@@ -43,4 +43,18 @@
 
     </LinearLayout>
 
+    <ProgressBar
+        android:id="@+id/progress_file_download"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="match_parent"
+        android:layout_height="4dp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="40dp"
+        android:layout_marginEnd="40dp"
+        android:layout_marginBottom="54dp"
+        android:indeterminate="false"
+        android:max="100"
+        android:progressDrawable="@drawable/progress_bar"
+        android:visibility="gone" />
+
 </RelativeLayout>

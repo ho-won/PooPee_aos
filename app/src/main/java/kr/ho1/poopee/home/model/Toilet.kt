@@ -8,10 +8,13 @@ class Toilet : Serializable {
         const val VIEW_COMMENT = 1002
     }
 
-    var id: String = ""
-    var toilet_id: String = ""
-    var title: String = ""
-    var content: String = ""
+    var toilet_id: Int = 0
+    var type: String = ""
+    var name: String = ""
+    var address_new: String = ""
+    var address_old: String = ""
+    var latitude: Double = 0.0
+    var longitude: Double = 0.0
     var comment_count: String = "0"
     var like_count: String = "0"
     var like_check: Boolean = false

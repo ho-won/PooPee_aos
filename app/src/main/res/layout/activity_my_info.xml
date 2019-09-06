@@ -27,7 +27,7 @@
             android:padding="16dp">
 
             <EditText
-                android:id="@+id/edt_user_pw"
+                android:id="@+id/edt_password"
                 style="@style/base_edt"
                 android:background="@color/main_content_background"
                 android:hint="@string/login_02"
@@ -36,7 +36,7 @@
                 tools:ignore="Autofill" />
 
             <EditText
-                android:id="@+id/edt_user_pw_confirm"
+                android:id="@+id/edt_password_confirm"
                 style="@style/base_edt"
                 android:layout_marginTop="10dp"
                 android:background="@color/main_content_background"

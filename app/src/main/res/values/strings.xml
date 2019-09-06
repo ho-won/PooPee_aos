@@ -20,6 +20,7 @@
     <string name="email">이메일</string>
     <string name="phone_number">휴대폰번호</string>
     <string name="delete">삭제</string>
+    <string name="report">신고</string>
     <string name="send">전송</string>
     <string name="send_mail">메일보내기</string>
     <string name="man">남자</string>
@@ -29,6 +30,7 @@
     <!-- dialog -->
     <string name="dialog_assign_new_version_update">새로운 업데이트가 있습니다. 원활한 사용을 위해서 업데이트를 추천합니다.\n업데이트 하시겠습니까?</string>
     <string name="dialog_force_new_version_update">새로운 업데이트가 있습니다. 업데이트 후에 사용할 수 있습니다.\n업데이트 하시겠습니까?</string>
+    <string name="dialog_download_request">화장실정보 다운로드가 필요합니다. 통신환경을 확인 후 재시도해주세요.</string>
 
     <!-- toast -->
     <string name="toast_checking_service">서비스점검중입니다</string>
@@ -38,9 +40,14 @@
     <string name="toast_alphanumeric_hangul">영문자와 숫자, 한글만 허용합니다</string>
     <string name="toast_please_all_input">모든항목을 입력해주세요</string>
     <string name="toast_login_condition">아이디/비밀번호를 입력하세요</string>
+    <string name="toast_login_fail">로그인에 실패했습니다</string>
     <string name="toast_join_condition_01">비밀번호가 일치하지 않습니다</string>
     <string name="toast_join_condition_02">성별을 선택해주세요</string>
     <string name="toast_join_complete">회원가입이 완료되었습니다</string>
+    <string name="toast_join_id_fail">이미 사용중인 아이디입니다</string>
+    <string name="toast_update_complete">수정했습니다</string>
+    <string name="toast_delete_complete">삭제했습니다</string>
+    <string name="toast_report_complete">신고했습니다</string>
 
     <!-- gallery -->
     <string name="gallery_select_dir">폴더선택</string>
@@ -64,11 +71,12 @@
     <string name="home_text_04" formatted="false">좋아요수 %s</string>
     <string name="home_text_05">댓글입력</string>
     <string name="home_text_06">삭제하시겠습니까?</string>
+    <string name="home_text_07">신고내용입력</string>
 
     <!-- login -->
     <string name="login_01">아이디 입력</string>
-    <string name="login_02">비밀번호 입력</string>
-    <string name="login_03">비밀번호 확인</string>
+    <string name="login_02">변경할 비밀번호 입력</string>
+    <string name="login_03">변경할 비밀번호 확인</string>
     <string name="login_04">닉네임 입력</string>
 
 </resources>

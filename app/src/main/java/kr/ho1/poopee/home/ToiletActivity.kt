@@ -1,9 +1,11 @@
 package kr.ho1.poopee.home
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.activity_toilet.*
@@ -18,9 +20,12 @@ import kr.ho1.poopee.common.http.RetrofitClient
 import kr.ho1.poopee.common.http.RetrofitJSONObject
 import kr.ho1.poopee.common.http.RetrofitParams
 import kr.ho1.poopee.common.http.RetrofitService
+import kr.ho1.poopee.common.util.MyUtil
 import kr.ho1.poopee.home.model.Comment
 import kr.ho1.poopee.home.model.Toilet
+import kr.ho1.poopee.home.view.CommentReportDialog
 import kr.ho1.poopee.home.view.CommentUpdateDialog
+import kr.ho1.poopee.login.LoginActivity
 import org.json.JSONException
 
 @Suppress("DEPRECATION")
@@ -56,12 +61,22 @@ class ToiletActivity : BaseActivity() {
     private fun setListener() {
         btn_send.setOnClickListener {
             if (edt_content.text.isNotEmpty()) {
-                taskCommentCreate()
+                if (SharedManager.isLoginCheck()) {
+                    taskCommentCreate()
+                } else {
+                    ObserverManager.root!!.startActivity(Intent(ObserverManager.context!!, LoginActivity::class.java)
+                            .setFlags(Intent.FLAG_ACTIVITY_NO_USER_ACTION)
+                    )
+                }
             }
         }
     }
 
+    /**
+     * [GET] 댓글목록
+     */
     private fun taskCommentList() {
+        showLoading()
         val params = RetrofitParams()
         params.put("member_id", SharedManager.getMemberId())
         params.put("toilet_id", mToilet.toilet_id)
@@ -86,11 +101,11 @@ class ToiletActivity : BaseActivity() {
                             for (i in 0 until jsonArray.length()) {
                                 val jsonObject = jsonArray.getJSONObject(i)
                                 val comment = Comment()
-                                comment.id = jsonObject.getString("id")
+                                comment.comment_id = jsonObject.getString("comment_id")
                                 comment.member_id = jsonObject.getString("member_id")
                                 comment.name = jsonObject.getString("name")
                                 comment.content = jsonObject.getString("content")
-                                comment.datetime = jsonObject.getString("datetime")
+                                comment.created = jsonObject.getString("created")
                                 comment.view_type = Toilet.VIEW_COMMENT
 
                                 mCommentList.add(comment)
@@ -101,17 +116,21 @@ class ToiletActivity : BaseActivity() {
                     } catch (e: JSONException) {
                         e.printStackTrace()
                     }
+                    hideLoading()
                 },
                 onFailed = {
-
+                    hideLoading()
                 }
         )
     }
 
-    private fun taskToiletLike(like: Int) {
+    /**
+     * [POST] 좋아요
+     */
+    private fun taskToiletLike() {
         val params = RetrofitParams()
+        params.put("member_id", SharedManager.getMemberId())
         params.put("toilet_id", mToilet.toilet_id)
-        params.put("like", like)
 
         val request = RetrofitClient.getClient(RetrofitService.BASE_APP).create(RetrofitService::class.java).toiletLike(params.getParams())
 
@@ -119,7 +138,9 @@ class ToiletActivity : BaseActivity() {
                 onSuccess = {
                     try {
                         if (it.getInt("rst_code") == 0) {
-
+                            mToilet.like_count = it.getString("like_count")
+                            mToilet.like_check = it.getString("like_check") == "1"
+                            mRecyclerAdapter.notifyItemChanged(0)
                         }
                     } catch (e: JSONException) {
                         e.printStackTrace()
@@ -131,10 +152,14 @@ class ToiletActivity : BaseActivity() {
         )
     }
 
+    /**
+     * [POST] 댓글작성
+     */
     private fun taskCommentCreate() {
+        showLoading()
         val params = RetrofitParams()
         params.put("member_id", SharedManager.getMemberId())
-        params.put("toilet_id", mToilet.id)
+        params.put("toilet_id", mToilet.toilet_id)
         params.put("content", edt_content.text)
 
         val request = RetrofitClient.getClient(RetrofitService.BASE_APP).create(RetrofitService::class.java).commentCreate(params.getParams())
@@ -143,21 +168,29 @@ class ToiletActivity : BaseActivity() {
                 onSuccess = {
                     try {
                         if (it.getInt("rst_code") == 0) {
+                            edt_content.setText("")
+                            MyUtil.keyboardHide(edt_content)
                             taskCommentList()
                         }
                     } catch (e: JSONException) {
                         e.printStackTrace()
                     }
+                    hideLoading()
                 },
                 onFailed = {
-
+                    hideLoading()
                 }
         )
     }
 
+    /**
+     * [DELETE] 댓글삭제
+     */
     private fun taskCommentDelete(comment: Comment, position: Int) {
+        showLoading()
         val params = RetrofitParams()
-        params.put("comment_id", comment.id)
+        params.put("member_id", SharedManager.getMemberId())
+        params.put("comment_id", comment.comment_id)
 
         val request = RetrofitClient.getClient(RetrofitService.BASE_APP).create(RetrofitService::class.java).commentDelete(params.getParams())
 
@@ -167,13 +200,15 @@ class ToiletActivity : BaseActivity() {
                         if (it.getInt("rst_code") == 0) {
                             mCommentList.removeAt(position)
                             mRecyclerAdapter.notifyItemRemoved(position)
+                            Toast.makeText(ObserverManager.context!!, ObserverManager.context!!.resources.getString(R.string.toast_delete_complete), Toast.LENGTH_SHORT).show()
                         }
                     } catch (e: JSONException) {
                         e.printStackTrace()
                     }
+                    hideLoading()
                 },
                 onFailed = {
-
+                    hideLoading()
                 }
         )
     }
@@ -210,14 +245,21 @@ class ToiletActivity : BaseActivity() {
         inner class ContentViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
             fun update() {
-                itemView.tv_title.text = mToilet.title
-                itemView.tv_content.text = mToilet.content
+                itemView.tv_title.text = mToilet.name
+                itemView.tv_content.text = mToilet.name
                 itemView.tv_comment_count.text = String.format(ObserverManager.context!!.resources.getString(R.string.home_text_03), mToilet.comment_count)
-                itemView.tv_like_count.text = String.format(ObserverManager.context!!.resources.getString(R.string.home_text_03), mToilet.like_count)
+                itemView.tv_like_count.text = String.format(ObserverManager.context!!.resources.getString(R.string.home_text_04), mToilet.like_count)
                 itemView.btn_like.isChecked = mToilet.like_check
 
                 itemView.btn_like.setOnClickListener {
-                    taskToiletLike(if (itemView.btn_like.isChecked) 1 else 0)
+                    if (SharedManager.isLoginCheck()) {
+                        taskToiletLike()
+                    } else {
+                        itemView.btn_like.isChecked = false
+                        ObserverManager.root!!.startActivity(Intent(ObserverManager.context!!, LoginActivity::class.java)
+                                .setFlags(Intent.FLAG_ACTIVITY_NO_USER_ACTION)
+                        )
+                    }
                 }
             }
         }
@@ -226,15 +268,17 @@ class ToiletActivity : BaseActivity() {
 
             fun update(position: Int) {
                 itemView.tv_name.text = mCommentList[position].name
-                itemView.tv_date.text = mCommentList[position].datetime
+                itemView.tv_date.text = mCommentList[position].created
                 itemView.tv_comment.text = mCommentList[position].content
 
                 if (mCommentList[position].member_id == SharedManager.getMemberId()) {
                     itemView.tv_update.visibility = View.VISIBLE
                     itemView.tv_delete.visibility = View.VISIBLE
+                    itemView.tv_report.visibility = View.GONE
                 } else {
                     itemView.tv_update.visibility = View.GONE
                     itemView.tv_delete.visibility = View.GONE
+                    itemView.tv_report.visibility = View.VISIBLE
                 }
 
                 itemView.tv_update.setOnClickListener {
@@ -264,6 +308,17 @@ class ToiletActivity : BaseActivity() {
                     dialog.setBtnLeft(ObserverManager.context!!.resources.getString(R.string.confirm))
                     dialog.setBtnRight(ObserverManager.context!!.resources.getString(R.string.cancel))
                     dialog.show(supportFragmentManager, "BasicDialog")
+                }
+                itemView.tv_report.setOnClickListener {
+                    if (SharedManager.isLoginCheck()) {
+                        val dialog = CommentReportDialog()
+                        dialog.setComment(mCommentList[position])
+                        dialog.show(supportFragmentManager, "CommentReportDialog")
+                    } else {
+                        ObserverManager.root!!.startActivity(Intent(ObserverManager.context!!, LoginActivity::class.java)
+                                .setFlags(Intent.FLAG_ACTIVITY_NO_USER_ACTION)
+                        )
+                    }
                 }
             }
         }

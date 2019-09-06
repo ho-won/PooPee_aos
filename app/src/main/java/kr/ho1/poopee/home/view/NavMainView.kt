@@ -50,12 +50,7 @@ class NavMainView : NavigationView {
     private fun setListener() {
         btn_login.setOnClickListener {
             if (SharedManager.isLoginCheck()) {
-                SharedManager.setLoginCheck(false)
-                SharedManager.setMemberId("")
-                SharedManager.setMemberUserId("")
-                SharedManager.setMemberUserPw("")
-                SharedManager.setMemberName("")
-                SharedManager.setMemberGender("1")
+                ObserverManager.logout()
                 refresh()
             } else {
                 ObserverManager.root!!.startActivity(Intent(ObserverManager.context!!, LoginActivity::class.java)
