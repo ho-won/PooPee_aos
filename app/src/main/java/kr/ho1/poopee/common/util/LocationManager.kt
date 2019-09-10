@@ -1,5 +1,6 @@
 package kr.ho1.poopee.common.util
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.location.Location
 import android.location.LocationListener
@@ -17,6 +18,7 @@ object LocationManager {
     private var locationManager: LocationManager? = null
     private var locationListener: LocationListener? = null
 
+    @SuppressLint("MissingPermission")
     fun setLocationListener() {
         locationManager = ObserverManager.context!!.getSystemService(Context.LOCATION_SERVICE) as LocationManager
 
@@ -38,7 +40,7 @@ object LocationManager {
 
         try {
             locationManager!!.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0L, 0f, locationListener)
-        } catch (e: SecurityException) {
+        } catch (e: Exception) {
             e.printStackTrace()
         }
     }
