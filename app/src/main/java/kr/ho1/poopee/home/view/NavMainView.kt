@@ -4,12 +4,14 @@ import android.content.Context
 import android.content.Intent
 import android.util.AttributeSet
 import android.view.LayoutInflater
+import android.view.View
 import com.google.android.material.navigation.NavigationView
 import kotlinx.android.synthetic.main.nav_main.view.*
 import kr.ho1.poopee.R
 import kr.ho1.poopee.common.ObserverManager
 import kr.ho1.poopee.common.data.SharedManager
 import kr.ho1.poopee.common.util.EmailSender
+import kr.ho1.poopee.common.util.MySpannableString
 import kr.ho1.poopee.login.LoginActivity
 import kr.ho1.poopee.menu.MyInfoActivity
 import kr.ho1.poopee.menu.NoticeActivity
@@ -40,25 +42,27 @@ class NavMainView : NavigationView {
     fun refresh() {
         if (SharedManager.isLoginCheck()) {
             tv_name.text = SharedManager.getMemberName()
-            btn_login.text = ObserverManager.context!!.resources.getString(R.string.logout)
+            btn_logout.visibility = View.VISIBLE
+            iv_login.setImageDrawable(ObserverManager.context!!.resources.getDrawable(R.drawable.img_profile))
         } else {
-            tv_name.text = ""
-            btn_login.text = ObserverManager.context!!.resources.getString(R.string.login)
+            val lineString: Array<String> = arrayOf(ObserverManager.context!!.resources.getString(R.string.nav_text_06))
+            val span = MySpannableString(ObserverManager.context!!.resources.getString(R.string.nav_text_06))
+            span.setLine(lineString)
+            tv_name.text = span.getSpannableString()
+            btn_logout.visibility = View.INVISIBLE
+            iv_login.setImageDrawable(ObserverManager.context!!.resources.getDrawable(R.drawable.img_logingo))
         }
     }
 
     private fun setListener() {
-        btn_login.setOnClickListener {
-            if (SharedManager.isLoginCheck()) {
-                ObserverManager.logout()
-                refresh()
-            } else {
+        layout_login.setOnClickListener {
+            if (!SharedManager.isLoginCheck()) {
                 ObserverManager.root!!.startActivity(Intent(ObserverManager.context!!, LoginActivity::class.java)
                         .setFlags(Intent.FLAG_ACTIVITY_NO_USER_ACTION)
                 )
             }
         }
-        btn_my_info.setOnClickListener {
+        layout_my_info.setOnClickListener {
             if (SharedManager.isLoginCheck()) {
                 ObserverManager.root!!.startActivity(Intent(ObserverManager.context!!, MyInfoActivity::class.java)
                         .setFlags(Intent.FLAG_ACTIVITY_NO_USER_ACTION)
@@ -69,13 +73,20 @@ class NavMainView : NavigationView {
                 )
             }
         }
-        btn_notice.setOnClickListener {
+        layout_notice.setOnClickListener {
             ObserverManager.root!!.startActivity(Intent(ObserverManager.context!!, NoticeActivity::class.java)
                     .setFlags(Intent.FLAG_ACTIVITY_NO_USER_ACTION)
             )
         }
-        btn_request.setOnClickListener {
-            EmailSender.send("seohwjjang@gmail.com", ObserverManager.context!!.getString(R.string.nav_text_04))
+        layout_request.setOnClickListener {
+            EmailSender.send("seohwjjang@gmail.com", ObserverManager.context!!.getString(R.string.nav_text_05))
+        }
+        layout_setting.setOnClickListener {
+
+        }
+        btn_logout.setOnClickListener {
+            ObserverManager.logout()
+            refresh()
         }
     }
 

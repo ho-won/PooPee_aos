@@ -28,7 +28,7 @@
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:scaleType="fitXY"
-            android:src="@drawable/ic_bar_menu"
+            android:src="@drawable/btn_menu"
             tools:ignore="ContentDescription" />
 
     </LinearLayout>

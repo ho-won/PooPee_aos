@@ -14,7 +14,6 @@ import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.activity_home.*
 import kotlinx.android.synthetic.main.item_kakao_keyword.view.*
 import kr.ho1.poopee.R
-import kr.ho1.poopee.common.ObserverManager
 import kr.ho1.poopee.common.base.BaseActivity
 import kr.ho1.poopee.common.data.SharedManager
 import kr.ho1.poopee.common.http.RetrofitClient
@@ -22,7 +21,6 @@ import kr.ho1.poopee.common.http.RetrofitJSONObject
 import kr.ho1.poopee.common.http.RetrofitParams
 import kr.ho1.poopee.common.http.RetrofitService
 import kr.ho1.poopee.common.util.LocationManager
-import kr.ho1.poopee.common.util.MySpannableString
 import kr.ho1.poopee.common.util.MyUtil
 import kr.ho1.poopee.database.ToiletSQLiteManager
 import kr.ho1.poopee.home.model.KaKaoKeyword
@@ -42,10 +40,12 @@ class HomeActivity : BaseActivity(), MapView.POIItemEventListener, MapView.MapVi
     private var mKeywordAdapter: ListAdapter = ListAdapter()
     private var mKeywordList: ArrayList<KaKaoKeyword> = ArrayList()
 
+    private var mRootViewHeight = 0 // 키보드 제외 높이
+    private var mIsKeyboardShow = false // 키보드 노출 상태
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
-        setToolbar()
 
         init()
         setListener()
@@ -87,18 +87,35 @@ class HomeActivity : BaseActivity(), MapView.POIItemEventListener, MapView.MapVi
     }
 
     private fun setListener() {
+        root_view.viewTreeObserver.addOnGlobalLayoutListener {
+            if (mRootViewHeight < root_view.height) {
+                mRootViewHeight = root_view.height
+            }
+            if (mRootViewHeight > root_view.height) {
+                // keyboard show
+                mIsKeyboardShow = true
+                layout_bottom_bg.visibility = View.VISIBLE
+            } else {
+                // keyboard hide
+                mIsKeyboardShow = false
+                if (rv_search.visibility == View.GONE) {
+                    layout_bottom_bg.visibility = View.GONE
+                }
+            }
+        }
         root_view.setOnClickListener {
+            MyUtil.keyboardHide(edt_search)
+        }
+        layout_bottom_bg.setOnClickListener {
             MyUtil.keyboardHide(edt_search)
         }
         btn_search_delete.setOnClickListener {
             edt_search.setText("")
-            MyUtil.keyboardHide(edt_search)
             rv_search.visibility = View.GONE
         }
         edt_search.setOnTouchListener { _, _ ->
             edt_search.requestFocus()
             MyUtil.keyboardShow(edt_search)
-            rv_search.visibility = View.VISIBLE
             true
         }
         edt_search.addTextChangedListener(object : TextWatcher {
@@ -111,13 +128,21 @@ class HomeActivity : BaseActivity(), MapView.POIItemEventListener, MapView.MapVi
             }
 
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                taskKakaoLocalSearch(p0.toString())
+                if (p0.toString().isEmpty()) {
+                    rv_search.visibility = View.GONE
+                } else {
+                    rv_search.visibility = View.VISIBLE
+                    taskKakaoLocalSearch(p0.toString())
+                }
             }
         })
-        btn_current_location.setOnClickListener {
+        layout_my_position.setOnClickListener {
             if (SharedManager.getLatitude() > 0) {
                 mMapView.setMapCenterPoint(MapPoint.mapPointWithGeoCoord(SharedManager.getLatitude(), SharedManager.getLongitude()), true)
             }
+        }
+        btn_menu.setOnClickListener {
+            drawer_layout.openDrawer(GravityCompat.START)
         }
     }
 
@@ -191,9 +216,9 @@ class HomeActivity : BaseActivity(), MapView.POIItemEventListener, MapView.MapVi
         marker.tag = toilet.toilet_id
         marker.mapPoint = MapPoint.mapPointWithGeoCoord(latitude, longitude)
         marker.markerType = MapPOIItem.MarkerType.CustomImage // 마커타입을 커스텀 마커로 지정.
-        marker.customImageResourceId = R.drawable.ic_marker // 마커 이미지.
+        marker.customImageResourceId = R.drawable.ic_position // 마커 이미지.
         marker.selectedMarkerType = MapPOIItem.MarkerType.CustomImage // 마커를 클릭했을때, 기본으로 제공하는 RedPin 마커 모양.
-        marker.customSelectedImageResourceId = R.drawable.ic_marker // 마커 이미지.
+        marker.customSelectedImageResourceId = R.drawable.ic_position // 마커 이미지.
         marker.isShowCalloutBalloonOnTouch = false
         mMapView.addPOIItem(marker)
     }
@@ -267,39 +292,18 @@ class HomeActivity : BaseActivity(), MapView.POIItemEventListener, MapView.MapVi
 
             @SuppressLint("SetTextI18n")
             fun update(position: Int) {
-                val sizeString: Array<String> = arrayOf(" (" + mKeywordList[position].address_name + ")")
-                val colorString: Array<String> = arrayOf(" (" + mKeywordList[position].address_name + ")")
-
-                val span = MySpannableString(mKeywordList[position].place_name + " (" + mKeywordList[position].address_name + ")")
-                span.setSize(sizeString, 12)
-                span.setColor(colorString, "#999999")
-                itemView.tv_title.text = span.getSpannableString()
+                itemView.tv_title.text = mKeywordList[position].place_name
+                itemView.tv_sub.text = mKeywordList[position].address_name
 
                 itemView.layout_title.setOnClickListener {
+                    edt_search.setText( mKeywordList[position].place_name)
+                    edt_search.setSelection(mKeywordList[position].place_name.count())
                     mMapView.setMapCenterPoint(MapPoint.mapPointWithGeoCoord(mKeywordList[position].latitude, mKeywordList[position].longitude), true)
                     MyUtil.keyboardHide(edt_search)
                     rv_search.visibility = View.GONE
                 }
             }
         }
-    }
-
-    override fun setToolbar() {
-        toolbar.setImageLeftOne(ObserverManager.context!!.resources.getDrawable(R.drawable.ic_bar_menu))
-        toolbar.setSelectedListener(
-                onBtnLeftOne = {
-                    drawer_layout.openDrawer(GravityCompat.START)
-                },
-                onBtnLeftTwo = {
-
-                },
-                onBtnRightOne = {
-
-                },
-                onBtnRightTwo = {
-
-                }
-        )
     }
 
     override fun onBackPressed() {
@@ -312,7 +316,8 @@ class HomeActivity : BaseActivity(), MapView.POIItemEventListener, MapView.MapVi
             return
         }
 
-        if (rv_search.visibility == View.VISIBLE) {
+        if (layout_bottom_bg.visibility == View.VISIBLE || rv_search.visibility == View.VISIBLE) {
+            layout_bottom_bg.visibility = View.GONE
             rv_search.visibility = View.GONE
             return
         }

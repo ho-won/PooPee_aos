@@ -14,42 +14,112 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <kr.ho1.poopee.common.view.ToolbarView
-            android:id="@+id/toolbar"
+        <RelativeLayout
+            android:id="@+id/map_view"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/main_content_background" />
+            android:layout_height="match_parent" />
+
+        <ImageButton
+            android:id="@+id/btn_menu"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:layout_margin="12dp"
+            android:background="@null"
+            android:scaleType="fitXY"
+            android:src="@drawable/btn_menu"
+            tools:ignore="ContentDescription" />
+
+        <LinearLayout
+            android:id="@+id/layout_my_position"
+            android:layout_width="wrap_content"
+            android:layout_height="36dp"
+            android:layout_alignParentEnd="true"
+            android:layout_margin="12dp"
+            android:gravity="center"
+            android:background="@drawable/bg_my_position"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:background="@null"
+                android:scaleType="fitXY"
+                android:src="@drawable/ic_myposition"
+                tools:ignore="ContentDescription" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="sans-serif-medium"
+                android:lineSpacingExtra="5sp"
+                android:layout_marginEnd="10dp"
+                android:text="내위치"
+                android:textColor="#ffffff"
+                android:textSize="13sp"
+                android:textStyle="normal" />
+
+        </LinearLayout>
 
         <RelativeLayout
+            android:id="@+id/layout_bottom"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_below="@+id/toolbar"
-            android:layout_above="@+id/layout_ad_mob"
-            android:background="@color/main_background">
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/layout_ad_mob">
 
             <RelativeLayout
-                android:id="@+id/map_view"
+                android:id="@+id/layout_bottom_bg"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                android:layout_height="match_parent"
+                android:alpha="0.86"
+                android:background="#226af0"
+                android:visibility="gone">
+
+                <ImageView
+                    android:layout_width="32dp"
+                    android:layout_height="24dp"
+                    android:layout_above="@+id/tv_search_ex"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginBottom="-4dp"
+                    android:src="@drawable/img_check" />
+
+                <TextView
+                    android:id="@+id/tv_search_ex"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginStart="12dp"
+                    android:layout_marginEnd="12dp"
+                    android:layout_marginBottom="72dp"
+                    android:text="어디에서 화장실을 찾고있나요?"
+                    android:textColor="#ffffff"
+                    android:textSize="24sp" />
+
+            </RelativeLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="12dp"
-                android:background="@drawable/shadow_search_layout"
+                android:layout_alignParentBottom="true"
+                android:layout_marginTop="40dp"
+                android:background="@drawable/bg_search_layout"
                 android:orientation="vertical">
 
                 <LinearLayout
                     android:id="@+id/layout_search"
                     android:layout_width="match_parent"
-                    android:layout_height="48dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="11dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginBottom="9dp"
+                    android:background="@drawable/bg_search_edt"
                     android:gravity="center_vertical"
                     android:orientation="horizontal">
 
                     <ImageView
                         android:layout_width="36dp"
                         android:layout_height="36dp"
-                        android:layout_marginStart="9dp"
+                        android:layout_marginStart="6dp"
                         android:scaleType="fitXY"
                         android:src="@drawable/ic_search"
                         tools:ignore="ContentDescription" />
@@ -57,24 +127,24 @@
                     <EditText
                         android:id="@+id/edt_search"
                         android:layout_width="0dp"
-                        android:layout_height="match_parent"
+                        android:layout_height="40dp"
                         android:layout_weight="1"
                         android:background="@null"
                         android:hint="@string/home_text_01"
                         android:imeOptions="actionSearch"
                         android:inputType="text"
                         android:maxLines="1"
-                        android:paddingStart="4dp"
+                        android:paddingStart="2dp"
                         android:textColor="@color/text_main"
                         android:textColorHint="@color/main_hint"
-                        android:textSize="15sp"
+                        android:textSize="14sp"
                         tools:ignore="Autofill,RtlSymmetry" />
 
                     <ImageButton
                         android:id="@+id/btn_search_delete"
                         android:layout_width="36dp"
                         android:layout_height="36dp"
-                        android:layout_marginEnd="8dp"
+                        android:layout_marginEnd="6dp"
                         android:background="@null"
                         android:src="@drawable/ic_delete"
                         tools:ignore="ContentDescription" />
@@ -83,34 +153,22 @@
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rv_search"
-                    android:visibility="gone"
-                    android:minHeight="300dp"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:scrollbars="none" />
+                    android:minHeight="240dp"
+                    android:scrollbars="none"
+                    android:visibility="gone" />
 
             </LinearLayout>
 
         </RelativeLayout>
-
-        <ImageButton
-            android:id="@+id/btn_current_location"
-            android:layout_width="44dp"
-            android:layout_height="44dp"
-            android:layout_above="@+id/layout_ad_mob"
-            android:layout_alignParentEnd="true"
-            android:layout_margin="16dp"
-            android:scaleType="fitXY"
-            android:background="@null"
-            android:src="@drawable/ic_gps"
-            tools:ignore="ContentDescription" />
 
         <FrameLayout
             android:id="@+id/layout_ad_mob"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_alignParentBottom="true"
-            android:background="@drawable/img_banner_ex"/>
+            android:background="@drawable/img_banner_ex" />
 
     </RelativeLayout>
 

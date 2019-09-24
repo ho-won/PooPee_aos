@@ -3,11 +3,12 @@
 
     <!-- main -->
     <color name="primary">#2470ff</color>
-    <color name="main_line">#DFDFDF</color>
+    <color name="main_line">#EFEFEF</color>
     <color name="main_background">#F2F2F2</color>
     <color name="main_content_background">#FFFFFF</color>
     <color name="popup_transparent">#46000000</color>
     <color name="main_hint">#CCCCCC</color>
+    <color name="transparent">#00000000</color>
 
     <!-- font -->
     <color name="text_main">#292D34</color>

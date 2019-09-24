@@ -16,13 +16,13 @@ interface RetrofitService {
         const val JOIN = "members/join" // [POST] 회원가입
         const val USER_UPDATE = "members/updateUser" // [PUT] 회원정보수정
         const val NOTICE_LIST = "notices/getNoticeList" // [GET] 공지사항목록
-        const val TOILET_INFO = "toilets/getToiletInfo" // 화장실 정보
-        const val TOILET_LIKE = "toiletLikes/setToiletLike" // 좋아요
-        const val COMMENT_LIST = "comments/getCommentList" // 댓글목록
-        const val COMMENT_CREATE = "comments/createComment" // 댓글작성
-        const val COMMENT_DELETE = "comments/deleteComment" // 댓글삭제
-        const val COMMENT_UPDATE = "comments/updateComment" // 댓글수정
-        const val COMMENT_REPORT_CREATE = "commentReports/createReport" // 댓글신고
+        const val TOILET_INFO = "toilets/getToiletInfo" // [GET] 화장실 정보
+        const val TOILET_LIKE = "toiletLikes/setToiletLike" // [POST] 좋아요
+        const val COMMENT_LIST = "comments/getCommentList" // [GET] 댓글목록
+        const val COMMENT_CREATE = "comments/createComment" // [POST] 댓글작성
+        const val COMMENT_DELETE = "comments/deleteComment" // [DELETE] 댓글삭제
+        const val COMMENT_UPDATE = "comments/updateComment" // [PUT] 댓글수정
+        const val COMMENT_REPORT_CREATE = "commentReports/createReport" // [POST] 댓글신고
 
         const val KAKAO_LOCAL = "https://dapi.kakao.com/v2/"
         const val KAKAO_API_KEY = "dff7010c98c6542a9977f13c10d71a91"

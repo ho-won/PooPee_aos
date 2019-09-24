@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.google.android.material.navigation.NavigationView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="100dp"
     android:layout_height="match_parent"
     android:background="@color/main_content_background"
     android:focusable="true"
@@ -12,62 +13,156 @@
         android:orientation="vertical">
 
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/toolbar_main_height"
-            android:background="@drawable/border_bottom"
-            android:gravity="center_vertical"
-            android:orientation="horizontal">
+            android:id="@+id/layout_login"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="48dp"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/iv_login"
+                android:layout_width="44dp"
+                android:layout_height="44dp"
+                android:layout_marginTop="9dp"
+                android:scaleType="fitXY"
+                android:src="@drawable/img_profile"
+                tools:ignore="ContentDescription" />
 
             <TextView
                 android:id="@+id/tv_name"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="16dp"
-                android:layout_marginStart="16dp"
-                android:layout_weight="1"
-                android:maxLines="1"
-                android:text=""
-                android:textColor="@color/primary"
-                android:textSize="16sp" />
-
-            <Button
-                android:id="@+id/btn_login"
-                style="@style/base_btn"
-                android:layout_width="96dp"
-                android:layout_height="24dp"
-                android:layout_marginEnd="16dp"
-                android:background="@drawable/border_square_main"
-                android:textSize="14sp" />
+                android:layout_marginStart="14dp"
+                android:layout_marginTop="4dp"
+                android:layout_marginEnd="14dp"
+                android:layout_marginBottom="8dp"
+                android:gravity="center_horizontal"
+                android:lineSpacingExtra="3sp"
+                android:textColor="#292d34"
+                android:textSize="13sp" />
 
         </LinearLayout>
 
-        <androidx.core.widget.NestedScrollView
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical">
 
             <LinearLayout
+                android:id="@+id/layout_my_info"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="64dp"
+                android:gravity="center"
                 android:orientation="vertical">
 
-                <Button
-                    android:id="@+id/btn_my_info"
-                    style="@style/nav_btn_menu"
+                <ImageView
+                    android:layout_width="28dp"
+                    android:layout_height="28dp"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/ic_menu_member"
+                    tools:ignore="ContentDescription" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal"
+                    android:lineSpacingExtra="6sp"
+                    android:textColor="#292d34"
+                    android:textSize="11sp"
                     android:text="@string/nav_text_01" />
 
-                <Button
-                    android:id="@+id/btn_notice"
-                    style="@style/nav_btn_menu"
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/layout_notice"
+                android:layout_width="match_parent"
+                android:layout_height="64dp"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:layout_width="28dp"
+                    android:layout_height="28dp"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/ic_menu_notice"
+                    tools:ignore="ContentDescription" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal"
+                    android:lineSpacingExtra="6sp"
+                    android:textColor="#292d34"
+                    android:textSize="11sp"
                     android:text="@string/nav_text_02" />
 
-                <Button
-                    android:id="@+id/btn_request"
-                    style="@style/nav_btn_menu"
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/layout_request"
+                android:layout_width="match_parent"
+                android:layout_height="64dp"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:layout_width="28dp"
+                    android:layout_height="28dp"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/ic_menu_inquiry"
+                    tools:ignore="ContentDescription" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal"
+                    android:lineSpacingExtra="6sp"
+                    android:textColor="#292d34"
+                    android:textSize="11sp"
                     android:text="@string/nav_text_03" />
 
             </LinearLayout>
 
-        </androidx.core.widget.NestedScrollView>
+            <LinearLayout
+                android:id="@+id/layout_setting"
+                android:layout_width="match_parent"
+                android:layout_height="64dp"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:layout_width="28dp"
+                    android:layout_height="28dp"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/ic_menu_setting"
+                    tools:ignore="ContentDescription" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal"
+                    android:lineSpacingExtra="6sp"
+                    android:textColor="#292d34"
+                    android:textSize="11sp"
+                    android:text="@string/nav_text_04" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <ImageButton
+            android:id="@+id/btn_logout"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="28dp"
+            android:background="@null"
+            android:scaleType="fitXY"
+            android:src="@drawable/ic_logout"
+            tools:ignore="ContentDescription" />
 
     </LinearLayout>
 

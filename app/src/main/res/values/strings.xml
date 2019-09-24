@@ -61,10 +61,12 @@
     <string name="toast_please_permission">권한이 필요한 작업입니다</string>
 
     <!-- nav -->
-    <string name="nav_text_01">회원정보</string>
+    <string name="nav_text_01">내정보</string>
     <string name="nav_text_02">공지사항</string>
-    <string name="nav_text_03">건의사항</string>
-    <string name="nav_text_04">PooPee 건의사항</string>
+    <string name="nav_text_03">문의하기</string>
+    <string name="nav_text_04">설정</string>
+    <string name="nav_text_05">PooPee 문의사항</string>
+    <string name="nav_text_06">로그인하기</string>
 
     <!-- home -->
     <string name="home_text_01">장소,주소 검색</string>

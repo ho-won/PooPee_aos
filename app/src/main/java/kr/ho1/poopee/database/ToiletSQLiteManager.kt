@@ -76,6 +76,7 @@ class ToiletSQLiteManager : SQLiteOpenHelper(ObserverManager.context, DATABASE_N
                     toilet.address_new = cursor.getString(3)
                     toilet.address_old = cursor.getString(4)
                     toilet.latitude = cursor.getDouble(19)
+                    toilet.longitude = cursor.getDouble(20)
                 } while (cursor.moveToNext())
             }
 

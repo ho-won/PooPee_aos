@@ -1,32 +1,50 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/root_view"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
-
-    <View
-        android:id="@+id/line_01"
-        style="@style/line_main" />
+    android:layout_height="52dp">
 
     <LinearLayout
         android:id="@+id/layout_title"
-        android:layout_below="@+id/line_01"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/line_01"
+        android:layout_marginStart="12dp"
+        android:layout_marginEnd="36dp"
         android:gravity="center_vertical"
-        android:minHeight="40dp"
-        android:orientation="horizontal">
+        android:orientation="vertical">
 
         <TextView
             android:id="@+id/tv_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginBottom="8dp"
-            android:textColor="@color/text_main"
+            android:lineSpacingExtra="6sp"
+            android:textColor="#292d34"
             android:textSize="14sp" />
 
+        <TextView
+            android:id="@+id/tv_sub"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:lineSpacingExtra="6sp"
+            android:textColor="#8991a2"
+            android:textSize="12sp" />
+
     </LinearLayout>
+
+    <View
+        android:id="@+id/line_01"
+        style="@style/line_main"
+        android:layout_alignParentBottom="true" />
+
+    <ImageView
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:layout_alignParentEnd="true"
+        android:layout_centerVertical="true"
+        android:scaleType="fitXY"
+        android:src="@drawable/ic_move"
+        tools:ignore="ContentDescription" />
 
 </RelativeLayout>

@@ -96,7 +96,7 @@ class MainActivity : BaseActivity() {
                             }
                     )
                     dialog.isCancelable = false
-                    dialog.setTextContent(ObserverManager.context!!.resources.getString(R.string.dialog_force_new_version_update))
+                    dialog.setTextContent(ObserverManager.context!!.resources.getString(R.string.dialog_download_request))
                     dialog.setBtnRight(ObserverManager.context!!.resources.getString(R.string.yes))
                     dialog.show(supportFragmentManager, "BasicDialog")
                 }

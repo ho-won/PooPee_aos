@@ -29,6 +29,6 @@
     <dimen name="btn_main_text_sp">16sp</dimen>
 
     <!-- home -->
-    <dimen name="home_menu_width">280dp</dimen>
+    <dimen name="home_menu_width">100dp</dimen>
 
 </resources>
