@@ -2,6 +2,9 @@ package kr.ho1.poopee.login
 
 import android.content.Intent
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
+import android.view.View
 import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_login.*
 import kr.ho1.poopee.R
@@ -22,7 +25,6 @@ class LoginActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
-        setToolbar()
 
         init()
         setListener()
@@ -40,11 +42,41 @@ class LoginActivity : BaseActivity() {
                 taskLogin(edt_username.text.toString(), edt_password.text.toString())
             }
         }
-        btn_join.setOnClickListener {
+        layout_join.setOnClickListener {
             startActivity(Intent(ObserverManager.context!!, JoinActivity::class.java)
                     .setFlags(Intent.FLAG_ACTIVITY_NO_USER_ACTION)
             )
         }
+        edt_username.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(p0: Editable?) {
+
+            }
+
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+
+            }
+
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                checkIdPw()
+            }
+        })
+        edt_password.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(p0: Editable?) {
+
+            }
+
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+
+            }
+
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                checkIdPw()
+            }
+        })
+    }
+
+    private fun checkIdPw() {
+        btn_login.isEnabled = edt_username.text.isNotEmpty() && edt_password.text.isNotEmpty()
     }
 
     /**
@@ -82,25 +114,6 @@ class LoginActivity : BaseActivity() {
                 },
                 onFailed = {
                     hideLoading()
-                }
-        )
-    }
-
-    override fun setToolbar() {
-        toolbar.setTitle(ObserverManager.context!!.resources.getString(R.string.login))
-        toolbar.setImageLeftOne(ObserverManager.context!!.resources.getDrawable(R.drawable.ic_bar_back))
-        toolbar.setSelectedListener(
-                onBtnLeftOne = {
-                    finish()
-                },
-                onBtnLeftTwo = {
-
-                },
-                onBtnRightOne = {
-
-                },
-                onBtnRightTwo = {
-
                 }
         )
     }

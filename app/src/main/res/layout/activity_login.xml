@@ -1,65 +1,130 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:background="@color/main_background"
+    android:background="@color/primary"
     android:fitsSystemWindows="true"
     android:focusable="true"
     android:focusableInTouchMode="true">
 
-    <kr.ho1.poopee.common.view.ToolbarView
-        android:id="@+id/toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/main_content_background" />
-
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/toolbar"
         android:animateLayoutChanges="true"
-        android:scrollbars="none">
+        android:scrollbars="none"
+        tools:ignore="UselessParent">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="16dp">
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="80dp"
+                android:lineSpacingExtra="12sp"
+                android:text="@string/login_01"
+                android:textColor="#ffffff"
+                android:textSize="24sp" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:layout_marginTop="80dp"
+                android:background="#3d80ff" />
 
             <EditText
                 android:id="@+id/edt_username"
-                style="@style/base_edt"
-                tools:ignore="Autofill"
-                android:background="@color/main_content_background"
-                android:hint="@string/login_01"
-                android:padding="10dp" />
+                android:layout_width="match_parent"
+                android:layout_height="52dp"
+                android:background="#1d67f3"
+                android:hint="@string/login_02"
+                android:inputType="text"
+                android:padding="10dp"
+                android:paddingStart="20dp"
+                android:paddingEnd="20dp"
+                android:textColor="#FFFFFF"
+                android:textColorHint="#85b3ff"
+                android:textCursorDrawable="@drawable/cursor"
+                android:textSize="14sp"
+                tools:ignore="Autofill" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:background="#3d80ff" />
 
             <EditText
                 android:id="@+id/edt_password"
-                style="@style/base_edt"
-                tools:ignore="Autofill"
-                android:layout_marginTop="10dp"
-                android:background="@color/main_content_background"
-                android:hint="@string/login_02"
+                android:layout_width="match_parent"
+                android:layout_height="52dp"
+                android:background="#1d67f3"
+                android:hint="@string/login_03"
                 android:inputType="textPassword"
-                android:padding="10dp" />
+                android:paddingStart="20dp"
+                android:paddingEnd="20dp"
+                android:textColor="#FFFFFF"
+                android:textColorHint="#85b3ff"
+                android:textCursorDrawable="@drawable/cursor"
+                android:textSize="14sp"
+                tools:ignore="Autofill" />
 
-            <Button
-                android:id="@+id/btn_login"
-                style="@style/base_btn"
-                android:layout_marginTop="10dp"
-                android:background="@color/primary"
-                android:text="@string/login"
-                android:textColor="@color/text_white" />
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:background="#3d80ff" />
 
-            <Button
-                android:id="@+id/btn_join"
-                style="@style/base_btn"
-                android:layout_marginTop="10dp"
-                android:background="@color/primary"
-                android:text="@string/join_member"
-                android:textColor="@color/text_white" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_marginTop="12dp"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:id="@+id/layout_join"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="20dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    tools:ignore="UseCompoundDrawables">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:lineSpacingExtra="6sp"
+                        android:text="@string/login_04"
+                        android:textColor="#ffffff"
+                        android:textSize="12sp" />
+
+                    <ImageView
+                        android:layout_width="14dp"
+                        android:layout_height="14dp"
+                        android:src="@drawable/ic_join"
+                        tools:ignore="ContentDescription" />
+
+                </LinearLayout>
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_weight="1" />
+
+                <Button
+                    android:id="@+id/btn_login"
+                    android:layout_width="128dp"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="end"
+                    android:background="@drawable/bg_login"
+                    android:enabled="false"
+                    android:text="@string/login"
+                    android:textColor="@color/btn_login"
+                    android:textSize="14sp" />
+
+            </LinearLayout>
 
         </LinearLayout>
 

@@ -30,7 +30,7 @@
                 android:id="@+id/edt_username"
                 style="@style/base_edt"
                 android:background="@color/main_content_background"
-                android:hint="@string/login_01"
+                android:hint="@string/login_02"
                 android:padding="10dp"
                 tools:ignore="Autofill" />
 
@@ -39,7 +39,7 @@
                 style="@style/base_edt"
                 android:layout_marginTop="10dp"
                 android:background="@color/main_content_background"
-                android:hint="@string/login_02"
+                android:hint="@string/login_05"
                 android:inputType="textPassword"
                 android:padding="10dp"
                 tools:ignore="Autofill" />
@@ -49,7 +49,7 @@
                 style="@style/base_edt"
                 android:layout_marginTop="10dp"
                 android:background="@color/main_content_background"
-                android:hint="@string/login_03"
+                android:hint="@string/login_06"
                 android:inputType="textPassword"
                 android:padding="10dp"
                 tools:ignore="Autofill" />
@@ -59,7 +59,7 @@
                 style="@style/base_edt"
                 android:layout_marginTop="10dp"
                 android:background="@color/main_content_background"
-                android:hint="@string/login_04"
+                android:hint="@string/login_09"
                 android:padding="10dp"
                 tools:ignore="Autofill" />
 
@@ -90,8 +90,8 @@
                 style="@style/base_btn"
                 android:layout_marginTop="10dp"
                 android:background="@color/primary"
-                android:text="@string/join_member"
-                android:textColor="@color/text_white" />
+                android:text="@string/login_04"
+                android:textColor="#FFFFFF" />
 
         </LinearLayout>
 

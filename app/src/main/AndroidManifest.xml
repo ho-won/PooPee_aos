@@ -61,6 +61,7 @@
         <activity
             android:name=".login.LoginActivity"
             android:screenOrientation="portrait"
+            android:theme="@style/AppThemePrimary"
             android:windowSoftInputMode="adjustResize|stateHidden" />
         <activity
             android:name=".login.JoinActivity"
