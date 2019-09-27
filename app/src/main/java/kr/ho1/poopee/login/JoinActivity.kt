@@ -27,10 +27,10 @@ class JoinActivity : BaseActivity() {
     }
 
     private fun init() {
-        edt_username.filters = StringFilter.getAlphanumericHangul(10)
+        edt_username.filters = StringFilter.getAlphanumeric(20)
         edt_password.filters = StringFilter.getAlphanumeric(20)
         edt_password_confirm.filters = StringFilter.getAlphanumeric(20)
-        edt_name.filters = StringFilter.getAlphanumericHangul(10)
+        edt_name.filters = StringFilter.getAlphanumericHangul(20)
     }
 
     private fun setListener() {

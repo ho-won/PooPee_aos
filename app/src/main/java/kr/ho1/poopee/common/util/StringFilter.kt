@@ -20,13 +20,13 @@ object StringFilter {
 
     fun getAlphanumeric(): Array<InputFilter> {
         return arrayOf(
-                allowAlphanumeric // 한글, 영문, 숫자만 입력 가능
+                allowAlphanumeric // 영문, 숫자만 입력 가능
         )
     }
 
     fun getAlphanumeric(maxLength: Int): Array<InputFilter> {
         return arrayOf(InputFilter.LengthFilter(maxLength), // maxLength
-                allowAlphanumeric // 한글, 영문, 숫자만 입력 가능
+                allowAlphanumeric // 영문, 숫자만 입력 가능
         )
     }
 

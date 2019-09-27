@@ -13,4 +13,10 @@
         <item name="android:windowLightStatusBar">false</item>
     </style>
 
+    <style name="AppThemeLogin" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorPrimary">@color/login_background</item>
+        <item name="colorPrimaryDark">@color/login_background</item>
+        <item name="android:windowLightStatusBar">false</item>
+    </style>
+
 </resources>

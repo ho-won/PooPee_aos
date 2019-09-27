@@ -29,7 +29,7 @@ class MyInfoActivity : BaseActivity() {
     private fun init() {
         edt_password.filters = StringFilter.getAlphanumeric(20)
         edt_password_confirm.filters = StringFilter.getAlphanumeric(20)
-        edt_name.filters = StringFilter.getAlphanumericHangul(10)
+        edt_name.filters = StringFilter.getAlphanumericHangul(20)
 
         edt_name.setText(SharedManager.getMemberName())
         if (SharedManager.getMemberGender() == "1") {

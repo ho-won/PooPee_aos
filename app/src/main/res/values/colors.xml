@@ -29,4 +29,9 @@
     <!-- toolbar -->
     <color name="toolbar_title">#292D34</color>
 
+
+    <!-- login -->
+    <color name="login_background">#2F77FF</color>
+    <color name="login_edt_background">#286EF2</color>
+
 </resources>

@@ -42,14 +42,12 @@ class NavMainView : NavigationView {
     fun refresh() {
         if (SharedManager.isLoginCheck()) {
             tv_name.text = SharedManager.getMemberName()
-            btn_logout.visibility = View.VISIBLE
             iv_login.setImageDrawable(ObserverManager.context!!.resources.getDrawable(R.drawable.img_profile))
         } else {
             val lineString: Array<String> = arrayOf(ObserverManager.context!!.resources.getString(R.string.nav_text_06))
             val span = MySpannableString(ObserverManager.context!!.resources.getString(R.string.nav_text_06))
             span.setLine(lineString)
             tv_name.text = span.getSpannableString()
-            btn_logout.visibility = View.INVISIBLE
             iv_login.setImageDrawable(ObserverManager.context!!.resources.getDrawable(R.drawable.img_logingo))
         }
     }
@@ -85,8 +83,10 @@ class NavMainView : NavigationView {
 
         }
         btn_logout.setOnClickListener {
-            ObserverManager.logout()
-            refresh()
+            if (SharedManager.isLoginCheck()) {
+                ObserverManager.logout()
+                refresh()
+            }
         }
     }
 

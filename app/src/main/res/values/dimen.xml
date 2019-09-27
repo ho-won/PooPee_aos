@@ -7,6 +7,7 @@
     <dimen name="main_tab_height">45dp</dimen>
     <dimen name="popup_title_height">53dp</dimen>
     <dimen name="search_view_height">40dp</dimen>
+    <dimen name="main_letter_spacing">-0.05</dimen>
 
     <!-- toolbar -->
     <dimen name="toolbar_main_height">52dp</dimen>

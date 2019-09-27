@@ -6,7 +6,10 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
 import android.widget.Toast
+import kotlinx.android.synthetic.main.activity_join.*
 import kotlinx.android.synthetic.main.activity_login.*
+import kotlinx.android.synthetic.main.activity_login.edt_password
+import kotlinx.android.synthetic.main.activity_login.edt_username
 import kr.ho1.poopee.R
 import kr.ho1.poopee.common.ObserverManager
 import kr.ho1.poopee.common.base.BaseActivity
@@ -16,6 +19,7 @@ import kr.ho1.poopee.common.http.RetrofitJSONObject
 import kr.ho1.poopee.common.http.RetrofitParams
 import kr.ho1.poopee.common.http.RetrofitService
 import kr.ho1.poopee.common.util.MyUtil
+import kr.ho1.poopee.common.util.StringFilter
 import org.json.JSONException
 import retrofit2.http.POST
 
@@ -31,7 +35,8 @@ class LoginActivity : BaseActivity() {
     }
 
     private fun init() {
-
+        edt_username.filters = StringFilter.getAlphanumeric(20)
+        edt_password.filters = StringFilter.getAlphanumeric(20)
     }
 
     private fun setListener() {
