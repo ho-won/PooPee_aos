@@ -8,9 +8,20 @@
     android:focusable="true"
     android:focusableInTouchMode="true">
 
+    <ImageButton
+        android:id="@+id/btn_close"
+        android:layout_width="44dp"
+        android:layout_height="44dp"
+        android:layout_alignParentEnd="true"
+        android:background="@null"
+        android:scaleType="fitXY"
+        android:src="@drawable/ic_close"
+        tools:ignore="ContentDescription" />
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_below="@id/btn_close"
         android:animateLayoutChanges="true"
         android:scrollbars="none"
         tools:ignore="UselessParent">
@@ -24,7 +35,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
-                android:layout_marginTop="80dp"
+                android:layout_marginTop="36dp"
                 android:letterSpacing="@dimen/main_letter_spacing"
                 android:lineSpacingExtra="12sp"
                 android:text="@string/login_01"

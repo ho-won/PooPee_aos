@@ -43,12 +43,14 @@ class NavMainView : NavigationView {
         if (SharedManager.isLoginCheck()) {
             tv_name.text = SharedManager.getMemberName()
             iv_login.setImageDrawable(ObserverManager.context!!.resources.getDrawable(R.drawable.img_profile))
+            btn_logout.setImageDrawable(ObserverManager.context!!.resources.getDrawable(R.drawable.ic_logout))
         } else {
             val lineString: Array<String> = arrayOf(ObserverManager.context!!.resources.getString(R.string.nav_text_06))
             val span = MySpannableString(ObserverManager.context!!.resources.getString(R.string.nav_text_06))
             span.setLine(lineString)
             tv_name.text = span.getSpannableString()
             iv_login.setImageDrawable(ObserverManager.context!!.resources.getDrawable(R.drawable.img_logingo))
+            btn_logout.setImageDrawable(ObserverManager.context!!.resources.getDrawable(R.drawable.img_menu_bottom))
         }
     }
 

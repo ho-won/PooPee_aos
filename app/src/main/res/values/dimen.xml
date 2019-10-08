@@ -15,7 +15,7 @@
     <dimen name="toolbar_title_sp">18sp</dimen>
 
     <!-- dialog -->
-    <dimen name="dialog_main_width">310dp</dimen>
+    <dimen name="dialog_main_width">300dp</dimen>
     <dimen name="dialog_max_height">312dp</dimen>
     <dimen name="dialog_content_height">48dp</dimen>
     <dimen name="dialog_title_sp">16sp</dimen>

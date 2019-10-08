@@ -16,6 +16,8 @@
         android:orientation="vertical"
         android:paddingStart="28dp"
         android:paddingEnd="16dp"
+        android:clickable="true"
+        android:focusable="true"
         tools:ignore="UselessParent">
 
         <TextView

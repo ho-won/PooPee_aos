@@ -8,6 +8,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
 import androidx.core.view.GravityCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -42,6 +43,7 @@ class HomeActivity : BaseActivity(), MapView.POIItemEventListener, MapView.MapVi
 
     private var mRootViewHeight = 0 // 키보드 제외 높이
     private var mIsKeyboardShow = false // 키보드 노출 상태
+    private val mRvHeight = MyUtil.dpToPx(240);
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -100,6 +102,11 @@ class HomeActivity : BaseActivity(), MapView.POIItemEventListener, MapView.MapVi
                 mIsKeyboardShow = false
                 if (rv_search.visibility == View.GONE) {
                     layout_bottom_bg.visibility = View.GONE
+                } else {
+                    if (rv_search.height > mRvHeight) {
+                        val layoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, mRvHeight)
+                        rv_search.layoutParams = layoutParams
+                    }
                 }
             }
         }
@@ -112,11 +119,6 @@ class HomeActivity : BaseActivity(), MapView.POIItemEventListener, MapView.MapVi
         btn_search_delete.setOnClickListener {
             edt_search.setText("")
             rv_search.visibility = View.GONE
-        }
-        edt_search.setOnTouchListener { _, _ ->
-            edt_search.requestFocus()
-            MyUtil.keyboardShow(edt_search)
-            true
         }
         edt_search.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(p0: Editable?) {
@@ -198,9 +200,7 @@ class HomeActivity : BaseActivity(), MapView.POIItemEventListener, MapView.MapVi
      * 카카오지도 아이템 클릭
      */
     override fun onPOIItemSelected(p0: MapView?, p1: MapPOIItem?) {
-        val toilet = Toilet()
-        toilet.toilet_id = p1!!.tag
-        toilet.name = p1.itemName
+        val toilet = ToiletSQLiteManager.getInstance().getToilet(p1!!.tag)
 
         val dialog = ToiletDialog()
         dialog.setToilet(toilet)
@@ -295,8 +295,8 @@ class HomeActivity : BaseActivity(), MapView.POIItemEventListener, MapView.MapVi
                 itemView.tv_title.text = mKeywordList[position].place_name
                 itemView.tv_sub.text = mKeywordList[position].address_name
 
-                itemView.layout_title.setOnClickListener {
-                    edt_search.setText( mKeywordList[position].place_name)
+                itemView.setOnClickListener {
+                    edt_search.setText(mKeywordList[position].place_name)
                     edt_search.setSelection(mKeywordList[position].place_name.count())
                     mMapView.setMapCenterPoint(MapPoint.mapPointWithGeoCoord(mKeywordList[position].latitude, mKeywordList[position].longitude), true)
                     MyUtil.keyboardHide(edt_search)

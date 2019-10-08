@@ -60,10 +60,10 @@ class ToiletSQLiteManager : SQLiteOpenHelper(ObserverManager.context, DATABASE_N
     /**
      * Toilet 가져오기
      */
-    fun getToilet(id: String): Toilet? {
+    fun getToilet(id: Int): Toilet {
         try {
             val db = readableDatabase
-            val selectQuery = "SELECT * FROM toilets WHERE id=$id"
+            val selectQuery = "SELECT * FROM toilets WHERE id='$id'"
             val cursor = db.rawQuery(selectQuery, null)
 
             val count = cursor.count
@@ -75,6 +75,19 @@ class ToiletSQLiteManager : SQLiteOpenHelper(ObserverManager.context, DATABASE_N
                     toilet.name = cursor.getString(2)
                     toilet.address_new = cursor.getString(3)
                     toilet.address_old = cursor.getString(4)
+                    toilet.unisex = cursor.getString(5)
+                    toilet.m_poo = cursor.getString(6)
+                    toilet.m_pee = cursor.getString(7)
+                    toilet.m_d_poo = cursor.getString(8)
+                    toilet.m_d_pee = cursor.getString(9)
+                    toilet.m_c_poo = cursor.getString(10)
+                    toilet.m_c_pee = cursor.getString(11)
+                    toilet.w_poo = cursor.getString(12)
+                    toilet.w_d_poo = cursor.getString(13)
+                    toilet.w_c_poo = cursor.getString(14)
+                    toilet.manager_name = cursor.getString(15)
+                    toilet.manager_tel = cursor.getString(16)
+                    toilet.open_time = cursor.getString(17)
                     toilet.latitude = cursor.getDouble(19)
                     toilet.longitude = cursor.getDouble(20)
                 } while (cursor.moveToNext())
@@ -84,11 +97,11 @@ class ToiletSQLiteManager : SQLiteOpenHelper(ObserverManager.context, DATABASE_N
             return if (count > 0) {
                 toilet
             } else {
-                null
+                Toilet()
             }
         } catch (e: Exception) {
             e.printStackTrace()
-            return null
+            return Toilet()
         }
     }
 
@@ -115,6 +128,19 @@ class ToiletSQLiteManager : SQLiteOpenHelper(ObserverManager.context, DATABASE_N
                     toilet.name = cursor.getString(2)
                     toilet.address_new = cursor.getString(3)
                     toilet.address_old = cursor.getString(4)
+                    toilet.unisex = cursor.getString(5)
+                    toilet.m_poo = cursor.getString(6)
+                    toilet.m_pee = cursor.getString(7)
+                    toilet.m_d_poo = cursor.getString(8)
+                    toilet.m_d_pee = cursor.getString(9)
+                    toilet.m_c_poo = cursor.getString(10)
+                    toilet.m_c_pee = cursor.getString(11)
+                    toilet.w_poo = cursor.getString(12)
+                    toilet.w_d_poo = cursor.getString(13)
+                    toilet.w_c_poo = cursor.getString(14)
+                    toilet.manager_name = cursor.getString(15)
+                    toilet.manager_tel = cursor.getString(16)
+                    toilet.open_time = cursor.getString(17)
                     toilet.latitude = cursor.getDouble(19)
                     toilet.longitude = cursor.getDouble(20)
                     toiletList.add(toilet)

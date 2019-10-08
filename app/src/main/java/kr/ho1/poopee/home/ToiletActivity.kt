@@ -21,6 +21,7 @@ import kr.ho1.poopee.common.http.RetrofitJSONObject
 import kr.ho1.poopee.common.http.RetrofitParams
 import kr.ho1.poopee.common.http.RetrofitService
 import kr.ho1.poopee.common.util.MyUtil
+import kr.ho1.poopee.database.ToiletSQLiteManager
 import kr.ho1.poopee.home.model.Comment
 import kr.ho1.poopee.home.model.Toilet
 import kr.ho1.poopee.home.view.CommentReportDialog
@@ -246,9 +247,25 @@ class ToiletActivity : BaseActivity() {
 
             fun update() {
                 itemView.tv_title.text = mToilet.name
-                itemView.tv_content.text = mToilet.name
-                itemView.tv_comment_count.text = String.format(ObserverManager.context!!.resources.getString(R.string.home_text_03), mToilet.comment_count)
-                itemView.tv_like_count.text = String.format(ObserverManager.context!!.resources.getString(R.string.home_text_04), mToilet.like_count)
+
+                val content = String.format(ObserverManager.context!!.resources.getString(R.string.toilet_db_unisex), mToilet.unisex) +
+                        "\n" + String.format(ObserverManager.context!!.resources.getString(R.string.toilet_db_m_poo), mToilet.m_poo) +
+                        "\n" + String.format(ObserverManager.context!!.resources.getString(R.string.toilet_db_m_pee), mToilet.m_pee) +
+                        "\n" + String.format(ObserverManager.context!!.resources.getString(R.string.toilet_db_m_d_poo), mToilet.m_d_poo) +
+                        "\n" + String.format(ObserverManager.context!!.resources.getString(R.string.toilet_db_m_d_pee), mToilet.m_d_pee) +
+                        "\n" + String.format(ObserverManager.context!!.resources.getString(R.string.toilet_db_m_c_poo), mToilet.m_c_poo) +
+                        "\n" + String.format(ObserverManager.context!!.resources.getString(R.string.toilet_db_m_c_pee), mToilet.m_c_pee) +
+                        "\n" + String.format(ObserverManager.context!!.resources.getString(R.string.toilet_db_w_poo), mToilet.w_poo) +
+                        "\n" + String.format(ObserverManager.context!!.resources.getString(R.string.toilet_db_w_d_poo), mToilet.w_d_poo) +
+                        "\n" + String.format(ObserverManager.context!!.resources.getString(R.string.toilet_db_w_c_poo), mToilet.w_c_poo) +
+                        "\n" + String.format(ObserverManager.context!!.resources.getString(R.string.toilet_db_manager_name), mToilet.manager_name) +
+                        "\n" + String.format(ObserverManager.context!!.resources.getString(R.string.toilet_db_manager_tel), mToilet.manager_tel) +
+                        "\n" + String.format(ObserverManager.context!!.resources.getString(R.string.toilet_db_open_time), mToilet.open_time)
+
+                itemView.tv_content.text = content
+
+                itemView.tv_comment_count.text = mToilet.comment_count
+                itemView.tv_like_count.text =  mToilet.like_count
                 itemView.btn_like.isChecked = mToilet.like_check
 
                 itemView.btn_like.setOnClickListener {
