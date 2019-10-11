@@ -10,9 +10,10 @@
     <dimen name="main_letter_spacing">-0.05</dimen>
 
     <!-- toolbar -->
-    <dimen name="toolbar_main_height">52dp</dimen>
+    <dimen name="toolbar_main_height">44dp</dimen>
+    <dimen name="toolbar_btn_icon_size">40dp</dimen>
     <dimen name="toolbar_btn_icon_padding">0dp</dimen>
-    <dimen name="toolbar_title_sp">18sp</dimen>
+    <dimen name="toolbar_title_sp">14sp</dimen>
 
     <!-- dialog -->
     <dimen name="dialog_main_width">300dp</dimen>

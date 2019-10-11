@@ -53,7 +53,7 @@ class CopyActivity : BaseActivity() {
     }
 
     override fun setToolbar() {
-        toolbar.setImageLeftOne(ObserverManager.context!!.resources.getDrawable(R.drawable.ic_bar_back))
+        toolbar.setImageLeftOne(ObserverManager.context!!.resources.getDrawable(R.drawable.ic_navigationbar_back))
         toolbar.setSelectedListener(
                 onBtnLeftOne = {
                     finish()

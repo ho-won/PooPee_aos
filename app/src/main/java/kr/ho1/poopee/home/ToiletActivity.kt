@@ -1,8 +1,10 @@
 package kr.ho1.poopee.home
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
@@ -10,7 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.activity_toilet.*
 import kotlinx.android.synthetic.main.item_toilet_comment.view.*
-import kotlinx.android.synthetic.main.item_toilet_content.view.*
+import kotlinx.android.synthetic.main.view_toolbar.view.*
 import kr.ho1.poopee.R
 import kr.ho1.poopee.common.ObserverManager
 import kr.ho1.poopee.common.base.BaseActivity
@@ -20,17 +22,20 @@ import kr.ho1.poopee.common.http.RetrofitClient
 import kr.ho1.poopee.common.http.RetrofitJSONObject
 import kr.ho1.poopee.common.http.RetrofitParams
 import kr.ho1.poopee.common.http.RetrofitService
+import kr.ho1.poopee.common.util.LogManager
 import kr.ho1.poopee.common.util.MyUtil
-import kr.ho1.poopee.database.ToiletSQLiteManager
 import kr.ho1.poopee.home.model.Comment
 import kr.ho1.poopee.home.model.Toilet
 import kr.ho1.poopee.home.view.CommentReportDialog
 import kr.ho1.poopee.home.view.CommentUpdateDialog
 import kr.ho1.poopee.login.LoginActivity
+import net.daum.mf.map.api.MapPoint
+import net.daum.mf.map.api.MapView
 import org.json.JSONException
 
 @Suppress("DEPRECATION")
 class ToiletActivity : BaseActivity() {
+
     companion object {
         const val TOILET = "toilet"
     }
@@ -49,17 +54,93 @@ class ToiletActivity : BaseActivity() {
         setListener()
     }
 
+    override fun onResume() {
+        super.onResume()
+        refresh()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        map_view.removeAllViews()
+    }
+
     private fun init() {
         mToilet = intent.getSerializableExtra(TOILET) as Toilet
 
-        recycler_view.layoutManager = LinearLayoutManager(this)
+        toolbar.setTitle(mToilet.name)
+
+        tv_m_poo.text = mToilet.m_poo
+        tv_m_pee.text = mToilet.m_pee
+        tv_m_d_poo.text = mToilet.m_d_poo
+        tv_m_d_pee.text = mToilet.m_d_pee
+        tv_m_c_poo.text = mToilet.m_c_poo
+        tv_m_c_pee.text = mToilet.m_c_pee
+
+        tv_w_poo.text = mToilet.w_poo
+        tv_w_d_poo.text = mToilet.w_d_poo
+        tv_w_c_poo.text = mToilet.w_c_poo
+
+//        val content = String.format(ObserverManager.context!!.resources.getString(R.string.toilet_db_unisex), mToilet.unisex) +
+//                "\n" + String.format(ObserverManager.context!!.resources.getString(R.string.toilet_db_m_poo), mToilet.) +
+//                "\n" + String.format(ObserverManager.context!!.resources.getString(R.string.toilet_db_m_pee), mToilet.) +
+//                "\n" + String.format(ObserverManager.context!!.resources.getString(R.string.toilet_db_m_d_poo), mToilet.) +
+//                "\n" + String.format(ObserverManager.context!!.resources.getString(R.string.toilet_db_m_d_pee), mToilet.) +
+//                "\n" + String.format(ObserverManager.context!!.resources.getString(R.string.toilet_db_m_c_poo), mToilet.) +
+//                "\n" + String.format(ObserverManager.context!!.resources.getString(R.string.toilet_db_m_c_pee), mToilet.) +
+//                "\n" + String.format(ObserverManager.context!!.resources.getString(R.string.toilet_db_w_poo), mToilet.) +
+//                "\n" + String.format(ObserverManager.context!!.resources.getString(R.string.toilet_db_w_d_poo), mToilet.) +
+//                "\n" + String.format(ObserverManager.context!!.resources.getString(R.string.toilet_db_w_c_poo), mToilet.) +
+//                "\n" + String.format(ObserverManager.context!!.resources.getString(R.string.toilet_db_manager_name), mToilet.manager_name) +
+//                "\n" + String.format(ObserverManager.context!!.resources.getString(R.string.toilet_db_manager_tel), mToilet.manager_tel) +
+//                "\n" + String.format(ObserverManager.context!!.resources.getString(R.string.toilet_db_open_time), mToilet.open_time)
+
+        tv_comment_count.text = mToilet.comment_count
+        btn_like.isChecked = mToilet.like_check
+
+        val layoutManager = LinearLayoutManager(this)
+        layoutManager.isAutoMeasureEnabled = true
+        recycler_view.layoutManager = layoutManager
+        recycler_view.isNestedScrollingEnabled = false
         mRecyclerAdapter = ListAdapter()
         recycler_view.adapter = mRecyclerAdapter
+    }
+
+    @SuppressLint("ClickableViewAccessibility")
+    private fun refresh() {
+        ObserverManager.mapView = MapView(this)
+        map_view.addView(ObserverManager.mapView)
+        LogManager.e("HO_TEST", mToilet.latitude.toString())
+        ObserverManager.mapView.setMapCenterPoint(MapPoint.mapPointWithGeoCoord(mToilet.latitude, mToilet.longitude), true)
+        ObserverManager.addPOIItem(mToilet)
+        ObserverManager.mapView.setZoomLevelFloat(2.2f, true)
+        ObserverManager.mapView.setOnTouchListener { _, event ->
+            when (event.action) {
+                MotionEvent.ACTION_DOWN -> {
+                    scroll_view.requestDisallowInterceptTouchEvent(true)
+                }
+                MotionEvent.ACTION_UP -> {
+                    scroll_view.requestDisallowInterceptTouchEvent(false)
+                }
+                else -> {
+                }
+            }
+            super.onTouchEvent(event)
+        }
 
         taskCommentList()
     }
 
     private fun setListener() {
+        btn_like.setOnClickListener {
+            if (SharedManager.isLoginCheck()) {
+                taskToiletLike()
+            } else {
+                btn_like.isChecked = false
+                ObserverManager.root!!.startActivity(Intent(ObserverManager.context!!, LoginActivity::class.java)
+                        .setFlags(Intent.FLAG_ACTIVITY_NO_USER_ACTION)
+                )
+            }
+        }
         btn_send.setOnClickListener {
             if (edt_content.text.isNotEmpty()) {
                 if (SharedManager.isLoginCheck()) {
@@ -88,16 +169,12 @@ class ToiletActivity : BaseActivity() {
                 onSuccess = {
                     try {
                         if (it.getInt("rst_code") == 0) {
-                            mToilet.comment_count = it.getString("comment_count")
-                            mToilet.like_count = it.getString("like_count")
-                            mToilet.like_check = it.getString("like_check") == "1"
+                            toolbar.tv_like.text = it.getString("like_count")
+                            btn_like.isChecked = it.getString("like_check") == "1"
+                            tv_comment_count.text = it.getString("comment_count")
 
                             val jsonArray = it.getJSONArray("comments")
                             mCommentList = ArrayList()
-
-                            val content = Comment()
-                            content.view_type = Toilet.VIEW_CONTENT
-                            mCommentList.add(content)
 
                             for (i in 0 until jsonArray.length()) {
                                 val jsonObject = jsonArray.getJSONObject(i)
@@ -139,9 +216,8 @@ class ToiletActivity : BaseActivity() {
                 onSuccess = {
                     try {
                         if (it.getInt("rst_code") == 0) {
-                            mToilet.like_count = it.getString("like_count")
-                            mToilet.like_check = it.getString("like_check") == "1"
-                            mRecyclerAdapter.notifyItemChanged(0)
+                            toolbar.tv_like.text = it.getString("like_count")
+                            btn_like.isChecked = it.getString("like_check") == "1"
                         }
                     } catch (e: JSONException) {
                         e.printStackTrace()
@@ -220,19 +296,11 @@ class ToiletActivity : BaseActivity() {
     inner class ListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-            return if (viewType == Toilet.VIEW_CONTENT) {
-                ContentViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_toilet_content, parent, false))
-            } else {
-                CommentViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_toilet_comment, parent, false))
-            }
+            return CommentViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_toilet_comment, parent, false))
         }
 
         override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-            if (mCommentList[position].view_type == Toilet.VIEW_CONTENT) {
-                (holder as ContentViewHolder).update()
-            } else {
-                (holder as CommentViewHolder).update(position)
-            }
+            (holder as CommentViewHolder).update(position)
         }
 
         override fun getItemCount(): Int {
@@ -241,44 +309,6 @@ class ToiletActivity : BaseActivity() {
 
         override fun getItemViewType(position: Int): Int {
             return mCommentList[position].view_type
-        }
-
-        inner class ContentViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-
-            fun update() {
-                itemView.tv_title.text = mToilet.name
-
-                val content = String.format(ObserverManager.context!!.resources.getString(R.string.toilet_db_unisex), mToilet.unisex) +
-                        "\n" + String.format(ObserverManager.context!!.resources.getString(R.string.toilet_db_m_poo), mToilet.m_poo) +
-                        "\n" + String.format(ObserverManager.context!!.resources.getString(R.string.toilet_db_m_pee), mToilet.m_pee) +
-                        "\n" + String.format(ObserverManager.context!!.resources.getString(R.string.toilet_db_m_d_poo), mToilet.m_d_poo) +
-                        "\n" + String.format(ObserverManager.context!!.resources.getString(R.string.toilet_db_m_d_pee), mToilet.m_d_pee) +
-                        "\n" + String.format(ObserverManager.context!!.resources.getString(R.string.toilet_db_m_c_poo), mToilet.m_c_poo) +
-                        "\n" + String.format(ObserverManager.context!!.resources.getString(R.string.toilet_db_m_c_pee), mToilet.m_c_pee) +
-                        "\n" + String.format(ObserverManager.context!!.resources.getString(R.string.toilet_db_w_poo), mToilet.w_poo) +
-                        "\n" + String.format(ObserverManager.context!!.resources.getString(R.string.toilet_db_w_d_poo), mToilet.w_d_poo) +
-                        "\n" + String.format(ObserverManager.context!!.resources.getString(R.string.toilet_db_w_c_poo), mToilet.w_c_poo) +
-                        "\n" + String.format(ObserverManager.context!!.resources.getString(R.string.toilet_db_manager_name), mToilet.manager_name) +
-                        "\n" + String.format(ObserverManager.context!!.resources.getString(R.string.toilet_db_manager_tel), mToilet.manager_tel) +
-                        "\n" + String.format(ObserverManager.context!!.resources.getString(R.string.toilet_db_open_time), mToilet.open_time)
-
-                itemView.tv_content.text = content
-
-                itemView.tv_comment_count.text = mToilet.comment_count
-                itemView.tv_like_count.text =  mToilet.like_count
-                itemView.btn_like.isChecked = mToilet.like_check
-
-                itemView.btn_like.setOnClickListener {
-                    if (SharedManager.isLoginCheck()) {
-                        taskToiletLike()
-                    } else {
-                        itemView.btn_like.isChecked = false
-                        ObserverManager.root!!.startActivity(Intent(ObserverManager.context!!, LoginActivity::class.java)
-                                .setFlags(Intent.FLAG_ACTIVITY_NO_USER_ACTION)
-                        )
-                    }
-                }
-            }
         }
 
         inner class CommentViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -342,8 +372,8 @@ class ToiletActivity : BaseActivity() {
     }
 
     override fun setToolbar() {
-        toolbar.setTitle(ObserverManager.context!!.resources.getString(R.string.home_text_02))
-        toolbar.setImageLeftOne(ObserverManager.context!!.resources.getDrawable(R.drawable.ic_bar_back))
+        toolbar.setImageLeftOne(ObserverManager.context!!.resources.getDrawable(R.drawable.ic_navigationbar_back))
+        toolbar.layout_like.visibility = View.VISIBLE
         toolbar.setSelectedListener(
                 onBtnLeftOne = {
                     finish()

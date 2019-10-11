@@ -92,18 +92,17 @@
     <string name="login_09">닉네임 입력</string>
 
     <!-- toilet -->
-    <string name="toilet_db_unisex" formatted="false">남녀공용화장실여부 : %s</string>
-    <string name="toilet_db_m_poo" formatted="false">남성용-대변기수 : %s</string>
-    <string name="toilet_db_m_pee" formatted="false">남성용-소변기수 : %s</string>
-    <string name="toilet_db_m_d_poo" formatted="false">남성용-장애인용대변기수 : %s</string>
-    <string name="toilet_db_m_d_pee" formatted="false">남성용-장애인용소변기수 : %s</string>
-    <string name="toilet_db_m_c_poo" formatted="false">남성용-어린이용대변기수 : %s</string>
-    <string name="toilet_db_m_c_pee" formatted="false">남성용-어린이용소변기수 : %s</string>
-    <string name="toilet_db_w_poo" formatted="false">여성용-대변기수 : %s</string>
-    <string name="toilet_db_w_d_poo" formatted="false">여성용-장애인용대변기수 : %s</string>
-    <string name="toilet_db_w_c_poo" formatted="false">여성용-어린이용대변기수 : %s</string>
-    <string name="toilet_db_manager_name" formatted="false">관리기관명 : %s</string>
-    <string name="toilet_db_manager_tel" formatted="false">관리기관전화번호 : %s</string>
-    <string name="toilet_db_open_time" formatted="false">개방시간 : %s</string>
+    <string name="toilet_option_01">남성용</string>
+    <string name="toilet_option_02">여성용</string>
+    <string name="toilet_option_03">대변기수</string>
+    <string name="toilet_option_04">소변기수</string>
+    <string name="toilet_option_05">장애인용 대변기수</string>
+    <string name="toilet_option_06">장애인용 소변기수</string>
+    <string name="toilet_option_07">어린이용 대변기수</string>
+    <string name="toilet_option_08">어린이용 소변기수</string>
+    <string name="toilet_option_09">남녀공용</string>
+    <string name="toilet_option_10">관리기관명</string>
+    <string name="toilet_option_11">관리기관 전화번호</string>
+    <string name="toilet_option_12">개방시간</string>
 
 </resources>

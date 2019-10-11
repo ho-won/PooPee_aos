@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.activity_home.*
 import kotlinx.android.synthetic.main.item_kakao_keyword.view.*
 import kr.ho1.poopee.R
+import kr.ho1.poopee.common.ObserverManager
 import kr.ho1.poopee.common.base.BaseActivity
 import kr.ho1.poopee.common.data.SharedManager
 import kr.ho1.poopee.common.http.RetrofitClient
@@ -25,7 +26,6 @@ import kr.ho1.poopee.common.util.LocationManager
 import kr.ho1.poopee.common.util.MyUtil
 import kr.ho1.poopee.database.ToiletSQLiteManager
 import kr.ho1.poopee.home.model.KaKaoKeyword
-import kr.ho1.poopee.home.model.Toilet
 import kr.ho1.poopee.home.view.PopupDialog
 import kr.ho1.poopee.home.view.ToiletDialog
 import net.daum.mf.map.api.MapPOIItem
@@ -35,8 +35,6 @@ import org.json.JSONException
 
 @Suppress("DEPRECATION")
 class HomeActivity : BaseActivity(), MapView.POIItemEventListener, MapView.MapViewEventListener {
-
-    private lateinit var mMapView: MapView
 
     private var mKeywordAdapter: ListAdapter = ListAdapter()
     private var mKeywordList: ArrayList<KaKaoKeyword> = ArrayList()
@@ -57,11 +55,13 @@ class HomeActivity : BaseActivity(), MapView.POIItemEventListener, MapView.MapVi
         super.onResume()
         LocationManager.setLocationListener() // 현재위치 리스너 추가
         nav_view.refresh()
+        refresh()
     }
 
     override fun onPause() {
         super.onPause()
         LocationManager.removeLocationUpdate()
+        map_view.removeAllViews()
     }
 
     private fun init() {
@@ -69,23 +69,22 @@ class HomeActivity : BaseActivity(), MapView.POIItemEventListener, MapView.MapVi
         mKeywordAdapter = ListAdapter()
         rv_search.adapter = mKeywordAdapter
 
-        mMapView = MapView(this)
-        map_view.addView(mMapView)
+        checkPopup()
+    }
+
+    private fun refresh() {
+        ObserverManager.mapView = MapView(this)
+        map_view.addView(ObserverManager.mapView)
 
         // 현재위치기준으로 중심점변경
         if (SharedManager.getLatitude() > 0) {
-            mMapView.setMapCenterPoint(MapPoint.mapPointWithGeoCoord(SharedManager.getLatitude(), SharedManager.getLongitude()), true)
+            ObserverManager.mapView.setMapCenterPoint(MapPoint.mapPointWithGeoCoord(SharedManager.getLatitude(), SharedManager.getLongitude()), true)
         }
 
-        // mMapView.setZoomLevel(7, true); // 줌 레벨 변경
-        // mMapView.setMapCenterPointAndZoomLevel(MapPoint.mapPointWithGeoCoord(33.41, 126.52), 9, true); // 중심점 변경 + 줌 레벨 변경
-        // mMapView.zoomIn(true); // 줌 인
-        // mMapView.zoomOut(true); // 줌 아웃
+        ObserverManager.mapView.setZoomLevelFloat(2.2f, true)
 
-        mMapView.setPOIItemEventListener(this)
-        mMapView.setMapViewEventListener(this)
-
-        checkPopup()
+        ObserverManager.mapView.setPOIItemEventListener(this)
+        ObserverManager.mapView.setMapViewEventListener(this)
     }
 
     private fun setListener() {
@@ -140,7 +139,7 @@ class HomeActivity : BaseActivity(), MapView.POIItemEventListener, MapView.MapVi
         })
         layout_my_position.setOnClickListener {
             if (SharedManager.getLatitude() > 0) {
-                mMapView.setMapCenterPoint(MapPoint.mapPointWithGeoCoord(SharedManager.getLatitude(), SharedManager.getLongitude()), true)
+                ObserverManager.mapView.setMapCenterPoint(MapPoint.mapPointWithGeoCoord(SharedManager.getLatitude(), SharedManager.getLongitude()), true)
             }
         }
         btn_menu.setOnClickListener {
@@ -165,10 +164,10 @@ class HomeActivity : BaseActivity(), MapView.POIItemEventListener, MapView.MapVi
         val longitude = p0.mapCenterPoint.mapPointGeoCoord.longitude
         Log.e("MapView_MoveFinished", "latitude: $latitude longitude: $longitude")
 
-        mMapView.removeAllPOIItems()
+        ObserverManager.mapView.removeAllPOIItems()
         val toiletList = ToiletSQLiteManager.getInstance().getToiletList(latitude, longitude)
         for (toilet in toiletList) {
-            addPOIItem(toilet, toilet.latitude, toilet.longitude)
+            ObserverManager.addPOIItem(toilet)
         }
     }
 
@@ -205,22 +204,6 @@ class HomeActivity : BaseActivity(), MapView.POIItemEventListener, MapView.MapVi
         val dialog = ToiletDialog()
         dialog.setToilet(toilet)
         dialog.show(supportFragmentManager, "ToiletDialog")
-    }
-
-    /**
-     * 카카오지도 아이템 추가
-     */
-    private fun addPOIItem(toilet: Toilet, latitude: Double, longitude: Double) {
-        val marker = MapPOIItem()
-        marker.itemName = toilet.name
-        marker.tag = toilet.toilet_id
-        marker.mapPoint = MapPoint.mapPointWithGeoCoord(latitude, longitude)
-        marker.markerType = MapPOIItem.MarkerType.CustomImage // 마커타입을 커스텀 마커로 지정.
-        marker.customImageResourceId = R.drawable.ic_position // 마커 이미지.
-        marker.selectedMarkerType = MapPOIItem.MarkerType.CustomImage // 마커를 클릭했을때, 기본으로 제공하는 RedPin 마커 모양.
-        marker.customSelectedImageResourceId = R.drawable.ic_position // 마커 이미지.
-        marker.isShowCalloutBalloonOnTouch = false
-        mMapView.addPOIItem(marker)
     }
 
     private fun checkPopup() {
@@ -298,7 +281,7 @@ class HomeActivity : BaseActivity(), MapView.POIItemEventListener, MapView.MapVi
                 itemView.setOnClickListener {
                     edt_search.setText(mKeywordList[position].place_name)
                     edt_search.setSelection(mKeywordList[position].place_name.count())
-                    mMapView.setMapCenterPoint(MapPoint.mapPointWithGeoCoord(mKeywordList[position].latitude, mKeywordList[position].longitude), true)
+                    ObserverManager.mapView.setMapCenterPoint(MapPoint.mapPointWithGeoCoord(mKeywordList[position].latitude, mKeywordList[position].longitude), true)
                     MyUtil.keyboardHide(edt_search)
                     rv_search.visibility = View.GONE
                 }

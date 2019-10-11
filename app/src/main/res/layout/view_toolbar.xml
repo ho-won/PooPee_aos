@@ -14,8 +14,8 @@
         <ImageButton
             android:id="@+id/btn_left_one"
             style="?android:attr/borderlessButtonStyle"
-            android:layout_width="@dimen/toolbar_main_height"
-            android:layout_height="@dimen/toolbar_main_height"
+            android:layout_width="@dimen/toolbar_btn_icon_size"
+            android:layout_height="@dimen/toolbar_btn_icon_size"
             android:padding="@dimen/toolbar_btn_icon_padding"
             android:scaleType="fitCenter"
             android:visibility="gone"
@@ -24,8 +24,8 @@
         <ImageButton
             android:id="@+id/btn_left_two"
             style="?android:attr/borderlessButtonStyle"
-            android:layout_width="@dimen/toolbar_main_height"
-            android:layout_height="@dimen/toolbar_main_height"
+            android:layout_width="@dimen/toolbar_btn_icon_size"
+            android:layout_height="@dimen/toolbar_btn_icon_size"
             android:padding="@dimen/toolbar_btn_icon_padding"
             android:scaleType="fitCenter"
             android:visibility="gone"
@@ -69,7 +69,6 @@
                     android:maxLines="1"
                     android:textColor="@color/toolbar_title"
                     android:textSize="@dimen/toolbar_title_sp"
-                    android:textStyle="bold"
                     android:visibility="gone" />
 
             </LinearLayout>
@@ -88,8 +87,8 @@
         <ImageButton
             android:id="@+id/btn_right_two"
             style="?android:attr/borderlessButtonStyle"
-            android:layout_width="@dimen/toolbar_main_height"
-            android:layout_height="@dimen/toolbar_main_height"
+            android:layout_width="@dimen/toolbar_btn_icon_size"
+            android:layout_height="@dimen/toolbar_btn_icon_size"
             android:padding="@dimen/toolbar_btn_icon_padding"
             android:scaleType="fitCenter"
             android:visibility="gone"
@@ -98,12 +97,46 @@
         <ImageButton
             android:id="@+id/btn_right_one"
             style="?android:attr/borderlessButtonStyle"
-            android:layout_width="@dimen/toolbar_main_height"
-            android:layout_height="@dimen/toolbar_main_height"
+            android:layout_width="@dimen/toolbar_btn_icon_size"
+            android:layout_height="@dimen/toolbar_btn_icon_size"
             android:padding="@dimen/toolbar_btn_icon_padding"
             android:scaleType="fitCenter"
             android:visibility="gone"
             tools:ignore="ContentDescription" />
+
+        <LinearLayout
+            android:id="@+id/layout_like"
+            android:layout_width="wrap_content"
+            android:layout_height="24dp"
+            android:layout_marginEnd="16dp"
+            android:background="@drawable/bg_layout_like"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:paddingStart="9dp"
+            android:paddingEnd="9dp"
+            android:visibility="gone">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:lineSpacingExtra="5sp"
+                android:text="@string/home_text_04"
+                android:textColor="#292d34"
+                android:textSize="10sp"
+                tools:ignore="SmallSp" />
+
+            <TextView
+                android:id="@+id/tv_like"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="2dp"
+                android:lineSpacingExtra="5sp"
+                android:textColor="@color/primary"
+                android:textSize="10sp"
+                android:textStyle="bold"
+                tools:ignore="SmallSp" />
+
+        </LinearLayout>
 
     </LinearLayout>
 

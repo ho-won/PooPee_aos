@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools"
     android:background="@color/main_content_background"
     android:fitsSystemWindows="true"
     android:focusable="true"
@@ -14,18 +14,472 @@
         android:layout_height="wrap_content"
         android:background="@color/main_content_background" />
 
-    <View
-        android:id="@+id/line_01"
-        style="@style/line_main"
-        android:layout_below="@+id/toolbar" />
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycler_view"
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/scroll_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@id/layout_bottom"
-        android:layout_below="@id/line_01"
-        android:scrollbars="none" />
+        android:layout_below="@id/toolbar">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:id="@+id/layout_map"
+                android:layout_width="match_parent"
+                android:layout_height="120dp">
+
+                <RelativeLayout
+                    android:id="@+id/map_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+
+                <ToggleButton
+                    android:id="@+id/btn_like"
+                    style="?android:borderlessButtonStyle"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_alignParentEnd="true"
+                    android:background="@drawable/btn_like"
+                    android:textOff=""
+                    android:textOn="" />
+
+            </RelativeLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="64dp"
+                        android:layout_height="wrap_content"
+                        android:text="@string/toilet_option_01"
+                        android:textColor="#292d34"
+                        android:textSize="12sp"
+                        android:textStyle="bold" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:orientation="vertical">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal"
+                            tools:ignore="UselessParent">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/toilet_option_03"
+                                android:textColor="@color/primary"
+                                android:textSize="12sp" />
+
+                            <View
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_marginStart="8dp"
+                                android:layout_marginEnd="8dp"
+                                android:layout_weight="1"
+                                android:background="@drawable/dash" />
+
+                            <TextView
+                                android:id="@+id/tv_m_poo"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:gravity="end"
+                                android:textColor="#292d34"
+                                android:textSize="12sp" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal"
+                            tools:ignore="UselessParent">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/toilet_option_04"
+                                android:textColor="@color/primary"
+                                android:textSize="12sp" />
+
+                            <View
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_marginStart="8dp"
+                                android:layout_marginEnd="8dp"
+                                android:layout_weight="1"
+                                android:background="@drawable/dash" />
+
+                            <TextView
+                                android:id="@+id/tv_m_pee"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:gravity="end"
+                                android:textColor="#292d34"
+                                android:textSize="12sp" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal"
+                            tools:ignore="UselessParent">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/toilet_option_05"
+                                android:textColor="@color/primary"
+                                android:textSize="12sp" />
+
+                            <View
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_marginStart="8dp"
+                                android:layout_marginEnd="8dp"
+                                android:layout_weight="1"
+                                android:background="@drawable/dash" />
+
+                            <TextView
+                                android:id="@+id/tv_m_d_poo"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:gravity="end"
+                                android:textColor="#292d34"
+                                android:textSize="12sp" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal"
+                            tools:ignore="UselessParent">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/toilet_option_06"
+                                android:textColor="@color/primary"
+                                android:textSize="12sp" />
+
+                            <View
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_marginStart="8dp"
+                                android:layout_marginEnd="8dp"
+                                android:layout_weight="1"
+                                android:background="@drawable/dash" />
+
+                            <TextView
+                                android:id="@+id/tv_m_d_pee"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:gravity="end"
+                                android:textColor="#292d34"
+                                android:textSize="12sp" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal"
+                            tools:ignore="UselessParent">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/toilet_option_07"
+                                android:textColor="@color/primary"
+                                android:textSize="12sp" />
+
+                            <View
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_marginStart="8dp"
+                                android:layout_marginEnd="8dp"
+                                android:layout_weight="1"
+                                android:background="@drawable/dash" />
+
+                            <TextView
+                                android:id="@+id/tv_m_c_poo"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:gravity="end"
+                                android:textColor="#292d34"
+                                android:textSize="12sp" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal"
+                            tools:ignore="UselessParent">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/toilet_option_08"
+                                android:textColor="@color/primary"
+                                android:textSize="12sp" />
+
+                            <View
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_marginStart="8dp"
+                                android:layout_marginEnd="8dp"
+                                android:layout_weight="1"
+                                android:background="@drawable/dash" />
+
+                            <TextView
+                                android:id="@+id/tv_m_c_pee"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:gravity="end"
+                                android:textColor="#292d34"
+                                android:textSize="12sp" />
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="64dp"
+                        android:layout_height="wrap_content"
+                        android:text="@string/toilet_option_02"
+                        android:textColor="#292d34"
+                        android:textSize="12sp"
+                        android:textStyle="bold" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:orientation="vertical">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal"
+                            tools:ignore="UselessParent">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:text="@string/toilet_option_03"
+                                android:textColor="@color/primary"
+                                android:textSize="12sp" />
+
+                            <View
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_marginStart="8dp"
+                                android:layout_marginEnd="8dp"
+                                android:layout_weight="1"
+                                android:background="@drawable/dash" />
+
+                            <TextView
+                                android:id="@+id/tv_w_poo"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:gravity="end"
+                                android:textColor="#292d34"
+                                android:textSize="12sp" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal"
+                            tools:ignore="UselessParent">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:text="@string/toilet_option_05"
+                                android:textColor="@color/primary"
+                                android:textSize="12sp" />
+
+                            <View
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_marginStart="8dp"
+                                android:layout_marginEnd="8dp"
+                                android:layout_weight="1"
+                                android:background="@drawable/dash" />
+
+                            <TextView
+                                android:id="@+id/tv_w_d_poo"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:gravity="end"
+                                android:textColor="#292d34"
+                                android:textSize="12sp" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal"
+                            tools:ignore="UselessParent">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/toilet_option_07"
+                                android:textColor="@color/primary"
+                                android:textSize="12sp" />
+
+                            <View
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_marginStart="8dp"
+                                android:layout_marginEnd="8dp"
+                                android:layout_weight="1"
+                                android:background="@drawable/dash" />
+
+                            <TextView
+                                android:id="@+id/tv_w_c_poo"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:gravity="end"
+                                android:textColor="#292d34"
+                                android:textSize="12sp" />
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <View style="@style/line_main" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="90dp"
+                        android:layout_height="wrap_content"
+                        android:text="@string/toilet_option_10"
+                        android:textColor="#292d34"
+                        android:textSize="12sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="14dp"
+                        android:text="동대문구"
+                        android:textColor="#292d34"
+                        android:textSize="12sp" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <View
+                style="@style/line_main"
+                android:layout_height="4dp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="44dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:text="@string/home_text_03"
+                    android:textColor="#292d34"
+                    android:textSize="13sp" />
+
+                <TextView
+                    android:id="@+id/tv_comment_count"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="4dp"
+                    android:textColor="@color/primary"
+                    android:textSize="13sp" />
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_weight="1" />
+
+                <ImageButton
+                    android:id="@+id/btn_menu"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_marginEnd="4dp"
+                    android:background="@null"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/ic_comment"
+                    tools:ignore="ContentDescription" />
+
+            </LinearLayout>
+
+            <View
+                style="@style/line_main"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recycler_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scrollbars="none" />
+
+        </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
 
     <LinearLayout
         android:id="@+id/layout_bottom"
@@ -33,12 +487,12 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:background="@color/main_background"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:visibility="gone">
 
         <EditText
             android:id="@+id/edt_content"
             style="@style/base_edt"
-            tools:ignore="Autofill"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
@@ -53,7 +507,8 @@
             android:paddingStart="10dp"
             android:paddingTop="4dp"
             android:paddingEnd="10dp"
-            android:paddingBottom="4dp" />
+            android:paddingBottom="4dp"
+            tools:ignore="Autofill" />
 
         <FrameLayout
             android:layout_width="64dp"
