@@ -25,6 +25,7 @@ import kr.ho1.poopee.common.http.RetrofitJSONObject
 import kr.ho1.poopee.common.http.RetrofitParams
 import kr.ho1.poopee.common.http.RetrofitService
 import kr.ho1.poopee.common.util.MySpannableString
+import kr.ho1.poopee.common.util.StrManager
 import kr.ho1.poopee.menu.model.Notice
 import org.json.JSONException
 import java.io.FileNotFoundException
@@ -79,7 +80,7 @@ class NoticeActivity : BaseActivity() {
                                 notice.notice_id = jsonObject.getString("notice_id")
                                 notice.title = jsonObject.getString("title")
                                 notice.content = jsonObject.getString("content")
-                                notice.created = jsonObject.getString("created").substring(5, 10)
+                                notice.created = jsonObject.getString("created")
 
                                 mNoticeList.add(notice)
                             }
@@ -121,32 +122,29 @@ class NoticeActivity : BaseActivity() {
         inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView), Html.ImageGetter {
 
             fun update(position: Int) {
-                val sizeString: Array<String> = arrayOf(mNoticeList[position].created)
-                val colorString: Array<String> = arrayOf(mNoticeList[position].created)
-
-                val span = MySpannableString(mNoticeList[position].title + " " + mNoticeList[position].created)
-                span.setSize(sizeString, 10)
-                span.setColor(colorString, "#999999")
-                itemView.tv_title.text = span.getSpannableString()
+                itemView.tv_title.text = mNoticeList[position].title
+                itemView.tv_date.text = StrManager.getDateTime(mNoticeList[position].created)
 
                 val spanned = Html.fromHtml(mNoticeList[position].content, this, null)
                 itemView.tv_content.text = spanned
                 itemView.tv_content.isClickable = true
                 itemView.tv_content.movementMethod = LinkMovementMethod.getInstance()
 
+                mNoticeList[position].openCheck
                 if (mNoticeList[position].openCheck) {
                     itemView.layout_content.visibility = View.VISIBLE
                 } else {
                     itemView.layout_content.visibility = View.GONE
                 }
+                itemView.cb_detail.isChecked = mNoticeList[position].openCheck
 
-                itemView.layout_title.setOnClickListener {
-                    if (itemView.layout_content.visibility == View.VISIBLE) {
-                        itemView.layout_content.visibility = View.GONE
-                        mNoticeList[position].openCheck = false
-                    } else {
+                itemView.cb_detail.setOnClickListener {
+                    if (itemView.cb_detail.isChecked) {
                         itemView.layout_content.visibility = View.VISIBLE
                         mNoticeList[position].openCheck = true
+                    } else {
+                        itemView.layout_content.visibility = View.GONE
+                        mNoticeList[position].openCheck = false
                     }
                     notifyDataSetChanged()
                 }

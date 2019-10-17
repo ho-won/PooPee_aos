@@ -1,15 +1,11 @@
 package kr.ho1.poopee.home.view
 
 import android.annotation.SuppressLint
-import android.content.ClipData
-import android.content.ClipboardManager
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import kotlinx.android.synthetic.main.dialog_toilet.*
 import kr.ho1.poopee.R
 import kr.ho1.poopee.common.ObserverManager
@@ -18,10 +14,10 @@ import kr.ho1.poopee.common.http.RetrofitClient
 import kr.ho1.poopee.common.http.RetrofitJSONObject
 import kr.ho1.poopee.common.http.RetrofitParams
 import kr.ho1.poopee.common.http.RetrofitService
+import kr.ho1.poopee.common.util.StrManager
 import kr.ho1.poopee.home.ToiletActivity
 import kr.ho1.poopee.home.model.Toilet
 import org.json.JSONException
-import java.net.URLDecoder
 
 @SuppressLint("ValidFragment")
 class ToiletDialog : BaseDialog() {
@@ -41,11 +37,12 @@ class ToiletDialog : BaseDialog() {
     private fun init() {
         tv_title.text = mToilet.name
 
-        if (mToilet.address_new.count() > 0) {
-            tv_address.text = mToilet.address_new
+        val addressText: String = if (mToilet.address_new.count() > 0) {
+            mToilet.address_new
         } else {
-            tv_address.text = mToilet.address_old
+            mToilet.address_old
         }
+        StrManager.setAddressCopySpan(tv_address, addressText)
 
         tv_comment_count.text = mToilet.comment_count
         tv_like_count.text = mToilet.like_count
@@ -54,16 +51,6 @@ class ToiletDialog : BaseDialog() {
     }
 
     private fun setListener() {
-        layout_copy.setOnClickListener {
-            try {
-                val clipboard = ObserverManager.context!!.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager?
-                val clip = ClipData.newPlainText("CarTrader", tv_address.text)
-                clipboard!!.primaryClip = clip
-                Toast.makeText(ObserverManager.context!!, ObserverManager.context!!.resources.getString(R.string.toast_copy_complete), Toast.LENGTH_SHORT).show()
-            } catch (e: Exception) {
-                e.printStackTrace()
-            }
-        }
         btn_detail.setOnClickListener {
             ObserverManager.root!!.startActivity(Intent(ObserverManager.context!!, ToiletActivity::class.java)
                     .setFlags(Intent.FLAG_ACTIVITY_NO_USER_ACTION)

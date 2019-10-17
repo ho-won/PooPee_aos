@@ -1,7 +1,10 @@
 package kr.ho1.poopee.home.view
 
 import android.annotation.SuppressLint
+import android.graphics.Color
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -37,6 +40,25 @@ class CommentUpdateDialog(private var onUpdate: ((comment: Comment) -> Unit)) : 
     }
 
     private fun setListener() {
+        edt_content.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(p0: Editable?) {
+
+            }
+
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+
+            }
+
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                if (p0.toString().isEmpty()) {
+                    btn_update.setTextColor(Color.parseColor("#a0a4aa"))
+                    btn_update.isEnabled = false
+                } else {
+                    btn_update.setTextColor(Color.parseColor("#2470ff"))
+                    btn_update.isEnabled = true
+                }
+            }
+        })
         btn_update.setOnClickListener {
             mComment.content = edt_content.text.toString()
             taskCommentUpdate()

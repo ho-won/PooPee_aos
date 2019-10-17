@@ -23,7 +23,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:paddingBottom="16dp">
 
             <RelativeLayout
                 android:id="@+id/layout_map"
@@ -50,8 +51,107 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/tv_address"
+                    android:layout_width="0dp"
+                    android:bufferType="spannable"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="12dp"
+                    android:layout_marginBottom="13dp"
+                    android:layout_weight="1"
+                    android:lineSpacingExtra="6sp"
+                    android:textColor="#292d34"
+                    android:textSize="13sp" />
+
+                <CheckBox
+                    android:id="@+id/cb_tap_address"
+                    android:layout_width="44dp"
+                    android:layout_height="44dp"
+                    android:background="@drawable/cb_up_down"
+                    android:button="@null"
+                    tools:ignore="ContentDescription" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="64dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <CheckBox
+                    android:id="@+id/cb_option_01"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_marginStart="16dp"
+                    android:background="@drawable/cb_option_01"
+                    android:button="@null"
+                    android:enabled="false"
+                    tools:ignore="ContentDescription" />
+
+                <CheckBox
+                    android:id="@+id/cb_option_02"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_marginStart="10dp"
+                    android:background="@drawable/cb_option_02"
+                    android:button="@null"
+                    android:enabled="false"
+                    tools:ignore="ContentDescription" />
+
+                <CheckBox
+                    android:id="@+id/cb_option_03"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_marginStart="10dp"
+                    android:background="@drawable/cb_option_03"
+                    android:button="@null"
+                    android:enabled="false"
+                    tools:ignore="ContentDescription" />
+
+                <CheckBox
+                    android:id="@+id/cb_option_04"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_marginStart="10dp"
+                    android:background="@drawable/cb_option_04"
+                    android:button="@null"
+                    android:enabled="false"
+                    tools:ignore="ContentDescription" />
+
+                <CheckBox
+                    android:id="@+id/cb_option_05"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_marginStart="10dp"
+                    android:background="@drawable/cb_option_05"
+                    android:button="@null"
+                    android:enabled="false"
+                    tools:ignore="ContentDescription" />
+
+                <CheckBox
+                    android:id="@+id/cb_option_06"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_marginStart="10dp"
+                    android:background="@drawable/cb_option_06"
+                    android:button="@null"
+                    android:enabled="false"
+                    tools:ignore="ContentDescription" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/layout_detail_address"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:padding="16dp">
+                android:padding="16dp"
+                android:visibility="gone">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -83,7 +183,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="@string/toilet_option_03"
-                                android:textColor="@color/primary"
+                                android:textColor="#a0a4aa"
                                 android:textSize="12sp" />
 
                             <View
@@ -115,7 +215,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="@string/toilet_option_04"
-                                android:textColor="@color/primary"
+                                android:textColor="#a0a4aa"
                                 android:textSize="12sp" />
 
                             <View
@@ -147,7 +247,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="@string/toilet_option_05"
-                                android:textColor="@color/primary"
+                                android:textColor="#a0a4aa"
                                 android:textSize="12sp" />
 
                             <View
@@ -179,7 +279,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="@string/toilet_option_06"
-                                android:textColor="@color/primary"
+                                android:textColor="#a0a4aa"
                                 android:textSize="12sp" />
 
                             <View
@@ -211,7 +311,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="@string/toilet_option_07"
-                                android:textColor="@color/primary"
+                                android:textColor="#a0a4aa"
                                 android:textSize="12sp" />
 
                             <View
@@ -243,7 +343,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="@string/toilet_option_08"
-                                android:textColor="@color/primary"
+                                android:textColor="#a0a4aa"
                                 android:textSize="12sp" />
 
                             <View
@@ -299,7 +399,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="match_parent"
                                 android:text="@string/toilet_option_03"
-                                android:textColor="@color/primary"
+                                android:textColor="#a0a4aa"
                                 android:textSize="12sp" />
 
                             <View
@@ -331,7 +431,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="match_parent"
                                 android:text="@string/toilet_option_05"
-                                android:textColor="@color/primary"
+                                android:textColor="#a0a4aa"
                                 android:textSize="12sp" />
 
                             <View
@@ -363,7 +463,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="@string/toilet_option_07"
-                                android:textColor="@color/primary"
+                                android:textColor="#a0a4aa"
                                 android:textSize="12sp" />
 
                             <View
@@ -390,21 +490,57 @@
 
             </LinearLayout>
 
-            <View style="@style/line_main" />
+            <View
+                style="@style/line_main"
+                android:layout_height="4dp" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/tv_manager"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="12dp"
+                    android:layout_marginBottom="13dp"
+                    android:layout_weight="1"
+                    android:lineSpacingExtra="6sp"
+                    android:text="@string/home_text_10"
+                    android:textColor="#292d34"
+                    android:textSize="13sp" />
+
+                <CheckBox
+                    android:id="@+id/cb_tap_manager"
+                    android:layout_width="44dp"
+                    android:layout_height="44dp"
+                    android:background="@drawable/cb_up_down"
+                    android:button="@null"
+                    tools:ignore="ContentDescription" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/layout_detail_manager"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:padding="16dp">
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
+                android:paddingBottom="16dp"
+                android:visibility="gone">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    tools:ignore="UselessParent">
 
                     <TextView
-                        android:layout_width="90dp"
+                        android:layout_width="100dp"
                         android:layout_height="wrap_content"
                         android:text="@string/toilet_option_10"
                         android:textColor="#292d34"
@@ -412,10 +548,60 @@
                         android:textStyle="bold" />
 
                     <TextView
+                        android:id="@+id/tv_manager_name"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="14dp"
-                        android:text="동대문구"
+                        android:layout_marginStart="8dp"
+                        android:textColor="#292d34"
+                        android:textSize="12sp" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:orientation="horizontal"
+                    tools:ignore="UselessParent">
+
+                    <TextView
+                        android:layout_width="100dp"
+                        android:layout_height="wrap_content"
+                        android:text="@string/toilet_option_11"
+                        android:textColor="#292d34"
+                        android:textSize="12sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/tv_manager_tel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:textColor="@color/primary"
+                        android:textSize="12sp" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:orientation="horizontal"
+                    tools:ignore="UselessParent">
+
+                    <TextView
+                        android:layout_width="100dp"
+                        android:layout_height="wrap_content"
+                        android:text="@string/toilet_option_12"
+                        android:textColor="#292d34"
+                        android:textSize="12sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/tv_open_time"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
                         android:textColor="#292d34"
                         android:textSize="12sp" />
 
@@ -423,9 +609,11 @@
 
             </LinearLayout>
 
-            <View
-                style="@style/line_main"
-                android:layout_height="4dp" />
+            <FrameLayout
+                android:id="@+id/layout_ad_mob"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="@drawable/img_banner_ex" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -447,7 +635,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="4dp"
                     android:textColor="@color/primary"
-                    android:textSize="13sp" />
+                    android:textSize="13sp"
+                    android:textStyle="bold" />
 
                 <View
                     android:layout_width="0dp"
@@ -455,14 +644,14 @@
                     android:layout_weight="1" />
 
                 <ImageButton
-                    android:id="@+id/btn_menu"
+                    android:id="@+id/btn_comment"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
                     android:layout_marginEnd="4dp"
                     android:background="@null"
                     android:scaleType="fitXY"
                     android:src="@drawable/ic_comment"
-                    tools:ignore="ContentDescription" />
+                    tools:ignore="ContentDescription,TooManyViews" />
 
             </LinearLayout>
 
@@ -480,55 +669,5 @@
         </LinearLayout>
 
     </androidx.core.widget.NestedScrollView>
-
-    <LinearLayout
-        android:id="@+id/layout_bottom"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:background="@color/main_background"
-        android:orientation="horizontal"
-        android:visibility="gone">
-
-        <EditText
-            android:id="@+id/edt_content"
-            style="@style/base_edt"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="4dp"
-            android:layout_marginBottom="4dp"
-            android:layout_weight="1"
-            android:background="@color/main_content_background"
-            android:hint="@string/home_text_05"
-            android:inputType="textMultiLine"
-            android:maxHeight="80dp"
-            android:minHeight="32dp"
-            android:paddingStart="10dp"
-            android:paddingTop="4dp"
-            android:paddingEnd="10dp"
-            android:paddingBottom="4dp"
-            tools:ignore="Autofill" />
-
-        <FrameLayout
-            android:layout_width="64dp"
-            android:layout_height="match_parent"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="4dp"
-            android:layout_marginEnd="10dp"
-            android:layout_marginBottom="4dp">
-
-            <Button
-                android:id="@+id/btn_send"
-                android:layout_width="64dp"
-                android:layout_height="match_parent"
-                android:background="@color/primary"
-                android:text="@string/send"
-                android:textColor="@color/text_white"
-                android:textSize="14sp" />
-
-        </FrameLayout>
-
-    </LinearLayout>
 
 </RelativeLayout>

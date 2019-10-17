@@ -35,49 +35,15 @@
                 android:textSize="15sp"
                 android:textStyle="bold" />
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+            <TextView
+                android:id="@+id/tv_address"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_marginTop="8dp"
-                android:gravity="center_vertical"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:id="@+id/tv_address"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_marginEnd="52dp"
-                    android:lineSpacingExtra="6sp"
-                    android:textColor="#292d34"
-                    android:textSize="12sp" />
-
-                <LinearLayout
-                    android:id="@+id/layout_copy"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="-44dp"
-                    android:gravity="center"
-                    android:orientation="horizontal">
-
-                    <ImageView
-                        android:layout_width="12dp"
-                        android:layout_height="14dp"
-                        android:contentDescription="@string/contentDescription"
-                        android:scaleType="fitXY"
-                        android:src="@drawable/ic_copy" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="2dp"
-                        android:lineSpacingExtra="6sp"
-                        android:text="@string/copy"
-                        android:textColor="#08ce9e"
-                        android:textSize="12sp" />
-
-                </LinearLayout>
-
-            </LinearLayout>
+                android:layout_marginEnd="52dp"
+                android:lineSpacingExtra="6sp"
+                android:textColor="#292d34"
+                android:textSize="13sp" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -92,7 +58,7 @@
                     android:lineSpacingExtra="6sp"
                     android:text="@string/home_text_03"
                     android:textColor="#a0a4aa"
-                    android:textSize="12sp" />
+                    android:textSize="13sp" />
 
                 <TextView
                     android:id="@+id/tv_comment_count"
@@ -101,7 +67,7 @@
                     android:layout_marginStart="2dp"
                     android:lineSpacingExtra="6sp"
                     android:textColor="#8991a2"
-                    android:textSize="12sp" />
+                    android:textSize="13sp" />
 
                 <View
                     android:layout_width="1dp"
@@ -116,7 +82,7 @@
                     android:lineSpacingExtra="6sp"
                     android:text="@string/home_text_04"
                     android:textColor="#a0a4aa"
-                    android:textSize="12sp" />
+                    android:textSize="13sp" />
 
                 <TextView
                     android:id="@+id/tv_like_count"
@@ -125,7 +91,7 @@
                     android:layout_marginStart="2dp"
                     android:lineSpacingExtra="6sp"
                     android:textColor="#8991a2"
-                    android:textSize="12sp" />
+                    android:textSize="13sp" />
 
             </LinearLayout>
 
@@ -148,7 +114,7 @@
                 android:text="@string/close"
                 android:textAllCaps="false"
                 android:textColor="#292d34"
-                android:textSize="14sp" />
+                android:textSize="13sp" />
 
             <View
                 android:layout_width="0dp"
@@ -165,7 +131,7 @@
                 android:text="@string/home_text_02"
                 android:textAllCaps="false"
                 android:textColor="@color/primary"
-                android:textSize="14sp" />
+                android:textSize="13sp" />
 
         </LinearLayout>
 

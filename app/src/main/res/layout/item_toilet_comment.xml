@@ -12,74 +12,66 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="24dp"
-            android:orientation="horizontal"
-            android:paddingStart="16dp"
-            android:paddingEnd="0dp">
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
 
             <TextView
                 android:id="@+id/tv_name"
                 android:layout_width="wrap_content"
-                android:layout_height="24dp"
-                android:gravity="center_vertical"
-                android:textColor="@color/primary"
-                android:textSize="12sp" />
+                android:layout_height="wrap_content"
+                android:textColor="#292d34"
+                android:textSize="13sp" />
+
+            <View
+                android:layout_width="1dp"
+                android:layout_height="10dp"
+                android:layout_marginStart="6dp"
+                android:layout_marginTop="1dp"
+                android:background="#d0d2d5" />
 
             <TextView
                 android:id="@+id/tv_date"
-                android:layout_width="0dp"
-                android:layout_height="24dp"
-                android:layout_marginStart="4dp"
-                android:layout_weight="1"
-                android:gravity="center_vertical"
-                android:textColor="@color/text_gray"
-                android:textSize="10sp"
-                tools:ignore="SmallSp" />
-
-            <TextView
-                android:id="@+id/tv_update"
-                android:layout_width="40dp"
-                android:layout_height="24dp"
-                android:gravity="center"
-                android:text="@string/modified"
-                android:textColor="@color/text_main"
-                android:textSize="12sp" />
-
-            <TextView
-                android:id="@+id/tv_delete"
-                android:layout_width="40dp"
-                android:layout_height="24dp"
-                android:gravity="center"
-                android:text="@string/delete"
-                android:textColor="@color/text_main"
-                android:textSize="12sp" />
-
-            <TextView
-                android:id="@+id/tv_report"
-                android:layout_width="40dp"
-                android:layout_height="24dp"
-                android:gravity="center"
-                android:text="@string/report"
-                android:textColor="@color/text_main"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="6dp"
+                android:gravity="end"
+                android:textColor="#a0a4aa"
                 android:textSize="12sp" />
 
         </LinearLayout>
 
         <TextView
             android:id="@+id/tv_comment"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
             android:layout_marginEnd="16dp"
-            android:layout_marginBottom="8dp"
-            android:textColor="@color/text_main"
-            android:textSize="14sp" />
+            android:layout_marginBottom="16dp"
+            android:textColor="#292d34"
+            android:textSize="12sp" />
 
     </LinearLayout>
 
     <View
-        android:id="@+id/line_01"
         style="@style/line_main"
-        android:layout_below="@+id/layout_content" />
+        android:layout_below="@+id/layout_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp" />
+
+    <ImageButton
+        android:id="@+id/btn_menu"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="2dp"
+        android:background="@null"
+        android:scaleType="fitXY"
+        android:src="@drawable/ic_report"
+        tools:ignore="ContentDescription" />
 
 </RelativeLayout>

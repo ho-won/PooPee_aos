@@ -74,11 +74,14 @@
     <string name="home_text_02">상세보기</string>
     <string name="home_text_03">댓글</string>
     <string name="home_text_04">좋아요</string>
-    <string name="home_text_05">댓글입력</string>
+    <string name="home_text_05">댓글을 입력해주세요</string>
     <string name="home_text_06">삭제하시겠습니까?</string>
-    <string name="home_text_07">신고내용입력</string>
+    <string name="home_text_07">신고는 반대의견을 나타내는 기능이 아닙니다.\n신고사유를 입력해주세요</string>
     <string name="home_text_08">내위치</string>
     <string name="home_text_09">어디에서 화장실을 찾고있나요?</string>
+    <string name="home_text_10">관리기관</string>
+    <string name="home_text_11">댓글수정</string>
+    <string name="home_text_12">신고하기</string>
 
     <!-- login -->
     <string name="login_01">로그인을 해주세요</string>

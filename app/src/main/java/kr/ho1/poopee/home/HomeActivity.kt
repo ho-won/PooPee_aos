@@ -54,7 +54,6 @@ class HomeActivity : BaseActivity(), MapView.POIItemEventListener, MapView.MapVi
     override fun onResume() {
         super.onResume()
         LocationManager.setLocationListener() // 현재위치 리스너 추가
-        nav_view.refresh()
         refresh()
     }
 
@@ -73,6 +72,7 @@ class HomeActivity : BaseActivity(), MapView.POIItemEventListener, MapView.MapVi
     }
 
     private fun refresh() {
+        nav_view.refresh()
         ObserverManager.mapView = MapView(this)
         map_view.addView(ObserverManager.mapView)
 
@@ -81,7 +81,7 @@ class HomeActivity : BaseActivity(), MapView.POIItemEventListener, MapView.MapVi
             ObserverManager.mapView.setMapCenterPoint(MapPoint.mapPointWithGeoCoord(SharedManager.getLatitude(), SharedManager.getLongitude()), true)
         }
 
-        ObserverManager.mapView.setZoomLevelFloat(2.2f, true)
+        ObserverManager.mapView.setZoomLevel(2, true)
 
         ObserverManager.mapView.setPOIItemEventListener(this)
         ObserverManager.mapView.setMapViewEventListener(this)
@@ -141,6 +141,7 @@ class HomeActivity : BaseActivity(), MapView.POIItemEventListener, MapView.MapVi
             if (SharedManager.getLatitude() > 0) {
                 ObserverManager.mapView.setMapCenterPoint(MapPoint.mapPointWithGeoCoord(SharedManager.getLatitude(), SharedManager.getLongitude()), true)
             }
+            ObserverManager.mapView.setZoomLevel(2, true)
         }
         btn_menu.setOnClickListener {
             drawer_layout.openDrawer(GravityCompat.START)

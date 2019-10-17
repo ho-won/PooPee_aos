@@ -50,11 +50,11 @@ class MySpannableString(private val str: String) {
         }
 
         sizeString.forEach {
-            ssb.setSpan(ForegroundColorSpan(Color.parseColor(color)), str.indexOf(it), str.indexOf(it) + it.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+            ssb.setSpan(AbsoluteSizeSpan(MyUtil.dpToPx(size)), str.indexOf(it), str.indexOf(it) + it.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
         }
 
         colorString.forEach {
-            ssb.setSpan(AbsoluteSizeSpan(MyUtil.dpToPx(size)), str.indexOf(it), str.indexOf(it) + it.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+            ssb.setSpan(ForegroundColorSpan(Color.parseColor(color)), str.indexOf(it), str.indexOf(it) + it.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
         }
 
         return ssb
