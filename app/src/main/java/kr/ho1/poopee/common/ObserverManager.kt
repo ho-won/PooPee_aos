@@ -1,3 +1,5 @@
+@file:Suppress("DEPRECATION")
+
 package kr.ho1.poopee.common
 
 import android.annotation.SuppressLint
@@ -56,7 +58,7 @@ object ObserverManager {
         marker.selectedMarkerType = MapPOIItem.MarkerType.CustomImage // 마커를 클릭했을때, 기본으로 제공하는 RedPin 마커 모양.
         marker.customSelectedImageResourceId = R.drawable.ic_position // 마커 이미지.
         marker.isShowCalloutBalloonOnTouch = false
-        ObserverManager.mapView.addPOIItem(marker)
+        mapView.addPOIItem(marker)
     }
 
 }

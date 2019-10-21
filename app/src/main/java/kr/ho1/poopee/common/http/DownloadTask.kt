@@ -24,7 +24,7 @@ class DownloadTask(private val progressBar: ProgressBar?, private var onSuccess:
 
     override fun doInBackground(vararg params: String): String? {
         // 진행상황률을 표현한 원형 프로그레스바 세팅
-        var count = 0
+        var count: Int
         var filePath: String? = null
 
         try {

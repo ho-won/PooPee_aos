@@ -60,7 +60,7 @@ object StrManager {
                 try {
                     val clipboard = ObserverManager.context!!.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager?
                     val clip = ClipData.newPlainText("PooPee", tv_address.text)
-                    clipboard!!.primaryClip = clip
+                    clipboard!!.setPrimaryClip(clip)
                     Toast.makeText(ObserverManager.context!!, ObserverManager.context!!.resources.getString(R.string.toast_copy_complete), Toast.LENGTH_SHORT).show()
                 } catch (e: Exception) {
                     e.printStackTrace()

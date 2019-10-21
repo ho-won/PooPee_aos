@@ -36,7 +36,7 @@ object SharedManager {
 
     fun getMemberId(): String {
         val pref = ObserverManager.context!!.getSharedPreferences(MEMBER, Context.MODE_PRIVATE)
-        return pref.getString(MEMBER_ID, "")
+        return pref.getString(MEMBER_ID, "").toString()
     }
 
     fun setMemberId(value: String) {
@@ -48,7 +48,7 @@ object SharedManager {
 
     fun getMemberUsername(): String {
         val pref = ObserverManager.context!!.getSharedPreferences(MEMBER, Context.MODE_PRIVATE)
-        return pref.getString(MEMBER_USERNAME, "")
+        return pref.getString(MEMBER_USERNAME, "").toString()
     }
 
     fun setMemberUsername(value: String) {
@@ -60,7 +60,7 @@ object SharedManager {
 
     fun getMemberPassword(): String {
         val pref = ObserverManager.context!!.getSharedPreferences(MEMBER, Context.MODE_PRIVATE)
-        return pref.getString(MEMBER_PASSWORD, "")
+        return pref.getString(MEMBER_PASSWORD, "").toString()
     }
 
     fun setMemberPassword(value: String) {
@@ -72,7 +72,7 @@ object SharedManager {
 
     fun getMemberName(): String {
         val pref = ObserverManager.context!!.getSharedPreferences(MEMBER, Context.MODE_PRIVATE)
-        return pref.getString(MEMBER_NAME, "")
+        return pref.getString(MEMBER_NAME, "").toString()
     }
 
     fun setMemberName(value: String) {
@@ -84,7 +84,7 @@ object SharedManager {
 
     fun getMemberGender(): String {
         val pref = ObserverManager.context!!.getSharedPreferences(MEMBER, Context.MODE_PRIVATE)
-        return pref.getString(MEMBER_GENDER, "1")
+        return pref.getString(MEMBER_GENDER, "1").toString()
     }
 
     fun setMemberGender(value: String) {
@@ -108,7 +108,7 @@ object SharedManager {
 
     fun getNoticeDate(): String {
         val pref = ObserverManager.context!!.getSharedPreferences(ETC, Context.MODE_PRIVATE)
-        return pref.getString(NOTICE_DATE, "2000-01-01")
+        return pref.getString(NOTICE_DATE, "2000-01-01").toString()
     }
 
     fun setNoticeDate(value: String) {
@@ -120,7 +120,7 @@ object SharedManager {
 
     fun getNoticeImage(): String {
         val pref = ObserverManager.context!!.getSharedPreferences(ETC, Context.MODE_PRIVATE)
-        return pref.getString(NOTICE_IMAGE, "")
+        return pref.getString(NOTICE_IMAGE, "").toString()
     }
 
     fun setNoticeImage(value: String) {
@@ -132,7 +132,7 @@ object SharedManager {
 
     fun getLatitude(): Double {
         val pref = ObserverManager.context!!.getSharedPreferences(ETC, Context.MODE_PRIVATE)
-        return pref.getString(LATITUDE, "0.0").toDouble()
+        return pref.getString(LATITUDE, "0.0").toString().toDouble()
     }
 
     fun setLatitude(value: Double) {
@@ -144,7 +144,7 @@ object SharedManager {
 
     fun getLongitude(): Double {
         val pref = ObserverManager.context!!.getSharedPreferences(ETC, Context.MODE_PRIVATE)
-        return pref.getString(LONGITUDE, "0.0").toDouble()
+        return pref.getString(LONGITUDE, "0.0").toString().toDouble()
     }
 
     fun setLongitude(value: Double) {

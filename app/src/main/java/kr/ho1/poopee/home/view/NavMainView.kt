@@ -1,10 +1,12 @@
 package kr.ho1.poopee.home.view
 
+import android.content.ClipData
+import android.content.ClipboardManager
 import android.content.Context
 import android.content.Intent
 import android.util.AttributeSet
 import android.view.LayoutInflater
-import android.view.View
+import android.widget.Toast
 import com.google.android.material.navigation.NavigationView
 import kotlinx.android.synthetic.main.nav_main.view.*
 import kr.ho1.poopee.R
@@ -12,10 +14,12 @@ import kr.ho1.poopee.common.ObserverManager
 import kr.ho1.poopee.common.data.SharedManager
 import kr.ho1.poopee.common.util.EmailSender
 import kr.ho1.poopee.common.util.MySpannableString
+import kr.ho1.poopee.common.util.MyUtil
 import kr.ho1.poopee.login.LoginActivity
 import kr.ho1.poopee.menu.MyInfoActivity
 import kr.ho1.poopee.menu.NoticeActivity
 
+@Suppress("DEPRECATION")
 class NavMainView : NavigationView {
     private var mContext: Context? = null
 
@@ -56,6 +60,16 @@ class NavMainView : NavigationView {
 
     private fun setListener() {
         layout_login.setOnClickListener {
+            if (SharedManager.getMemberUsername() == "master") {
+                try {
+                    val clipboard = ObserverManager.context!!.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager?
+                    val clip = ClipData.newPlainText("PooPee", MyUtil.getHashKey())
+                    clipboard!!.setPrimaryClip(clip)
+                    Toast.makeText(ObserverManager.context!!, ObserverManager.context!!.resources.getString(R.string.toast_copy_complete), Toast.LENGTH_SHORT).show()
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                }
+            }
             if (!SharedManager.isLoginCheck()) {
                 ObserverManager.root!!.startActivity(Intent(ObserverManager.context!!, LoginActivity::class.java)
                         .setFlags(Intent.FLAG_ACTIVITY_NO_USER_ACTION)
