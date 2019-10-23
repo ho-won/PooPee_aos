@@ -24,7 +24,6 @@ import kr.ho1.poopee.common.http.RetrofitClient
 import kr.ho1.poopee.common.http.RetrofitJSONObject
 import kr.ho1.poopee.common.http.RetrofitParams
 import kr.ho1.poopee.common.http.RetrofitService
-import kr.ho1.poopee.common.util.MySpannableString
 import kr.ho1.poopee.common.util.StrManager
 import kr.ho1.poopee.menu.model.Notice
 import org.json.JSONException
@@ -138,7 +137,8 @@ class NoticeActivity : BaseActivity() {
                 }
                 itemView.cb_detail.isChecked = mNoticeList[position].openCheck
 
-                itemView.cb_detail.setOnClickListener {
+                itemView.setOnClickListener {
+                    itemView.cb_detail.isChecked = !itemView.cb_detail.isChecked
                     if (itemView.cb_detail.isChecked) {
                         itemView.layout_content.visibility = View.VISIBLE
                         mNoticeList[position].openCheck = true

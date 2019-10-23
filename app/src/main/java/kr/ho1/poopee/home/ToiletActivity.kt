@@ -251,6 +251,7 @@ class ToiletActivity : BaseActivity() {
                                 val comment = Comment()
                                 comment.comment_id = jsonObject.getString("comment_id")
                                 comment.member_id = jsonObject.getString("member_id")
+                                comment.gender = jsonObject.getString("gender")
                                 comment.name = jsonObject.getString("name")
                                 comment.content = jsonObject.getString("content")
                                 comment.created = jsonObject.getString("created")
@@ -382,6 +383,12 @@ class ToiletActivity : BaseActivity() {
         inner class CommentViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
             fun update(position: Int) {
+                if (mCommentList[position].gender == "0") {
+                    itemView.iv_gender.setImageDrawable(ObserverManager.context!!.resources.getDrawable(R.drawable.ic_man_profile))
+                } else {
+                    itemView.iv_gender.setImageDrawable(ObserverManager.context!!.resources.getDrawable(R.drawable.ic_woman_profile))
+                }
+
                 itemView.tv_name.text = mCommentList[position].name
                 itemView.tv_date.text = StrManager.getDateTime(mCommentList[position].created)
                 itemView.tv_comment.text = mCommentList[position].content

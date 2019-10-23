@@ -46,7 +46,7 @@ class MyInfoActivity : BaseActivity() {
             } else if (!rb_man.isChecked && !rb_woman.isChecked) {
                 Toast.makeText(ObserverManager.context!!, ObserverManager.context!!.resources.getString(R.string.toast_join_condition_02), Toast.LENGTH_SHORT).show()
             } else {
-                taskUpdateUser(edt_password.text.toString(), edt_name.text.toString(), if (rb_man.isChecked) "1" else "2")
+                taskUpdateUser(edt_password.text.toString(), edt_name.text.toString(), if (rb_man.isChecked) "0" else "1")
             }
         }
     }

@@ -30,7 +30,7 @@
 
             <EditText
                 android:id="@+id/edt_comment"
-                style="@style/base_edt"
+                android:background="@null"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="12dp"

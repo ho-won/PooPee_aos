@@ -13,7 +13,7 @@ object SharedManager {
     private const val MEMBER_USERNAME = "MEMBER_USERNAME" // 유저 아이디
     private const val MEMBER_PASSWORD = "MEMBER_PASSWORD" // 유저 비밀번호
     private const val MEMBER_NAME = "MEMBER_NAME" // 유저 닉네임
-    private const val MEMBER_GENDER = "MEMBER_GENDER" // 유저 성별 1(남자) 2(여자)
+    private const val MEMBER_GENDER = "MEMBER_GENDER" // 유저 성별 0(남자) 1(여자)
 
     private const val ETC = "ETC"
     private const val DB_VER = "DB_VER" // toilet db 버전

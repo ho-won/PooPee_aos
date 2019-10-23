@@ -41,7 +41,7 @@ class HomeActivity : BaseActivity(), MapView.POIItemEventListener, MapView.MapVi
 
     private var mRootViewHeight = 0 // 키보드 제외 높이
     private var mIsKeyboardShow = false // 키보드 노출 상태
-    private val mRvHeight = MyUtil.dpToPx(240);
+    private val mRvHeight = MyUtil.dpToPx(240)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

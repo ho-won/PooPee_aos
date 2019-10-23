@@ -4,12 +4,8 @@ import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.view.View
 import android.widget.Toast
-import kotlinx.android.synthetic.main.activity_join.*
 import kotlinx.android.synthetic.main.activity_login.*
-import kotlinx.android.synthetic.main.activity_login.edt_password
-import kotlinx.android.synthetic.main.activity_login.edt_username
 import kr.ho1.poopee.R
 import kr.ho1.poopee.common.ObserverManager
 import kr.ho1.poopee.common.base.BaseActivity
@@ -40,6 +36,9 @@ class LoginActivity : BaseActivity() {
     }
 
     private fun setListener() {
+        btn_close.setOnClickListener {
+            finish()
+        }
         btn_login.setOnClickListener {
             if (edt_username.text.toString().isEmpty() || edt_password.text.toString().isEmpty()) {
                 Toast.makeText(ObserverManager.context!!, ObserverManager.context!!.resources.getString(R.string.toast_login_condition), Toast.LENGTH_SHORT).show()
