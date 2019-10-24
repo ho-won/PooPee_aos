@@ -81,6 +81,10 @@
             android:name=".menu.NoticeActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize|stateHidden" />
+        <activity
+            android:name=".menu.SettingActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize|stateHidden" />
 
         <provider
             android:name="androidx.core.content.FileProvider"

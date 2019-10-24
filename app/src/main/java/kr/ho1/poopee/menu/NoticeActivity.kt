@@ -80,6 +80,7 @@ class NoticeActivity : BaseActivity() {
                                 notice.title = jsonObject.getString("title")
                                 notice.content = jsonObject.getString("content")
                                 notice.created = jsonObject.getString("created")
+                                notice.openCheck = i == 0
 
                                 mNoticeList.add(notice)
                             }

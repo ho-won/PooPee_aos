@@ -61,7 +61,7 @@
                 android:paddingEnd="20dp"
                 android:textColor="#FFFFFF"
                 android:textColorHint="#85b3ff"
-                android:textCursorDrawable="@drawable/cursor"
+                android:textCursorDrawable="@drawable/cursor_white"
                 android:textSize="14sp"
                 tools:ignore="Autofill" />
 
@@ -81,7 +81,7 @@
                 android:paddingEnd="20dp"
                 android:textColor="#FFFFFF"
                 android:textColorHint="#85b3ff"
-                android:textCursorDrawable="@drawable/cursor"
+                android:textCursorDrawable="@drawable/cursor_white"
                 android:textSize="14sp"
                 tools:ignore="Autofill" />
 

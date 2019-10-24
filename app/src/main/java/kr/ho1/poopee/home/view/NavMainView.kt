@@ -18,6 +18,7 @@ import kr.ho1.poopee.common.util.MyUtil
 import kr.ho1.poopee.login.LoginActivity
 import kr.ho1.poopee.menu.MyInfoActivity
 import kr.ho1.poopee.menu.NoticeActivity
+import kr.ho1.poopee.menu.SettingActivity
 
 @Suppress("DEPRECATION")
 class NavMainView : NavigationView {
@@ -96,7 +97,9 @@ class NavMainView : NavigationView {
             EmailSender.send("seohwjjang@gmail.com", ObserverManager.context!!.getString(R.string.nav_text_05))
         }
         layout_setting.setOnClickListener {
-
+            ObserverManager.root!!.startActivity(Intent(ObserverManager.context!!, SettingActivity::class.java)
+                    .setFlags(Intent.FLAG_ACTIVITY_NO_USER_ACTION)
+            )
         }
         btn_logout.setOnClickListener {
             if (SharedManager.isLoginCheck()) {

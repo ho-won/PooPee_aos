@@ -42,6 +42,7 @@
     <string name="toast_alphanumeric">영문자와 숫자만 허용합니다</string>
     <string name="toast_alphanumeric_hangul">영문자와 숫자, 한글만 허용합니다</string>
     <string name="toast_please_all_input">모든항목을 입력해주세요</string>
+    <string name="toast_please_name_input">닉네임을 입력해주세요</string>
     <string name="toast_login_condition">아이디/비밀번호를 입력하세요</string>
     <string name="toast_login_fail">로그인에 실패했습니다</string>
     <string name="toast_join_condition_01">비밀번호가 일치하지 않습니다</string>
@@ -103,6 +104,14 @@
     <string name="login_16">서비스 이용약관 동의</string>
     <string name="login_17">위치정보기반 서비스 이용약관 동의</string>
     <string name="login_18">상세보기</string>
+
+    <!-- menu -->
+    <string name="menu_setting_01">로그인을 해주세요</string>
+    <string name="menu_setting_02">로그아웃</string>
+    <string name="menu_setting_03">PUSH 알림</string>
+    <string name="menu_setting_04">개인정보 처리방침</string>
+    <string name="menu_setting_05">서비스 이용약관</string>
+    <string name="menu_setting_06">위치정보기반 서비스 이용약관</string>
 
     <!-- toilet -->
     <string name="toilet_option_01">남성용</string>

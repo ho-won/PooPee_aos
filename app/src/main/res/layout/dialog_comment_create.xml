@@ -45,6 +45,7 @@
                 android:paddingBottom="10dp"
                 android:textColor="@color/text_main"
                 android:textColorHint="@color/main_hint"
+                android:textCursorDrawable="@drawable/cursor_primary"
                 android:textSize="14sp"
                 tools:ignore="Autofill" />
 

@@ -5,6 +5,7 @@ import android.graphics.Color
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.view.View
 import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_join.*
 import kr.ho1.poopee.R
@@ -47,6 +48,11 @@ class JoinActivity : BaseActivity() {
             }
 
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                if (edt_name.text.isEmpty()) {
+                    btn_name_delete.visibility = View.GONE
+                } else {
+                    btn_name_delete.visibility = View.VISIBLE
+                }
                 checkAllInput()
             }
         })
@@ -77,6 +83,11 @@ class JoinActivity : BaseActivity() {
             }
 
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                if (edt_password.text.isEmpty()) {
+                    btn_password_delete.visibility = View.GONE
+                } else {
+                    btn_password_delete.visibility = View.VISIBLE
+                }
                 if (edt_password.text.toString() != edt_password_confirm.text.toString()) {
                     tv_password_ex.text = ObserverManager.context!!.resources.getString(R.string.toast_join_condition_01)
                     tv_password_ex.setTextColor(Color.parseColor("#ff4a5c"))
@@ -99,6 +110,11 @@ class JoinActivity : BaseActivity() {
             }
 
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                if (edt_password_confirm.text.isEmpty()) {
+                    btn_password_confirm_delete.visibility = View.GONE
+                } else {
+                    btn_password_confirm_delete.visibility = View.VISIBLE
+                }
                 if (edt_password.text.toString() != edt_password_confirm.text.toString()) {
                     tv_password_ex.text = ObserverManager.context!!.resources.getString(R.string.toast_join_condition_01)
                     tv_password_ex.setTextColor(Color.parseColor("#ff4a5c"))
@@ -111,6 +127,15 @@ class JoinActivity : BaseActivity() {
                 checkAllInput()
             }
         })
+        btn_name_delete.setOnClickListener {
+            edt_name.setText("")
+        }
+        btn_password_delete.setOnClickListener {
+            edt_password.setText("")
+        }
+        btn_password_confirm_delete.setOnClickListener {
+            edt_password_confirm.setText("")
+        }
         tv_overlap.setOnClickListener {
             taskOverlap(edt_username.text.toString())
         }

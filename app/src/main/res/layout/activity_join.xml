@@ -30,12 +30,30 @@
                 android:textColor="#292d34"
                 android:textSize="24sp" />
 
-            <EditText
-                android:id="@+id/edt_name"
-                style="@style/base_edt"
-                android:layout_marginTop="40dp"
-                android:hint="@string/login_09"
-                tools:ignore="Autofill" />
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="40dp">
+
+                <EditText
+                    android:id="@+id/edt_name"
+                    style="@style/base_edt"
+                    android:hint="@string/login_09"
+                    tools:ignore="Autofill" />
+
+                <ImageButton
+                    android:id="@+id/btn_name_delete"
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="4dp"
+                    android:background="@null"
+                    android:src="@drawable/ic_delete"
+                    android:visibility="gone"
+                    tools:ignore="ContentDescription" />
+
+            </RelativeLayout>
 
             <RadioGroup
                 android:id="@+id/rg_gender"
@@ -111,21 +129,57 @@
 
             </LinearLayout>
 
-            <EditText
-                android:id="@+id/edt_password"
-                style="@style/base_edt"
-                android:layout_marginTop="14dp"
-                android:hint="@string/login_05"
-                android:inputType="textPassword"
-                tools:ignore="Autofill" />
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="14dp">
 
-            <EditText
-                android:id="@+id/edt_password_confirm"
-                style="@style/base_edt"
-                android:layout_marginTop="8dp"
-                android:hint="@string/login_06"
-                android:inputType="textPassword"
-                tools:ignore="Autofill" />
+                <EditText
+                    android:id="@+id/edt_password"
+                    style="@style/base_edt"
+                    android:hint="@string/login_05"
+                    android:inputType="textPassword"
+                    tools:ignore="Autofill" />
+
+                <ImageButton
+                    android:id="@+id/btn_password_delete"
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="4dp"
+                    android:background="@null"
+                    android:src="@drawable/ic_delete"
+                    android:visibility="gone"
+                    tools:ignore="ContentDescription" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp">
+
+                <EditText
+                    android:id="@+id/edt_password_confirm"
+                    style="@style/base_edt"
+                    android:hint="@string/login_06"
+                    android:inputType="textPassword"
+                    tools:ignore="Autofill" />
+
+                <ImageButton
+                    android:id="@+id/btn_password_confirm_delete"
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="4dp"
+                    android:background="@null"
+                    android:src="@drawable/ic_delete"
+                    android:visibility="gone"
+                    tools:ignore="ContentDescription" />
+
+            </RelativeLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"

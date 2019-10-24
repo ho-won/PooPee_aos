@@ -21,6 +21,19 @@ object SharedManager {
     private const val NOTICE_IMAGE = "NOTICE_IMAGE" // 서버공지 이미지
     private const val LATITUDE = "LATITUDE" // latitude
     private const val LONGITUDE = "LONGITUDE" // longitude
+    private const val PUSH = "PUSH" // 푸쉬알림
+
+    fun isPush(): Boolean {
+        val pref = ObserverManager.context!!.getSharedPreferences(ETC, Context.MODE_PRIVATE)
+        return pref.getBoolean(PUSH, true)
+    }
+
+    fun setPush(value: Boolean) {
+        val pref = ObserverManager.context!!.getSharedPreferences(ETC, Context.MODE_PRIVATE)
+        val editor = pref.edit()
+        editor.putBoolean(PUSH, value)
+        editor.apply()
+    }
 
     fun isLoginCheck(): Boolean {
         val pref = ObserverManager.context!!.getSharedPreferences(LOGIN, Context.MODE_PRIVATE)
