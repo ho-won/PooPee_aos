@@ -51,6 +51,9 @@ class ToiletDialog : BaseDialog() {
     }
 
     private fun setListener() {
+        tv_title.setOnClickListener {
+            btn_detail.performClick()
+        }
         btn_detail.setOnClickListener {
             ObserverManager.root!!.startActivity(Intent(ObserverManager.context!!, ToiletActivity::class.java)
                     .setFlags(Intent.FLAG_ACTIVITY_NO_USER_ACTION)
