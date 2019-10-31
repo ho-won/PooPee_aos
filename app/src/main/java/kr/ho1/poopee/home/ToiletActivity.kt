@@ -70,8 +70,6 @@ class ToiletActivity : BaseActivity() {
 
         toolbar.setTitle(mToilet.name)
 
-        mToilet.address_new = mToilet.address_new
-
         val addressText: String = if (mToilet.address_new.count() > 0) {
             mToilet.address_new
         } else {
