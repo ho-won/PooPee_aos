@@ -18,7 +18,7 @@ import java.io.File
 @SuppressLint("StaticFieldLeak")
 object ObserverManager {
     var testServer = false // 테스트용인지 체크
-    var showLog = true // Log 노출여부 체크
+    var isShowLog = true // Log 노출여부 체크
     var serverException = false // Exception 통합관리 및 서버로 보낼지 체크
 
     var root: BaseActivity? = null  // 현재 Activity

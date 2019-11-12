@@ -16,6 +16,13 @@ import java.io.FileOutputStream
 import java.io.IOException
 import java.nio.channels.FileChannel
 import java.security.MessageDigest
+import androidx.core.app.NotificationManagerCompat
+import android.app.NotificationManager
+import android.app.NotificationChannel
+import androidx.core.content.ContextCompat.getSystemService
+import android.os.Build
+
+
 
 object MyUtil {
 
@@ -79,6 +86,27 @@ object MyUtil {
             } finally {
                 toChannel?.close()
             }
+        }
+    }
+
+    /**
+     * device 의 앱 알림상태확인
+     */
+    fun areNotificationsEnabled(): Boolean {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val manager = ObserverManager.context!!.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+            if (!manager.areNotificationsEnabled()) {
+                return false
+            }
+            val channels = manager.notificationChannels
+            for (channel in channels) {
+                if (channel.importance == NotificationManager.IMPORTANCE_NONE) {
+                    return false
+                }
+            }
+            return true
+        } else {
+            return NotificationManagerCompat.from(ObserverManager.context!!).areNotificationsEnabled()
         }
     }
 
