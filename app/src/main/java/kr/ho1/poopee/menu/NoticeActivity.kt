@@ -71,6 +71,7 @@ class NoticeActivity : BaseActivity() {
                 onSuccess = {
                     try {
                         if (it.getInt("rst_code") == 0) {
+                            mNoticeList = ArrayList()
                             val jsonArray = it.getJSONArray("notices")
 
                             for (i in 0 until jsonArray.length()) {
@@ -130,7 +131,6 @@ class NoticeActivity : BaseActivity() {
                 itemView.tv_content.isClickable = true
                 itemView.tv_content.movementMethod = LinkMovementMethod.getInstance()
 
-                mNoticeList[position].openCheck
                 if (mNoticeList[position].openCheck) {
                     itemView.layout_content.visibility = View.VISIBLE
                 } else {

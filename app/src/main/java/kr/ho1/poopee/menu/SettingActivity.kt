@@ -46,6 +46,7 @@ class SettingActivity : BaseActivity() {
             tv_logout.visibility = View.GONE
             iv_login.setImageDrawable(ObserverManager.context!!.resources.getDrawable(R.drawable.ic_profile))
         }
+        switch_push.isChecked = SharedManager.isPush()
     }
 
     private fun setListener() {
