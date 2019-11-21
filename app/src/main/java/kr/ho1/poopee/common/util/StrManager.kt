@@ -44,6 +44,13 @@ object StrManager {
         return (SimpleDateFormat("yyyy-MM-dd")).format(date)
     }
 
+    /**
+     * 자동으로 줄바뀌는현상 방지용
+     */
+    fun getDisableLineChange(value: String): String {
+        return value.replace(".(?!$)".toRegex(), "$0\u200b")
+    }
+
     @SuppressLint("SetTextI18n")
     fun setAddressCopySpan(tv_address: TextView, addressText: String) {
         tv_address.movementMethod = LinkMovementMethod.getInstance()
