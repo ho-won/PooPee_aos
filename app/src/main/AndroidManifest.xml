@@ -33,7 +33,8 @@
             android:value="53565fe7d8355fff626939459a32e7d0" />
 
         <activity
-            android:name=".common.MainActivity">
+            android:name=".common.MainActivity"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

@@ -9,7 +9,7 @@ interface RetrofitService {
     companion object {
         val BASE_APP = if (ObserverManager.testServer) "http://49.236.137.205/PooPee_server/" else "http://49.236.137.205/PooPee_server/"
 
-        const val TEST_API = "test" // test
+        const val TEST_API = "etcs/test" // test
         const val DB_CHECK = "etcs/dbCheck" // [GET] toilet db 버전체크
         const val SERVER_CHECK = "etcs/serverCheck" // [GET] 서버상태체크
         const val LOGIN = "members/login" // [POST] 로그인
@@ -34,8 +34,9 @@ interface RetrofitService {
         const val KAKAO_LOCAL_SEARCH = "local/search/keyword.json" // 카카오지도 키워드 검색
     }
 
-    @GET(TEST_API)
-    fun test(@QueryMap params: Map<String, @JvmSuppressWildcards Any>): Call<ResponseBody>
+    @FormUrlEncoded
+    @POST(TEST_API)
+    fun test(@FieldMap params: Map<String, @JvmSuppressWildcards Any>): Call<ResponseBody>
 
     @GET(KAKAO_LOCAL_SEARCH)
     fun kakaoLocalSearch(@QueryMap params: Map<String, @JvmSuppressWildcards Any>): Call<ResponseBody>

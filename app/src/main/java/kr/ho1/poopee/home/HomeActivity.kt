@@ -23,6 +23,7 @@ import kr.ho1.poopee.common.http.RetrofitJSONObject
 import kr.ho1.poopee.common.http.RetrofitParams
 import kr.ho1.poopee.common.http.RetrofitService
 import kr.ho1.poopee.common.util.LocationManager
+import kr.ho1.poopee.common.util.LogManager
 import kr.ho1.poopee.common.util.MyUtil
 import kr.ho1.poopee.database.ToiletSQLiteManager
 import kr.ho1.poopee.home.model.KaKaoKeyword
@@ -78,7 +79,9 @@ class HomeActivity : BaseActivity(), MapView.POIItemEventListener, MapView.MapVi
 
         // 현재위치기준으로 중심점변경
         if (SharedManager.getLatitude() > 0) {
-            ObserverManager.mapView.setMapCenterPoint(MapPoint.mapPointWithGeoCoord(SharedManager.getLatitude(), SharedManager.getLongitude()), true)
+            ObserverManager.mapView.setMapCenterPoint(MapPoint.mapPointWithGeoCoord(SharedManager.getLatitude(), SharedManager.getLongitude()), false)
+            ObserverManager.addMyPosition(SharedManager.getLatitude(), SharedManager.getLongitude());
+            setMyPosition(View.VISIBLE)
         }
 
         ObserverManager.mapView.setZoomLevel(2, true)
@@ -139,9 +142,11 @@ class HomeActivity : BaseActivity(), MapView.POIItemEventListener, MapView.MapVi
         })
         layout_my_position.setOnClickListener {
             if (SharedManager.getLatitude() > 0) {
+                ObserverManager.addMyPosition(SharedManager.getLatitude(), SharedManager.getLongitude());
                 ObserverManager.mapView.setMapCenterPoint(MapPoint.mapPointWithGeoCoord(SharedManager.getLatitude(), SharedManager.getLongitude()), true)
+                ObserverManager.mapView.setZoomLevel(2, false)
+                setMyPosition(View.VISIBLE)
             }
-            ObserverManager.mapView.setZoomLevel(2, true)
         }
         btn_menu.setOnClickListener {
             drawer_layout.openDrawer(GravityCompat.START)
@@ -163,16 +168,19 @@ class HomeActivity : BaseActivity(), MapView.POIItemEventListener, MapView.MapVi
     override fun onMapViewMoveFinished(p0: MapView?, p1: MapPoint?) {
         val latitude = p0!!.mapCenterPoint.mapPointGeoCoord.latitude
         val longitude = p0.mapCenterPoint.mapPointGeoCoord.longitude
-        Log.e("MapView_MoveFinished", "latitude: $latitude longitude: $longitude")
 
         ObserverManager.mapView.removeAllPOIItems()
         val toiletList = ToiletSQLiteManager.getInstance().getToiletList(latitude, longitude)
         for (toilet in toiletList) {
             ObserverManager.addPOIItem(toilet)
         }
+        if (SharedManager.getLatitude() > 0) {
+            ObserverManager.addMyPosition(SharedManager.getLatitude(), SharedManager.getLongitude());
+        }
     }
 
     override fun onMapViewCenterPointMoved(p0: MapView?, p1: MapPoint?) {
+        setMyPosition(View.GONE)
     }
 
     override fun onMapViewDragEnded(p0: MapView?, p1: MapPoint?) {
@@ -200,17 +208,28 @@ class HomeActivity : BaseActivity(), MapView.POIItemEventListener, MapView.MapVi
      * 카카오지도 아이템 클릭
      */
     override fun onPOIItemSelected(p0: MapView?, p1: MapPOIItem?) {
-        val toilet = ToiletSQLiteManager.getInstance().getToilet(p1!!.tag)
+        if (p1!!.tag > 0) {
+            val toilet = ToiletSQLiteManager.getInstance().getToilet(p1!!.tag)
 
-        val dialog = ToiletDialog()
-        dialog.setToilet(toilet)
-        dialog.show(supportFragmentManager, "ToiletDialog")
+            val dialog = ToiletDialog()
+            dialog.setToilet(toilet)
+            dialog.show(supportFragmentManager, "ToiletDialog")
+        }
     }
 
     private fun checkPopup() {
         if (SharedManager.getNoticeImage().count() > 0) {
             val dialog = PopupDialog()
             dialog.show(supportFragmentManager, "PopupDialog")
+        }
+    }
+
+    private fun setMyPosition(visibility: Int) {
+        lottie_my_position.visibility = visibility
+        if (visibility == View.VISIBLE) {
+            lottie_my_position.playAnimation()
+        } else {
+            lottie_my_position.cancelAnimation()
         }
     }
 
@@ -285,6 +304,7 @@ class HomeActivity : BaseActivity(), MapView.POIItemEventListener, MapView.MapVi
                     ObserverManager.mapView.setMapCenterPoint(MapPoint.mapPointWithGeoCoord(mKeywordList[position].latitude, mKeywordList[position].longitude), true)
                     MyUtil.keyboardHide(edt_search)
                     rv_search.visibility = View.GONE
+                    setMyPosition(View.GONE)
                 }
             }
         }
