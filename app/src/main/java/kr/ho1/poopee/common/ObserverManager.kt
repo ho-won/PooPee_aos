@@ -74,7 +74,7 @@ object ObserverManager {
             mapView.removePOIItem(my_position)
         }
         my_position = MapPOIItem()
-        my_position!!.itemName = "test"
+        my_position!!.itemName = "내위치"
         my_position!!.tag = -1
         my_position!!.mapPoint = MapPoint.mapPointWithGeoCoord(latitude, longitude)
         my_position!!.markerType = MapPOIItem.MarkerType.CustomImage // 마커타입을 커스텀 마커로 지정.

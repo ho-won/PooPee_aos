@@ -15,7 +15,7 @@ interface RetrofitService {
         const val LOGIN = "members/login" // [POST] 로그인
         const val JOIN = "members/join" // [POST] 회원가입
         const val USER_UPDATE = "members/updateUser" // [PUT] 회원정보수정
-        const val OVER_LAP = "members/getOverlap" // [GET] 서버상태체크
+        const val OVER_LAP = "members/getOverlap" // [GET] 아이디 중복체크
         const val NOTICE_LIST = "notices/getNoticeList" // [GET] 공지사항목록
         const val TOILET_INFO = "toilets/getToiletInfo" // [GET] 화장실 정보
         const val TOILET_LIKE = "toiletLikes/setToiletLike" // [POST] 좋아요

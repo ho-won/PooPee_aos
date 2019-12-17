@@ -143,7 +143,7 @@ class HomeActivity : BaseActivity(), MapView.POIItemEventListener, MapView.MapVi
         layout_my_position.setOnClickListener {
             if (SharedManager.getLatitude() > 0) {
                 ObserverManager.addMyPosition(SharedManager.getLatitude(), SharedManager.getLongitude());
-                ObserverManager.mapView.setMapCenterPoint(MapPoint.mapPointWithGeoCoord(SharedManager.getLatitude(), SharedManager.getLongitude()), true)
+                ObserverManager.mapView.setMapCenterPoint(MapPoint.mapPointWithGeoCoord(SharedManager.getLatitude(), SharedManager.getLongitude()), false)
                 ObserverManager.mapView.setZoomLevel(2, false)
                 setMyPosition(View.VISIBLE)
             }
