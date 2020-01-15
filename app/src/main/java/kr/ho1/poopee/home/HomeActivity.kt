@@ -1,10 +1,10 @@
 package kr.ho1.poopee.home
 
 import android.annotation.SuppressLint
+import android.location.Location
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -23,7 +23,6 @@ import kr.ho1.poopee.common.http.RetrofitJSONObject
 import kr.ho1.poopee.common.http.RetrofitParams
 import kr.ho1.poopee.common.http.RetrofitService
 import kr.ho1.poopee.common.util.LocationManager
-import kr.ho1.poopee.common.util.LogManager
 import kr.ho1.poopee.common.util.MyUtil
 import kr.ho1.poopee.database.ToiletSQLiteManager
 import kr.ho1.poopee.home.model.KaKaoKeyword
@@ -43,6 +42,8 @@ class HomeActivity : BaseActivity(), MapView.POIItemEventListener, MapView.MapVi
     private var mRootViewHeight = 0 // 키보드 제외 높이
     private var mIsKeyboardShow = false // 키보드 노출 상태
     private val mRvHeight = MyUtil.dpToPx(240)
+
+    private var mIsMyPositionMove = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -142,6 +143,7 @@ class HomeActivity : BaseActivity(), MapView.POIItemEventListener, MapView.MapVi
         })
         layout_my_position.setOnClickListener {
             if (SharedManager.getLatitude() > 0) {
+                mIsMyPositionMove = true
                 ObserverManager.addMyPosition(SharedManager.getLatitude(), SharedManager.getLongitude());
                 ObserverManager.mapView.setMapCenterPoint(MapPoint.mapPointWithGeoCoord(SharedManager.getLatitude(), SharedManager.getLongitude()), false)
                 ObserverManager.mapView.setZoomLevel(2, false)
@@ -160,6 +162,7 @@ class HomeActivity : BaseActivity(), MapView.POIItemEventListener, MapView.MapVi
     }
 
     override fun onMapViewDragStarted(p0: MapView?, p1: MapPoint?) {
+        mIsMyPositionMove = false
     }
 
     /**
@@ -299,6 +302,7 @@ class HomeActivity : BaseActivity(), MapView.POIItemEventListener, MapView.MapVi
                 itemView.tv_sub.text = mKeywordList[position].address_name
 
                 itemView.setOnClickListener {
+                    mIsMyPositionMove = false
                     edt_search.setText(mKeywordList[position].place_name)
                     edt_search.setSelection(mKeywordList[position].place_name.count())
                     ObserverManager.mapView.setMapCenterPoint(MapPoint.mapPointWithGeoCoord(mKeywordList[position].latitude, mKeywordList[position].longitude), true)
@@ -307,6 +311,15 @@ class HomeActivity : BaseActivity(), MapView.POIItemEventListener, MapView.MapVi
                     setMyPosition(View.GONE)
                 }
             }
+        }
+    }
+
+    override fun onLocationChanged(location: Location) {
+        // 현재위치기준으로 중심점변경
+        if (mIsMyPositionMove && SharedManager.getLatitude() > 0) {
+            ObserverManager.mapView.setMapCenterPoint(MapPoint.mapPointWithGeoCoord(SharedManager.getLatitude(), SharedManager.getLongitude()), false)
+            ObserverManager.addMyPosition(SharedManager.getLatitude(), SharedManager.getLongitude());
+            setMyPosition(View.VISIBLE)
         }
     }
 

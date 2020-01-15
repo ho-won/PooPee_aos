@@ -1,6 +1,7 @@
 package kr.ho1.poopee.common.base
 
 import android.annotation.SuppressLint
+import android.location.Location
 import android.os.Bundle
 import android.view.View
 import android.widget.RelativeLayout
@@ -48,6 +49,10 @@ abstract class BaseActivity : AppCompatActivity() {
     }
 
     open fun setToolbar() {
+
+    }
+
+    open fun onLocationChanged(location: Location) {
 
     }
 
