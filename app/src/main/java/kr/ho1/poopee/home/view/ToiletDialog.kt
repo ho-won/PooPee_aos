@@ -2,6 +2,7 @@ package kr.ho1.poopee.home.view
 
 import android.annotation.SuppressLint
 import android.content.Intent
+import android.location.Geocoder
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -18,6 +19,7 @@ import kr.ho1.poopee.common.util.StrManager
 import kr.ho1.poopee.home.ToiletActivity
 import kr.ho1.poopee.home.model.Toilet
 import org.json.JSONException
+
 
 @SuppressLint("ValidFragment")
 class ToiletDialog : BaseDialog() {
@@ -37,11 +39,23 @@ class ToiletDialog : BaseDialog() {
     private fun init() {
         tv_title.text = mToilet.name
 
-        val addressText: String = if (mToilet.address_new.count() > 0) {
-            mToilet.address_new
+        var addressText = ""
+
+        if (mToilet.address_new.count() > 0) {
+            addressText = mToilet.address_new
+        } else if (mToilet.address_new.count() > 0) {
+            addressText = mToilet.address_old
         } else {
-            mToilet.address_old
+            // 휴게소, 졸음쉼터는 주소정보가 없어서 Geocode 로 주소 찾기
+            val geocode = Geocoder(ObserverManager.context)
+            val list = geocode.getFromLocation(mToilet.latitude, mToilet.longitude, 1)
+            if (list != null && list.size > 0) {
+                addressText = list[0].getAddressLine(0)
+                addressText = addressText.replace("대한민국 ", "")
+                mToilet.address_new = addressText
+            }
         }
+
         StrManager.setAddressCopySpan(tv_address, addressText)
 
         tv_comment_count.text = mToilet.comment_count

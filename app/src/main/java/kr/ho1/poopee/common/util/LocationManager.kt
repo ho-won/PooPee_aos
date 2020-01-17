@@ -28,6 +28,7 @@ object LocationManager {
             override fun onLocationChanged(location: Location) {
                 SharedManager.setLatitude(location.latitude)
                 SharedManager.setLongitude(location.longitude)
+                ObserverManager.root!!.onLocationChanged(location)
             }
 
             override fun onStatusChanged(provider: String, status: Int, extras: Bundle) {

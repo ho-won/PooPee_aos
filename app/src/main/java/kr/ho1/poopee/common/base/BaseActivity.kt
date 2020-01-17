@@ -8,6 +8,7 @@ import android.widget.RelativeLayout
 import androidx.appcompat.app.AppCompatActivity
 import kr.ho1.poopee.R
 import kr.ho1.poopee.common.ObserverManager
+import java.util.logging.LogManager
 
 abstract class BaseActivity : AppCompatActivity() {
     private var progressView: RelativeLayout? = null
@@ -53,7 +54,7 @@ abstract class BaseActivity : AppCompatActivity() {
     }
 
     open fun onLocationChanged(location: Location) {
-
+        kr.ho1.poopee.common.util.LogManager.e(location.bearing)
     }
 
 }
