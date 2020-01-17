@@ -43,7 +43,7 @@ class ToiletDialog : BaseDialog() {
 
         if (mToilet.address_new.count() > 0) {
             addressText = mToilet.address_new
-        } else if (mToilet.address_new.count() > 0) {
+        } else if (mToilet.address_old.count() > 0) {
             addressText = mToilet.address_old
         } else {
             // 휴게소, 졸음쉼터는 주소정보가 없어서 Geocode 로 주소 찾기

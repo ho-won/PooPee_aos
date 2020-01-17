@@ -21,10 +21,15 @@ import android.app.NotificationManager
 import android.app.NotificationChannel
 import androidx.core.content.ContextCompat.getSystemService
 import android.os.Build
-
+import android.util.DisplayMetrics
 
 
 object MyUtil {
+
+    fun getDeviceWidth(): Int {
+        val display = ObserverManager.root!!.windowManager.defaultDisplay
+        return display.width
+    }
 
     fun getDeviceHeight(): Int {
         val display = ObserverManager.root!!.windowManager.defaultDisplay
@@ -33,6 +38,13 @@ object MyUtil {
 
     fun dpToPx(dp: Int): Int {
         return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp.toFloat(), ObserverManager.context!!.resources.displayMetrics).toInt()
+    }
+
+    fun pxToDp(px: Int): Int {
+        val resources = ObserverManager.context!!.resources
+        val metrics = resources.displayMetrics
+        val dp = px / (metrics.densityDpi.toFloat() / DisplayMetrics.DENSITY_DEFAULT)
+        return dp.toInt()
     }
 
     fun getStatusBarHeight(): Int {

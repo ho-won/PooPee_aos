@@ -15,9 +15,7 @@ import kr.ho1.poopee.common.base.BaseApp
 import kr.ho1.poopee.common.data.SharedManager
 import kr.ho1.poopee.common.dialog.BasicDialog
 import kr.ho1.poopee.common.http.*
-import kr.ho1.poopee.common.util.LocationManager
-import kr.ho1.poopee.common.util.PermissionManager
-import kr.ho1.poopee.common.util.SleepTask
+import kr.ho1.poopee.common.util.*
 import kr.ho1.poopee.home.HomeActivity
 import org.json.JSONException
 import org.json.JSONObject
