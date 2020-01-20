@@ -2,7 +2,6 @@ package kr.ho1.poopee.home.view
 
 import android.annotation.SuppressLint
 import android.content.Intent
-import android.location.Geocoder
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -46,14 +45,8 @@ class ToiletDialog : BaseDialog() {
         } else if (mToilet.address_old.count() > 0) {
             addressText = mToilet.address_old
         } else {
-            // 휴게소, 졸음쉼터는 주소정보가 없어서 Geocode 로 주소 찾기
-            val geocode = Geocoder(ObserverManager.context)
-            val list = geocode.getFromLocation(mToilet.latitude, mToilet.longitude, 1)
-            if (list != null && list.size > 0) {
-                addressText = list[0].getAddressLine(0)
-                addressText = addressText.replace("대한민국 ", "")
-                mToilet.address_new = addressText
-            }
+            // 휴게소, 졸음쉼터는 주소정보가 없어서 카카오 api 로 주소 찾기
+            taskKakaoCoordToAddress()
         }
 
         StrManager.setAddressCopySpan(tv_address, addressText)
@@ -98,6 +91,42 @@ class ToiletDialog : BaseDialog() {
 
                             tv_comment_count.text = mToilet.comment_count
                             tv_like_count.text = mToilet.like_count
+                        }
+                    } catch (e: JSONException) {
+                        e.printStackTrace()
+                    }
+                },
+                onFailed = {
+
+                }
+        )
+    }
+
+    /**
+     * [GET] 카카오 좌표 -> 주소 변환
+     */
+    private fun taskKakaoCoordToAddress() {
+        val params = RetrofitParams()
+        params.put("x", mToilet.longitude) // longitude
+        params.put("y", mToilet.latitude) // latitude
+
+        val request = RetrofitClient.getClientKaKao(RetrofitService.KAKAO_LOCAL).create(RetrofitService::class.java).kakaoLocalCoordToAddress(params.getParams())
+
+        RetrofitJSONObject(request,
+                onSuccess = {
+                    try {
+                        val totalCount = it.getJSONObject("meta").getInt("total_count")
+                        if (totalCount > 0) {
+                            val jsonObject = it.getJSONArray("documents").getJSONObject(0)
+
+                            var addressText = ""
+                            if (!jsonObject.isNull("road_address")) {
+                                addressText = jsonObject.getJSONObject("road_address").getString("address_name")
+                            } else if (!jsonObject.isNull("address")) {
+                                addressText = jsonObject.getJSONObject("address").getString("address_name")
+                            }
+                            mToilet.address_new = addressText
+                            StrManager.setAddressCopySpan(tv_address, addressText)
                         }
                     } catch (e: JSONException) {
                         e.printStackTrace()
