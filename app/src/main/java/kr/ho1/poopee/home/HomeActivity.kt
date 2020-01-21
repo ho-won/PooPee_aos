@@ -43,7 +43,11 @@ class HomeActivity : BaseActivity(), MapView.POIItemEventListener, MapView.MapVi
     private var mIsKeyboardShow = false // 키보드 노출 상태
     private val mRvHeight = MyUtil.dpToPx(240)
 
-    private var mIsMyPositionMove = true
+    private var mIsMyPositionMove = true // 내위치기준으로 맵중심이동여부
+    private var mIsFirstOnCreate = true // onCreate 체크 (내위치기준으로 맵중심을 이동할지 확인하기위해)
+
+    private var mLastLatitude: Double = 0.0 // 마지막 중심 latitude
+    private var mLastLongitude: Double = 0.0 // 마지막 중심 longitude
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -79,14 +83,22 @@ class HomeActivity : BaseActivity(), MapView.POIItemEventListener, MapView.MapVi
         map_view.addView(ObserverManager.mapView)
 
         // 현재위치기준으로 중심점변경
-        if (SharedManager.getLatitude() > 0) {
-            ObserverManager.mapView.setMapCenterPoint(MapPoint.mapPointWithGeoCoord(SharedManager.getLatitude(), SharedManager.getLongitude()), false)
-            ObserverManager.addMyPosition(SharedManager.getLatitude(), SharedManager.getLongitude());
-            setMyPosition(View.VISIBLE)
+        if (mIsFirstOnCreate) {
+            mIsFirstOnCreate = false
+            if (SharedManager.getLatitude() > 0) {
+                ObserverManager.mapView.setMapCenterPoint(MapPoint.mapPointWithGeoCoord(SharedManager.getLatitude(), SharedManager.getLongitude()), false)
+                ObserverManager.addMyPosition(SharedManager.getLatitude(), SharedManager.getLongitude());
+                setMyPosition(View.VISIBLE)
+            }
+        } else {
+            if (mLastLatitude == 0.0) {
+                mLastLatitude = ObserverManager.mapView.mapCenterPoint.mapPointGeoCoord.latitude
+                mLastLongitude = ObserverManager.mapView.mapCenterPoint.mapPointGeoCoord.longitude
+            }
+            ObserverManager.mapView.setMapCenterPoint(MapPoint.mapPointWithGeoCoord(mLastLatitude, mLastLongitude), false)
         }
 
         ObserverManager.mapView.setZoomLevel(2, true)
-
         ObserverManager.mapView.setPOIItemEventListener(this)
         ObserverManager.mapView.setMapViewEventListener(this)
     }
@@ -169,11 +181,11 @@ class HomeActivity : BaseActivity(), MapView.POIItemEventListener, MapView.MapVi
      * 카카오지도 이동완료 콜백
      */
     override fun onMapViewMoveFinished(p0: MapView?, p1: MapPoint?) {
-        val latitude = p0!!.mapCenterPoint.mapPointGeoCoord.latitude
-        val longitude = p0.mapCenterPoint.mapPointGeoCoord.longitude
+        mLastLatitude = p0!!.mapCenterPoint.mapPointGeoCoord.latitude
+        mLastLongitude = p0.mapCenterPoint.mapPointGeoCoord.longitude
 
         ObserverManager.mapView.removeAllPOIItems()
-        val toiletList = ToiletSQLiteManager.getInstance().getToiletList(latitude, longitude)
+        val toiletList = ToiletSQLiteManager.getInstance().getToiletList(mLastLatitude, mLastLongitude)
         for (toilet in toiletList) {
             ObserverManager.addPOIItem(toilet)
         }
