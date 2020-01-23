@@ -45,7 +45,6 @@ class HomeActivity : BaseActivity(), MapView.POIItemEventListener, MapView.MapVi
 
     private var mIsMyPositionMove = true // 내위치기준으로 맵중심이동여부
     private var mIsFirstOnCreate = true // onCreate 체크 (내위치기준으로 맵중심을 이동할지 확인하기위해)
-
     private var mLastLatitude: Double = 0.0 // 마지막 중심 latitude
     private var mLastLongitude: Double = 0.0 // 마지막 중심 longitude
 
