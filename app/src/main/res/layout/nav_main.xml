@@ -40,7 +40,7 @@
                 android:gravity="center_horizontal"
                 android:lineSpacingExtra="3sp"
                 android:textColor="#292d34"
-                android:textSize="13sp" />
+                android:textSize="14sp" />
 
         </LinearLayout>
 
@@ -72,7 +72,7 @@
                     android:lineSpacingExtra="6sp"
                     android:text="@string/nav_text_01"
                     android:textColor="#292d34"
-                    android:textSize="11sp"
+                    android:textSize="13sp"
                     tools:ignore="SmallSp" />
 
             </LinearLayout>
@@ -98,7 +98,7 @@
                     android:lineSpacingExtra="6sp"
                     android:text="@string/nav_text_02"
                     android:textColor="#292d34"
-                    android:textSize="11sp"
+                    android:textSize="13sp"
                     tools:ignore="SmallSp" />
 
             </LinearLayout>
@@ -124,7 +124,7 @@
                     android:lineSpacingExtra="6sp"
                     android:text="@string/nav_text_03"
                     android:textColor="#292d34"
-                    android:textSize="11sp"
+                    android:textSize="13sp"
                     tools:ignore="SmallSp" />
 
             </LinearLayout>
@@ -150,7 +150,7 @@
                     android:lineSpacingExtra="6sp"
                     android:text="@string/nav_text_04"
                     android:textColor="#292d34"
-                    android:textSize="11sp"
+                    android:textSize="13sp"
                     tools:ignore="SmallSp" />
 
             </LinearLayout>

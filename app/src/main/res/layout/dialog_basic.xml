@@ -69,8 +69,7 @@
                 android:paddingRight="16dp"
                 android:textAllCaps="false"
                 android:textColor="@color/dialog_text_btn_left"
-                android:textSize="16sp"
-                android:textStyle="bold" />
+                android:textSize="13sp" />
 
             <TextView
                 android:id="@+id/btn_center"
@@ -81,8 +80,7 @@
                 android:paddingRight="16dp"
                 android:textAllCaps="false"
                 android:textColor="@color/dialog_text_btn_left"
-                android:textSize="16sp"
-                android:textStyle="bold" />
+                android:textSize="13sp" />
 
             <TextView
                 android:id="@+id/btn_right"
@@ -93,8 +91,7 @@
                 android:paddingRight="16dp"
                 android:textAllCaps="false"
                 android:textColor="@color/dialog_text_btn_right"
-                android:textSize="16sp"
-                android:textStyle="bold" />
+                android:textSize="13sp" />
 
         </LinearLayout>
 

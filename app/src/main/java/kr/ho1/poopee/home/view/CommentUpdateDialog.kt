@@ -8,6 +8,7 @@ import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import kotlinx.android.synthetic.main.dialog_comment_create.*
 import kotlinx.android.synthetic.main.dialog_comment_update.*
 import kr.ho1.poopee.R
 import kr.ho1.poopee.common.base.BaseDialog
@@ -16,6 +17,8 @@ import kr.ho1.poopee.common.http.RetrofitClient
 import kr.ho1.poopee.common.http.RetrofitJSONObject
 import kr.ho1.poopee.common.http.RetrofitParams
 import kr.ho1.poopee.common.http.RetrofitService
+import kr.ho1.poopee.common.util.MyUtil
+import kr.ho1.poopee.common.util.SleepTask
 import kr.ho1.poopee.home.model.Comment
 import org.json.JSONException
 import retrofit2.http.PUT
@@ -37,6 +40,10 @@ class CommentUpdateDialog(private var onUpdate: ((comment: Comment) -> Unit)) : 
 
     private fun init() {
         edt_content.setText(mComment.content)
+        SleepTask(100, onFinish = {
+            edt_content.requestFocus()
+            MyUtil.keyboardShow(edt_content)
+        }).execute()
     }
 
     private fun setListener() {
@@ -99,6 +106,11 @@ class CommentUpdateDialog(private var onUpdate: ((comment: Comment) -> Unit)) : 
 
                 }
         )
+    }
+
+    override fun dismiss() {
+        MyUtil.keyboardHide(edt_content)
+        super.dismiss()
     }
 
 }

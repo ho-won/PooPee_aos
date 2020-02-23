@@ -60,6 +60,9 @@ class CommentCreateDialog(private var onCreate: ((comment: String) -> Unit)) : B
                 }
             }
         })
+        btn_comment_delete.setOnClickListener {
+            edt_comment.setText("")
+        }
         btn_send.setOnClickListener {
             onCreate(edt_comment.text.toString())
             dismiss()

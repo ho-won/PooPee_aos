@@ -342,8 +342,7 @@ class ToiletActivity : BaseActivity() {
                 onSuccess = {
                     try {
                         if (it.getInt("rst_code") == 0) {
-                            mCommentList.removeAt(position)
-                            mRecyclerAdapter.notifyItemRemoved(position)
+                            taskCommentList()
                             Toast.makeText(ObserverManager.context!!, ObserverManager.context!!.resources.getString(R.string.toast_delete_complete), Toast.LENGTH_SHORT).show()
                         }
                     } catch (e: JSONException) {

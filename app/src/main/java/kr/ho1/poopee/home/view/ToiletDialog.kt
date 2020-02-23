@@ -66,6 +66,7 @@ class ToiletDialog : BaseDialog() {
                     .setFlags(Intent.FLAG_ACTIVITY_NO_USER_ACTION)
                     .putExtra(ToiletActivity.TOILET, mToilet)
             )
+            dismiss()
         }
         btn_close.setOnClickListener {
             dismiss()

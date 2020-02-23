@@ -42,7 +42,7 @@ object LocationManager {
         }
 
         try {
-            locationManager!!.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0L, 0f, locationListener)
+            locationManager!!.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 3000L, 5f, locationListener)
         } catch (e: Exception) {
             e.printStackTrace()
         }
