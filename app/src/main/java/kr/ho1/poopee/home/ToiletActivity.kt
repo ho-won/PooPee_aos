@@ -172,6 +172,9 @@ class ToiletActivity : BaseActivity() {
     }
 
     private fun setListener() {
+        map_view_click.setOnClickListener {
+            finish()
+        }
         btn_like.setOnClickListener {
             if (SharedManager.isLoginCheck()) {
                 taskToiletLike()
