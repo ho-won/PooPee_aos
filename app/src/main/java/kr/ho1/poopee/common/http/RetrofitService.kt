@@ -7,7 +7,7 @@ import retrofit2.http.*
 
 interface RetrofitService {
     companion object {
-        val BASE_APP = if (ObserverManager.testServer) "http://49.236.137.205/PooPee_server/" else "http://49.236.137.205/PooPee_server/"
+        val BASE_APP = if (ObserverManager.testServer) "http://poopee.ho1.co.kr/" else "http://poopee.ho1.co.kr/"
 
         const val TEST_API = "etcs/test" // test
         const val DB_CHECK = "etcs/dbCheck" // [GET] toilet db 버전체크
