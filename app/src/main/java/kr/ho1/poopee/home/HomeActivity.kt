@@ -14,7 +14,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.activity_home.*
 import kotlinx.android.synthetic.main.item_kakao_keyword.view.*
-import kr.ho1.poopee.R
 import kr.ho1.poopee.common.ObserverManager
 import kr.ho1.poopee.common.base.BaseActivity
 import kr.ho1.poopee.common.data.SharedManager
@@ -32,6 +31,12 @@ import net.daum.mf.map.api.MapPOIItem
 import net.daum.mf.map.api.MapPoint
 import net.daum.mf.map.api.MapView
 import org.json.JSONException
+import com.google.android.gms.ads.AdListener
+import com.google.android.gms.ads.MobileAds
+import android.util.Log
+import com.google.android.gms.ads.AdRequest
+import kr.ho1.poopee.R
+
 
 @Suppress("DEPRECATION")
 class HomeActivity : BaseActivity(), MapView.POIItemEventListener, MapView.MapViewEventListener {
@@ -51,6 +56,9 @@ class HomeActivity : BaseActivity(), MapView.POIItemEventListener, MapView.MapVi
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
+
+        MobileAds.initialize(this, ObserverManager.context!!.resources.getString(R.string.admob_app_id))
+        ad_view.loadAd(AdRequest.Builder().build())
 
         init()
         setListener()

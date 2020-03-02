@@ -9,7 +9,12 @@ import android.widget.Toast
 import androidx.appcompat.widget.PopupMenu
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.MobileAds
+import kotlinx.android.synthetic.main.activity_home.*
 import kotlinx.android.synthetic.main.activity_toilet.*
+import kotlinx.android.synthetic.main.activity_toilet.ad_view
+import kotlinx.android.synthetic.main.activity_toilet.map_view
 import kotlinx.android.synthetic.main.item_toilet_comment.view.*
 import kotlinx.android.synthetic.main.view_toolbar.view.*
 import kr.ho1.poopee.R
@@ -49,6 +54,9 @@ class ToiletActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_toilet)
         setToolbar()
+
+        MobileAds.initialize(this, ObserverManager.context!!.resources.getString(R.string.admob_app_id))
+        ad_view.loadAd(AdRequest.Builder().build())
 
         init()
         setListener()

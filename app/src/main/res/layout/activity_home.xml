@@ -78,7 +78,7 @@
             android:id="@+id/layout_bottom"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_above="@+id/layout_ad_mob">
+            android:layout_above="@+id/ad_view">
 
             <RelativeLayout
                 android:id="@+id/layout_bottom_bg"
@@ -182,12 +182,15 @@
 
         </RelativeLayout>
 
-        <FrameLayout
-            android:id="@+id/layout_ad_mob"
+        <com.google.android.gms.ads.AdView xmlns:ads="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/ad_view"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
-            android:background="@drawable/img_banner_ex" />
+            android:minHeight="50dp"
+            android:background="#EFEFEF"
+            ads:adSize="BANNER"
+            ads:adUnitId="@string/banner_ad_unit_id" />
 
     </RelativeLayout>
 

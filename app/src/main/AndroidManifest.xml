@@ -32,6 +32,10 @@
             android:name="com.kakao.sdk.AppKey"
             android:value="53565fe7d8355fff626939459a32e7d0" />
 
+        <meta-data
+            android:name="com.google.android.gms.ads.APPLICATION_ID"
+            android:value="@string/admob_app_id"/>
+
         <activity
             android:name=".common.MainActivity"
             android:screenOrientation="portrait">

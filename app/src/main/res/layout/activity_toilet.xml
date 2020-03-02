@@ -615,11 +615,14 @@
 
             </LinearLayout>
 
-            <FrameLayout
-                android:id="@+id/layout_ad_mob"
+            <com.google.android.gms.ads.AdView xmlns:ads="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/ad_view"
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:background="@drawable/img_banner_ex" />
+                android:layout_height="wrap_content"
+                android:background="#EFEFEF"
+                android:minHeight="50dp"
+                ads:adSize="BANNER"
+                ads:adUnitId="@string/banner_ad_unit_id" />
 
             <LinearLayout
                 android:layout_width="match_parent"

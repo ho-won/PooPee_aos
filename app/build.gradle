@@ -12,6 +12,7 @@ android {
         versionCode 1
         versionName "1.0.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        multiDexEnabled true
     }
     buildTypes {
         release {
@@ -52,6 +53,8 @@ dependencies {
     implementation 'com.squareup.picasso:picasso:2.71828' // 이미지 캐시
     implementation 'com.makeramen:roundedimageview:2.3.0' // 이미지 라운드처리
 
-    implementation 'com.airbnb.android:lottie:3.1.0'
+    implementation 'com.airbnb.android:lottie:3.3.1'
+
+    implementation 'com.google.android.gms:play-services-ads:18.3.0' // 애드몹광고
 
 }
