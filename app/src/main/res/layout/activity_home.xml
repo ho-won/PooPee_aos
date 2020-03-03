@@ -194,7 +194,7 @@
 
     </RelativeLayout>
 
-    <kr.ho1.poopee.home.view.NavMainView
+    <kr.co.ho1.poopee.home.view.NavMainView
         android:id="@+id/nav_view"
         android:layout_width="@dimen/home_menu_width"
         android:layout_height="match_parent"

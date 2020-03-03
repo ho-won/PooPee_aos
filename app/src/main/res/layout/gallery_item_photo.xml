@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<kr.ho1.poopee.common.view.SquareFrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<kr.co.ho1.poopee.common.view.SquareFrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:square="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -50,4 +50,4 @@
 
     </FrameLayout>
 
-</kr.ho1.poopee.common.view.SquareFrameLayout>
+</kr.co.ho1.poopee.common.view.SquareFrameLayout>

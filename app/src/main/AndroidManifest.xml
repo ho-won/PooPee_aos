@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="kr.ho1.poopee">
+    package="kr.co.ho1.poopee">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -12,7 +12,7 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
-        android:name=".common.base.BaseApp"
+        android:name="kr.co.ho1.poopee.common.base.BaseApp"
         android:allowBackup="true"
         android:appComponentFactory="whateverString"
         android:icon="@mipmap/ic_launcher"
@@ -37,7 +37,7 @@
             android:value="@string/admob_app_id"/>
 
         <activity
-            android:name=".common.MainActivity"
+            android:name="kr.co.ho1.poopee.common.MainActivity"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -48,52 +48,52 @@
 
         <!-- home -->
         <activity
-            android:name=".home.HomeActivity"
+            android:name="kr.co.ho1.poopee.home.HomeActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize|stateHidden" />
         <activity
-            android:name=".home.ToiletActivity"
+            android:name="kr.co.ho1.poopee.home.ToiletActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize|stateHidden" />
 
         <!-- etc -->
         <activity
-            android:name=".gallery.GalleryPhotoActivity"
+            android:name="kr.co.ho1.poopee.gallery.GalleryPhotoActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize|stateHidden" />
 
         <!-- login -->
         <activity
-            android:name=".login.LoginActivity"
+            android:name="kr.co.ho1.poopee.login.LoginActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppThemeLogin"
             android:windowSoftInputMode="adjustResize|stateHidden" />
         <activity
-            android:name=".login.JoinActivity"
+            android:name="kr.co.ho1.poopee.login.JoinActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize|stateHidden" />
         <activity
-            android:name=".login.TermsActivity"
+            android:name="kr.co.ho1.poopee.login.TermsActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize|stateHidden" />
 
         <!-- menu -->
         <activity
-            android:name=".menu.MyInfoActivity"
+            android:name="kr.co.ho1.poopee.menu.MyInfoActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize|stateHidden" />
         <activity
-            android:name=".menu.NoticeActivity"
+            android:name="kr.co.ho1.poopee.menu.NoticeActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize|stateHidden" />
         <activity
-            android:name=".menu.SettingActivity"
+            android:name="kr.co.ho1.poopee.menu.SettingActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize|stateHidden" />
 
         <provider
             android:name="androidx.core.content.FileProvider"
-            android:authorities="kr.ho1.poopee.fileprovider"
+            android:authorities="kr.co.ho1.poopee.fileprovider"
             android:exported="false"
             android:grantUriPermissions="true">
             <meta-data
