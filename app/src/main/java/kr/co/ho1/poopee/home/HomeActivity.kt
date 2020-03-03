@@ -92,7 +92,7 @@ class HomeActivity : BaseActivity(), MapView.POIItemEventListener, MapView.MapVi
             mIsFirstOnCreate = false
             if (SharedManager.getLatitude() > 0) {
                 ObserverManager.mapView.setMapCenterPoint(MapPoint.mapPointWithGeoCoord(SharedManager.getLatitude(), SharedManager.getLongitude()), false)
-                ObserverManager.addMyPosition(SharedManager.getLatitude(), SharedManager.getLongitude());
+                ObserverManager.addMyPosition(SharedManager.getLatitude(), SharedManager.getLongitude())
                 setMyPosition(View.VISIBLE)
             }
         } else {
@@ -161,7 +161,7 @@ class HomeActivity : BaseActivity(), MapView.POIItemEventListener, MapView.MapVi
         layout_my_position.setOnClickListener {
             if (SharedManager.getLatitude() > 0) {
                 mIsMyPositionMove = true
-                ObserverManager.addMyPosition(SharedManager.getLatitude(), SharedManager.getLongitude());
+                ObserverManager.addMyPosition(SharedManager.getLatitude(), SharedManager.getLongitude())
                 ObserverManager.mapView.setMapCenterPoint(MapPoint.mapPointWithGeoCoord(SharedManager.getLatitude(), SharedManager.getLongitude()), false)
                 ObserverManager.mapView.setZoomLevel(2, false)
                 setMyPosition(View.VISIBLE)
@@ -195,7 +195,7 @@ class HomeActivity : BaseActivity(), MapView.POIItemEventListener, MapView.MapVi
             ObserverManager.addPOIItem(toilet)
         }
         if (SharedManager.getLatitude() > 0) {
-            ObserverManager.addMyPosition(SharedManager.getLatitude(), SharedManager.getLongitude());
+            ObserverManager.addMyPosition(SharedManager.getLatitude(), SharedManager.getLongitude())
         }
     }
 
@@ -229,7 +229,7 @@ class HomeActivity : BaseActivity(), MapView.POIItemEventListener, MapView.MapVi
      */
     override fun onPOIItemSelected(p0: MapView?, p1: MapPOIItem?) {
         if (p1!!.tag > 0) {
-            val toilet = ToiletSQLiteManager.getInstance().getToilet(p1!!.tag)
+            val toilet = ToiletSQLiteManager.getInstance().getToilet(p1.tag)
 
             val dialog = ToiletDialog()
             dialog.setToilet(toilet)
@@ -335,7 +335,7 @@ class HomeActivity : BaseActivity(), MapView.POIItemEventListener, MapView.MapVi
         // 현재위치기준으로 중심점변경
         if (mIsMyPositionMove && SharedManager.getLatitude() > 0) {
             ObserverManager.mapView.setMapCenterPoint(MapPoint.mapPointWithGeoCoord(SharedManager.getLatitude(), SharedManager.getLongitude()), false)
-            ObserverManager.addMyPosition(SharedManager.getLatitude(), SharedManager.getLongitude());
+            ObserverManager.addMyPosition(SharedManager.getLatitude(), SharedManager.getLongitude())
             setMyPosition(View.VISIBLE)
         }
     }

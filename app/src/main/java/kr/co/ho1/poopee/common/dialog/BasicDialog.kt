@@ -5,9 +5,9 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import kotlinx.android.synthetic.main.dialog_basic.*
 import kr.co.ho1.poopee.R
 import kr.co.ho1.poopee.common.base.BaseDialog
-import kotlinx.android.synthetic.main.dialog_basic.*
 
 @SuppressLint("ValidFragment")
 class BasicDialog(private var onLeftButton: (() -> Unit), private var onCenterButton: (() -> Unit), private var onRightButton: (() -> Unit)) : BaseDialog() {

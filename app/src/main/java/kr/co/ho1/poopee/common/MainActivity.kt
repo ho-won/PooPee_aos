@@ -18,8 +18,6 @@ import kr.co.ho1.poopee.common.http.*
 import kr.co.ho1.poopee.common.util.LocationManager
 import kr.co.ho1.poopee.common.util.PermissionManager
 import kr.co.ho1.poopee.common.util.SleepTask
-import kr.co.ho1.poopee.common.http.*
-import kr.co.ho1.poopee.common.util.*
 import kr.co.ho1.poopee.home.HomeActivity
 import org.json.JSONException
 import org.json.JSONObject

@@ -8,7 +8,6 @@ import android.widget.RelativeLayout
 import androidx.appcompat.app.AppCompatActivity
 import kr.co.ho1.poopee.R
 import kr.co.ho1.poopee.common.ObserverManager
-import java.util.logging.LogManager
 
 abstract class BaseActivity : AppCompatActivity() {
     private var progressView: RelativeLayout? = null

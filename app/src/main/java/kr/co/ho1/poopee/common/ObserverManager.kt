@@ -5,9 +5,7 @@ package kr.co.ho1.poopee.common
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
-import android.graphics.BitmapFactory
 import android.os.Environment
-import android.util.DisplayMetrics
 import kr.co.ho1.poopee.R
 import kr.co.ho1.poopee.common.base.BaseActivity
 import kr.co.ho1.poopee.common.data.SharedManager

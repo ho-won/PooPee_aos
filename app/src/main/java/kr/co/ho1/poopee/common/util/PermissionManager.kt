@@ -4,7 +4,6 @@ import android.content.pm.PackageManager
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import kr.co.ho1.poopee.common.ObserverManager
-import java.security.Permission
 
 object PermissionManager {
     const val Permission = 9000

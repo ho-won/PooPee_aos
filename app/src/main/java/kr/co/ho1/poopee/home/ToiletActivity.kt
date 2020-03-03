@@ -11,10 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.MobileAds
-import kotlinx.android.synthetic.main.activity_home.*
 import kotlinx.android.synthetic.main.activity_toilet.*
-import kotlinx.android.synthetic.main.activity_toilet.ad_view
-import kotlinx.android.synthetic.main.activity_toilet.map_view
 import kotlinx.android.synthetic.main.item_toilet_comment.view.*
 import kotlinx.android.synthetic.main.view_toolbar.view.*
 import kr.co.ho1.poopee.R
@@ -341,7 +338,7 @@ class ToiletActivity : BaseActivity() {
     /**
      * [DELETE] 댓글삭제
      */
-    private fun taskCommentDelete(comment: Comment, position: Int) {
+    private fun taskCommentDelete(comment: Comment) {
         showLoading()
         val params = RetrofitParams()
         params.put("member_id", SharedManager.getMemberId())
@@ -429,7 +426,7 @@ class ToiletActivity : BaseActivity() {
                         R.id.item_delete -> {
                             val dialog = BasicDialog(
                                     onLeftButton = {
-                                        taskCommentDelete(mCommentList[position], position)
+                                        taskCommentDelete(mCommentList[position])
                                     },
                                     onCenterButton = {
 

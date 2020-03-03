@@ -42,11 +42,11 @@ class MySpannableString(private val str: String) {
         val ssb = SpannableStringBuilder(str)
 
         boldString.forEach {
-            ssb.setSpan(StyleSpan(Typeface.BOLD), str.indexOf(it), str.indexOf(it) + it.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            ssb.setSpan(StyleSpan(Typeface.BOLD), str.indexOf(it), str.indexOf(it) + it.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
         }
 
         lineString.forEach {
-            ssb.setSpan(UnderlineSpan(), str.indexOf(it), str.indexOf(it) + it.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            ssb.setSpan(UnderlineSpan(), str.indexOf(it), str.indexOf(it) + it.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
         }
 
         sizeString.forEach {

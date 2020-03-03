@@ -3,25 +3,23 @@
 package kr.co.ho1.poopee.common.util
 
 import android.annotation.SuppressLint
+import android.app.NotificationManager
 import android.content.Context
 import android.content.pm.PackageManager
+import android.os.Build
 import android.util.Base64
+import android.util.DisplayMetrics
 import android.util.Log
 import android.util.TypedValue
 import android.view.View
 import android.view.inputmethod.InputMethodManager
+import androidx.core.app.NotificationManagerCompat
 import kr.co.ho1.poopee.common.ObserverManager
 import java.io.FileInputStream
 import java.io.FileOutputStream
 import java.io.IOException
 import java.nio.channels.FileChannel
 import java.security.MessageDigest
-import androidx.core.app.NotificationManagerCompat
-import android.app.NotificationManager
-import android.app.NotificationChannel
-import androidx.core.content.ContextCompat.getSystemService
-import android.os.Build
-import android.util.DisplayMetrics
 
 
 object MyUtil {
