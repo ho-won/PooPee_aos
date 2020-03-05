@@ -134,7 +134,7 @@
                 android:lineSpacingExtra="5sp"
                 android:text="@string/home_text_04"
                 android:textColor="#292d34"
-                android:textSize="10sp"
+                android:textSize="12sp"
                 tools:ignore="SmallSp" />
 
             <TextView
@@ -144,7 +144,7 @@
                 android:layout_marginStart="2dp"
                 android:lineSpacingExtra="5sp"
                 android:textColor="@color/primary"
-                android:textSize="10sp"
+                android:textSize="12sp"
                 android:textStyle="bold"
                 tools:ignore="SmallSp" />
 

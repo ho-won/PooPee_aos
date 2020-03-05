@@ -89,6 +89,8 @@
     <string name="home_text_10">관리기관</string>
     <string name="home_text_11">댓글수정</string>
     <string name="home_text_12">신고하기</string>
+    <string name="home_text_13">내위치전송</string>
+    <string name="home_text_14">[PooPee]\n내 현재 위치 입니다!\n\n</string>
 
     <!-- login -->
     <string name="login_01">로그인을 해주세요</string>

@@ -23,6 +23,7 @@ import org.json.JSONException
 @SuppressLint("ValidFragment")
 class ToiletDialog : BaseDialog() {
     private var mToilet: Toilet = Toilet()
+    private var mAddressText: String = ""
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.dialog_toilet, container, false)
@@ -38,18 +39,18 @@ class ToiletDialog : BaseDialog() {
     private fun init() {
         tv_title.text = mToilet.name
 
-        var addressText = ""
+        mAddressText = ""
 
         if (mToilet.address_new.count() > 0) {
-            addressText = mToilet.address_new
+            mAddressText = mToilet.address_new
         } else if (mToilet.address_old.count() > 0) {
-            addressText = mToilet.address_old
+            mAddressText = mToilet.address_old
         } else {
             // 휴게소, 졸음쉼터는 주소정보가 없어서 카카오 api 로 주소 찾기
             taskKakaoCoordToAddress()
         }
 
-        StrManager.setAddressCopySpan(tv_address, addressText)
+        StrManager.setAddressCopySpan(tv_address, mAddressText)
 
         tv_comment_count.text = mToilet.comment_count
         tv_like_count.text = mToilet.like_count
@@ -58,6 +59,12 @@ class ToiletDialog : BaseDialog() {
     }
 
     private fun setListener() {
+        layout_sms.setOnClickListener {
+            val intent = Intent(Intent.ACTION_VIEW)
+            intent.type = "vnd.android-dir/mms-sms"
+            intent.putExtra("sms_body", ObserverManager.context!!.resources.getString(R.string.home_text_14) + mAddressText)
+            startActivity(intent)
+        }
         tv_title.setOnClickListener {
             btn_detail.performClick()
         }

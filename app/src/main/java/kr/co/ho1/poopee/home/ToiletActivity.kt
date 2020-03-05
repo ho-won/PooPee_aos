@@ -43,6 +43,7 @@ class ToiletActivity : BaseActivity() {
     }
 
     private var mToilet: Toilet = Toilet()
+    private var mAddressText: String = ""
 
     private var mRecyclerAdapter: ListAdapter = ListAdapter()
     private var mCommentList: ArrayList<Comment> = ArrayList()
@@ -75,12 +76,12 @@ class ToiletActivity : BaseActivity() {
 
         toolbar.setTitle(mToilet.name)
 
-        val addressText: String = if (mToilet.address_new.count() > 0) {
+        mAddressText = if (mToilet.address_new.count() > 0) {
             mToilet.address_new
         } else {
             mToilet.address_old
         }
-        StrManager.setAddressCopySpan(tv_address, addressText)
+        StrManager.setAddressCopySpan(tv_address, mAddressText)
 
         // 남녀공용
         cb_option_01.isChecked = mToilet.unisex == "Y"
@@ -177,6 +178,12 @@ class ToiletActivity : BaseActivity() {
     }
 
     private fun setListener() {
+        layout_sms.setOnClickListener {
+            val intent = Intent(Intent.ACTION_VIEW)
+            intent.type = "vnd.android-dir/mms-sms"
+            intent.putExtra("sms_body", ObserverManager.context!!.resources.getString(R.string.home_text_14) + mAddressText)
+            startActivity(intent)
+        }
         map_view_click.setOnClickListener {
             finish()
         }
