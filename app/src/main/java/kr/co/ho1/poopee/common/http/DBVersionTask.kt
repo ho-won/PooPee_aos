@@ -83,12 +83,9 @@ class DBVersionTask(progress: ProgressBar, private var onSuccess: (() -> Unit), 
 
                 val lengthOfFile = connection.contentLength
 
-                val directory = File(ObserverManager.getPath())
-                directory.mkdirs()
-
                 val input = BufferedInputStream(url.openStream())
-                val output = FileOutputStream(ObserverManager.getPath() + params[1])
-                filePath = ObserverManager.getPath() + params[1]
+                filePath = ObserverManager.context!!.getExternalFilesDir(null)!!.absolutePath  + File.separator + params[1]
+                val output = FileOutputStream(filePath)
 
                 val data = ByteArray(1024)
 
