@@ -9,7 +9,7 @@ class Toilet : Serializable {
     }
 
     var toilet_id: Int = 0
-    var type: String = ""
+    var type: String = "" // 개방화장실, 졸음쉼터, 휴게소
     var name: String = ""
     var address_new: String = ""
     var address_old: String = ""

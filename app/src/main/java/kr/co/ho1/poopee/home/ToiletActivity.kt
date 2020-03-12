@@ -74,6 +74,18 @@ class ToiletActivity : BaseActivity() {
     private fun init() {
         mToilet = intent.getSerializableExtra(TOILET) as Toilet
 
+        if (mToilet.type == "졸음쉼터" || mToilet.type == "휴게소") {
+            cb_tap_address.visibility = View.INVISIBLE
+            layout_detail_icon.visibility = View.GONE
+            layout_detail_address.visibility = View.GONE
+            layout_detail_manager.visibility = View.VISIBLE
+        } else {
+            cb_tap_address.visibility = View.VISIBLE
+            layout_detail_icon.visibility = View.VISIBLE
+            layout_detail_address.visibility = View.VISIBLE
+            layout_detail_manager.visibility = View.GONE
+        }
+
         toolbar.setTitle(mToilet.name)
 
         mAddressText = if (mToilet.address_new.count() > 0) {
