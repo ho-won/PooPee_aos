@@ -94,7 +94,7 @@ class NavMainView : NavigationView {
             )
         }
         layout_request.setOnClickListener {
-            EmailSender.send("seohwjjang@gmail.com", ObserverManager.context!!.getString(R.string.nav_text_05))
+            EmailSender.send("ho1.poopee@gmail.com", ObserverManager.context!!.getString(R.string.nav_text_05))
         }
         layout_setting.setOnClickListener {
             ObserverManager.root!!.startActivity(Intent(ObserverManager.context!!, SettingActivity::class.java)
