@@ -5,6 +5,7 @@ import android.location.Location
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -140,6 +141,13 @@ class HomeActivity : BaseActivity(), MapView.POIItemEventListener, MapView.MapVi
             edt_search.setText("")
             rv_search.visibility = View.GONE
         }
+        edt_search.setOnKeyListener { v, keyCode, event ->
+            if (event.action == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_ENTER && mKeywordList.size > 0) {
+                setKakaoLocal(mKeywordList[0])
+                return@setOnKeyListener true
+            }
+            false
+        }
         edt_search.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(p0: Editable?) {
 
@@ -253,6 +261,16 @@ class HomeActivity : BaseActivity(), MapView.POIItemEventListener, MapView.MapVi
         }
     }
 
+    private fun setKakaoLocal(kaKaoKeyword: KaKaoKeyword) {
+        mIsMyPositionMove = false
+        edt_search.setText(kaKaoKeyword.place_name)
+        edt_search.setSelection(kaKaoKeyword.place_name.count())
+        ObserverManager.mapView.setMapCenterPoint(MapPoint.mapPointWithGeoCoord(kaKaoKeyword.latitude, kaKaoKeyword.longitude), true)
+        MyUtil.keyboardHide(edt_search)
+        rv_search.visibility = View.GONE
+        setMyPosition(View.GONE)
+    }
+
     /**
      * [GET] 카카오지도 키워드 검색
      */
@@ -319,13 +337,7 @@ class HomeActivity : BaseActivity(), MapView.POIItemEventListener, MapView.MapVi
                 itemView.tv_sub.text = mKeywordList[position].address_name
 
                 itemView.setOnClickListener {
-                    mIsMyPositionMove = false
-                    edt_search.setText(mKeywordList[position].place_name)
-                    edt_search.setSelection(mKeywordList[position].place_name.count())
-                    ObserverManager.mapView.setMapCenterPoint(MapPoint.mapPointWithGeoCoord(mKeywordList[position].latitude, mKeywordList[position].longitude), true)
-                    MyUtil.keyboardHide(edt_search)
-                    rv_search.visibility = View.GONE
-                    setMyPosition(View.GONE)
+                    setKakaoLocal(mKeywordList[position])
                 }
             }
         }
