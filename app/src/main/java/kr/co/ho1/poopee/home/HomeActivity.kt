@@ -29,6 +29,7 @@ import kr.co.ho1.poopee.common.util.LocationManager
 import kr.co.ho1.poopee.common.util.MyUtil
 import kr.co.ho1.poopee.database.ToiletSQLiteManager
 import kr.co.ho1.poopee.home.model.KaKaoKeyword
+import kr.co.ho1.poopee.home.view.FinishDialog
 import kr.co.ho1.poopee.home.view.PopupDialog
 import kr.co.ho1.poopee.home.view.ToiletDialog
 import net.daum.mf.map.api.MapPOIItem
@@ -368,7 +369,9 @@ class HomeActivity : BaseActivity(), MapView.POIItemEventListener, MapView.MapVi
             return
         }
 
-        finish()
+
+        val dialog = FinishDialog()
+        dialog.show(supportFragmentManager, "FinishDialog")
     }
 
 }
