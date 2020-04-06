@@ -78,6 +78,20 @@ class ToiletDialog : BaseDialog() {
         btn_close.setOnClickListener {
             dismiss()
         }
+//        btn_tmap.setOnClickListener {
+//            ObserverManager.root!!.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("tmap://route?goalx=${mToilet.longitude}&goaly=${mToilet.latitude}&goalname=${mAddressText}")).apply {
+//                `package` = "com.skt.tmap.ku"
+//                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+//            })
+//        }
+//        btn_kakaonavi.setOnClickListener {
+//            val builder = KakaoNaviParams.newBuilder(Location.newBuilder(
+//                    mAddressText,
+//                    mToilet.longitude,
+//                    mToilet.latitude).build())
+//                    .setNaviOptions(NaviOptions.newBuilder().setCoordType(CoordType.WGS84).build())
+//            KakaoNaviService.getInstance().navigate(context, builder.build())
+//        }
     }
 
     fun setToilet(toilet: Toilet) {
