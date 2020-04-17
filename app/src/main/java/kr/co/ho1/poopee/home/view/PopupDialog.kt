@@ -13,6 +13,7 @@ import kr.co.ho1.poopee.common.data.SharedManager
 import kr.co.ho1.poopee.common.http.RetrofitService
 import kr.co.ho1.poopee.common.util.PicassoManager
 import kr.co.ho1.poopee.common.util.StrManager
+import java.util.*
 
 @SuppressLint("ValidFragment")
 class PopupDialog : BaseDialog() {
@@ -29,8 +30,13 @@ class PopupDialog : BaseDialog() {
     }
 
     private fun init() {
+        var imageName = SharedManager.getNoticeImage()
+        if (Locale.getDefault().language != "ko") {
+            val array = imageName.split(".")
+            imageName = array[0] + "_en." + array[1]
+        }
         Picasso.get()
-                .load(PicassoManager.getImageUrl(RetrofitService.Companion.BASE_APP + SharedManager.getNoticeImage()))
+                .load(PicassoManager.getImageUrl(RetrofitService.BASE_APP + imageName))
                 .into(iv_popup)
     }
 

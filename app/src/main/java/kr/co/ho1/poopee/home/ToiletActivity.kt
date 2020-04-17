@@ -30,6 +30,7 @@ import kr.co.ho1.poopee.home.model.Toilet
 import kr.co.ho1.poopee.home.view.CommentCreateDialog
 import kr.co.ho1.poopee.home.view.CommentReportDialog
 import kr.co.ho1.poopee.home.view.CommentUpdateDialog
+import kr.co.ho1.poopee.home.view.ShareDialog
 import kr.co.ho1.poopee.login.LoginActivity
 import net.daum.mf.map.api.MapPoint
 import net.daum.mf.map.api.MapView
@@ -191,10 +192,10 @@ class ToiletActivity : BaseActivity() {
 
     private fun setListener() {
         layout_sms.setOnClickListener {
-            val intent = Intent(Intent.ACTION_VIEW)
-            intent.type = "vnd.android-dir/mms-sms"
-            intent.putExtra("sms_body", ObserverManager.context!!.resources.getString(R.string.home_text_14) + mAddressText)
-            startActivity(intent)
+            val dialog = ShareDialog()
+            dialog.setAction(ShareDialog.ACTION_SHARE)
+            dialog.setToilet(mToilet)
+            dialog.show(ObserverManager.root!!.supportFragmentManager, "ShareDialog")
         }
         map_view_click.setOnClickListener {
             finish()

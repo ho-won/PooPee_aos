@@ -8,7 +8,6 @@ import kr.co.ho1.poopee.common.http.RetrofitClient
 import kr.co.ho1.poopee.common.http.RetrofitJSONObject
 import kr.co.ho1.poopee.common.http.RetrofitParams
 import kr.co.ho1.poopee.common.http.RetrofitService
-import kr.co.ho1.poopee.R
 import org.json.JSONException
 
 @Suppress("DEPRECATION")

@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">PooPee</string>
     <string name="contentDescription">contentDescription</string>
 
@@ -7,58 +7,58 @@
     <string name="banner_ad_unit_id_for_test">ca-app-pub-3940256099942544/6300978111</string>
 
     <!-- word -->
-    <string name="yes">예</string>
-    <string name="no">아니오</string>
-    <string name="login">로그인</string>
-    <string name="logout">로그아웃</string>
-    <string name="confirm">확인</string>
-    <string name="cancel">취소</string>
-    <string name="complete">완료</string>
-    <string name="modified">수정</string>
-    <string name="change">변경</string>
-    <string name="update">업데이트</string>
-    <string name="setting">설정</string>
-    <string name="current_version">현재버전</string>
-    <string name="new_version">최신버전</string>
-    <string name="name">이름</string>
-    <string name="email">이메일</string>
-    <string name="phone_number">휴대폰번호</string>
-    <string name="delete">삭제</string>
-    <string name="report">신고</string>
-    <string name="send">전송</string>
-    <string name="send_mail">메일보내기</string>
-    <string name="man">남자</string>
-    <string name="women">여자</string>
-    <string name="close">닫기</string>
-    <string name="copy">복사</string>
-    <string name="prev">이전</string>
+    <string name="yes">yes</string>
+    <string name="no">no</string>
+    <string name="login">login</string>
+    <string name="logout">logout</string>
+    <string name="confirm">confirm</string>
+    <string name="cancel" tools:ignore="ButtonCase">cancel</string>
+    <string name="complete">complete</string>
+    <string name="modified">modify</string>
+    <string name="change">change</string>
+    <string name="update">update</string>
+    <string name="setting">setting</string>
+    <string name="current_version">Current version</string>
+    <string name="new_version">New version</string>
+    <string name="name">name</string>
+    <string name="email">email</string>
+    <string name="phone_number">Phone Number</string>
+    <string name="delete">delete</string>
+    <string name="report">report</string>
+    <string name="send">send</string>
+    <string name="send_mail">Send email</string>
+    <string name="man">man</string>
+    <string name="women">women</string>
+    <string name="close">close</string>
+    <string name="copy">copy</string>
+    <string name="prev">prev</string>
 
     <!-- dialog -->
-    <string name="dialog_assign_new_version_update">새로운 업데이트가 있습니다. 원활한 사용을 위해서 업데이트를 추천합니다.\n업데이트 하시겠습니까?</string>
-    <string name="dialog_force_new_version_update">새로운 업데이트가 있습니다. 업데이트 후에 사용할 수 있습니다.\n업데이트 하시겠습니까?</string>
-    <string name="dialog_download_request">화장실정보 다운로드가 필요합니다. 통신환경을 확인 후 재시도해주세요.</string>
-    <string name="dialog_no_show">다시보지않기</string>
-    <string name="dialog_finish">PooPee를 종료하시겠습니까?</string>
+    <string name="dialog_assign_new_version_update">There are new updates. We recommend updating for smooth use. \nDo you want to update?</string>
+    <string name="dialog_force_new_version_update">There are new updates. It will be available after the update. \nAre you sure you want to update?</string>
+    <string name="dialog_download_request">Toilet information download is required. Please check the communication environment and try again.</string>
+    <string name="dialog_no_show">Never see again</string>
+    <string name="dialog_finish">Are you sure you want to exit PooPee?</string>
 
     <!-- toast -->
-    <string name="toast_checking_service">서비스점검중입니다</string>
-    <string name="toast_loading_fail">불러오는데 실패했습니다</string>
-    <string name="toast_network_not_connected">네트워크 상태를 확인 후 다시 시도하세요</string>
-    <string name="toast_alphanumeric">영문자와 숫자만 허용합니다</string>
-    <string name="toast_alphanumeric_hangul">영문자와 숫자, 한글만 허용합니다</string>
-    <string name="toast_please_all_input">모든항목을 입력해주세요</string>
-    <string name="toast_please_name_input">닉네임을 입력해주세요</string>
-    <string name="toast_login_condition">아이디/비밀번호를 입력하세요</string>
-    <string name="toast_login_fail">로그인에 실패했습니다</string>
-    <string name="toast_join_condition_01">비밀번호가 일치하지 않습니다</string>
-    <string name="toast_join_condition_02">성별을 선택해주세요</string>
-    <string name="toast_join_complete">회원가입이 완료되었습니다</string>
-    <string name="toast_join_id_fail">이미 사용중인 아이디입니다</string>
-    <string name="toast_update_complete">수정했습니다</string>
-    <string name="toast_delete_complete">삭제했습니다</string>
-    <string name="toast_report_complete">신고했습니다</string>
-    <string name="toast_copy_complete">클립보드로 복사했습니다</string>
-    <string name="toast_terms_check">모든약관에 동의해주세요</string>
+    <string name="toast_checking_service">Under service inspection</string>
+    <string name="toast_loading_fail">Failed to load</string>
+    <string name="toast_network_not_connected">Please check the network status and try again</string>
+    <string name="toast_alphanumeric">Only alphanumeric characters are allowed</string>
+    <string name="toast_alphanumeric_hangul">Only alphanumeric characters and Korean characters are allowed</string>
+    <string name="toast_please_all_input">Please enter all fields</string>
+    <string name="toast_please_name_input">Please enter your nickname</string>
+    <string name="toast_login_condition">Please enter your ID / password</string>
+    <string name="toast_login_fail">Login failed</string>
+    <string name="toast_join_condition_01">Passwords do not match</string>
+    <string name="toast_join_condition_02">Please select a gender</string>
+    <string name="toast_join_complete">Sign up is complete</string>
+    <string name="toast_join_id_fail">This ID is already taken</string>
+    <string name="toast_update_complete">"It's corrected"</string>
+    <string name="toast_delete_complete">I deleted it</string>
+    <string name="toast_report_complete">I reported it</string>
+    <string name="toast_copy_complete">I copied it to the clipboard.</string>
+    <string name="toast_terms_check">Agree to all terms</string>
 
     <!-- gallery -->
     <string name="gallery_select_dir">폴더선택</string>
@@ -67,71 +67,78 @@
     <string name="gallery_upload">올리기</string>
 
     <!-- toast -->
-    <string name="toast_please_permission">권한이 필요한 작업입니다</string>
+    <string name="toast_please_permission">This is a task that requires permission</string>
 
     <!-- nav -->
-    <string name="nav_text_01">내정보</string>
-    <string name="nav_text_02">공지사항</string>
-    <string name="nav_text_03">문의하기</string>
-    <string name="nav_text_04">설정</string>
-    <string name="nav_text_05">PooPee 문의사항</string>
-    <string name="nav_text_06">로그인하기</string>
+    <string name="nav_text_01">My Info</string>
+    <string name="nav_text_02">Notice</string>
+    <string name="nav_text_03">Contact</string>
+    <string name="nav_text_04">Setting</string>
+    <string name="nav_text_05">Inquiry</string>
+    <string name="nav_text_06">Login</string>
 
     <!-- home -->
-    <string name="home_text_01">장소,주소 검색</string>
-    <string name="home_text_02">상세보기</string>
-    <string name="home_text_03">댓글</string>
-    <string name="home_text_04">좋아요</string>
-    <string name="home_text_05">댓글을 입력해주세요</string>
-    <string name="home_text_06">삭제하시겠습니까?</string>
-    <string name="home_text_07">신고사유를 입력해주세요</string>
-    <string name="home_text_08">내위치</string>
-    <string name="home_text_09">어디에서 화장실을 찾고있나요?</string>
-    <string name="home_text_10">관리기관</string>
-    <string name="home_text_11">댓글수정</string>
-    <string name="home_text_12">신고하기</string>
-    <string name="home_text_13">내위치전송</string>
-    <string name="home_text_14">[PooPee]\n내 현재 위치 입니다!\n\n</string>
+    <string name="home_text_01">Place, address search</string>
+    <string name="home_text_02">View Details</string>
+    <string name="home_text_03">comment</string>
+    <string name="home_text_04">like</string>
+    <string name="home_text_05">Please enter a comment</string>
+    <string name="home_text_06">Are you sure you want to delete?</string>
+    <string name="home_text_07">Please enter reason for report</string>
+    <string name="home_text_08">My location</string>
+    <string name="home_text_09">Where are you looking for the bathroom?</string>
+    <string name="home_text_10">Management agency</string>
+    <string name="home_text_11">Edit</string>
+    <string name="home_text_12">Report</string>
+    <string name="home_text_13">Send my location</string>
+    <string name="home_text_14">[PooPee]\nThis is my current location!\n\n</string>
+    <string name="home_text_15">App Start</string>
+    <string name="home_text_16">Navigation</string>
+    <string name="home_text_17">Location Sharing</string>
+    <string name="home_text_18">T map</string>
+    <string name="home_text_19">KakaoNavi</string>
+    <string name="home_text_20">KakaoTalk</string>
+    <string name="home_text_21">SMS</string>
 
     <!-- login -->
-    <string name="login_01">로그인을 해주세요</string>
-    <string name="login_02">아이디 입력</string>
-    <string name="login_03">비밀번호 입력</string>
-    <string name="login_04">회원가입</string>
-    <string name="login_05">비밀번호 입력</string>
-    <string name="login_06">비밀번호 확인</string>
-    <string name="login_07">변경할 비밀번호 입력</string>
-    <string name="login_08">변경할 비밀번호 확인</string>
-    <string name="login_09">닉네임 입력</string>
-    <string name="login_10">중복확인</string>
-    <string name="login_11">영문,숫자 6~20자이내 입력해주세요</string>
-    <string name="login_12">사용가능한 아이디입니다</string>
-    <string name="login_14">비밀번호 꼭! 기억해주세요</string>
-    <string name="login_15">개인정보 처리방침 동의</string>
-    <string name="login_16">서비스 이용약관 동의</string>
-    <string name="login_17">위치정보기반 서비스 이용약관 동의</string>
-    <string name="login_18">상세보기</string>
+    <string name="login_01">Please login</string>
+    <string name="login_02">Enter ID</string>
+    <string name="login_03">Enter Password</string>
+    <string name="login_04">Sign Up</string>
+    <string name="login_05">Enter Password</string>
+    <string name="login_06">Confirm Password</string>
+    <string name="login_07">Enter password to change</string>
+    <string name="login_08">Confirm password to change</string>
+    <string name="login_09">Enter nickname</string>
+    <string name="login_10">Duplicate check</string>
+    <string name="login_11">Please enter within 6 ~ 20 letters and numbers</string>
+    <string name="login_12">Username is available</string>
+    <string name="login_14">Password must! Please remember</string>
+    <string name="login_15">Agree to privacy policy</string>
+    <string name="login_16">Subscribe Terms of Service</string>
+    <string name="login_17">Consent to Terms of Service for Location-Based Services</string>
+    <string name="login_18">View Details</string>
 
     <!-- menu -->
-    <string name="menu_setting_01">로그인을 해주세요</string>
-    <string name="menu_setting_02">로그아웃</string>
-    <string name="menu_setting_03">PUSH 알림</string>
-    <string name="menu_setting_04">개인정보 처리방침</string>
-    <string name="menu_setting_05">서비스 이용약관</string>
-    <string name="menu_setting_06">위치정보기반 서비스 이용약관</string>
+    <string name="menu_setting_01">Please login</string>
+    <string name="menu_setting_02">logout</string>
+    <string name="menu_setting_03">PUSH Notification</string>
+    <string name="menu_setting_04">Privacy Policy</string>
+    <string name="menu_setting_05">Terms of Service</string>
+    <string name="menu_setting_06">Terms of Service for Location-Based Services</string>
 
     <!-- toilet -->
-    <string name="toilet_option_01">남성용</string>
-    <string name="toilet_option_02">여성용</string>
-    <string name="toilet_option_03">대변기수</string>
-    <string name="toilet_option_04">소변기수</string>
-    <string name="toilet_option_05">장애인용 대변기수</string>
-    <string name="toilet_option_06">장애인용 소변기수</string>
-    <string name="toilet_option_07">어린이용 대변기수</string>
-    <string name="toilet_option_08">어린이용 소변기수</string>
-    <string name="toilet_option_09">남녀공용</string>
-    <string name="toilet_option_10">관리기관명</string>
-    <string name="toilet_option_11">관리기관 전화번호</string>
-    <string name="toilet_option_12">개방시간</string>
+    <string name="toilet_option_01">Man</string>
+    <string name="toilet_option_02">Women</string>
+    <string name="toilet_option_03">Toilet bowl</string>
+    <string name="toilet_option_04">Urinal</string>
+    <string name="toilet_option_05">Disabled Toilet bowl</string>
+    <string name="toilet_option_06">Disabled Urinal</string>
+    <string name="toilet_option_07">Child Toilet bowl</string>
+    <string name="toilet_option_08">Child Urinal</string>
+    <string name="toilet_option_09">Unisex</string>
+    <string name="toilet_option_10">Management agency</string>
+    <string name="toilet_option_11">Management tel</string>
+    <string name="toilet_option_12">Opening time</string>
 
 </resources>

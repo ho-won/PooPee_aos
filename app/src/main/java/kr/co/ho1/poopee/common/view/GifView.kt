@@ -32,7 +32,7 @@ class GifView : View {
     }
 
     private fun init() {
-        setLayerType(View.LAYER_TYPE_SOFTWARE, null)
+        setLayerType(LAYER_TYPE_SOFTWARE, null)
         isFocusable = true
         mMovie = Movie.decodeStream(mInputStream)
         requestLayout()

@@ -54,7 +54,16 @@
         <activity
             android:name="kr.co.ho1.poopee.home.HomeActivity"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustResize|stateHidden" />
+            android:windowSoftInputMode="adjustResize|stateHidden" >
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data android:scheme="53565fe7d8355fff626939459a32e7d0"
+                    android:host="kakaolink" />
+            </intent-filter>
+        </activity>
         <activity
             android:name="kr.co.ho1.poopee.home.ToiletActivity"
             android:screenOrientation="portrait"

@@ -25,7 +25,7 @@ class DirSelectDialog(private val listener: DialogListener) : DialogFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setStyle(DialogFragment.STYLE_NO_TITLE, R.style.MyDialog)
+        setStyle(STYLE_NO_TITLE, R.style.MyDialog)
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {

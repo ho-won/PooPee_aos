@@ -8,7 +8,6 @@ import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import kotlinx.android.synthetic.main.dialog_comment_create.*
 import kotlinx.android.synthetic.main.dialog_comment_update.*
 import kr.co.ho1.poopee.R
 import kr.co.ho1.poopee.common.base.BaseDialog

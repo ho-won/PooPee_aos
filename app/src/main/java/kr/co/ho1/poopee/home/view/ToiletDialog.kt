@@ -41,13 +41,11 @@ class ToiletDialog : BaseDialog() {
 
         mAddressText = ""
 
-        if (mToilet.address_new.count() > 0) {
-            mAddressText = mToilet.address_new
-        } else if (mToilet.address_old.count() > 0) {
-            mAddressText = mToilet.address_old
-        } else {
-            // 휴게소, 졸음쉼터는 주소정보가 없어서 카카오 api 로 주소 찾기
-            taskKakaoCoordToAddress()
+        when {
+            mToilet.address_new.count() > 0 -> mAddressText = mToilet.address_new
+            mToilet.address_old.count() > 0 -> mAddressText = mToilet.address_old
+            else -> // 휴게소, 졸음쉼터는 주소정보가 없어서 카카오 api 로 주소 찾기
+                taskKakaoCoordToAddress()
         }
 
         StrManager.setAddressCopySpan(tv_address, mAddressText)
@@ -59,11 +57,17 @@ class ToiletDialog : BaseDialog() {
     }
 
     private fun setListener() {
-        layout_sms.setOnClickListener {
-            val intent = Intent(Intent.ACTION_VIEW)
-            intent.type = "vnd.android-dir/mms-sms"
-            intent.putExtra("sms_body", ObserverManager.context!!.resources.getString(R.string.home_text_14) + mAddressText)
-            startActivity(intent)
+        layout_navi.setOnClickListener {
+            val dialog = ShareDialog()
+            dialog.setAction(ShareDialog.ACTION_NAVI)
+            dialog.setToilet(mToilet)
+            dialog.show(ObserverManager.root!!.supportFragmentManager, "ShareDialog")
+        }
+        layout_share.setOnClickListener {
+            val dialog = ShareDialog()
+            dialog.setAction(ShareDialog.ACTION_SHARE)
+            dialog.setToilet(mToilet)
+            dialog.show(ObserverManager.root!!.supportFragmentManager, "ShareDialog")
         }
         tv_title.setOnClickListener {
             btn_detail.performClick()
@@ -78,20 +82,6 @@ class ToiletDialog : BaseDialog() {
         btn_close.setOnClickListener {
             dismiss()
         }
-//        btn_tmap.setOnClickListener {
-//            ObserverManager.root!!.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("tmap://route?goalx=${mToilet.longitude}&goaly=${mToilet.latitude}&goalname=${mAddressText}")).apply {
-//                `package` = "com.skt.tmap.ku"
-//                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-//            })
-//        }
-//        btn_kakaonavi.setOnClickListener {
-//            val builder = KakaoNaviParams.newBuilder(Location.newBuilder(
-//                    mAddressText,
-//                    mToilet.longitude,
-//                    mToilet.latitude).build())
-//                    .setNaviOptions(NaviOptions.newBuilder().setCoordType(CoordType.WGS84).build())
-//            KakaoNaviService.getInstance().navigate(context, builder.build())
-//        }
     }
 
     fun setToilet(toilet: Toilet) {
