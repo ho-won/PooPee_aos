@@ -91,7 +91,7 @@
     <string name="home_text_11">Edit</string>
     <string name="home_text_12">Report</string>
     <string name="home_text_13">Send my location</string>
-    <string name="home_text_14">[PooPee]\nThis is my current location!\n\n</string>
+    <string name="home_text_14">[PooPee]\n\nThis is my current location!\n\n</string>
     <string name="home_text_15">App Start</string>
     <string name="home_text_16">Navigation</string>
     <string name="home_text_17">Location Sharing</string>

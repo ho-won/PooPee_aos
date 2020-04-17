@@ -91,7 +91,7 @@
     <string name="home_text_11">댓글수정</string>
     <string name="home_text_12">신고하기</string>
     <string name="home_text_13">내위치전송</string>
-    <string name="home_text_14">[PooPee]\n내 현재 위치 입니다!\n\n</string>
+    <string name="home_text_14">[PooPee]\n내 현재 위치 입니다!\n</string>
     <string name="home_text_15">앱실행</string>
     <string name="home_text_16">내비연결</string>
     <string name="home_text_17">위치공유</string>

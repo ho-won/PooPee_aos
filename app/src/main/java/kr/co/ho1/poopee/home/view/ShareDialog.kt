@@ -14,8 +14,10 @@ import com.kakao.kakaonavi.KakaoNaviService
 import com.kakao.kakaonavi.Location
 import com.kakao.kakaonavi.NaviOptions
 import com.kakao.kakaonavi.options.CoordType
+import com.kakao.message.template.ButtonObject
+import com.kakao.message.template.ContentObject
 import com.kakao.message.template.LinkObject
-import com.kakao.message.template.TextTemplate
+import com.kakao.message.template.LocationTemplate
 import com.kakao.network.ErrorResult
 import com.kakao.network.callback.ResponseCallback
 import kotlinx.android.synthetic.main.dialog_share.*
@@ -24,6 +26,8 @@ import kr.co.ho1.poopee.common.ObserverManager
 import kr.co.ho1.poopee.common.base.BaseDialog
 import kr.co.ho1.poopee.home.model.Toilet
 
+
+@Suppress("DEPRECATION")
 @SuppressLint("ValidFragment")
 class ShareDialog : BaseDialog() {
     companion object {
@@ -83,8 +87,15 @@ class ShareDialog : BaseDialog() {
                     )
                 }
             } else if (mAction == ACTION_SHARE) {
-                val params = TextTemplate.newBuilder(ObserverManager.context!!.resources.getString(R.string.home_text_14) + mAddressText, LinkObject.newBuilder().build())
-                        .setButtonTitle(ObserverManager.context!!.resources.getString(R.string.home_text_15))
+                val params = LocationTemplate.newBuilder(
+                        mAddressText,
+                        ContentObject.newBuilder(
+                                ObserverManager.context!!.resources.getString(R.string.home_text_14) + mAddressText,
+                                "",
+                                LinkObject.newBuilder().build())
+                                .build())
+                        .setAddressTitle(mToilet.name)
+                        .addButton(ButtonObject(ObserverManager.context!!.resources.getString(R.string.home_text_15), LinkObject.newBuilder().build()))
                         .build()
                 KakaoLinkService.getInstance()
                         .sendDefault(ObserverManager.root, params, object : ResponseCallback<KakaoLinkResponse>() {
