@@ -91,8 +91,9 @@ class ShareDialog : BaseDialog() {
                         mAddressText,
                         ContentObject.newBuilder(
                                 ObserverManager.context!!.resources.getString(R.string.home_text_14) + mAddressText,
-                                "",
+                                "http://poopee.ho1.co.kr/image/banner.png",
                                 LinkObject.newBuilder().build())
+                                .setImageHeight(0)
                                 .build())
                         .setAddressTitle(mToilet.name)
                         .addButton(ButtonObject(ObserverManager.context!!.resources.getString(R.string.home_text_15), LinkObject.newBuilder().build()))
@@ -117,7 +118,7 @@ class ShareDialog : BaseDialog() {
                         mToilet.longitude,
                         mToilet.latitude).build())
                         .setNaviOptions(NaviOptions.newBuilder().setCoordType(CoordType.WGS84).build())
-                KakaoNaviService.getInstance().navigate(context, builder.build())
+                KakaoNaviService.getInstance().navigate(ObserverManager.root, builder.build())
             } else if (mAction == ACTION_SHARE) {
                 val intent = Intent(Intent.ACTION_VIEW)
                 intent.type = "vnd.android-dir/mms-sms"

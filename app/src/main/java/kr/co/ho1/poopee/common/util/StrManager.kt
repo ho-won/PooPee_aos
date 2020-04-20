@@ -66,7 +66,7 @@ object StrManager {
             override fun onClick(p0: View) {
                 try {
                     val clipboard = ObserverManager.context!!.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager?
-                    val clip = ClipData.newPlainText("PooPee", tv_address.text)
+                    val clip = ClipData.newPlainText("PooPee", addressText)
                     clipboard!!.setPrimaryClip(clip)
                     Toast.makeText(ObserverManager.context!!, ObserverManager.context!!.resources.getString(R.string.toast_copy_complete), Toast.LENGTH_SHORT).show()
                 } catch (e: Exception) {
