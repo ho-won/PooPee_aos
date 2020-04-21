@@ -8,6 +8,7 @@ import kr.co.ho1.poopee.R
 import kr.co.ho1.poopee.common.ObserverManager
 import kr.co.ho1.poopee.common.base.BaseActivity
 import kr.co.ho1.poopee.common.data.SharedManager
+import kr.co.ho1.poopee.common.util.MyUtil
 import kr.co.ho1.poopee.login.LoginActivity
 import kr.co.ho1.poopee.login.TermsActivity
 
@@ -37,14 +38,14 @@ class SettingActivity : BaseActivity() {
             tv_login.text = SharedManager.getMemberName()
             tv_logout.visibility = View.VISIBLE
             if (SharedManager.getMemberGender() == "0") {
-                iv_login.setImageDrawable(ObserverManager.context!!.resources.getDrawable(R.drawable.ic_man_profile))
+                iv_login.setImageDrawable(MyUtil.getDrawable(R.drawable.ic_man_profile))
             } else {
-                iv_login.setImageDrawable(ObserverManager.context!!.resources.getDrawable(R.drawable.ic_woman_profile))
+                iv_login.setImageDrawable(MyUtil.getDrawable(R.drawable.ic_woman_profile))
             }
         } else {
-            tv_login.text = ObserverManager.context!!.resources.getString(R.string.menu_setting_01)
+            tv_login.text = MyUtil.getString(R.string.menu_setting_01)
             tv_logout.visibility = View.GONE
-            iv_login.setImageDrawable(ObserverManager.context!!.resources.getDrawable(R.drawable.ic_profile))
+            iv_login.setImageDrawable(MyUtil.getDrawable(R.drawable.ic_profile))
         }
         switch_push.isChecked = SharedManager.isPush()
     }
@@ -84,8 +85,8 @@ class SettingActivity : BaseActivity() {
     }
 
     override fun setToolbar() {
-        toolbar.setTitle(ObserverManager.context!!.resources.getString(R.string.nav_text_04))
-        toolbar.setImageLeftOne(ObserverManager.context!!.resources.getDrawable(R.drawable.ic_navigationbar_back))
+        toolbar.setTitle(MyUtil.getString(R.string.nav_text_04))
+        toolbar.setImageLeftOne(MyUtil.getDrawable(R.drawable.ic_navigationbar_back))
         toolbar.setSelectedListener(
                 onBtnLeftOne = {
                     finish()

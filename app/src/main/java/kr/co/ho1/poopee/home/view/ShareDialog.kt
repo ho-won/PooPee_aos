@@ -24,6 +24,7 @@ import kotlinx.android.synthetic.main.dialog_share.*
 import kr.co.ho1.poopee.R
 import kr.co.ho1.poopee.common.ObserverManager
 import kr.co.ho1.poopee.common.base.BaseDialog
+import kr.co.ho1.poopee.common.util.MyUtil
 import kr.co.ho1.poopee.home.model.Toilet
 
 
@@ -52,17 +53,17 @@ class ShareDialog : BaseDialog() {
 
     private fun init() {
         if (mAction == ACTION_NAVI) {
-            tv_title.text = ObserverManager.context!!.resources.getString(R.string.home_text_16)
-            tv_01.text = ObserverManager.context!!.resources.getString(R.string.home_text_18)
-            tv_02.text = ObserverManager.context!!.resources.getString(R.string.home_text_19)
-            iv_01.setImageDrawable(ObserverManager.context!!.resources.getDrawable(R.drawable.ic_tmap))
-            iv_02.setImageDrawable(ObserverManager.context!!.resources.getDrawable(R.drawable.ic_kakaonavi))
+            tv_title.text = MyUtil.getString(R.string.home_text_16)
+            tv_01.text = MyUtil.getString(R.string.home_text_18)
+            tv_02.text = MyUtil.getString(R.string.home_text_19)
+            iv_01.setImageDrawable(MyUtil.getDrawable(R.drawable.ic_tmap))
+            iv_02.setImageDrawable(MyUtil.getDrawable(R.drawable.ic_kakaonavi))
         } else if (mAction == ACTION_SHARE) {
-            tv_title.text = ObserverManager.context!!.resources.getString(R.string.home_text_17)
-            tv_01.text = ObserverManager.context!!.resources.getString(R.string.home_text_20)
-            tv_02.text = ObserverManager.context!!.resources.getString(R.string.home_text_21)
-            iv_01.setImageDrawable(ObserverManager.context!!.resources.getDrawable(R.drawable.ic_kakaotalk))
-            iv_02.setImageDrawable(ObserverManager.context!!.resources.getDrawable(R.drawable.ic_sms))
+            tv_title.text = MyUtil.getString(R.string.home_text_17)
+            tv_01.text = MyUtil.getString(R.string.home_text_20)
+            tv_02.text = MyUtil.getString(R.string.home_text_21)
+            iv_01.setImageDrawable(MyUtil.getDrawable(R.drawable.ic_kakaotalk))
+            iv_02.setImageDrawable(MyUtil.getDrawable(R.drawable.ic_sms))
         }
 
         mAddressText = ""
@@ -90,13 +91,13 @@ class ShareDialog : BaseDialog() {
                 val params = LocationTemplate.newBuilder(
                         mAddressText,
                         ContentObject.newBuilder(
-                                ObserverManager.context!!.resources.getString(R.string.home_text_14) + mAddressText,
+                                MyUtil.getString(R.string.home_text_14) + mAddressText,
                                 "http://poopee.ho1.co.kr/image/banner.png",
                                 LinkObject.newBuilder().build())
                                 .setImageHeight(0)
                                 .build())
                         .setAddressTitle(mToilet.name)
-                        .addButton(ButtonObject(ObserverManager.context!!.resources.getString(R.string.home_text_15), LinkObject.newBuilder().build()))
+                        .addButton(ButtonObject(MyUtil.getString(R.string.home_text_15), LinkObject.newBuilder().build()))
                         .build()
                 KakaoLinkService.getInstance()
                         .sendDefault(ObserverManager.root, params, object : ResponseCallback<KakaoLinkResponse>() {
@@ -122,7 +123,7 @@ class ShareDialog : BaseDialog() {
             } else if (mAction == ACTION_SHARE) {
                 val intent = Intent(Intent.ACTION_VIEW)
                 intent.type = "vnd.android-dir/mms-sms"
-                intent.putExtra("sms_body", ObserverManager.context!!.resources.getString(R.string.home_text_14) + mAddressText)
+                intent.putExtra("sms_body", MyUtil.getString(R.string.home_text_14) + mAddressText)
                 startActivity(intent)
             }
             dismiss()

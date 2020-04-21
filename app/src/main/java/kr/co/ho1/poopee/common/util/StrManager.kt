@@ -57,7 +57,7 @@ object StrManager {
         tv_address.text = "$addressText #IMAGE"
 
         val span = SpannableString(tv_address.text.toString())
-        val icon = ObserverManager.context!!.resources.getDrawable(R.drawable.ic_copy)
+        val icon = MyUtil.getDrawable(R.drawable.ic_copy)
         icon.setBounds(0, 0, MyUtil.dpToPx(12), MyUtil.dpToPx(14))
         val image = VerticalImageSpan(icon)
         span.setSpan(image, addressText.length + 1, addressText.length + 7, Spannable.SPAN_INCLUSIVE_EXCLUSIVE)
@@ -68,7 +68,7 @@ object StrManager {
                     val clipboard = ObserverManager.context!!.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager?
                     val clip = ClipData.newPlainText("PooPee", addressText)
                     clipboard!!.setPrimaryClip(clip)
-                    Toast.makeText(ObserverManager.context!!, ObserverManager.context!!.resources.getString(R.string.toast_copy_complete), Toast.LENGTH_SHORT).show()
+                    Toast.makeText(ObserverManager.context!!, MyUtil.getString(R.string.toast_copy_complete), Toast.LENGTH_SHORT).show()
                 } catch (e: Exception) {
                     e.printStackTrace()
                 }

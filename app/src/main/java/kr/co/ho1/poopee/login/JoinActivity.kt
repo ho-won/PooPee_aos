@@ -66,9 +66,9 @@ class JoinActivity : BaseActivity() {
             }
 
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                tv_id_ex.text = ObserverManager.context!!.resources.getString(R.string.login_11)
+                tv_id_ex.text = MyUtil.getString(R.string.login_11)
                 tv_id_ex.setTextColor(Color.parseColor("#d0d2d5"))
-                iv_id_ex.setImageDrawable(ObserverManager.context!!.resources.getDrawable(R.drawable.ic_alret))
+                iv_id_ex.setImageDrawable(MyUtil.getDrawable(R.drawable.ic_alret))
                 tv_overlap.isEnabled = edt_username.text.length > 5
                 checkAllInput()
             }
@@ -89,13 +89,13 @@ class JoinActivity : BaseActivity() {
                     btn_password_delete.visibility = View.VISIBLE
                 }
                 if (edt_password.text.toString() != edt_password_confirm.text.toString()) {
-                    tv_password_ex.text = ObserverManager.context!!.resources.getString(R.string.toast_join_condition_01)
+                    tv_password_ex.text = MyUtil.getString(R.string.toast_join_condition_01)
                     tv_password_ex.setTextColor(Color.parseColor("#ff4a5c"))
-                    iv_password_ex.setImageDrawable(ObserverManager.context!!.resources.getDrawable(R.drawable.ic_alret_error))
+                    iv_password_ex.setImageDrawable(MyUtil.getDrawable(R.drawable.ic_alret_error))
                 } else {
-                    tv_password_ex.text = ObserverManager.context!!.resources.getString(R.string.login_14)
+                    tv_password_ex.text = MyUtil.getString(R.string.login_14)
                     tv_password_ex.setTextColor(Color.parseColor("#d0d2d5"))
-                    iv_password_ex.setImageDrawable(ObserverManager.context!!.resources.getDrawable(R.drawable.ic_alret))
+                    iv_password_ex.setImageDrawable(MyUtil.getDrawable(R.drawable.ic_alret))
                 }
                 checkAllInput()
             }
@@ -116,13 +116,13 @@ class JoinActivity : BaseActivity() {
                     btn_password_confirm_delete.visibility = View.VISIBLE
                 }
                 if (edt_password.text.toString() != edt_password_confirm.text.toString()) {
-                    tv_password_ex.text = ObserverManager.context!!.resources.getString(R.string.toast_join_condition_01)
+                    tv_password_ex.text = MyUtil.getString(R.string.toast_join_condition_01)
                     tv_password_ex.setTextColor(Color.parseColor("#ff4a5c"))
-                    iv_password_ex.setImageDrawable(ObserverManager.context!!.resources.getDrawable(R.drawable.ic_alret_error))
+                    iv_password_ex.setImageDrawable(MyUtil.getDrawable(R.drawable.ic_alret_error))
                 } else {
-                    tv_password_ex.text = ObserverManager.context!!.resources.getString(R.string.login_14)
+                    tv_password_ex.text = MyUtil.getString(R.string.login_14)
                     tv_password_ex.setTextColor(Color.parseColor("#d0d2d5"))
-                    iv_password_ex.setImageDrawable(ObserverManager.context!!.resources.getDrawable(R.drawable.ic_alret))
+                    iv_password_ex.setImageDrawable(MyUtil.getDrawable(R.drawable.ic_alret))
                 }
                 checkAllInput()
             }
@@ -171,13 +171,13 @@ class JoinActivity : BaseActivity() {
         }
         layout_join.setOnClickListener {
             if (edt_username.text.toString().isEmpty() || edt_password.text.toString().isEmpty() || edt_password_confirm.text.toString().isEmpty() || edt_name.text.toString().isEmpty()) {
-                Toast.makeText(ObserverManager.context!!, ObserverManager.context!!.resources.getString(R.string.toast_please_all_input), Toast.LENGTH_SHORT).show()
+                Toast.makeText(ObserverManager.context!!, MyUtil.getString(R.string.toast_please_all_input), Toast.LENGTH_SHORT).show()
             } else if (edt_password.text.toString() != edt_password_confirm.text.toString()) {
-                Toast.makeText(ObserverManager.context!!, ObserverManager.context!!.resources.getString(R.string.toast_join_condition_01), Toast.LENGTH_SHORT).show()
+                Toast.makeText(ObserverManager.context!!, MyUtil.getString(R.string.toast_join_condition_01), Toast.LENGTH_SHORT).show()
             } else if (!rb_man.isChecked && !rb_woman.isChecked) {
-                Toast.makeText(ObserverManager.context!!, ObserverManager.context!!.resources.getString(R.string.toast_join_condition_02), Toast.LENGTH_SHORT).show()
+                Toast.makeText(ObserverManager.context!!, MyUtil.getString(R.string.toast_join_condition_02), Toast.LENGTH_SHORT).show()
             } else if (!cb_terms_01.isChecked || !cb_terms_02.isChecked || !cb_terms_03.isChecked) {
-                Toast.makeText(ObserverManager.context!!, ObserverManager.context!!.resources.getString(R.string.toast_terms_check), Toast.LENGTH_SHORT).show()
+                Toast.makeText(ObserverManager.context!!, MyUtil.getString(R.string.toast_terms_check), Toast.LENGTH_SHORT).show()
             } else {
                 taskJoin(edt_username.text.toString(), edt_password.text.toString(), edt_name.text.toString(), if (rb_man.isChecked) "0" else "1")
             }
@@ -187,7 +187,7 @@ class JoinActivity : BaseActivity() {
     private fun checkAllInput() {
         layout_join.isEnabled = false
         tv_join.setTextColor(Color.parseColor("#6b9bff"))
-        iv_join.setImageDrawable(ObserverManager.context!!.resources.getDrawable(R.drawable.ic_join_nonext))
+        iv_join.setImageDrawable(MyUtil.getDrawable(R.drawable.ic_join_nonext))
 
         if (edt_name.text.isEmpty()) {
             return
@@ -210,7 +210,7 @@ class JoinActivity : BaseActivity() {
 
         layout_join.isEnabled = true
         tv_join.setTextColor(Color.parseColor("#ffffff"))
-        iv_join.setImageDrawable(ObserverManager.context!!.resources.getDrawable(R.drawable.ic_join_next))
+        iv_join.setImageDrawable(MyUtil.getDrawable(R.drawable.ic_join_next))
     }
 
     /**
@@ -227,13 +227,13 @@ class JoinActivity : BaseActivity() {
                 onSuccess = {
                     try {
                         if (it.getInt("rst_code") == 0) {
-                            tv_id_ex.text = ObserverManager.context!!.resources.getString(R.string.login_12)
+                            tv_id_ex.text = MyUtil.getString(R.string.login_12)
                             tv_id_ex.setTextColor(Color.parseColor("#2470ff"))
-                            iv_id_ex.setImageDrawable(ObserverManager.context!!.resources.getDrawable(R.drawable.ic_alret_check))
+                            iv_id_ex.setImageDrawable(MyUtil.getDrawable(R.drawable.ic_alret_check))
                         } else if (it.getInt("rst_code") == 1) {
-                            tv_id_ex.text = ObserverManager.context!!.resources.getString(R.string.toast_join_id_fail)
+                            tv_id_ex.text = MyUtil.getString(R.string.toast_join_id_fail)
                             tv_id_ex.setTextColor(Color.parseColor("#ff4a5c"))
-                            iv_id_ex.setImageDrawable(ObserverManager.context!!.resources.getDrawable(R.drawable.ic_alret_error))
+                            iv_id_ex.setImageDrawable(MyUtil.getDrawable(R.drawable.ic_alret_error))
                         }
                     } catch (e: JSONException) {
                         e.printStackTrace()
@@ -263,11 +263,11 @@ class JoinActivity : BaseActivity() {
                 onSuccess = {
                     try {
                         if (it.getInt("rst_code") == 0) {
-                            Toast.makeText(ObserverManager.context!!, ObserverManager.context!!.resources.getString(R.string.toast_join_complete), Toast.LENGTH_SHORT).show()
+                            Toast.makeText(ObserverManager.context!!, MyUtil.getString(R.string.toast_join_complete), Toast.LENGTH_SHORT).show()
                             MyUtil.keyboardHide(edt_username)
                             finish()
                         } else if (it.getInt("rst_code") == 1) {
-                            Toast.makeText(ObserverManager.context!!, ObserverManager.context!!.resources.getString(R.string.toast_join_id_fail), Toast.LENGTH_SHORT).show()
+                            Toast.makeText(ObserverManager.context!!, MyUtil.getString(R.string.toast_join_id_fail), Toast.LENGTH_SHORT).show()
                         }
                     } catch (e: JSONException) {
                         e.printStackTrace()

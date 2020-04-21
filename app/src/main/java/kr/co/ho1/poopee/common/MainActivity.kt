@@ -16,6 +16,7 @@ import kr.co.ho1.poopee.common.data.SharedManager
 import kr.co.ho1.poopee.common.dialog.BasicDialog
 import kr.co.ho1.poopee.common.http.*
 import kr.co.ho1.poopee.common.util.LocationManager
+import kr.co.ho1.poopee.common.util.MyUtil
 import kr.co.ho1.poopee.common.util.PermissionManager
 import kr.co.ho1.poopee.common.util.SleepTask
 import kr.co.ho1.poopee.home.HomeActivity
@@ -96,8 +97,8 @@ class MainActivity : BaseActivity() {
                             }
                     )
                     dialog.isCancelable = false
-                    dialog.setTextContent(ObserverManager.context!!.resources.getString(R.string.dialog_download_request))
-                    dialog.setBtnRight(ObserverManager.context!!.resources.getString(R.string.yes))
+                    dialog.setTextContent(MyUtil.getString(R.string.dialog_download_request))
+                    dialog.setBtnRight(MyUtil.getString(R.string.yes))
                     dialog.show(supportFragmentManager, "BasicDialog")
                 }
         )
@@ -128,9 +129,9 @@ class MainActivity : BaseActivity() {
                             }
                     )
                     dialog.isCancelable = false
-                    dialog.setTextContent(ObserverManager.context!!.resources.getString(R.string.dialog_force_new_version_update))
-                    dialog.setBtnLeft(ObserverManager.context!!.resources.getString(R.string.no))
-                    dialog.setBtnRight(ObserverManager.context!!.resources.getString(R.string.yes))
+                    dialog.setTextContent(MyUtil.getString(R.string.dialog_force_new_version_update))
+                    dialog.setBtnLeft(MyUtil.getString(R.string.no))
+                    dialog.setBtnRight(MyUtil.getString(R.string.yes))
                     dialog.show(supportFragmentManager, "BasicDialog")
                 }
                 Integer.parseInt(versions[1]) > Integer.parseInt(appVersions[1]) -> {
@@ -148,9 +149,9 @@ class MainActivity : BaseActivity() {
                             }
                     )
                     dialog.isCancelable = false
-                    dialog.setTextContent(ObserverManager.context!!.resources.getString(R.string.dialog_assign_new_version_update))
-                    dialog.setBtnLeft(ObserverManager.context!!.resources.getString(R.string.no))
-                    dialog.setBtnRight(ObserverManager.context!!.resources.getString(R.string.yes))
+                    dialog.setTextContent(MyUtil.getString(R.string.dialog_assign_new_version_update))
+                    dialog.setBtnLeft(MyUtil.getString(R.string.no))
+                    dialog.setBtnRight(MyUtil.getString(R.string.yes))
                     dialog.show(supportFragmentManager, "BasicDialog")
                 }
                 Integer.parseInt(versions[0]) < Integer.parseInt(appVersions[0]) -> // 세번째 자리 버전 업데이트로 무시하고 앱실행
@@ -261,12 +262,12 @@ class MainActivity : BaseActivity() {
                         }
                     } catch (e: JSONException) {
                         e.printStackTrace()
-                        Toast.makeText(ObserverManager.context!!, ObserverManager.context!!.resources.getString(R.string.toast_checking_service), Toast.LENGTH_SHORT).show()
+                        Toast.makeText(ObserverManager.context!!, MyUtil.getString(R.string.toast_checking_service), Toast.LENGTH_SHORT).show()
                         finish()
                     }
                 },
                 onFailed = {
-                    Toast.makeText(ObserverManager.context!!, ObserverManager.context!!.resources.getString(R.string.toast_checking_service), Toast.LENGTH_SHORT).show()
+                    Toast.makeText(ObserverManager.context!!, MyUtil.getString(R.string.toast_checking_service), Toast.LENGTH_SHORT).show()
                     finish()
                 }
         )
@@ -285,7 +286,7 @@ class MainActivity : BaseActivity() {
                 }
             }
         } else {
-            Toast.makeText(ObserverManager.context, ObserverManager.context!!.resources.getString(R.string.toast_please_permission), Toast.LENGTH_SHORT).show()
+            Toast.makeText(ObserverManager.context, MyUtil.getString(R.string.toast_please_permission), Toast.LENGTH_SHORT).show()
         }
     }
 

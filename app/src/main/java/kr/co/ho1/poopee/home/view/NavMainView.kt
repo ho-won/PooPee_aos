@@ -47,15 +47,15 @@ class NavMainView : NavigationView {
     fun refresh() {
         if (SharedManager.isLoginCheck()) {
             tv_name.text = SharedManager.getMemberName()
-            iv_login.setImageDrawable(ObserverManager.context!!.resources.getDrawable(R.drawable.img_profile))
-            btn_logout.setImageDrawable(ObserverManager.context!!.resources.getDrawable(R.drawable.ic_logout))
+            iv_login.setImageDrawable(MyUtil.getDrawable(R.drawable.img_profile))
+            btn_logout.setImageDrawable(MyUtil.getDrawable(R.drawable.ic_logout))
         } else {
-            val lineString: Array<String> = arrayOf(ObserverManager.context!!.resources.getString(R.string.nav_text_06))
-            val span = MySpannableString(ObserverManager.context!!.resources.getString(R.string.nav_text_06))
+            val lineString: Array<String> = arrayOf(MyUtil.getString(R.string.nav_text_06))
+            val span = MySpannableString(MyUtil.getString(R.string.nav_text_06))
             span.setLine(lineString)
             tv_name.text = span.getSpannableString()
-            iv_login.setImageDrawable(ObserverManager.context!!.resources.getDrawable(R.drawable.img_logingo))
-            btn_logout.setImageDrawable(ObserverManager.context!!.resources.getDrawable(R.drawable.img_menu_bottom))
+            iv_login.setImageDrawable(MyUtil.getDrawable(R.drawable.img_logingo))
+            btn_logout.setImageDrawable(MyUtil.getDrawable(R.drawable.img_menu_bottom))
         }
     }
 
@@ -66,7 +66,7 @@ class NavMainView : NavigationView {
                     val clipboard = ObserverManager.context!!.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager?
                     val clip = ClipData.newPlainText("PooPee", MyUtil.getHashKey())
                     clipboard!!.setPrimaryClip(clip)
-                    Toast.makeText(ObserverManager.context!!, ObserverManager.context!!.resources.getString(R.string.toast_copy_complete), Toast.LENGTH_SHORT).show()
+                    Toast.makeText(ObserverManager.context!!, MyUtil.getString(R.string.toast_copy_complete), Toast.LENGTH_SHORT).show()
                 } catch (e: Exception) {
                     e.printStackTrace()
                 }

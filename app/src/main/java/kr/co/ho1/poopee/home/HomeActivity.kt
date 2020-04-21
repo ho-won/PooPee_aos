@@ -57,7 +57,7 @@ class HomeActivity : BaseActivity(), MapView.POIItemEventListener, MapView.MapVi
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
 
-        MobileAds.initialize(this, ObserverManager.context!!.resources.getString(R.string.admob_app_id))
+        MobileAds.initialize(this, MyUtil.getString(R.string.admob_app_id))
         ad_view.loadAd(AdRequest.Builder().build())
 
         init()

@@ -41,7 +41,7 @@ class LoginActivity : BaseActivity() {
         }
         btn_login.setOnClickListener {
             if (edt_username.text.toString().isEmpty() || edt_password.text.toString().isEmpty()) {
-                Toast.makeText(ObserverManager.context!!, ObserverManager.context!!.resources.getString(R.string.toast_login_condition), Toast.LENGTH_SHORT).show()
+                Toast.makeText(ObserverManager.context!!, MyUtil.getString(R.string.toast_login_condition), Toast.LENGTH_SHORT).show()
             } else {
                 taskLogin(edt_username.text.toString(), edt_password.text.toString())
             }
@@ -109,7 +109,7 @@ class LoginActivity : BaseActivity() {
                             MyUtil.keyboardHide(edt_username)
                             finish()
                         } else {
-                            Toast.makeText(ObserverManager.context!!, ObserverManager.context!!.resources.getString(R.string.toast_login_fail), Toast.LENGTH_SHORT).show()
+                            Toast.makeText(ObserverManager.context!!, MyUtil.getString(R.string.toast_login_fail), Toast.LENGTH_SHORT).show()
                         }
                     } catch (e: JSONException) {
                         e.printStackTrace()

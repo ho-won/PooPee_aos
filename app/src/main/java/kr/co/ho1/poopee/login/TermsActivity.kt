@@ -9,6 +9,7 @@ import kr.co.ho1.poopee.R
 import kr.co.ho1.poopee.common.ObserverManager
 import kr.co.ho1.poopee.common.base.BaseActivity
 import kr.co.ho1.poopee.common.http.RetrofitService
+import kr.co.ho1.poopee.common.util.MyUtil
 import java.util.*
 
 @Suppress("DEPRECATION")
@@ -52,7 +53,7 @@ class TermsActivity : BaseActivity() {
     }
 
     override fun setToolbar() {
-        toolbar.setImageLeftOne(ObserverManager.context!!.resources.getDrawable(R.drawable.ic_navigationbar_back))
+        toolbar.setImageLeftOne(MyUtil.getDrawable(R.drawable.ic_navigationbar_back))
         toolbar.setSelectedListener(
                 onBtnLeftOne = {
                     finish()

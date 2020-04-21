@@ -14,7 +14,7 @@ import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.gallery_dialog_dir_select.*
 import kotlinx.android.synthetic.main.gallery_item_dir_select.view.*
 import kr.co.ho1.poopee.R
-import kr.co.ho1.poopee.common.ObserverManager
+import kr.co.ho1.poopee.common.util.MyUtil
 import kr.co.ho1.poopee.gallery.model.GalleryDir
 import java.util.*
 
@@ -41,7 +41,7 @@ class DirSelectDialog(private val listener: DialogListener) : DialogFragment() {
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        tv_title.text = ObserverManager.context!!.resources.getString(R.string.gallery_select_dir)
+        tv_title.text = MyUtil.getString(R.string.gallery_select_dir)
 
         recycler_view.layoutManager = LinearLayoutManager(activity)
         val dirListAdapter = DirListAdapter()
@@ -49,10 +49,10 @@ class DirSelectDialog(private val listener: DialogListener) : DialogFragment() {
 
         val height: Int = if (mDirList.size > 4) {
             // 사이즈가 4보다 크면 최대 높이값 지정
-            ObserverManager.context!!.resources.getDimensionPixelOffset(R.dimen.dialog_max_height)
+            MyUtil.getDimen(R.dimen.dialog_max_height)
         } else {
             // 사이즈가 4보다 작거나 같으면 사이즈에 따른 높이값 설정
-            ObserverManager.context!!.resources.getDimensionPixelOffset(R.dimen.dialog_content_height) * mDirList.size
+            MyUtil.getDimen(R.dimen.dialog_content_height) * mDirList.size
         }
 
         val layoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, height)

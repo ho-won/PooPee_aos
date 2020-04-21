@@ -18,6 +18,7 @@ import kr.co.ho1.poopee.common.http.RetrofitClient
 import kr.co.ho1.poopee.common.http.RetrofitJSONObject
 import kr.co.ho1.poopee.common.http.RetrofitParams
 import kr.co.ho1.poopee.common.http.RetrofitService
+import kr.co.ho1.poopee.common.util.MyUtil
 import kr.co.ho1.poopee.home.model.Comment
 import org.json.JSONException
 import retrofit2.http.POST
@@ -89,7 +90,7 @@ class CommentReportDialog : BaseDialog() {
                 onSuccess = {
                     try {
                         if (it.getInt("rst_code") == 0) {
-                            Toast.makeText(ObserverManager.context!!, ObserverManager.context!!.resources.getString(R.string.toast_report_complete), Toast.LENGTH_SHORT).show()
+                            Toast.makeText(ObserverManager.context!!, MyUtil.getString(R.string.toast_report_complete), Toast.LENGTH_SHORT).show()
                             dismiss()
                         }
                     } catch (e: JSONException) {

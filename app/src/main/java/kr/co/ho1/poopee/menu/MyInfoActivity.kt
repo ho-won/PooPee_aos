@@ -16,6 +16,7 @@ import kr.co.ho1.poopee.common.http.RetrofitClient
 import kr.co.ho1.poopee.common.http.RetrofitJSONObject
 import kr.co.ho1.poopee.common.http.RetrofitParams
 import kr.co.ho1.poopee.common.http.RetrofitService
+import kr.co.ho1.poopee.common.util.MyUtil
 import kr.co.ho1.poopee.common.util.StringFilter
 import org.json.JSONException
 
@@ -78,13 +79,13 @@ class MyInfoActivity : BaseActivity() {
                     btn_password_delete.visibility = View.VISIBLE
                 }
                 if (edt_password.text.toString() != edt_password_confirm.text.toString()) {
-                    tv_password_ex.text = ObserverManager.context!!.resources.getString(R.string.toast_join_condition_01)
+                    tv_password_ex.text = MyUtil.getString(R.string.toast_join_condition_01)
                     tv_password_ex.setTextColor(Color.parseColor("#ff4a5c"))
-                    iv_password_ex.setImageDrawable(ObserverManager.context!!.resources.getDrawable(R.drawable.ic_alret_error))
+                    iv_password_ex.setImageDrawable(MyUtil.getDrawable(R.drawable.ic_alret_error))
                 } else {
-                    tv_password_ex.text = ObserverManager.context!!.resources.getString(R.string.login_14)
+                    tv_password_ex.text = MyUtil.getString(R.string.login_14)
                     tv_password_ex.setTextColor(Color.parseColor("#d0d2d5"))
-                    iv_password_ex.setImageDrawable(ObserverManager.context!!.resources.getDrawable(R.drawable.ic_alret))
+                    iv_password_ex.setImageDrawable(MyUtil.getDrawable(R.drawable.ic_alret))
                 }
             }
         })
@@ -104,13 +105,13 @@ class MyInfoActivity : BaseActivity() {
                     btn_password_confirm_delete.visibility = View.VISIBLE
                 }
                 if (edt_password.text.toString() != edt_password_confirm.text.toString()) {
-                    tv_password_ex.text = ObserverManager.context!!.resources.getString(R.string.toast_join_condition_01)
+                    tv_password_ex.text = MyUtil.getString(R.string.toast_join_condition_01)
                     tv_password_ex.setTextColor(Color.parseColor("#ff4a5c"))
-                    iv_password_ex.setImageDrawable(ObserverManager.context!!.resources.getDrawable(R.drawable.ic_alret_error))
+                    iv_password_ex.setImageDrawable(MyUtil.getDrawable(R.drawable.ic_alret_error))
                 } else {
-                    tv_password_ex.text = ObserverManager.context!!.resources.getString(R.string.login_14)
+                    tv_password_ex.text = MyUtil.getString(R.string.login_14)
                     tv_password_ex.setTextColor(Color.parseColor("#d0d2d5"))
-                    iv_password_ex.setImageDrawable(ObserverManager.context!!.resources.getDrawable(R.drawable.ic_alret))
+                    iv_password_ex.setImageDrawable(MyUtil.getDrawable(R.drawable.ic_alret))
                 }
             }
         })
@@ -151,7 +152,7 @@ class MyInfoActivity : BaseActivity() {
                             SharedManager.setMemberPassword(pw)
                             SharedManager.setMemberName(name)
                             SharedManager.setMemberGender(gender)
-                            Toast.makeText(ObserverManager.context!!, ObserverManager.context!!.resources.getString(R.string.toast_update_complete), Toast.LENGTH_SHORT).show()
+                            Toast.makeText(ObserverManager.context!!, MyUtil.getString(R.string.toast_update_complete), Toast.LENGTH_SHORT).show()
                             finish()
                         }
                     } catch (e: JSONException) {
@@ -166,17 +167,17 @@ class MyInfoActivity : BaseActivity() {
     }
 
     override fun setToolbar() {
-        toolbar.setTitle(ObserverManager.context!!.resources.getString(R.string.nav_text_01))
-        toolbar.setImageLeftOne(ObserverManager.context!!.resources.getDrawable(R.drawable.ic_navigationbar_back))
+        toolbar.setTitle(MyUtil.getString(R.string.nav_text_01))
+        toolbar.setImageLeftOne(MyUtil.getDrawable(R.drawable.ic_navigationbar_back))
         toolbar.tv_right_one.visibility = View.VISIBLE
-        toolbar.tv_right_one.text = ObserverManager.context!!.resources.getString(R.string.modified)
+        toolbar.tv_right_one.text = MyUtil.getString(R.string.modified)
         toolbar.tv_right_one.setOnClickListener {
             if (edt_name.text.isEmpty()) {
-                Toast.makeText(ObserverManager.context!!, ObserverManager.context!!.resources.getString(R.string.toast_please_name_input), Toast.LENGTH_SHORT).show()
+                Toast.makeText(ObserverManager.context!!, MyUtil.getString(R.string.toast_please_name_input), Toast.LENGTH_SHORT).show()
             } else if (edt_password.text.toString() != edt_password_confirm.text.toString()) {
-                Toast.makeText(ObserverManager.context!!, ObserverManager.context!!.resources.getString(R.string.toast_join_condition_01), Toast.LENGTH_SHORT).show()
+                Toast.makeText(ObserverManager.context!!, MyUtil.getString(R.string.toast_join_condition_01), Toast.LENGTH_SHORT).show()
             } else if (!rb_man.isChecked && !rb_woman.isChecked) {
-                Toast.makeText(ObserverManager.context!!, ObserverManager.context!!.resources.getString(R.string.toast_join_condition_02), Toast.LENGTH_SHORT).show()
+                Toast.makeText(ObserverManager.context!!, MyUtil.getString(R.string.toast_join_condition_02), Toast.LENGTH_SHORT).show()
             } else {
                 taskUpdateUser(edt_password.text.toString(), edt_name.text.toString(), if (rb_man.isChecked) "0" else "1")
             }

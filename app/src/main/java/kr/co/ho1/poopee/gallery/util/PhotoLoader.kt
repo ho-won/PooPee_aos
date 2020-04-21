@@ -10,6 +10,7 @@ import android.widget.ImageView
 import androidx.collection.LruCache
 import kr.co.ho1.poopee.R
 import kr.co.ho1.poopee.common.ObserverManager
+import kr.co.ho1.poopee.common.util.MyUtil
 import kr.co.ho1.poopee.gallery.model.FileInfo
 
 @Suppress("DEPRECATION")
@@ -42,7 +43,7 @@ class PhotoLoader// Get max available VM memory, exceeding this amount will thro
             }
         }
         bitmapCache = LruCache(cacheSize)
-        loadingDrawable = ColorDrawable(ObserverManager.context!!.resources.getColor(R.color.text_gray))
+        loadingDrawable = ColorDrawable(MyUtil.getColor(R.color.text_gray))
     }
 
     /**

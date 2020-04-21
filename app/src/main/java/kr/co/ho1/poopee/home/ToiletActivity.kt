@@ -24,6 +24,7 @@ import kr.co.ho1.poopee.common.http.RetrofitJSONObject
 import kr.co.ho1.poopee.common.http.RetrofitParams
 import kr.co.ho1.poopee.common.http.RetrofitService
 import kr.co.ho1.poopee.common.util.LogManager
+import kr.co.ho1.poopee.common.util.MyUtil
 import kr.co.ho1.poopee.common.util.StrManager
 import kr.co.ho1.poopee.home.model.Comment
 import kr.co.ho1.poopee.home.model.Toilet
@@ -54,7 +55,7 @@ class ToiletActivity : BaseActivity() {
         setContentView(R.layout.activity_toilet)
         setToolbar()
 
-        MobileAds.initialize(this, ObserverManager.context!!.resources.getString(R.string.admob_app_id))
+        MobileAds.initialize(this, MyUtil.getString(R.string.admob_app_id))
         ad_view.loadAd(AdRequest.Builder().build())
 
         init()
@@ -371,7 +372,7 @@ class ToiletActivity : BaseActivity() {
                     try {
                         if (it.getInt("rst_code") == 0) {
                             taskCommentList()
-                            Toast.makeText(ObserverManager.context!!, ObserverManager.context!!.resources.getString(R.string.toast_delete_complete), Toast.LENGTH_SHORT).show()
+                            Toast.makeText(ObserverManager.context!!, MyUtil.getString(R.string.toast_delete_complete), Toast.LENGTH_SHORT).show()
                         }
                     } catch (e: JSONException) {
                         e.printStackTrace()
@@ -409,9 +410,9 @@ class ToiletActivity : BaseActivity() {
 
             fun update(position: Int) {
                 if (mCommentList[position].gender == "0") {
-                    itemView.iv_gender.setImageDrawable(ObserverManager.context!!.resources.getDrawable(R.drawable.ic_man_profile))
+                    itemView.iv_gender.setImageDrawable(MyUtil.getDrawable(R.drawable.ic_man_profile))
                 } else {
-                    itemView.iv_gender.setImageDrawable(ObserverManager.context!!.resources.getDrawable(R.drawable.ic_woman_profile))
+                    itemView.iv_gender.setImageDrawable(MyUtil.getDrawable(R.drawable.ic_woman_profile))
                 }
 
                 itemView.tv_name.text = mCommentList[position].name
@@ -455,9 +456,9 @@ class ToiletActivity : BaseActivity() {
 
                                     }
                             )
-                            dialog.setTextContent(ObserverManager.context!!.resources.getString(R.string.home_text_06))
-                            dialog.setBtnLeft(ObserverManager.context!!.resources.getString(R.string.confirm))
-                            dialog.setBtnRight(ObserverManager.context!!.resources.getString(R.string.cancel))
+                            dialog.setTextContent(MyUtil.getString(R.string.home_text_06))
+                            dialog.setBtnLeft(MyUtil.getString(R.string.confirm))
+                            dialog.setBtnRight(MyUtil.getString(R.string.cancel))
                             dialog.show(supportFragmentManager, "BasicDialog")
                             return@setOnMenuItemClickListener true
                         }
@@ -493,7 +494,7 @@ class ToiletActivity : BaseActivity() {
     }
 
     override fun setToolbar() {
-        toolbar.setImageLeftOne(ObserverManager.context!!.resources.getDrawable(R.drawable.ic_navigationbar_back))
+        toolbar.setImageLeftOne(MyUtil.getDrawable(R.drawable.ic_navigationbar_back))
         toolbar.layout_like.visibility = View.VISIBLE
         toolbar.setSelectedListener(
                 onBtnLeftOne = {

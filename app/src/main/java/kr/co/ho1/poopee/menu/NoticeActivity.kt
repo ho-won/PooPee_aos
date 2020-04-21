@@ -24,6 +24,7 @@ import kr.co.ho1.poopee.common.http.RetrofitClient
 import kr.co.ho1.poopee.common.http.RetrofitJSONObject
 import kr.co.ho1.poopee.common.http.RetrofitParams
 import kr.co.ho1.poopee.common.http.RetrofitService
+import kr.co.ho1.poopee.common.util.MyUtil
 import kr.co.ho1.poopee.common.util.StrManager
 import kr.co.ho1.poopee.menu.model.Notice
 import org.json.JSONException
@@ -153,7 +154,7 @@ class NoticeActivity : BaseActivity() {
 
             override fun getDrawable(source: String?): Drawable {
                 val d = LevelListDrawable()
-                val empty = ObserverManager.context!!.resources.getDrawable(R.mipmap.ic_launcher)
+                val empty = MyUtil.getDrawable(R.mipmap.ic_launcher)
                 d.addLevel(0, 0, empty)
                 d.setBounds(0, 0, empty.intrinsicWidth, empty.intrinsicHeight)
 
@@ -217,8 +218,8 @@ class NoticeActivity : BaseActivity() {
     }
 
     override fun setToolbar() {
-        toolbar.setTitle(ObserverManager.context!!.resources.getString(R.string.nav_text_02))
-        toolbar.setImageLeftOne(ObserverManager.context!!.resources.getDrawable(R.drawable.ic_navigationbar_back))
+        toolbar.setTitle(MyUtil.getString(R.string.nav_text_02))
+        toolbar.setImageLeftOne(MyUtil.getDrawable(R.drawable.ic_navigationbar_back))
         toolbar.setSelectedListener(
                 onBtnLeftOne = {
                     finish()

@@ -17,6 +17,7 @@ import kotlinx.android.synthetic.main.gallery_item_photo.view.*
 import kr.co.ho1.poopee.R
 import kr.co.ho1.poopee.common.ObserverManager
 import kr.co.ho1.poopee.common.base.BaseActivity
+import kr.co.ho1.poopee.common.util.MyUtil
 import kr.co.ho1.poopee.gallery.model.FileInfo
 import kr.co.ho1.poopee.gallery.model.GalleryDir
 import kr.co.ho1.poopee.gallery.util.ImageManager
@@ -123,7 +124,7 @@ class GalleryPhotoActivity : BaseActivity(), DirSelectDialog.DialogListener {
 
         }
 
-        mDirList!!.add(GalleryDir(null, ObserverManager.context!!.resources.getString(R.string.gallery_show_all), cursor.count)) // 디렉토리 목록에 전체보기 추가
+        mDirList!!.add(GalleryDir(null, MyUtil.getString(R.string.gallery_show_all), cursor.count)) // 디렉토리 목록에 전체보기 추가
         mDirList!!.addAll(list.values) // 디렉토리 목록 추가
         cursor.close()
 

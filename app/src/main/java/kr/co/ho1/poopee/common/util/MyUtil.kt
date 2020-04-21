@@ -6,6 +6,7 @@ import android.annotation.SuppressLint
 import android.app.NotificationManager
 import android.content.Context
 import android.content.pm.PackageManager
+import android.graphics.drawable.Drawable
 import android.os.Build
 import android.util.Base64
 import android.util.DisplayMetrics
@@ -39,8 +40,8 @@ object MyUtil {
     }
 
     fun pxToDp(px: Int): Int {
-        val resources = ObserverManager.context!!.resources
-        val metrics = resources.displayMetrics
+        val resources = MyUtil
+        val metrics = ObserverManager.context!!.resources.displayMetrics
         val dp = px / (metrics.densityDpi.toFloat() / DisplayMetrics.DENSITY_DEFAULT)
         return dp.toInt()
     }
@@ -49,7 +50,7 @@ object MyUtil {
         var result = 0
         val resourceId = ObserverManager.context!!.resources.getIdentifier("status_bar_height", "dimen", "android")
         if (resourceId > 0) {
-            result = ObserverManager.context!!.resources.getDimensionPixelSize(resourceId)
+            result = getDimen(resourceId)
         }
         return result
     }
@@ -118,6 +119,22 @@ object MyUtil {
         } else {
             return NotificationManagerCompat.from(ObserverManager.context!!).areNotificationsEnabled()
         }
+    }
+
+    fun getString(id: Int): String {
+        return ObserverManager.context!!.resources.getString(id)
+    }
+
+    fun getDrawable(id: Int): Drawable {
+        return ObserverManager.context!!.resources.getDrawable(id)
+    }
+
+    fun getColor(id: Int): Int {
+        return ObserverManager.context!!.resources.getColor(id)
+    }
+
+    fun getDimen(id: Int): Int {
+        return ObserverManager.context!!.resources.getDimensionPixelOffset(id)
     }
 
 }
