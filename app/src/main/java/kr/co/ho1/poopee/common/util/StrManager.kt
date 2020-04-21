@@ -29,8 +29,8 @@ object StrManager {
     fun getDateTime(str: String): String {
         var result = str
         try {
-            val date = SimpleDateFormat("yyyy-MM-dd hh:mm:ss").parse(str)
-            result = SimpleDateFormat("yyyy.MM.dd hh:mm").format(date)
+            val date = SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(str)
+            result = SimpleDateFormat("yyyy.MM.dd HH:mm").format(date)
         } catch (e: ParseException) {
             e.printStackTrace()
         }
