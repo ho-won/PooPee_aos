@@ -21,7 +21,7 @@ import org.json.JSONException
 
 
 @SuppressLint("ValidFragment")
-class ToiletDialog : BaseDialog() {
+class ToiletDialog(private var onDetail: ((toilet: Toilet) -> Unit)) : BaseDialog() {
     private var mToilet: Toilet = Toilet()
     private var mAddressText: String = ""
 
@@ -73,10 +73,7 @@ class ToiletDialog : BaseDialog() {
             btn_detail.performClick()
         }
         btn_detail.setOnClickListener {
-            ObserverManager.root!!.startActivity(Intent(ObserverManager.context!!, ToiletActivity::class.java)
-                    .setFlags(Intent.FLAG_ACTIVITY_NO_USER_ACTION)
-                    .putExtra(ToiletActivity.TOILET, mToilet)
-            )
+            onDetail(mToilet)
             dismiss()
         }
         btn_close.setOnClickListener {

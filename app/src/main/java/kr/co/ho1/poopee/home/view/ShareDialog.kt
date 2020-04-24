@@ -54,12 +54,14 @@ class ShareDialog : BaseDialog() {
     private fun init() {
         if (mAction == ACTION_NAVI) {
             tv_title.text = MyUtil.getString(R.string.home_text_16)
+            tv_content.text = MyUtil.getString(R.string.home_text_22)
             tv_01.text = MyUtil.getString(R.string.home_text_18)
             tv_02.text = MyUtil.getString(R.string.home_text_19)
             iv_01.setImageDrawable(MyUtil.getDrawable(R.drawable.ic_tmap))
             iv_02.setImageDrawable(MyUtil.getDrawable(R.drawable.ic_kakaonavi))
         } else if (mAction == ACTION_SHARE) {
             tv_title.text = MyUtil.getString(R.string.home_text_17)
+            tv_content.text = MyUtil.getString(R.string.home_text_23)
             tv_01.text = MyUtil.getString(R.string.home_text_20)
             tv_02.text = MyUtil.getString(R.string.home_text_21)
             iv_01.setImageDrawable(MyUtil.getDrawable(R.drawable.ic_kakaotalk))
@@ -94,7 +96,8 @@ class ShareDialog : BaseDialog() {
                                 MyUtil.getString(R.string.home_text_14) + mAddressText,
                                 "http://poopee.ho1.co.kr/image/banner.png",
                                 LinkObject.newBuilder().build())
-                                .setImageHeight(0)
+                                .setImageWidth(1024)
+                                .setImageHeight(500)
                                 .build())
                         .setAddressTitle(mToilet.name)
                         .addButton(ButtonObject(MyUtil.getString(R.string.home_text_15), LinkObject.newBuilder().build()))

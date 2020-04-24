@@ -1,6 +1,7 @@
 package kr.co.ho1.poopee.home
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.location.Location
 import android.os.Bundle
 import android.text.Editable
@@ -13,7 +14,9 @@ import android.widget.LinearLayout
 import androidx.core.view.GravityCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.gms.ads.AdListener
 import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.InterstitialAd
 import com.google.android.gms.ads.MobileAds
 import kotlinx.android.synthetic.main.activity_home.*
 import kotlinx.android.synthetic.main.item_kakao_keyword.view.*
@@ -29,6 +32,7 @@ import kr.co.ho1.poopee.common.util.LocationManager
 import kr.co.ho1.poopee.common.util.MyUtil
 import kr.co.ho1.poopee.database.ToiletSQLiteManager
 import kr.co.ho1.poopee.home.model.KaKaoKeyword
+import kr.co.ho1.poopee.home.model.Toilet
 import kr.co.ho1.poopee.home.view.FinishDialog
 import kr.co.ho1.poopee.home.view.PopupDialog
 import kr.co.ho1.poopee.home.view.ToiletDialog
@@ -53,12 +57,20 @@ class HomeActivity : BaseActivity(), MapView.POIItemEventListener, MapView.MapVi
     private var mLastLatitude: Double = 0.0 // 마지막 중심 latitude
     private var mLastLongitude: Double = 0.0 // 마지막 중심 longitude
 
+    private lateinit var mInterstitialAd: InterstitialAd
+
+    private var mToilet: Toilet = Toilet()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
 
         MobileAds.initialize(this, MyUtil.getString(R.string.admob_app_id))
         ad_view.loadAd(AdRequest.Builder().build())
+
+        mInterstitialAd = InterstitialAd(this)
+        mInterstitialAd.adUnitId = MyUtil.getString(R.string.interstitial_ad_unit_id)
+        mInterstitialAd.loadAd(AdRequest.Builder().build())
 
         init()
         setListener()
@@ -179,6 +191,22 @@ class HomeActivity : BaseActivity(), MapView.POIItemEventListener, MapView.MapVi
         btn_menu.setOnClickListener {
             drawer_layout.openDrawer(GravityCompat.START)
         }
+        mInterstitialAd.adListener = object : AdListener() {
+            override fun onAdLoaded() {
+
+            }
+
+            override fun onAdFailedToLoad(errorCode: Int) {
+
+            }
+
+            override fun onAdClosed() {
+                ObserverManager.root!!.startActivity(Intent(ObserverManager.context!!, ToiletActivity::class.java)
+                        .setFlags(Intent.FLAG_ACTIVITY_NO_USER_ACTION)
+                        .putExtra(ToiletActivity.TOILET, mToilet)
+                )
+            }
+        }
     }
 
     override fun onMapViewDoubleTapped(p0: MapView?, p1: MapPoint?) {
@@ -240,7 +268,19 @@ class HomeActivity : BaseActivity(), MapView.POIItemEventListener, MapView.MapVi
         if (p1!!.tag > 0) {
             val toilet = ToiletSQLiteManager.getInstance().getToilet(p1.tag)
 
-            val dialog = ToiletDialog()
+            val dialog = ToiletDialog(
+                    onDetail = {
+                        mToilet = it
+                        if (mInterstitialAd.isLoaded) {
+                            mInterstitialAd.show()
+                        } else {
+                            ObserverManager.root!!.startActivity(Intent(ObserverManager.context!!, ToiletActivity::class.java)
+                                    .setFlags(Intent.FLAG_ACTIVITY_NO_USER_ACTION)
+                                    .putExtra(ToiletActivity.TOILET, mToilet)
+                            )
+                        }
+                    }
+            )
             dialog.setToilet(toilet)
             dialog.show(supportFragmentManager, "ToiletDialog")
         }
