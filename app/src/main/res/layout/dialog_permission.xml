@@ -41,9 +41,9 @@
             android:gravity="center_horizontal"
             android:letterSpacing="-0.03"
             android:lineSpacingExtra="4sp"
+            android:text="@string/permission_text_01"
             android:textColor="#292d34"
             android:textSize="16sp"
-            android:text="@string/permission_text_01"
             tools:ignore="UnusedAttribute" />
 
         <LinearLayout
@@ -72,17 +72,18 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:lineSpacingExtra="6sp"
+                    android:text="@string/permission_text_02"
                     android:textColor="#292d34"
                     android:textSize="14sp"
-                    android:text="@string/permission_text_02" />
+                    android:textStyle="bold" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:lineSpacingExtra="4sp"
+                    android:text="@string/permission_text_03"
                     android:textColor="#8991a2"
-                    android:textSize="12sp"
-                    android:text="@string/permission_text_03" />
+                    android:textSize="12sp" />
 
             </LinearLayout>
 
@@ -113,19 +114,20 @@
 
                 <TextView
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="9dp"
                     android:lineSpacingExtra="6sp"
+                    android:text="@string/permission_text_04"
                     android:textColor="#292d34"
                     android:textSize="14sp"
-                    android:text="@string/permission_text_04" />
+                    android:textStyle="bold" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:lineSpacingExtra="4sp"
+                    android:text="@string/permission_text_05"
                     android:textColor="#8991a2"
-                    android:textSize="12sp"
-                    android:text="@string/permission_text_05" />
+                    android:textSize="12sp" />
 
             </LinearLayout>
 
@@ -147,9 +149,9 @@
             android:layout_marginTop="16dp"
             android:layout_marginEnd="20dp"
             android:lineSpacingExtra="4sp"
+            android:text="@string/permission_text_06"
             android:textColor="#8991a2"
-            android:textSize="12sp"
-            android:text="@string/permission_text_06" />
+            android:textSize="12sp" />
 
         <View
             android:layout_width="match_parent"
@@ -167,7 +169,7 @@
             android:text="@string/confirm"
             android:textAllCaps="false"
             android:textColor="@color/primary"
-            android:textSize="13sp" />
+            android:textSize="14sp" />
 
     </LinearLayout>
 
