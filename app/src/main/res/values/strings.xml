@@ -3,10 +3,13 @@
     <string name="contentDescription">contentDescription</string>
 
     <string name="admob_app_id">ca-app-pub-2933424745841582~4534033734</string>
+
     <string name="banner_ad_unit_id">ca-app-pub-2933424745841582/3959318660</string>
-    <string name="banner_ad_unit_id_for_test">ca-app-pub-3940256099942544/6300978111</string>
     <string name="interstitial_ad_unit_id">ca-app-pub-2933424745841582/2251927237</string>
-    <string name="interstitial_ad_unit_id_for_test">ca-app-pub-3940256099942544/1033173712</string>
+
+    <!-- test -->
+    <!--    <string name="banner_ad_unit_id">ca-app-pub-3940256099942544/6300978111</string>-->
+    <!--    <string name="interstitial_ad_unit_id">ca-app-pub-3940256099942544/1033173712</string>-->
 
     <!-- word -->
     <string name="yes">yes</string>
@@ -144,5 +147,13 @@
     <string name="toilet_option_10">Management agency</string>
     <string name="toilet_option_11">Management tel</string>
     <string name="toilet_option_12">Opening time</string>
+
+    <!-- permission -->
+    <string name="permission_text_01">Permissions for using the app</string>
+    <string name="permission_text_02">Location permissions</string>
+    <string name="permission_text_03">Check current toilet information around me</string>
+    <string name="permission_text_04">Storage permissions</string>
+    <string name="permission_text_05">Store toilet information</string>
+    <string name="permission_text_06">App permissions require the above two permissions to use the app for convenient use of the PooPee service.</string>
 
 </resources>

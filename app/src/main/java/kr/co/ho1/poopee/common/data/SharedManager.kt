@@ -22,18 +22,7 @@ object SharedManager {
     private const val LATITUDE = "LATITUDE" // latitude
     private const val LONGITUDE = "LONGITUDE" // longitude
     private const val PUSH = "PUSH" // 푸쉬알림
-
-    fun isPush(): Boolean {
-        val pref = ObserverManager.context!!.getSharedPreferences(ETC, Context.MODE_PRIVATE)
-        return pref.getBoolean(PUSH, true)
-    }
-
-    fun setPush(value: Boolean) {
-        val pref = ObserverManager.context!!.getSharedPreferences(ETC, Context.MODE_PRIVATE)
-        val editor = pref.edit()
-        editor.putBoolean(PUSH, value)
-        editor.apply()
-    }
+    private const val FIRST_CHECK = "FIRST_CHECK" // 앱 최초실행체크
 
     fun isLoginCheck(): Boolean {
         val pref = ObserverManager.context!!.getSharedPreferences(LOGIN, Context.MODE_PRIVATE)
@@ -164,6 +153,30 @@ object SharedManager {
         val pref = ObserverManager.context!!.getSharedPreferences(ETC, Context.MODE_PRIVATE)
         val editor = pref.edit()
         editor.putString(LONGITUDE, value.toString())
+        editor.apply()
+    }
+
+    fun isPush(): Boolean {
+        val pref = ObserverManager.context!!.getSharedPreferences(ETC, Context.MODE_PRIVATE)
+        return pref.getBoolean(PUSH, true)
+    }
+
+    fun setPush(value: Boolean) {
+        val pref = ObserverManager.context!!.getSharedPreferences(ETC, Context.MODE_PRIVATE)
+        val editor = pref.edit()
+        editor.putBoolean(PUSH, value)
+        editor.apply()
+    }
+
+    fun isFirstCheck(): Boolean {
+        val pref = ObserverManager.context!!.getSharedPreferences(ETC, Context.MODE_PRIVATE)
+        return pref.getBoolean(FIRST_CHECK, false)
+    }
+
+    fun setFirstCheck(value: Boolean) {
+        val pref = ObserverManager.context!!.getSharedPreferences(ETC, Context.MODE_PRIVATE)
+        val editor = pref.edit()
+        editor.putBoolean(FIRST_CHECK, value)
         editor.apply()
     }
 

@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "346354872877",
+    "firebase_url": "https://poopee-4d5ec.firebaseio.com",
+    "project_id": "poopee-4d5ec",
+    "storage_bucket": "poopee-4d5ec.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:346354872877:android:7d38d1a39e2099a07d3ea4",
+        "android_client_info": {
+          "package_name": "kr.co.ho1.poopee"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "346354872877-uvns18abped3f34722lspbhnnl9i3ruk.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBG-6yrggIARoXAEq72Ty4M3l9o840SVPA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "346354872877-uvns18abped3f34722lspbhnnl9i3ruk.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

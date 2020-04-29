@@ -14,6 +14,7 @@ import kr.co.ho1.poopee.common.base.BaseActivity
 import kr.co.ho1.poopee.common.base.BaseApp
 import kr.co.ho1.poopee.common.data.SharedManager
 import kr.co.ho1.poopee.common.dialog.BasicDialog
+import kr.co.ho1.poopee.common.dialog.PermissionDialog
 import kr.co.ho1.poopee.common.http.*
 import kr.co.ho1.poopee.common.util.LocationManager
 import kr.co.ho1.poopee.common.util.MyUtil
@@ -50,17 +51,17 @@ class MainActivity : BaseActivity() {
                     }
 
                     override fun onAnimationEnd(animation: Animation) {
-                        if (intent.action != null && intent.action == BaseApp.ACTION_EXIT) {
-                            // 앱종료
-                            finish()
+                        if (SharedManager.isFirstCheck()) {
+                            onPermissionCheck()
                         } else {
-                            // 퍼미션 체크
-                            if (PermissionManager.permissionCheck(Manifest.permission.ACCESS_FINE_LOCATION)
-                                    && PermissionManager.permissionCheck(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
-                                onServiceCheck()
-                            } else {
-                                PermissionManager.requestPermissions(arrayOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.WRITE_EXTERNAL_STORAGE), PermissionManager.Permission)
-                            }
+                            val dialog = PermissionDialog(
+                                    onConfirm = {
+                                        SharedManager.setFirstCheck(true)
+                                        onPermissionCheck()
+                                    }
+                            )
+                            dialog.isCancelable = false
+                            dialog.show(supportFragmentManager, "PermissionDialog")
                         }
                     }
 
@@ -76,6 +77,21 @@ class MainActivity : BaseActivity() {
             }
         })
         layout_drop.startAnimation(animation)
+    }
+
+    private fun onPermissionCheck() {
+        if (intent.action != null && intent.action == BaseApp.ACTION_EXIT) {
+            // 앱종료
+            finish()
+        } else {
+            // 퍼미션 체크
+            if (PermissionManager.permissionCheck(Manifest.permission.ACCESS_FINE_LOCATION)
+                    && PermissionManager.permissionCheck(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+                onServiceCheck()
+            } else {
+                PermissionManager.requestPermissions(arrayOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.WRITE_EXTERNAL_STORAGE), PermissionManager.Permission)
+            }
+        }
     }
 
     private fun onServiceCheck() {
