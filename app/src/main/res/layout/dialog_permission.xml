@@ -114,7 +114,7 @@
 
                 <TextView
                     android:layout_width="wrap_content"
-                    android:layout_height="9dp"
+                    android:layout_height="wrap_content"
                     android:lineSpacingExtra="6sp"
                     android:text="@string/permission_text_04"
                     android:textColor="#292d34"
