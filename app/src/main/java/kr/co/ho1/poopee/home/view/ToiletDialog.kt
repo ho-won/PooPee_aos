@@ -1,7 +1,6 @@
 package kr.co.ho1.poopee.home.view
 
 import android.annotation.SuppressLint
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -15,7 +14,6 @@ import kr.co.ho1.poopee.common.http.RetrofitJSONObject
 import kr.co.ho1.poopee.common.http.RetrofitParams
 import kr.co.ho1.poopee.common.http.RetrofitService
 import kr.co.ho1.poopee.common.util.StrManager
-import kr.co.ho1.poopee.home.ToiletActivity
 import kr.co.ho1.poopee.home.model.Toilet
 import org.json.JSONException
 

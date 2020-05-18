@@ -117,7 +117,7 @@ class HomeActivity : BaseActivity(), MapView.POIItemEventListener, MapView.MapVi
             ObserverManager.mapView.setMapCenterPoint(MapPoint.mapPointWithGeoCoord(mLastLatitude, mLastLongitude), false)
         }
 
-        ObserverManager.mapView.setZoomLevel(2, true)
+        ObserverManager.mapView.setZoomLevel(3, true)
         ObserverManager.mapView.setPOIItemEventListener(this)
         ObserverManager.mapView.setMapViewEventListener(this)
     }
@@ -184,7 +184,7 @@ class HomeActivity : BaseActivity(), MapView.POIItemEventListener, MapView.MapVi
                 mIsMyPositionMove = true
                 ObserverManager.addMyPosition(SharedManager.getLatitude(), SharedManager.getLongitude())
                 ObserverManager.mapView.setMapCenterPoint(MapPoint.mapPointWithGeoCoord(SharedManager.getLatitude(), SharedManager.getLongitude()), false)
-                ObserverManager.mapView.setZoomLevel(2, false)
+                ObserverManager.mapView.setZoomLevel(3, false)
                 setMyPosition(View.VISIBLE)
             }
         }
@@ -409,9 +409,9 @@ class HomeActivity : BaseActivity(), MapView.POIItemEventListener, MapView.MapVi
             return
         }
 
-
-        val dialog = FinishDialog()
-        dialog.show(supportFragmentManager, "FinishDialog")
+        finish()
+//        val dialog = FinishDialog()
+//        dialog.show(supportFragmentManager, "FinishDialog")
     }
 
 }
