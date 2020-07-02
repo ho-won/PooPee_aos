@@ -23,6 +23,7 @@
         android:layout_height="match_parent"
         android:layout_below="@id/btn_close"
         android:animateLayoutChanges="true"
+        android:layout_above="@+id/ad_view"
         android:scrollbars="none"
         tools:ignore="UselessParent">
 
@@ -144,5 +145,15 @@
         </LinearLayout>
 
     </ScrollView>
+
+    <com.google.android.gms.ads.AdView xmlns:ads="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/ad_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:minHeight="50dp"
+        android:background="#EFEFEF"
+        ads:adSize="BANNER"
+        ads:adUnitId="@string/banner_ad_unit_id" />
 
 </RelativeLayout>

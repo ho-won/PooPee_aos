@@ -7,6 +7,7 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
 import android.widget.Toast
+import com.google.android.gms.ads.AdRequest
 import kotlinx.android.synthetic.main.activity_join.*
 import kr.co.ho1.poopee.R
 import kr.co.ho1.poopee.common.ObserverManager
@@ -25,6 +26,8 @@ class JoinActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_join)
+
+        ad_view.loadAd(AdRequest.Builder().build())
 
         init()
         setListener()

@@ -15,10 +15,10 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.gms.ads.AdRequest
 import kotlinx.android.synthetic.main.activity_notice.*
 import kotlinx.android.synthetic.main.item_notice.view.*
 import kr.co.ho1.poopee.R
-import kr.co.ho1.poopee.common.ObserverManager
 import kr.co.ho1.poopee.common.base.BaseActivity
 import kr.co.ho1.poopee.common.http.RetrofitClient
 import kr.co.ho1.poopee.common.http.RetrofitJSONObject
@@ -43,6 +43,8 @@ class NoticeActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_notice)
         setToolbar()
+
+        ad_view.loadAd(AdRequest.Builder().build())
 
         init()
         setListener()

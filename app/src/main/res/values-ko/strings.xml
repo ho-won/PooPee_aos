@@ -156,4 +156,14 @@
     <string name="permission_text_05">화장실 정보를 저장</string>
     <string name="permission_text_06">앱권한은 편리한 푸피 서비스이용을 위해 위에 두가지 권한이 있어야 앱 사용이 가능합니다.</string>
 
+    <!-- 20200702 추가 -->
+    <string name="home_text_24">문의하기/건의사항</string>
+    <string name="home_text_25">내용을 입력해주세요</string>
+    <string name="home_text_26"></string>
+    <string name="home_text_27"></string>
+    <string name="home_text_28"></string>
+    <string name="home_text_29"></string>
+
+    <string name="toast_send_complete">전송했습니다</string>
+
 </resources>

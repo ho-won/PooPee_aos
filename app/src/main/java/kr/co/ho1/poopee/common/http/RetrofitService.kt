@@ -24,6 +24,7 @@ interface RetrofitService {
         const val COMMENT_DELETE = "comments/deleteComment" // [DELETE] 댓글삭제
         const val COMMENT_UPDATE = "comments/updateComment" // [PUT] 댓글수정
         const val COMMENT_REPORT_CREATE = "commentReports/createReport" // [POST] 댓글신고
+        const val SUGGEST_CREATE = "suggests/createSuggest" // [POST] 문의하기
 
         const val TERMS_01 = "etcs/getTerms01" // 개인정보 처리방침
         const val TERMS_02 = "etcs/getTerms02" // 서비스 이용약관
@@ -86,6 +87,10 @@ interface RetrofitService {
     @FormUrlEncoded
     @POST(COMMENT_REPORT_CREATE)
     fun createCommentReport(@FieldMap params: Map<String, @JvmSuppressWildcards Any>): Call<ResponseBody>
+
+    @FormUrlEncoded
+    @POST(SUGGEST_CREATE)
+    fun createSuggest(@FieldMap params: Map<String, @JvmSuppressWildcards Any>): Call<ResponseBody>
 
     @GET(TOILET_INFO)
     fun toiletInfo(@QueryMap params: Map<String, @JvmSuppressWildcards Any>): Call<ResponseBody>

@@ -5,7 +5,11 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.google.android.gms.ads.AdRequest
+import kotlinx.android.synthetic.main.dialog_finish.*
 import kotlinx.android.synthetic.main.dialog_toilet.*
+import kotlinx.android.synthetic.main.dialog_toilet.ad_view
+import kotlinx.android.synthetic.main.dialog_toilet.tv_title
 import kr.co.ho1.poopee.R
 import kr.co.ho1.poopee.common.ObserverManager
 import kr.co.ho1.poopee.common.base.BaseDialog
@@ -35,6 +39,7 @@ class ToiletDialog(private var onDetail: ((toilet: Toilet) -> Unit)) : BaseDialo
     }
 
     private fun init() {
+        ad_view.loadAd(AdRequest.Builder().build())
         tv_title.text = mToilet.name
 
         mAddressText = ""

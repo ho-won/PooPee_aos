@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.widget.Toast
+import com.google.android.gms.ads.AdRequest
 import kotlinx.android.synthetic.main.activity_login.*
 import kr.co.ho1.poopee.R
 import kr.co.ho1.poopee.common.ObserverManager
@@ -25,6 +26,8 @@ class LoginActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
+
+        ad_view.loadAd(AdRequest.Builder().build())
 
         init()
         setListener()

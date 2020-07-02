@@ -9,6 +9,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import kotlinx.android.synthetic.main.dialog_comment_update.*
+import kotlinx.android.synthetic.main.dialog_comment_update.btn_close
+import kotlinx.android.synthetic.main.dialog_comment_update.edt_content
+import kotlinx.android.synthetic.main.dialog_suggest.*
 import kr.co.ho1.poopee.R
 import kr.co.ho1.poopee.common.base.BaseDialog
 import kr.co.ho1.poopee.common.data.SharedManager
@@ -35,6 +38,11 @@ class CommentUpdateDialog(private var onUpdate: ((comment: Comment) -> Unit)) : 
 
         init()
         setListener()
+    }
+
+    override fun dismiss() {
+        MyUtil.keyboardHide(edt_content)
+        super.dismiss()
     }
 
     private fun init() {
@@ -105,11 +113,6 @@ class CommentUpdateDialog(private var onUpdate: ((comment: Comment) -> Unit)) : 
 
                 }
         )
-    }
-
-    override fun dismiss() {
-        MyUtil.keyboardHide(edt_content)
-        super.dismiss()
     }
 
 }

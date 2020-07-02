@@ -94,7 +94,15 @@ class NavMainView : NavigationView {
             )
         }
         layout_request.setOnClickListener {
-            EmailSender.send("ho1.poopee@gmail.com", ObserverManager.context!!.getString(R.string.nav_text_05))
+            // EmailSender.send("ho1.poopee@gmail.com", ObserverManager.context!!.getString(R.string.nav_text_05))
+            if (SharedManager.isLoginCheck()) {
+                val dialog = SuggestDialog()
+                dialog.show(ObserverManager.root!!.supportFragmentManager, "SuggestDialog")
+            } else {
+                ObserverManager.root!!.startActivity(Intent(ObserverManager.context!!, LoginActivity::class.java)
+                        .setFlags(Intent.FLAG_ACTIVITY_NO_USER_ACTION)
+                )
+            }
         }
         layout_setting.setOnClickListener {
             ObserverManager.root!!.startActivity(Intent(ObserverManager.context!!, SettingActivity::class.java)

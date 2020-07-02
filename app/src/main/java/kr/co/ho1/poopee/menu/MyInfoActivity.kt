@@ -6,6 +6,7 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
 import android.widget.Toast
+import com.google.android.gms.ads.AdRequest
 import kotlinx.android.synthetic.main.activity_my_info.*
 import kotlinx.android.synthetic.main.view_toolbar.view.*
 import kr.co.ho1.poopee.R
@@ -27,6 +28,8 @@ class MyInfoActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_my_info)
         setToolbar()
+
+        ad_view.loadAd(AdRequest.Builder().build())
 
         init()
         setListener()

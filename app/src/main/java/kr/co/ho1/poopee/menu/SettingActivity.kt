@@ -3,6 +3,7 @@ package kr.co.ho1.poopee.menu
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import com.google.android.gms.ads.AdRequest
 import kotlinx.android.synthetic.main.activity_setting.*
 import kr.co.ho1.poopee.R
 import kr.co.ho1.poopee.common.ObserverManager
@@ -19,6 +20,8 @@ class SettingActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_setting)
         setToolbar()
+
+        ad_view.loadAd(AdRequest.Builder().build())
 
         init()
         setListener()

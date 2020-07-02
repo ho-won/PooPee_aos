@@ -409,9 +409,9 @@ class HomeActivity : BaseActivity(), MapView.POIItemEventListener, MapView.MapVi
             return
         }
 
-        finish()
-//        val dialog = FinishDialog()
-//        dialog.show(supportFragmentManager, "FinishDialog")
+        // finish()
+        val dialog = FinishDialog()
+        dialog.show(supportFragmentManager, "FinishDialog")
     }
 
 }
