@@ -159,11 +159,25 @@
     <!-- 20200702 추가 -->
     <string name="home_text_24">문의하기/건의사항</string>
     <string name="home_text_25">내용을 입력해주세요</string>
-    <string name="home_text_26"></string>
-    <string name="home_text_27"></string>
-    <string name="home_text_28"></string>
-    <string name="home_text_29"></string>
 
     <string name="toast_send_complete">전송했습니다</string>
+
+    <string name="nav_text_07">화장실등록</string>
+
+    <!-- toilet -->
+    <string name="toilet_create_text_01">등록할 화장실 주소를 검색하세요</string>
+    <string name="toilet_create_text_02">지도에서 선택</string>
+    <string name="toilet_create_text_03">화장실 위치 선택</string>
+    <string name="toilet_create_text_04">지도를 움직여 화장실 위치를 지정하세요.</string>
+    <string name="toilet_create_text_05">화장실 등록</string>
+    <string name="toilet_create_text_06">화장실 정보 입력</string>
+    <string name="toilet_create_text_07">화장실명</string>
+    <string name="toilet_create_text_08">화장실명 (20자 이내)</string>
+    <string name="toilet_create_text_09">화장실 설명</string>
+    <string name="toilet_create_text_10">화장실 설명 또는 비밀번호 입력</string>
+    <string name="toilet_create_text_11">화장실 구분</string>
+    <string name="toilet_create_text_12">등록</string>
+    <string name="toilet_create_text_13">화장실을 등록했습니다</string>
+    <string name="toilet_create_text_14">화장실 위치 검색</string>
 
 </resources>

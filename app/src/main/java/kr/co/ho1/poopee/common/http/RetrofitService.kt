@@ -25,6 +25,7 @@ interface RetrofitService {
         const val COMMENT_UPDATE = "comments/updateComment" // [PUT] 댓글수정
         const val COMMENT_REPORT_CREATE = "commentReports/createReport" // [POST] 댓글신고
         const val SUGGEST_CREATE = "suggests/createSuggest" // [POST] 문의하기
+        const val TOILET_CREATE = "toilet2s/createToilet" // [POST] 문의하기
 
         const val TERMS_01 = "etcs/getTerms01" // 개인정보 처리방침
         const val TERMS_02 = "etcs/getTerms02" // 서비스 이용약관
@@ -98,5 +99,9 @@ interface RetrofitService {
     @FormUrlEncoded
     @POST(TOILET_LIKE)
     fun toiletLike(@FieldMap params: Map<String, @JvmSuppressWildcards Any>): Call<ResponseBody>
+
+    @FormUrlEncoded
+    @POST(TOILET_CREATE)
+    fun createToilet(@FieldMap params: Map<String, @JvmSuppressWildcards Any>): Call<ResponseBody>
 
 }

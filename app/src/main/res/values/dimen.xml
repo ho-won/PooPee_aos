@@ -26,9 +26,9 @@
 
     <!-- button -->
     <dimen name="btn_main_width">260dp</dimen>
-    <dimen name="btn_main_height">48dp</dimen>
+    <dimen name="btn_main_height">44dp</dimen>
     <dimen name="btn_main_padding">16dp</dimen>
-    <dimen name="btn_main_text_sp">16sp</dimen>
+    <dimen name="btn_main_text_sp">14sp</dimen>
 
     <!-- home -->
     <dimen name="home_menu_width">100dp</dimen>

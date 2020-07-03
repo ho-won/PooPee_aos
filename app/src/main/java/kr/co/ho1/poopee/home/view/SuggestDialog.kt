@@ -19,12 +19,10 @@ import kr.co.ho1.poopee.common.http.RetrofitJSONObject
 import kr.co.ho1.poopee.common.http.RetrofitParams
 import kr.co.ho1.poopee.common.http.RetrofitService
 import kr.co.ho1.poopee.common.util.MyUtil
-import kr.co.ho1.poopee.home.model.Comment
 import org.json.JSONException
 
 @SuppressLint("ValidFragment")
 class SuggestDialog : BaseDialog() {
-    private var mComment: Comment = Comment()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.dialog_suggest, container, false)
@@ -73,10 +71,6 @@ class SuggestDialog : BaseDialog() {
         btn_close.setOnClickListener {
             dismiss()
         }
-    }
-
-    fun setComment(comment: Comment) {
-        this.mComment = comment
     }
 
     /**

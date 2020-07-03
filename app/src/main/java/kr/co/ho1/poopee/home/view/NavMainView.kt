@@ -12,9 +12,9 @@ import kotlinx.android.synthetic.main.nav_main.view.*
 import kr.co.ho1.poopee.R
 import kr.co.ho1.poopee.common.ObserverManager
 import kr.co.ho1.poopee.common.data.SharedManager
-import kr.co.ho1.poopee.common.util.EmailSender
 import kr.co.ho1.poopee.common.util.MySpannableString
 import kr.co.ho1.poopee.common.util.MyUtil
+import kr.co.ho1.poopee.home.ToiletSearchActivity
 import kr.co.ho1.poopee.login.LoginActivity
 import kr.co.ho1.poopee.menu.MyInfoActivity
 import kr.co.ho1.poopee.menu.NoticeActivity
@@ -72,6 +72,17 @@ class NavMainView : NavigationView {
                 }
             }
             if (!SharedManager.isLoginCheck()) {
+                ObserverManager.root!!.startActivity(Intent(ObserverManager.context!!, LoginActivity::class.java)
+                        .setFlags(Intent.FLAG_ACTIVITY_NO_USER_ACTION)
+                )
+            }
+        }
+        layout_toilet_create.setOnClickListener {
+            if (SharedManager.isLoginCheck()) {
+                ObserverManager.root!!.startActivity(Intent(ObserverManager.context!!, ToiletSearchActivity::class.java)
+                        .setFlags(Intent.FLAG_ACTIVITY_NO_USER_ACTION)
+                )
+            } else {
                 ObserverManager.root!!.startActivity(Intent(ObserverManager.context!!, LoginActivity::class.java)
                         .setFlags(Intent.FLAG_ACTIVITY_NO_USER_ACTION)
                 )

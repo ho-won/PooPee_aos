@@ -1,6 +1,8 @@
 package kr.co.ho1.poopee.home.model
 
-class KaKaoKeyword {
+import java.io.Serializable
+
+class KaKaoKeyword : Serializable {
     var address_name: String = ""
     var place_name: String = ""
     var latitude: Double = 0.0

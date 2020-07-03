@@ -55,7 +55,6 @@ class ToiletActivity : BaseActivity() {
         setContentView(R.layout.activity_toilet)
         setToolbar()
 
-        MobileAds.initialize(this, MyUtil.getString(R.string.admob_app_id))
         ad_view.loadAd(AdRequest.Builder().build())
 
         init()

@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/root_view"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    android:gravity="center">
+
+    <LinearLayout
+        android:id="@+id/layout_dialog"
+        android:layout_width="@dimen/dialog_main_width"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:background="@drawable/bg_base_dialog"
+        android:clickable="true"
+        android:focusable="true"
+        android:orientation="vertical"
+        tools:ignore="UselessParent">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="44dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:gravity="center_vertical"
+            android:text="@string/toilet_create_text_06"
+            android:textColor="@color/text_main"
+            android:textSize="14sp" />
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:scrollbars="none">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:orientation="vertical"
+                android:paddingBottom="8dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:lineSpacingExtra="6sp"
+                    android:text="@string/toilet_create_text_07"
+                    android:textColor="@color/text_main"
+                    android:textSize="12sp" />
+
+                <EditText
+                    android:id="@+id/edt_title"
+                    style="@style/base_edt"
+                    android:layout_height="44dp"
+                    android:layout_marginTop="6dp"
+                    android:gravity="start"
+                    android:hint="@string/toilet_create_text_08"
+                    android:inputType="text"
+                    android:maxLength="20"
+                    tools:ignore="Autofill" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:lineSpacingExtra="6sp"
+                        android:text="@string/toilet_create_text_09"
+                        android:textColor="@color/text_main"
+                        android:textSize="12sp" />
+
+                    <TextView
+                        android:id="@+id/tv_content_cnt"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="end"
+                        android:lineSpacingExtra="6sp"
+                        android:text="0/100"
+                        android:textColor="@color/text_main"
+                        android:textSize="12sp" />
+
+                </LinearLayout>
+
+                <EditText
+                    android:id="@+id/edt_content"
+                    style="@style/base_edt"
+                    android:layout_height="80dp"
+                    android:layout_marginTop="6dp"
+                    android:gravity="start"
+                    android:hint="@string/toilet_create_text_10"
+                    android:inputType="textMultiLine"
+                    android:maxLength="100"
+                    tools:ignore="Autofill" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:lineSpacingExtra="6sp"
+                    android:text="@string/toilet_create_text_11"
+                    android:textColor="@color/text_main"
+                    android:textSize="12sp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="6dp"
+                    android:orientation="horizontal">
+
+                    <CheckBox
+                        android:id="@+id/cb_public"
+                        android:layout_width="84dp"
+                        android:layout_height="44dp"
+                        android:background="@drawable/cb_toilet_gubun_public"
+                        android:button="@null"
+                        tools:ignore="ContentDescription" />
+
+                    <CheckBox
+                        android:id="@+id/cb_man"
+                        android:layout_width="84dp"
+                        android:layout_height="44dp"
+                        android:layout_marginStart="8dp"
+                        android:background="@drawable/cb_toilet_gubun_man"
+                        android:button="@null"
+                        tools:ignore="ContentDescription" />
+
+                    <CheckBox
+                        android:id="@+id/cb_woman"
+                        android:layout_width="84dp"
+                        android:layout_height="44dp"
+                        android:layout_marginStart="8dp"
+                        android:background="@drawable/cb_toilet_gubun_woman"
+                        android:button="@null"
+                        tools:ignore="ContentDescription" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </ScrollView>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0dp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="44dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/btn_close"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp"
+                android:text="@string/cancel"
+                android:textAllCaps="false"
+                android:textColor="#a0a4aa"
+                android:textSize="13sp" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="@dimen/dialog_button_height"
+                android:layout_weight="1" />
+
+            <TextView
+                android:id="@+id/btn_send"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp"
+                android:text="@string/toilet_create_text_12"
+                android:textAllCaps="false"
+                android:textColor="#a0a4aa"
+                android:textSize="13sp" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</RelativeLayout>

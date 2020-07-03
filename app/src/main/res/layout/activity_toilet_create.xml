@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/root_view"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <kr.co.ho1.poopee.common.view.ToolbarView
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/main_content_background" />
+
+    <View
+        android:id="@+id/line_01"
+        style="@style/line_main"
+        android:layout_below="@+id/toolbar" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/ad_view"
+        android:layout_below="@+id/line_01">
+
+        <RelativeLayout
+            android:id="@+id/map_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="28dp"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="12dp"
+            android:background="@drawable/bg_toilet_create_ex"
+            android:gravity="center"
+            android:lineSpacingExtra="6sp"
+            android:text="@string/toilet_create_text_04"
+            android:textColor="@color/primary"
+            android:textSize="12sp" />
+
+        <FrameLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true">
+
+            <ImageView
+                android:layout_width="40dp"
+                android:layout_height="48dp"
+                android:layout_marginBottom="34dp"
+                android:contentDescription="@string/contentDescription"
+                android:src="@drawable/ic_register_s" />
+
+        </FrameLayout>
+
+    </RelativeLayout>
+
+    <ImageButton
+        android:id="@+id/btn_my_position"
+        style="?android:attr/borderlessButtonStyle"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_above="@+id/btn_bottom"
+        android:layout_alignParentEnd="true"
+        android:layout_margin="12dp"
+        android:contentDescription="@string/contentDescription"
+        android:padding="0dp"
+        android:src="@drawable/ic_register_m" />
+
+    <Button
+        android:id="@+id/btn_bottom"
+        style="@style/base_btn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/ad_view"
+        android:background="@color/primary"
+        android:lineSpacingExtra="6sp"
+        android:text="@string/toilet_create_text_05"
+        android:textColor="#ffffff" />
+
+    <com.google.android.gms.ads.AdView xmlns:ads="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/ad_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="#EFEFEF"
+        android:minHeight="50dp"
+        ads:adSize="BANNER"
+        ads:adUnitId="@string/banner_ad_unit_id" />
+
+</RelativeLayout>
