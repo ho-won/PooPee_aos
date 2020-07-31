@@ -24,6 +24,11 @@ import kr.co.ho1.poopee.home.model.KaKaoKeyword
 import org.json.JSONException
 
 class ToiletSearchActivity : BaseActivity() {
+
+    companion object {
+        const val RESULT_CREATE = 1001
+    }
+
     private var mKeywordAdapter: ListAdapter = ListAdapter()
     private var mKeywordList: ArrayList<KaKaoKeyword> = ArrayList()
 
@@ -51,8 +56,9 @@ class ToiletSearchActivity : BaseActivity() {
             edt_search.setText("")
         }
         btn_map.setOnClickListener {
-            ObserverManager.root!!.startActivity(Intent(ObserverManager.context!!, ToiletCreateActivity::class.java)
+            ObserverManager.root!!.startActivityForResult(Intent(ObserverManager.context!!, ToiletCreateActivity::class.java)
                     .setFlags(Intent.FLAG_ACTIVITY_NO_USER_ACTION)
+                    , RESULT_CREATE
             )
         }
         btn_bottom.setOnClickListener {
@@ -156,6 +162,17 @@ class ToiletSearchActivity : BaseActivity() {
                     )
                 }
             }
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (resultCode != RESULT_OK) {
+            return
+        }
+
+        if (requestCode == RESULT_CREATE) {
+            finish()
         }
     }
 

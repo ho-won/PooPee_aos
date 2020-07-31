@@ -89,7 +89,7 @@ class ToiletCreateDialog(private var latitude: Double, private var longitude: Do
             setGubunCheck(cb_woman)
         }
         btn_send.setOnClickListener {
-            taskCreateToilet()
+            taskKakaoCoordToAddress()
         }
         btn_close.setOnClickListener {
             dismiss()
@@ -115,12 +115,61 @@ class ToiletCreateDialog(private var latitude: Double, private var longitude: Do
     }
 
     /**
+     * [GET] 카카오 좌표 -> 주소 변환
+     */
+    private fun taskKakaoCoordToAddress() {
+        val params = RetrofitParams()
+        params.put("x", longitude) // longitude
+        params.put("y", latitude) // latitude
+
+        val request = RetrofitClient.getClientKaKao(RetrofitService.KAKAO_LOCAL).create(RetrofitService::class.java).kakaoLocalCoordToAddress(params.getParams())
+
+        RetrofitJSONObject(request,
+                onSuccess = {
+                    try {
+                        val totalCount = it.getJSONObject("meta").getInt("total_count")
+                        if (totalCount > 0) {
+                            val jsonObject = it.getJSONArray("documents").getJSONObject(0)
+
+                            var address_new = ""
+                            var address_old = ""
+                            if (!jsonObject.isNull("road_address")) {
+                                address_new = jsonObject.getJSONObject("road_address").getString("address_name")
+                            }
+                            if (!jsonObject.isNull("address")) {
+                                address_old = jsonObject.getJSONObject("address").getString("address_name")
+                            }
+                            taskCreateToilet(address_new, address_old)
+                        }
+                    } catch (e: JSONException) {
+                        e.printStackTrace()
+                    }
+                },
+                onFailed = {
+
+                }
+        )
+    }
+
+    /**
      * [POST] 화장실추가
      */
-    private fun taskCreateToilet() {
+    private fun taskCreateToilet(address_new: String, address_old: String) {
         val params = RetrofitParams()
         params.put("member_id", SharedManager.getMemberId())
-        params.put("content", edt_content.text)
+        params.put("name", edt_title.text) // 화장실명
+        params.put("content", edt_content.text) // 화장실설명
+
+        when {
+            cb_man.isChecked -> params.put("type", 1) // 0(공용) 1(남자) 2(여자)
+            cb_woman.isChecked -> params.put("type", 2) // 0(공용) 1(남자) 2(여자)
+            else -> params.put("type", 0) // 0(공용) 1(남자) 2(여자)
+        }
+
+        params.put("latitude", latitude) // 위도
+        params.put("longitude", longitude) // 경도
+        params.put("address_new", address_new) // 도로명주소
+        params.put("address_old", address_old) // 지번주소
 
         val request = RetrofitClient.getClient(RetrofitService.BASE_APP).create(RetrofitService::class.java).createToilet(params.getParams())
 

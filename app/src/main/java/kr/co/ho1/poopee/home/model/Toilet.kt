@@ -9,10 +9,12 @@ class Toilet : Serializable {
     }
 
     var toilet_id: Int = 0
-    var type: String = "" // 개방화장실, 졸음쉼터, 휴게소
-    var name: String = ""
-    var address_new: String = ""
-    var address_old: String = ""
+    var type: String = "" // 개방화장실, 졸음쉼터, 휴게소, 유저
+    var m_name: String = "" // 유저명(유저화장실일경우)
+    var name: String = "" // 화장실명
+    var content: String = "" // 화장실설명
+    var address_new: String = "" // 도로명주소
+    var address_old: String = "" // 지번주소
     var unisex: String = "" // 남녀공용화장실여부
     var m_poo: String = "" // 남성용-대변기수
     var m_pee: String = "" // 남성용-소변기수

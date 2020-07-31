@@ -73,7 +73,7 @@ object ObserverManager {
         }
         my_position = MapPOIItem()
         my_position!!.itemName = "내위치"
-        my_position!!.tag = -1
+        my_position!!.tag = 0
         my_position!!.mapPoint = MapPoint.mapPointWithGeoCoord(latitude, longitude)
         my_position!!.markerType = MapPOIItem.MarkerType.CustomImage // 마커타입을 커스텀 마커로 지정.
         my_position!!.customImageResourceId = R.drawable.ic_marker // 마커 이미지.

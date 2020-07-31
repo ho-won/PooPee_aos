@@ -1,5 +1,7 @@
 package kr.co.ho1.poopee.home
 
+import android.app.Activity
+import android.content.Intent
 import android.location.Location
 import android.os.Bundle
 import com.google.android.gms.ads.AdRequest
@@ -78,7 +80,9 @@ class ToiletCreateActivity : BaseActivity() {
                     ObserverManager.mapView.mapCenterPoint.mapPointGeoCoord.latitude,
                     ObserverManager.mapView.mapCenterPoint.mapPointGeoCoord.longitude,
                     onCreate = {
-
+                        val intent = Intent()
+                        setResult(Activity.RESULT_OK, intent)
+                        finish()
                     }
             )
             dialog.show(supportFragmentManager, "ToiletCreateDialog")

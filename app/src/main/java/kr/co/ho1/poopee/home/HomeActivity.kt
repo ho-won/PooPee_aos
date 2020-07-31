@@ -6,6 +6,7 @@ import android.location.Location
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.ArrayMap
 import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
@@ -59,6 +60,7 @@ class HomeActivity : BaseActivity(), MapView.POIItemEventListener, MapView.MapVi
     private lateinit var mInterstitialAd: InterstitialAd
 
     private var mToilet: Toilet = Toilet()
+    private var mToiletList: ArrayMap<Int, Toilet> = ArrayMap()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -153,7 +155,7 @@ class HomeActivity : BaseActivity(), MapView.POIItemEventListener, MapView.MapVi
             edt_search.setText("")
             rv_search.visibility = View.GONE
         }
-        edt_search.setOnKeyListener { v, keyCode, event ->
+        edt_search.setOnKeyListener { _, keyCode, event ->
             if (event.action == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_ENTER && mKeywordList.size > 0) {
                 setKakaoLocal(mKeywordList[0])
                 return@setOnKeyListener true
@@ -230,6 +232,8 @@ class HomeActivity : BaseActivity(), MapView.POIItemEventListener, MapView.MapVi
         for (toilet in toiletList) {
             ObserverManager.addPOIItem(toilet)
         }
+        taskToiletList(mLastLatitude, mLastLongitude)
+
         if (SharedManager.getLatitude() > 0) {
             ObserverManager.addMyPosition(SharedManager.getLatitude(), SharedManager.getLongitude())
         }
@@ -282,6 +286,24 @@ class HomeActivity : BaseActivity(), MapView.POIItemEventListener, MapView.MapVi
             )
             dialog.setToilet(toilet)
             dialog.show(supportFragmentManager, "ToiletDialog")
+        } else if (p1.tag < 0) {
+            mToiletList[p1.tag]?.let { toilet ->
+                val dialog = ToiletDialog(
+                        onDetail = {
+                            mToilet = it
+                            if (mInterstitialAd.isLoaded) {
+                                mInterstitialAd.show()
+                            } else {
+                                ObserverManager.root!!.startActivity(Intent(ObserverManager.context!!, ToiletActivity::class.java)
+                                        .setFlags(Intent.FLAG_ACTIVITY_NO_USER_ACTION)
+                                        .putExtra(ToiletActivity.TOILET, mToilet)
+                                )
+                            }
+                        }
+                )
+                dialog.setToilet(toilet)
+                dialog.show(supportFragmentManager, "ToiletDialog")
+            }
         }
     }
 
@@ -309,6 +331,51 @@ class HomeActivity : BaseActivity(), MapView.POIItemEventListener, MapView.MapVi
         MyUtil.keyboardHide(edt_search)
         rv_search.visibility = View.GONE
         setMyPosition(View.GONE)
+    }
+
+    /**
+     * [GET] 화장실목록
+     */
+    private fun taskToiletList(latitude: Double, longitude: Double) {
+        val params = RetrofitParams()
+        params.put("latitude", latitude)
+        params.put("longitude", longitude)
+
+        val request = RetrofitClient.getClient(RetrofitService.BASE_APP).create(RetrofitService::class.java).toiletList(params.getParams())
+
+        RetrofitJSONObject(request,
+                onSuccess = {
+                    try {
+                        if (it.getInt("rst_code") == 0) {
+                            val jsonArray = it.getJSONArray("toilets")
+                            mToiletList = ArrayMap()
+
+                            for (i in 0 until jsonArray.length()) {
+                                val jsonObject = jsonArray.getJSONObject(i)
+                                val toilet = Toilet()
+                                toilet.toilet_id = jsonObject.getInt("toilet_id")
+                                toilet.type = "유저"
+                                toilet.m_name = jsonObject.getString("m_name")
+                                toilet.name = jsonObject.getString("name")
+                                toilet.content = jsonObject.getString("content")
+                                toilet.address_new = jsonObject.getString("address_new")
+                                toilet.address_old = jsonObject.getString("address_old")
+                                toilet.unisex = if (jsonObject.getInt("unisex") == 1) "Y" else "N"
+                                toilet.m_poo = jsonObject.getString("man")
+                                toilet.w_poo = jsonObject.getString("woman")
+                                toilet.latitude = jsonObject.getDouble("latitude")
+                                toilet.longitude = jsonObject.getDouble("longitude")
+                                mToiletList[toilet.toilet_id] = toilet
+                                ObserverManager.addPOIItem(toilet)
+                            }
+                        }
+                    } catch (e: JSONException) {
+                        e.printStackTrace()
+                    }
+                },
+                onFailed = {
+                }
+        )
     }
 
     /**
