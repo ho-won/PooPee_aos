@@ -147,6 +147,9 @@
     <string name="toilet_option_10">관리기관명</string>
     <string name="toilet_option_11">관리기관 전화번호</string>
     <string name="toilet_option_12">개방시간</string>
+    <string name="toilet_btn_01">신고</string>
+    <string name="toilet_btn_02">삭제</string>
+    <string name="toilet_btn_03">수정</string>
 
     <!-- permission -->
     <string name="permission_text_01">앱 이용을 위한 권한 안내</string>

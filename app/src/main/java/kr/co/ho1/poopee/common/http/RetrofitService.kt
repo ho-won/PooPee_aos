@@ -26,6 +26,9 @@ interface RetrofitService {
         const val COMMENT_REPORT_CREATE = "commentReports/createReport" // [POST] 댓글신고
         const val SUGGEST_CREATE = "suggests/createSuggest" // [POST] 문의하기
         const val TOILET_CREATE = "toilet2s/createToilet" // [POST] 화장실추가
+        const val TOILET_UPDATE = "toilet2s/updateToilet" // [PUT] 화장실수정
+        const val TOILET_DELETE = "toilet2s/deleteToilet" // [DELETE] 화장삭제
+        const val TOILET_REPORT = "toiletReports/createReport" // [POST] 화장실신고
         const val TOILET_LIST = "toilet2s/getToiletList" // [GET] 화장실목록
 
         const val TERMS_01 = "etcs/getTerms01" // 개인정보 처리방침
@@ -104,6 +107,17 @@ interface RetrofitService {
     @FormUrlEncoded
     @POST(TOILET_CREATE)
     fun createToilet(@FieldMap params: Map<String, @JvmSuppressWildcards Any>): Call<ResponseBody>
+
+    @DELETE(TOILET_DELETE)
+    fun toiletDelete(@QueryMap params: Map<String, @JvmSuppressWildcards Any>): Call<ResponseBody>
+
+    @FormUrlEncoded
+    @PUT(TOILET_UPDATE)
+    fun toiletUpdate(@FieldMap params: Map<String, @JvmSuppressWildcards Any>): Call<ResponseBody>
+
+    @FormUrlEncoded
+    @POST(TOILET_REPORT)
+    fun createToiletReport(@FieldMap params: Map<String, @JvmSuppressWildcards Any>): Call<ResponseBody>
 
     @GET(TOILET_LIST)
     fun toiletList(@QueryMap params: Map<String, @JvmSuppressWildcards Any>): Call<ResponseBody>

@@ -1,6 +1,7 @@
 package kr.co.ho1.poopee.home
 
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -10,10 +11,8 @@ import androidx.appcompat.widget.PopupMenu
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.gms.ads.AdRequest
-import com.google.android.gms.ads.MobileAds
 import kotlinx.android.synthetic.main.activity_toilet.*
 import kotlinx.android.synthetic.main.item_toilet_comment.view.*
-import kotlinx.android.synthetic.main.view_toolbar.view.*
 import kr.co.ho1.poopee.R
 import kr.co.ho1.poopee.common.ObserverManager
 import kr.co.ho1.poopee.common.base.BaseActivity
@@ -28,10 +27,7 @@ import kr.co.ho1.poopee.common.util.MyUtil
 import kr.co.ho1.poopee.common.util.StrManager
 import kr.co.ho1.poopee.home.model.Comment
 import kr.co.ho1.poopee.home.model.Toilet
-import kr.co.ho1.poopee.home.view.CommentCreateDialog
-import kr.co.ho1.poopee.home.view.CommentReportDialog
-import kr.co.ho1.poopee.home.view.CommentUpdateDialog
-import kr.co.ho1.poopee.home.view.ShareDialog
+import kr.co.ho1.poopee.home.view.*
 import kr.co.ho1.poopee.login.LoginActivity
 import net.daum.mf.map.api.MapPoint
 import net.daum.mf.map.api.MapView
@@ -75,19 +71,78 @@ class ToiletActivity : BaseActivity() {
     private fun init() {
         mToilet = intent.getSerializableExtra(TOILET) as Toilet
 
-        if (mToilet.type == "졸음쉼터" || mToilet.type == "휴게소") {
-            cb_tap_address.visibility = View.INVISIBLE
-            layout_detail_icon.visibility = View.GONE
-            layout_detail_address.visibility = View.GONE
-            layout_detail_manager.visibility = View.VISIBLE
-        } else {
-            cb_tap_address.visibility = View.VISIBLE
-            layout_detail_icon.visibility = View.VISIBLE
-            layout_detail_address.visibility = View.VISIBLE
-            layout_detail_manager.visibility = View.GONE
+        val layoutManager = LinearLayoutManager(this)
+        layoutManager.isAutoMeasureEnabled = true
+        recycler_view.layoutManager = layoutManager
+        recycler_view.isNestedScrollingEnabled = false
+        mRecyclerAdapter = ListAdapter()
+        recycler_view.adapter = mRecyclerAdapter
+    }
+
+    @SuppressLint("ClickableViewAccessibility")
+    private fun refresh() {
+        map_view.removeAllViews()
+        ObserverManager.mapView = MapView(this)
+        map_view.addView(ObserverManager.mapView)
+        LogManager.e("HO_TEST", mToilet.latitude.toString())
+        ObserverManager.mapView.setMapCenterPoint(MapPoint.mapPointWithGeoCoord(mToilet.latitude, mToilet.longitude), true)
+        ObserverManager.addPOIItem(mToilet)
+        ObserverManager.mapView.setZoomLevel(2, true)
+        ObserverManager.mapView.setOnTouchListener { _, event ->
+            when (event.action) {
+                MotionEvent.ACTION_DOWN -> {
+                    scroll_view.requestDisallowInterceptTouchEvent(true)
+                }
+                MotionEvent.ACTION_UP -> {
+                    scroll_view.requestDisallowInterceptTouchEvent(false)
+                }
+                else -> {
+                }
+            }
+            super.onTouchEvent(event)
         }
 
-        toolbar.setTitle(mToilet.name)
+        mCommentList = arrayListOf()
+
+        tv_toilet_name.text = mToilet.name
+        tv_toilet_content.text = mToilet.content
+
+        if (mToilet.content.isNotEmpty()) {
+            tv_toilet_content.visibility = View.VISIBLE
+        } else {
+            tv_toilet_content.visibility = View.GONE
+        }
+
+        if (mToilet.member_id == SharedManager.getMemberId()) {
+            layout_btn_mine.visibility = View.VISIBLE
+            layout_btn_normal.visibility = View.GONE
+        } else {
+            layout_btn_mine.visibility = View.GONE
+            layout_btn_normal.visibility = View.VISIBLE
+        }
+        cb_like.isChecked = mToilet.like_check
+
+        if (mToilet.type == "유저") {
+            // 유저가 등록한 화장실
+            cb_tap_address.visibility = View.GONE
+            layout_detail_address.visibility = View.GONE
+            layout_detail_manager_title.visibility = View.GONE
+            layout_detail_manager.visibility = View.GONE
+
+            cb_option_04.visibility = View.GONE
+            cb_option_05.visibility = View.GONE
+            cb_option_06.visibility = View.GONE
+        } else {
+            // 공공데이터포털 화장실
+            cb_tap_address.visibility = View.VISIBLE
+            layout_detail_address.visibility = View.VISIBLE
+            layout_detail_manager_title.visibility = View.VISIBLE
+            layout_detail_manager.visibility = View.GONE
+
+            cb_option_04.visibility = View.VISIBLE
+            cb_option_05.visibility = View.VISIBLE
+            cb_option_06.visibility = View.VISIBLE
+        }
 
         mAddressText = if (mToilet.address_new.count() > 0) {
             mToilet.address_new
@@ -155,42 +210,52 @@ class ToiletActivity : BaseActivity() {
         tv_open_time.text = mToilet.open_time
 
         tv_comment_count.text = mToilet.comment_count
-        btn_like.isChecked = mToilet.like_check
-
-        val layoutManager = LinearLayoutManager(this)
-        layoutManager.isAutoMeasureEnabled = true
-        recycler_view.layoutManager = layoutManager
-        recycler_view.isNestedScrollingEnabled = false
-        mRecyclerAdapter = ListAdapter()
-        recycler_view.adapter = mRecyclerAdapter
-    }
-
-    @SuppressLint("ClickableViewAccessibility")
-    private fun refresh() {
-        ObserverManager.mapView = MapView(this)
-        map_view.addView(ObserverManager.mapView)
-        LogManager.e("HO_TEST", mToilet.latitude.toString())
-        ObserverManager.mapView.setMapCenterPoint(MapPoint.mapPointWithGeoCoord(mToilet.latitude, mToilet.longitude), true)
-        ObserverManager.addPOIItem(mToilet)
-        ObserverManager.mapView.setZoomLevel(2, true)
-        ObserverManager.mapView.setOnTouchListener { _, event ->
-            when (event.action) {
-                MotionEvent.ACTION_DOWN -> {
-                    scroll_view.requestDisallowInterceptTouchEvent(true)
-                }
-                MotionEvent.ACTION_UP -> {
-                    scroll_view.requestDisallowInterceptTouchEvent(false)
-                }
-                else -> {
-                }
-            }
-            super.onTouchEvent(event)
-        }
 
         taskCommentList()
     }
 
     private fun setListener() {
+        btn_back.setOnClickListener {
+            finish()
+        }
+        layout_report.setOnClickListener {
+            if (SharedManager.isLoginCheck()) {
+                val dialog = ToiletReportDialog()
+                dialog.setToilet(mToilet)
+                dialog.show(supportFragmentManager, "ToiletReportDialog")
+            } else {
+                ObserverManager.root!!.startActivity(Intent(ObserverManager.context!!, LoginActivity::class.java)
+                        .setFlags(Intent.FLAG_ACTIVITY_NO_USER_ACTION)
+                )
+            }
+        }
+        layout_delete.setOnClickListener {
+            val dialog = BasicDialog(
+                    onLeftButton = {
+                        taskToiletDelete()
+                    },
+                    onCenterButton = {
+
+                    },
+                    onRightButton = {
+
+                    }
+            )
+            dialog.setTextContent(MyUtil.getString(R.string.home_text_06))
+            dialog.setBtnLeft(MyUtil.getString(R.string.confirm))
+            dialog.setBtnRight(MyUtil.getString(R.string.cancel))
+            dialog.show(supportFragmentManager, "BasicDialog")
+        }
+        layout_update.setOnClickListener {
+            val dialog = ToiletUpdateDialog(
+                    mToilet,
+                    onUpdate = {
+                        mToilet = it
+                        refresh()
+                    }
+            )
+            dialog.show(supportFragmentManager, "ToiletCreateDialog")
+        }
         layout_sms.setOnClickListener {
             val dialog = ShareDialog()
             dialog.setAction(ShareDialog.ACTION_SHARE)
@@ -200,11 +265,12 @@ class ToiletActivity : BaseActivity() {
         map_view_click.setOnClickListener {
             finish()
         }
-        btn_like.setOnClickListener {
+        layout_like.setOnClickListener {
+            cb_like.isChecked = !cb_like.isChecked
             if (SharedManager.isLoginCheck()) {
                 taskToiletLike()
             } else {
-                btn_like.isChecked = false
+                cb_like.isChecked = false
                 ObserverManager.root!!.startActivity(Intent(ObserverManager.context!!, LoginActivity::class.java)
                         .setFlags(Intent.FLAG_ACTIVITY_NO_USER_ACTION)
                 )
@@ -265,8 +331,8 @@ class ToiletActivity : BaseActivity() {
                 onSuccess = {
                     try {
                         if (it.getInt("rst_code") == 0) {
-                            toolbar.tv_like.text = it.getString("like_count")
-                            btn_like.isChecked = it.getString("like_check") == "1"
+                            tv_like.text = it.getString("like_count")
+                            cb_like.isChecked = it.getString("like_check") == "1"
                             tv_comment_count.text = it.getString("comment_count")
 
                             val jsonArray = it.getJSONArray("comments")
@@ -313,8 +379,8 @@ class ToiletActivity : BaseActivity() {
                 onSuccess = {
                     try {
                         if (it.getInt("rst_code") == 0) {
-                            toolbar.tv_like.text = it.getString("like_count")
-                            btn_like.isChecked = it.getString("like_check") == "1"
+                            tv_like.text = it.getString("like_count")
+                            cb_like.isChecked = it.getString("like_check") == "1"
                         }
                     } catch (e: JSONException) {
                         e.printStackTrace()
@@ -372,6 +438,35 @@ class ToiletActivity : BaseActivity() {
                         if (it.getInt("rst_code") == 0) {
                             taskCommentList()
                             Toast.makeText(ObserverManager.context!!, MyUtil.getString(R.string.toast_delete_complete), Toast.LENGTH_SHORT).show()
+                        }
+                    } catch (e: JSONException) {
+                        e.printStackTrace()
+                    }
+                    hideLoading()
+                },
+                onFailed = {
+                    hideLoading()
+                }
+        )
+    }
+
+    /**
+     * [DELETE] 화장실삭제
+     */
+    private fun taskToiletDelete() {
+        showLoading()
+        val params = RetrofitParams()
+        params.put("member_id", SharedManager.getMemberId())
+        params.put("toilet_id", mToilet.toilet_id)
+
+        val request = RetrofitClient.getClient(RetrofitService.BASE_APP).create(RetrofitService::class.java).toiletDelete(params.getParams())
+
+        RetrofitJSONObject(request,
+                onSuccess = {
+                    try {
+                        if (it.getInt("rst_code") == 0) {
+                            Toast.makeText(ObserverManager.context!!, MyUtil.getString(R.string.toast_delete_complete), Toast.LENGTH_SHORT).show()
+                            finish()
                         }
                     } catch (e: JSONException) {
                         e.printStackTrace()
@@ -490,25 +585,6 @@ class ToiletActivity : BaseActivity() {
                 popupMenu.show()
             }
         }
-    }
-
-    override fun setToolbar() {
-        toolbar.setImageLeftOne(MyUtil.getDrawable(R.drawable.ic_navigationbar_back))
-        toolbar.layout_like.visibility = View.VISIBLE
-        toolbar.setSelectedListener(
-                onBtnLeftOne = {
-                    finish()
-                },
-                onBtnLeftTwo = {
-
-                },
-                onBtnRightOne = {
-
-                },
-                onBtnRightTwo = {
-
-                }
-        )
     }
 
 }

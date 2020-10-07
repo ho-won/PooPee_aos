@@ -147,6 +147,9 @@
     <string name="toilet_option_10">Management agency</string>
     <string name="toilet_option_11">Management tel</string>
     <string name="toilet_option_12">Opening time</string>
+    <string name="toilet_btn_01">report</string>
+    <string name="toilet_btn_02">delete</string>
+    <string name="toilet_btn_03">update</string>
 
     <!-- permission -->
     <string name="permission_text_01">Permissions for using the app</string>

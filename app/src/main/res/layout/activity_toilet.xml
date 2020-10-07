@@ -8,17 +8,10 @@
     android:focusable="true"
     android:focusableInTouchMode="true">
 
-    <kr.co.ho1.poopee.common.view.ToolbarView
-        android:id="@+id/toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/main_content_background" />
-
     <androidx.core.widget.NestedScrollView
         android:id="@+id/scroll_view"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@id/toolbar">
+        android:layout_height="match_parent">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -41,21 +34,163 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent" />
 
-                <ToggleButton
-                    android:id="@+id/btn_like"
-                    style="?android:borderlessButtonStyle"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:layout_alignParentEnd="true"
-                    android:background="@drawable/btn_like"
-                    android:textOff=""
-                    android:textOn="" />
-
             </RelativeLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tv_toilet_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginEnd="16dp"
+                    android:gravity="center"
+                    android:textColor="#292d34"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/tv_toilet_content"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:paddingStart="16dp"
+                    android:paddingTop="10dp"
+                    android:paddingEnd="16dp"
+                    android:textColor="#444444"
+                    android:textSize="12sp"
+                    android:visibility="gone" />
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="32dp"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="14dp">
+
+                    <LinearLayout
+                        android:id="@+id/layout_btn_normal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal">
+
+                        <LinearLayout
+                            android:id="@+id/layout_like"
+                            android:layout_width="80dp"
+                            android:layout_height="match_parent"
+                            android:background="@drawable/bg_layout_like"
+                            android:gravity="center"
+                            android:orientation="horizontal">
+
+                            <CheckBox
+                                android:id="@+id/cb_like"
+                                android:layout_width="20dp"
+                                android:layout_height="20dp"
+                                android:button="@drawable/cb_like"
+                                android:clickable="false" />
+
+                            <TextView
+                                android:id="@+id/tv_like"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="2dp"
+                                android:text="0"
+                                android:textColor="#292d34"
+                                android:textSize="13sp" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/layout_report"
+                            android:layout_width="80dp"
+                            android:layout_height="match_parent"
+                            android:layout_marginStart="8dp"
+                            android:background="@drawable/bg_layout_like"
+                            android:gravity="center"
+                            android:orientation="horizontal">
+
+                            <ImageView
+                                android:layout_width="20dp"
+                                android:layout_height="20dp"
+                                android:src="@drawable/ic_report2" />
+
+                            <TextView
+                                android:id="@+id/tv_report"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/toilet_btn_01"
+                                android:textColor="#292d34"
+                                android:textSize="13sp" />
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/layout_btn_mine"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal"
+                        android:visibility="gone">
+
+                        <LinearLayout
+                            android:id="@+id/layout_delete"
+                            android:layout_width="80dp"
+                            android:layout_height="match_parent"
+                            android:background="@drawable/bg_layout_like"
+                            android:gravity="center"
+                            android:orientation="horizontal">
+
+                            <ImageView
+                                android:layout_width="20dp"
+                                android:layout_height="20dp"
+                                android:src="@drawable/ic_delete2" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/toilet_btn_02"
+                                android:textColor="#292d34"
+                                android:textSize="13sp" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/layout_update"
+                            android:layout_width="80dp"
+                            android:layout_height="match_parent"
+                            android:layout_marginStart="8dp"
+                            android:background="@drawable/bg_layout_like"
+                            android:gravity="center"
+                            android:orientation="horizontal">
+
+                            <ImageView
+                                android:layout_width="20dp"
+                                android:layout_height="20dp"
+                                android:src="@drawable/ic_update" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/toilet_btn_03"
+                                android:textColor="#292d34"
+                                android:textSize="13sp" />
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+
+                </RelativeLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="14dp"
                 android:gravity="center_vertical"
                 android:orientation="horizontal">
 
@@ -502,6 +637,7 @@
                 android:layout_height="4dp" />
 
             <LinearLayout
+                android:id="@+id/layout_detail_manager_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center_vertical"
@@ -709,5 +845,15 @@
             android:textSize="13sp" />
 
     </LinearLayout>
+
+    <ImageButton
+        android:id="@+id/btn_back"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:layout_margin="12dp"
+        android:background="@null"
+        android:scaleType="fitXY"
+        android:src="@drawable/ic_map_back"
+        tools:ignore="ContentDescription" />
 
 </RelativeLayout>

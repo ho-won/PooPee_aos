@@ -354,6 +354,7 @@ class HomeActivity : BaseActivity(), MapView.POIItemEventListener, MapView.MapVi
                                 val jsonObject = jsonArray.getJSONObject(i)
                                 val toilet = Toilet()
                                 toilet.toilet_id = jsonObject.getInt("toilet_id")
+                                toilet.member_id = jsonObject.getString("member_id")
                                 toilet.type = "유저"
                                 toilet.m_name = jsonObject.getString("m_name")
                                 toilet.name = jsonObject.getString("name")
