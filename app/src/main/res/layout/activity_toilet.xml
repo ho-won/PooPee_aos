@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -88,8 +89,10 @@
                                 android:id="@+id/cb_like"
                                 android:layout_width="20dp"
                                 android:layout_height="20dp"
-                                android:button="@drawable/cb_like"
-                                android:clickable="false" />
+                                android:background="@drawable/cb_like"
+                                android:button="@null"
+                                android:clickable="false"
+                                app:buttonCompat="@null" />
 
                             <TextView
                                 android:id="@+id/tv_like"
@@ -214,6 +217,7 @@
                     android:background="@drawable/cb_up_down"
                     android:button="@null"
                     android:checked="true"
+                    app:buttonCompat="@null"
                     tools:ignore="ContentDescription" />
 
             </LinearLayout>
@@ -233,6 +237,7 @@
                     android:background="@drawable/cb_option_01"
                     android:button="@null"
                     android:enabled="false"
+                    app:buttonCompat="@null"
                     tools:ignore="ContentDescription" />
 
                 <CheckBox
@@ -243,6 +248,7 @@
                     android:background="@drawable/cb_option_02"
                     android:button="@null"
                     android:enabled="false"
+                    app:buttonCompat="@null"
                     tools:ignore="ContentDescription" />
 
                 <CheckBox
@@ -253,6 +259,7 @@
                     android:background="@drawable/cb_option_03"
                     android:button="@null"
                     android:enabled="false"
+                    app:buttonCompat="@null"
                     tools:ignore="ContentDescription" />
 
                 <CheckBox
@@ -263,6 +270,7 @@
                     android:background="@drawable/cb_option_04"
                     android:button="@null"
                     android:enabled="false"
+                    app:buttonCompat="@null"
                     tools:ignore="ContentDescription" />
 
                 <CheckBox
@@ -273,6 +281,7 @@
                     android:background="@drawable/cb_option_05"
                     android:button="@null"
                     android:enabled="false"
+                    app:buttonCompat="@null"
                     tools:ignore="ContentDescription" />
 
                 <CheckBox
@@ -283,6 +292,7 @@
                     android:background="@drawable/cb_option_06"
                     android:button="@null"
                     android:enabled="false"
+                    app:buttonCompat="@null"
                     tools:ignore="ContentDescription" />
 
             </LinearLayout>
@@ -662,6 +672,7 @@
                     android:layout_height="44dp"
                     android:background="@drawable/cb_up_down"
                     android:button="@null"
+                    app:buttonCompat="@null"
                     tools:ignore="ContentDescription" />
 
             </LinearLayout>
