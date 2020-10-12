@@ -64,15 +64,14 @@
     <string name="toast_report_complete">신고했습니다</string>
     <string name="toast_copy_complete">클립보드로 복사했습니다</string>
     <string name="toast_terms_check">모든약관에 동의해주세요</string>
+    <string name="toast_send_complete">전송했습니다</string>
+    <string name="toast_please_permission">권한이 필요한 작업입니다</string>
 
     <!-- gallery -->
     <string name="gallery_select_dir">폴더선택</string>
     <string name="gallery_show_all">전체보기</string>
     <string name="gallery_back_to_dir">이전 폴더로 이동</string>
     <string name="gallery_upload">올리기</string>
-
-    <!-- toast -->
-    <string name="toast_please_permission">권한이 필요한 작업입니다</string>
 
     <!-- nav -->
     <string name="nav_text_01">내정보</string>
@@ -81,6 +80,7 @@
     <string name="nav_text_04">설정</string>
     <string name="nav_text_05">PooPee 문의사항</string>
     <string name="nav_text_06">로그인하기</string>
+    <string name="nav_text_07">화장실등록</string>
 
     <!-- home -->
     <string name="home_text_01">장소,주소 검색</string>
@@ -106,6 +106,8 @@
     <string name="home_text_21">문자전송</string>
     <string name="home_text_22">해당 주소로 내비게이션 앱에 연결합니다</string>
     <string name="home_text_23">해당 주소로 화장실 위치를 공유합니다</string>
+    <string name="home_text_24">문의하기/건의사항</string>
+    <string name="home_text_25">내용을 입력해주세요</string>
 
     <!-- login -->
     <string name="login_01">로그인을 해주세요</string>
@@ -150,24 +152,6 @@
     <string name="toilet_btn_01">신고</string>
     <string name="toilet_btn_02">삭제</string>
     <string name="toilet_btn_03">수정</string>
-
-    <!-- permission -->
-    <string name="permission_text_01">앱 이용을 위한 권한 안내</string>
-    <string name="permission_text_02">위치 권한</string>
-    <string name="permission_text_03">현재 내 주변의 화장실 정보를 확인</string>
-    <string name="permission_text_04">저장공간 권한</string>
-    <string name="permission_text_05">화장실 정보를 저장</string>
-    <string name="permission_text_06">앱권한은 편리한 푸피 서비스이용을 위해 위에 두가지 권한이 있어야 앱 사용이 가능합니다.</string>
-
-    <!-- 20200702 추가 -->
-    <string name="home_text_24">문의하기/건의사항</string>
-    <string name="home_text_25">내용을 입력해주세요</string>
-
-    <string name="toast_send_complete">전송했습니다</string>
-
-    <string name="nav_text_07">화장실등록</string>
-
-    <!-- toilet -->
     <string name="toilet_create_text_01">등록할 화장실 주소를 검색하세요</string>
     <string name="toilet_create_text_02">지도에서 선택</string>
     <string name="toilet_create_text_03">화장실 위치 선택</string>
@@ -182,5 +166,13 @@
     <string name="toilet_create_text_12">등록</string>
     <string name="toilet_create_text_13">화장실을 등록했습니다</string>
     <string name="toilet_create_text_14">화장실 위치 검색</string>
+
+    <!-- permission -->
+    <string name="permission_text_01">앱 이용을 위한 권한 안내</string>
+    <string name="permission_text_02">위치 권한</string>
+    <string name="permission_text_03">현재 내 주변의 화장실 정보를 확인</string>
+    <string name="permission_text_04">저장공간 권한</string>
+    <string name="permission_text_05">화장실 정보를 저장</string>
+    <string name="permission_text_06">앱권한은 편리한 푸피 서비스이용을 위해 위에 두가지 권한이 있어야 앱 사용이 가능합니다.</string>
 
 </resources>

@@ -64,15 +64,14 @@
     <string name="toast_report_complete">I reported it</string>
     <string name="toast_copy_complete">I copied it to the clipboard.</string>
     <string name="toast_terms_check">Agree to all terms</string>
+    <string name="toast_send_complete">Send is complete</string>
+    <string name="toast_please_permission">This is a task that requires permission</string>
 
     <!-- gallery -->
-    <string name="gallery_select_dir">폴더선택</string>
-    <string name="gallery_show_all">전체보기</string>
-    <string name="gallery_back_to_dir">이전 폴더로 이동</string>
-    <string name="gallery_upload">올리기</string>
-
-    <!-- toast -->
-    <string name="toast_please_permission">This is a task that requires permission</string>
+    <string name="gallery_select_dir">Select folder</string>
+    <string name="gallery_show_all">View all</string>
+    <string name="gallery_back_to_dir">Go to previous folder</string>
+    <string name="gallery_upload">Upload</string>
 
     <!-- nav -->
     <string name="nav_text_01">My Info</string>
@@ -81,6 +80,7 @@
     <string name="nav_text_04">Setting</string>
     <string name="nav_text_05">Inquiry</string>
     <string name="nav_text_06">Login</string>
+    <string name="nav_text_07">Toilet registration</string>
 
     <!-- home -->
     <string name="home_text_01">Place, address search</string>
@@ -106,6 +106,8 @@
     <string name="home_text_21">SMS</string>
     <string name="home_text_22">Connect to the navigation app at that address</string>
     <string name="home_text_23">Share the location of the toilet to that address</string>
+    <string name="home_text_24">Inquiries/Suggestions</string>
+    <string name="home_text_25">Please enter your details</string>
 
     <!-- login -->
     <string name="login_01">Please login</string>
@@ -150,6 +152,20 @@
     <string name="toilet_btn_01">report</string>
     <string name="toilet_btn_02">delete</string>
     <string name="toilet_btn_03">update</string>
+    <string name="toilet_create_text_01">Search for a toilet address to register</string>
+    <string name="toilet_create_text_02">Select on map</string>
+    <string name="toilet_create_text_03">Choose a toilet location</string>
+    <string name="toilet_create_text_04">Move the map to locate the toilet.</string>
+    <string name="toilet_create_text_05">Toilet registration</string>
+    <string name="toilet_create_text_06">Entering toilet information</string>
+    <string name="toilet_create_text_07">Toilet name</string>
+    <string name="toilet_create_text_08">Toilet name (up to 20 characters)</string>
+    <string name="toilet_create_text_09">Toilet description</string>
+    <string name="toilet_create_text_10">Enter toilet description</string>
+    <string name="toilet_create_text_11">Toilet type</string>
+    <string name="toilet_create_text_12">register</string>
+    <string name="toilet_create_text_13">Completed registering the toilet</string>
+    <string name="toilet_create_text_14">Toilet location search</string>
 
     <!-- permission -->
     <string name="permission_text_01">Permissions for using the app</string>
@@ -158,29 +174,5 @@
     <string name="permission_text_04">Storage permissions</string>
     <string name="permission_text_05">Store toilet information</string>
     <string name="permission_text_06">App permissions require the above two permissions to use the app for convenient use of the PooPee service.</string>
-
-    <!-- 20200702 추가 -->
-    <string name="home_text_24">문의하기/건의사항</string>
-    <string name="home_text_25">내용을 입력해주세요</string>
-
-    <string name="toast_send_complete">전송했습니다</string>
-
-    <string name="nav_text_07">화장실등록</string>
-
-    <!-- toilet -->
-    <string name="toilet_create_text_01">등록할 화장실 주소를 검색하세요</string>
-    <string name="toilet_create_text_02">지도에서 선택</string>
-    <string name="toilet_create_text_03">화장실 위치 선택</string>
-    <string name="toilet_create_text_04">지도를 움직여 화장실 위치를 지정하세요.</string>
-    <string name="toilet_create_text_05">화장실 등록</string>
-    <string name="toilet_create_text_06">화장실 정보 입력</string>
-    <string name="toilet_create_text_07">화장실명</string>
-    <string name="toilet_create_text_08">화장실명 (20자 이내)</string>
-    <string name="toilet_create_text_09">화장실 설명</string>
-    <string name="toilet_create_text_10">화장실 설명 입력</string>
-    <string name="toilet_create_text_11">화장실 구분</string>
-    <string name="toilet_create_text_12">등록</string>
-    <string name="toilet_create_text_13">화장실을 등록했습니다</string>
-    <string name="toilet_create_text_14">화장실 위치 검색</string>
 
 </resources>
