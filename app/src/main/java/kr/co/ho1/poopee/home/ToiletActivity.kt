@@ -1,7 +1,6 @@
 package kr.co.ho1.poopee.home
 
 import android.annotation.SuppressLint
-import android.app.Activity
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -585,6 +584,11 @@ class ToiletActivity : BaseActivity() {
                 popupMenu.show()
             }
         }
+    }
+
+    override fun finish() {
+        map_view.removeAllViews()
+        super.finish()
     }
 
 }

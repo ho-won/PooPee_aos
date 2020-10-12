@@ -277,6 +277,7 @@ class HomeActivity : BaseActivity(), MapView.POIItemEventListener, MapView.MapVi
                         if (mInterstitialAd.isLoaded) {
                             mInterstitialAd.show()
                         } else {
+                            map_view.removeAllViews()
                             ObserverManager.root!!.startActivity(Intent(ObserverManager.context!!, ToiletActivity::class.java)
                                     .setFlags(Intent.FLAG_ACTIVITY_NO_USER_ACTION)
                                     .putExtra(ToiletActivity.TOILET, mToilet)
@@ -294,6 +295,7 @@ class HomeActivity : BaseActivity(), MapView.POIItemEventListener, MapView.MapVi
                             if (mInterstitialAd.isLoaded) {
                                 mInterstitialAd.show()
                             } else {
+                                map_view.removeAllViews()
                                 ObserverManager.root!!.startActivity(Intent(ObserverManager.context!!, ToiletActivity::class.java)
                                         .setFlags(Intent.FLAG_ACTIVITY_NO_USER_ACTION)
                                         .putExtra(ToiletActivity.TOILET, mToilet)
