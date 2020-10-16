@@ -156,9 +156,10 @@ class ToiletSearchActivity : BaseActivity() {
                 itemView.tv_sub.text = mKeywordList[position].address_name
 
                 itemView.setOnClickListener {
-                    ObserverManager.root!!.startActivity(Intent(ObserverManager.context!!, ToiletCreateActivity::class.java)
+                    ObserverManager.root!!.startActivityForResult(Intent(ObserverManager.context!!, ToiletCreateActivity::class.java)
                             .setFlags(Intent.FLAG_ACTIVITY_NO_USER_ACTION)
                             .putExtra(ToiletCreateActivity.KAKAO_KEYWORD, mKeywordList[position])
+                            , RESULT_CREATE
                     )
                 }
             }

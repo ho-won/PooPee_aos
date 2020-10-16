@@ -44,7 +44,6 @@ class ToiletCreateActivity : BaseActivity() {
     override fun onPause() {
         super.onPause()
         LocationManager.removeLocationUpdate()
-        map_view.removeAllViews()
     }
 
     private fun init() {
@@ -66,6 +65,7 @@ class ToiletCreateActivity : BaseActivity() {
     }
 
     private fun refresh() {
+
     }
 
     private fun setListener() {
@@ -89,10 +89,6 @@ class ToiletCreateActivity : BaseActivity() {
         }
     }
 
-    private fun setKakaoLocal(kaKaoKeyword: KaKaoKeyword) {
-        ObserverManager.mapView.setMapCenterPoint(MapPoint.mapPointWithGeoCoord(kaKaoKeyword.latitude, kaKaoKeyword.longitude), true)
-    }
-
     override fun onLocationChanged(location: Location) {
 
     }
@@ -114,6 +110,11 @@ class ToiletCreateActivity : BaseActivity() {
 
                 }
         )
+    }
+
+    override fun finish() {
+        map_view.removeAllViews()
+        super.finish()
     }
 
 }
