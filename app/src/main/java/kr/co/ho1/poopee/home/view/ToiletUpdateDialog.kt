@@ -47,6 +47,7 @@ class ToiletUpdateDialog(private var toilet: Toilet, private var onUpdate: ((toi
 
         edt_title.setText(toilet.name)
         edt_content.setText(toilet.content)
+        tv_content_cnt.text = toilet.content.length.toString() + "/100"
 
         if (toilet.m_poo.toInt() > 0) {
             cb_man.isChecked = true

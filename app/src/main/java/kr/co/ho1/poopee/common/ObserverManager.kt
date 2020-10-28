@@ -51,14 +51,19 @@ object ObserverManager {
      * 카카오지도 아이템 추가
      */
     fun addPOIItem(toilet: Toilet) {
+        var imageResourceId = R.drawable.ic_position
+        if (toilet.toilet_id < 0) {
+            imageResourceId = R.drawable.ic_position_up
+        }
+
         val marker = MapPOIItem()
         marker.itemName = toilet.name
         marker.tag = toilet.toilet_id
         marker.mapPoint = MapPoint.mapPointWithGeoCoord(toilet.latitude, toilet.longitude)
         marker.markerType = MapPOIItem.MarkerType.CustomImage // 마커타입을 커스텀 마커로 지정.
-        marker.customImageResourceId = R.drawable.ic_position // 마커 이미지.
+        marker.customImageResourceId = imageResourceId // 마커 이미지.
         marker.selectedMarkerType = MapPOIItem.MarkerType.CustomImage // 마커를 클릭했을때, 기본으로 제공하는 RedPin 마커 모양.
-        marker.customSelectedImageResourceId = R.drawable.ic_position // 마커 이미지.
+        marker.customSelectedImageResourceId = imageResourceId // 마커 이미지.
         marker.isShowCalloutBalloonOnTouch = false
         marker.showAnimationType = MapPOIItem.ShowAnimationType.SpringFromGround
         mapView.addPOIItem(marker)
