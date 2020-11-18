@@ -7,6 +7,7 @@ import kr.co.ho1.poopee.common.ObserverManager
 object SharedManager {
     private const val LOGIN = "LOGIN"
     private const val LOGIN_CHECK = "LOGIN_CHECK" // 로그인체크
+    private const val FCM_KEY = "FCM_KEY" // push key
 
     private const val MEMBER = "MEMBER"
     private const val MEMBER_ID = "MEMBER_ID" // 멤버 아이디
@@ -33,6 +34,18 @@ object SharedManager {
         val pref = ObserverManager.context!!.getSharedPreferences(LOGIN, Context.MODE_PRIVATE)
         val editor = pref.edit()
         editor.putBoolean(LOGIN_CHECK, value)
+        editor.apply()
+    }
+
+    fun getFcmKey(): String {
+        val pref = ObserverManager.context!!.getSharedPreferences(LOGIN, Context.MODE_PRIVATE)
+        return pref.getString(FCM_KEY, "").toString()
+    }
+
+    fun setFcmKey(value: String) {
+        val pref = ObserverManager.context!!.getSharedPreferences(LOGIN, Context.MODE_PRIVATE)
+        val editor = pref.edit()
+        editor.putString(FCM_KEY, value)
         editor.apply()
     }
 

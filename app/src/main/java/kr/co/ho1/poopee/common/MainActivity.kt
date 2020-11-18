@@ -8,6 +8,8 @@ import android.view.animation.AccelerateInterpolator
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.widget.Toast
+import com.google.android.gms.tasks.OnCompleteListener
+import com.google.firebase.messaging.FirebaseMessaging
 import kotlinx.android.synthetic.main.activity_main.*
 import kr.co.ho1.poopee.R
 import kr.co.ho1.poopee.common.base.BaseActivity
@@ -16,10 +18,7 @@ import kr.co.ho1.poopee.common.data.SharedManager
 import kr.co.ho1.poopee.common.dialog.BasicDialog
 import kr.co.ho1.poopee.common.dialog.PermissionDialog
 import kr.co.ho1.poopee.common.http.*
-import kr.co.ho1.poopee.common.util.LocationManager
-import kr.co.ho1.poopee.common.util.MyUtil
-import kr.co.ho1.poopee.common.util.PermissionManager
-import kr.co.ho1.poopee.common.util.SleepTask
+import kr.co.ho1.poopee.common.util.*
 import kr.co.ho1.poopee.home.HomeActivity
 import org.json.JSONException
 import org.json.JSONObject
@@ -35,6 +34,15 @@ class MainActivity : BaseActivity() {
     }
 
     private fun init() {
+        FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
+            if (!task.isSuccessful) {
+                return@OnCompleteListener
+            }
+            val token = task.result
+            SharedManager.setFcmKey(token)
+            LogManager.e(token)
+        })
+
         val animation = AnimationUtils.loadAnimation(ObserverManager.context, R.anim.intro_drop)
         animation.interpolator = AccelerateInterpolator(0.5f)
         animation.setAnimationListener(object : Animation.AnimationListener {

@@ -19,6 +19,7 @@ import com.google.android.gms.ads.AdListener
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.InterstitialAd
 import com.google.android.gms.ads.MobileAds
+import com.google.android.play.core.review.ReviewManagerFactory
 import kotlinx.android.synthetic.main.activity_home.*
 import kotlinx.android.synthetic.main.item_kakao_keyword.view.*
 import kr.co.ho1.poopee.R
@@ -30,6 +31,7 @@ import kr.co.ho1.poopee.common.http.RetrofitJSONObject
 import kr.co.ho1.poopee.common.http.RetrofitParams
 import kr.co.ho1.poopee.common.http.RetrofitService
 import kr.co.ho1.poopee.common.util.LocationManager
+import kr.co.ho1.poopee.common.util.LogManager
 import kr.co.ho1.poopee.common.util.MyUtil
 import kr.co.ho1.poopee.database.ToiletSQLiteManager
 import kr.co.ho1.poopee.home.model.KaKaoKeyword
@@ -481,6 +483,23 @@ class HomeActivity : BaseActivity(), MapView.POIItemEventListener, MapView.MapVi
         finish()
 //        val dialog = FinishDialog()
 //        dialog.show(supportFragmentManager, "FinishDialog")
+    }
+
+    fun onReview() {
+        val manager = ReviewManagerFactory.create(ObserverManager.context!!)
+        val request = manager.requestReviewFlow()
+        request.addOnCompleteListener { request ->
+            if (request.isSuccessful) {
+                val reviewInfo = request.result
+                LogManager.e("isSuccessful")
+                val flow = manager.launchReviewFlow(this, reviewInfo)
+                flow.addOnCompleteListener { _ ->
+
+                }
+            } else {
+
+            }
+        }
     }
 
 }
