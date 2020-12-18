@@ -34,5 +34,6 @@ class Toilet : Serializable {
     var comment_count: String = "0"
     var like_count: String = "0"
     var like_check: Boolean = false
+    var created: String = ""
 
 }

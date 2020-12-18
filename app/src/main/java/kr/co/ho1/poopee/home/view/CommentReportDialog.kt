@@ -10,9 +10,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import kotlinx.android.synthetic.main.dialog_comment_report.*
-import kotlinx.android.synthetic.main.dialog_comment_report.btn_close
-import kotlinx.android.synthetic.main.dialog_comment_report.edt_content
-import kotlinx.android.synthetic.main.dialog_suggest.*
 import kr.co.ho1.poopee.R
 import kr.co.ho1.poopee.common.ObserverManager
 import kr.co.ho1.poopee.common.base.BaseDialog

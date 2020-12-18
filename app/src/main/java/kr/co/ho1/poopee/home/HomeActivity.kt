@@ -38,6 +38,7 @@ import kr.co.ho1.poopee.home.model.KaKaoKeyword
 import kr.co.ho1.poopee.home.model.Toilet
 import kr.co.ho1.poopee.home.view.PopupDialog
 import kr.co.ho1.poopee.home.view.ToiletDialog
+import kr.co.ho1.poopee.manager.view.Toilet2ListDialog
 import net.daum.mf.map.api.MapPOIItem
 import net.daum.mf.map.api.MapPoint
 import net.daum.mf.map.api.MapView
@@ -100,6 +101,12 @@ class HomeActivity : BaseActivity(), MapView.POIItemEventListener, MapView.MapVi
     }
 
     private fun refresh() {
+        if (SharedManager.getMemberUsername() == "master") {
+            btn_manager.visibility = View.VISIBLE
+        } else {
+            btn_manager.visibility = View.GONE
+        }
+
         nav_view.refresh()
         ObserverManager.mapView = MapView(this)
         map_view.addView(ObserverManager.mapView)
@@ -193,6 +200,14 @@ class HomeActivity : BaseActivity(), MapView.POIItemEventListener, MapView.MapVi
         }
         btn_menu.setOnClickListener {
             drawer_layout.openDrawer(GravityCompat.START)
+        }
+        btn_manager.setOnClickListener {
+            val dialog = Toilet2ListDialog(onMove = {
+                mIsMyPositionMove = false
+                ObserverManager.mapView.setMapCenterPoint(MapPoint.mapPointWithGeoCoord(it.latitude, it.longitude), true)
+                setMyPosition(View.GONE)
+            })
+            dialog.show(supportFragmentManager, "Toilet2ListDialog")
         }
         mInterstitialAd.adListener = object : AdListener() {
             override fun onAdLoaded() {

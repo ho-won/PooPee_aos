@@ -29,7 +29,8 @@ interface RetrofitService {
         const val TOILET_UPDATE = "toilet2s/updateToilet" // [PUT] 화장실수정
         const val TOILET_DELETE = "toilet2s/deleteToilet" // [DELETE] 화장삭제
         const val TOILET_REPORT = "toiletReports/createReport" // [POST] 화장실신고
-        const val TOILET_LIST = "toilet2s/getToiletList" // [GET] 화장실목록
+        const val TOILET_LIST = "toilet2s/getToiletList" // [GET] 화장실목록(좌표범위이내)
+        const val TOILET_LIST_All = "toilet2s/getToiletListAll" // [GET] 화장실목록(전체)
 
         const val TERMS_01 = "etcs/getTerms01" // 개인정보 처리방침
         const val TERMS_02 = "etcs/getTerms02" // 서비스 이용약관
@@ -121,5 +122,8 @@ interface RetrofitService {
 
     @GET(TOILET_LIST)
     fun toiletList(@QueryMap params: Map<String, @JvmSuppressWildcards Any>): Call<ResponseBody>
+
+    @GET(TOILET_LIST_All)
+    fun toiletListAll(@QueryMap params: Map<String, @JvmSuppressWildcards Any>): Call<ResponseBody>
 
 }
