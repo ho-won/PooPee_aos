@@ -51,7 +51,6 @@ class HomeActivity : BaseActivity(), MapView.POIItemEventListener, MapView.MapVi
     private var mKeywordAdapter: ListAdapter = ListAdapter()
     private var mKeywordList: ArrayList<KaKaoKeyword> = ArrayList()
 
-    private var mRootViewHeight = 0 // 키보드 제외 높이
     private var mIsKeyboardShow = false // 키보드 노출 상태
     private val mRvHeight = MyUtil.dpToPx(240)
 
@@ -134,10 +133,7 @@ class HomeActivity : BaseActivity(), MapView.POIItemEventListener, MapView.MapVi
 
     private fun setListener() {
         root_view.viewTreeObserver.addOnGlobalLayoutListener {
-            if (mRootViewHeight < root_view.height) {
-                mRootViewHeight = root_view.height
-            }
-            if (mRootViewHeight > root_view.height) {
+            if (MyUtil.getDeviceHeight() > root_view.height) {
                 // keyboard show
                 mIsKeyboardShow = true
                 layout_bottom_bg.visibility = View.VISIBLE

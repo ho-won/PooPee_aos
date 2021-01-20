@@ -160,7 +160,7 @@ class Toilet2ListDialog(private var onMove: ((toilet: Toilet) -> Unit)) : BaseDi
                 itemView.tv_title.maxLines = 1
                 itemView.tv_sub.maxLines = 1
                 itemView.tv_title.text = mToiletList[position].address_new
-                itemView.tv_sub.text = mToiletList[position].created + " " + mToiletList[position].name + " (" + mToiletList[position].m_name + ")"
+                itemView.tv_sub.text = mToiletList[position].created  + " (" + mToiletList[position].m_name + ")"
 
                 itemView.setOnClickListener {
                     onMove(mToiletList[position])
