@@ -155,6 +155,7 @@ class ToiletCreateDialog(private var latitude: Double, private var longitude: Do
      * [POST] 화장실추가
      */
     private fun taskCreateToilet(address_new: String, address_old: String) {
+        showLoading()
         val params = RetrofitParams()
         params.put("member_id", SharedManager.getMemberId())
         params.put("name", edt_title.text) // 화장실명
@@ -184,9 +185,10 @@ class ToiletCreateDialog(private var latitude: Double, private var longitude: Do
                     } catch (e: JSONException) {
                         e.printStackTrace()
                     }
+                    hideLoading()
                 },
                 onFailed = {
-
+                    hideLoading()
                 }
         )
     }
