@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.google.android.gms.ads.AdRequest
+import com.google.android.play.core.review.ReviewManagerFactory
 import kotlinx.android.synthetic.main.dialog_finish.*
 import kr.co.ho1.poopee.R
 import kr.co.ho1.poopee.common.ObserverManager
@@ -31,7 +32,13 @@ class FinishDialog : BaseDialog() {
 
     private fun setListener() {
         btn_no.setOnClickListener {
-            dismiss()
+            val manager = ReviewManagerFactory.create(ObserverManager.context!!)
+            val request = manager.requestReviewFlow()
+            request.addOnCompleteListener {
+                if (it.isSuccessful) {
+                    ObserverManager.root!!.finish()
+                }
+            }
         }
         btn_yes.setOnClickListener {
             ObserverManager.root!!.finish()

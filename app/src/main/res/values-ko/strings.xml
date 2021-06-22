@@ -4,8 +4,8 @@
 
     <string name="admob_app_id">ca-app-pub-2933424745841582~4534033734</string>
 
-    <!--    <string name="banner_ad_unit_id">ca-app-pub-2933424745841582/3959318660</string>-->
-    <!--    <string name="interstitial_ad_unit_id">ca-app-pub-2933424745841582/2251927237</string>-->
+<!--        <string name="banner_ad_unit_id">ca-app-pub-2933424745841582/3959318660</string>-->
+<!--        <string name="interstitial_ad_unit_id">ca-app-pub-2933424745841582/2251927237</string>-->
 
     <!-- test -->
     <string name="banner_ad_unit_id">ca-app-pub-3940256099942544/6300978111</string>
@@ -37,6 +37,8 @@
     <string name="close">닫기</string>
     <string name="copy">복사</string>
     <string name="prev">이전</string>
+    <string name="review">리뷰 작성하기</string>
+    <string name="end">종료</string>
 
     <!-- dialog -->
     <string name="dialog_assign_new_version_update">새로운 업데이트가 있습니다. 원활한 사용을 위해서 업데이트를 추천합니다.\n업데이트 하시겠습니까?</string>

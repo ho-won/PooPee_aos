@@ -36,6 +36,7 @@ import kr.co.ho1.poopee.common.util.MyUtil
 import kr.co.ho1.poopee.database.ToiletSQLiteManager
 import kr.co.ho1.poopee.home.model.KaKaoKeyword
 import kr.co.ho1.poopee.home.model.Toilet
+import kr.co.ho1.poopee.home.view.FinishDialog
 import kr.co.ho1.poopee.home.view.PopupDialog
 import kr.co.ho1.poopee.home.view.ToiletDialog
 import kr.co.ho1.poopee.manager.view.Toilet2ListDialog
@@ -43,6 +44,8 @@ import net.daum.mf.map.api.MapPOIItem
 import net.daum.mf.map.api.MapPoint
 import net.daum.mf.map.api.MapView
 import org.json.JSONException
+import java.util.*
+import kotlin.collections.ArrayList
 
 
 @Suppress("DEPRECATION")
@@ -491,26 +494,9 @@ class HomeActivity : BaseActivity(), MapView.POIItemEventListener, MapView.MapVi
             return
         }
 
-        finish()
-//        val dialog = FinishDialog()
-//        dialog.show(supportFragmentManager, "FinishDialog")
-    }
-
-    fun onReview() {
-        val manager = ReviewManagerFactory.create(ObserverManager.context!!)
-        val request = manager.requestReviewFlow()
-        request.addOnCompleteListener { request ->
-            if (request.isSuccessful) {
-                val reviewInfo = request.result
-                LogManager.e("isSuccessful")
-                val flow = manager.launchReviewFlow(this, reviewInfo)
-                flow.addOnCompleteListener { _ ->
-
-                }
-            } else {
-
-            }
-        }
+//        finish()
+        val dialog = FinishDialog()
+        dialog.show(supportFragmentManager, "FinishDialog")
     }
 
 }
