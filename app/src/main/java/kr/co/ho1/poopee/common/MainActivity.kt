@@ -38,7 +38,7 @@ class MainActivity : BaseActivity() {
             if (!task.isSuccessful) {
                 return@OnCompleteListener
             }
-            val token = task.result
+            val token = task.result!!
             SharedManager.setFcmKey(token)
             LogManager.e(token)
         })

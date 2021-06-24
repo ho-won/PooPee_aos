@@ -21,9 +21,6 @@ class BaseApp : MultiDexApplication() {
 
         ObserverManager.context = this // context 저장
 
-        // 앱 BACKGROUND, RETURNED_TO_FOREGROUND, FOREGROUND 체크
-        registerActivityLifecycleCallbacks(MyActivityLifecycleCallback())
-
         // 앱버전체크
         try {
             val packageInfo = packageManager.getPackageInfo(packageName, 0)
@@ -46,40 +43,6 @@ class BaseApp : MultiDexApplication() {
         BACKGROUND,
         RETURNED_TO_FOREGROUND,
         FOREGROUND
-    }
-
-    inner class MyActivityLifecycleCallback : ActivityLifecycleCallbacks {
-        private var running = 0
-
-        override fun onActivityPaused(activity: Activity?) {
-        }
-
-        override fun onActivityResumed(activity: Activity?) {
-        }
-
-        override fun onActivityStarted(activity: Activity?) {
-            if (++running == 1) {
-                APP_STATUS = AppStatus.RETURNED_TO_FOREGROUND
-            } else if (running > 1) {
-                APP_STATUS = AppStatus.FOREGROUND
-            }
-        }
-
-        override fun onActivityDestroyed(activity: Activity?) {
-        }
-
-        override fun onActivitySaveInstanceState(activity: Activity?, outState: Bundle?) {
-        }
-
-        override fun onActivityStopped(activity: Activity?) {
-            if (--running == 0) {
-                APP_STATUS = AppStatus.BACKGROUND
-            }
-        }
-
-        override fun onActivityCreated(activity: Activity?, savedInstanceState: Bundle?) {
-        }
-
     }
 
 }

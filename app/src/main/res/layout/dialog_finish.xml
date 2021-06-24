@@ -17,7 +17,7 @@
         android:orientation="vertical"
         tools:ignore="UselessParent">
 
-        <com.google.android.gms.ads.NativeExpressAdView xmlns:ads="http://schemas.android.com/apk/res-auto"
+        <com.google.android.gms.ads.AdView xmlns:ads="http://schemas.android.com/apk/res-auto"
             android:id="@+id/ad_view"
             android:layout_width="300dp"
             android:layout_height="250dp"

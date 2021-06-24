@@ -15,11 +15,9 @@ import android.widget.LinearLayout
 import androidx.core.view.GravityCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.gms.ads.AdListener
-import com.google.android.gms.ads.AdRequest
-import com.google.android.gms.ads.InterstitialAd
-import com.google.android.gms.ads.MobileAds
-import com.google.android.play.core.review.ReviewManagerFactory
+import com.google.android.gms.ads.*
+import com.google.android.gms.ads.interstitial.InterstitialAd
+import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback
 import kotlinx.android.synthetic.main.activity_home.*
 import kotlinx.android.synthetic.main.item_kakao_keyword.view.*
 import kr.co.ho1.poopee.R
@@ -31,7 +29,6 @@ import kr.co.ho1.poopee.common.http.RetrofitJSONObject
 import kr.co.ho1.poopee.common.http.RetrofitParams
 import kr.co.ho1.poopee.common.http.RetrofitService
 import kr.co.ho1.poopee.common.util.LocationManager
-import kr.co.ho1.poopee.common.util.LogManager
 import kr.co.ho1.poopee.common.util.MyUtil
 import kr.co.ho1.poopee.database.ToiletSQLiteManager
 import kr.co.ho1.poopee.home.model.KaKaoKeyword
@@ -44,8 +41,6 @@ import net.daum.mf.map.api.MapPOIItem
 import net.daum.mf.map.api.MapPoint
 import net.daum.mf.map.api.MapView
 import org.json.JSONException
-import java.util.*
-import kotlin.collections.ArrayList
 
 
 @Suppress("DEPRECATION")
@@ -62,7 +57,7 @@ class HomeActivity : BaseActivity(), MapView.POIItemEventListener, MapView.MapVi
     private var mLastLatitude: Double = 0.0 // 마지막 중심 latitude
     private var mLastLongitude: Double = 0.0 // 마지막 중심 longitude
 
-    private lateinit var mInterstitialAd: InterstitialAd
+    private var mInterstitialAd: InterstitialAd? = null
 
     private var mToilet: Toilet = Toilet()
     private var mToiletList: ArrayMap<Int, Toilet> = ArrayMap()
@@ -71,12 +66,39 @@ class HomeActivity : BaseActivity(), MapView.POIItemEventListener, MapView.MapVi
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
 
-        MobileAds.initialize(this, MyUtil.getString(R.string.admob_app_id))
+        MobileAds.initialize(this) {}
         ad_view.loadAd(AdRequest.Builder().build())
 
-        mInterstitialAd = InterstitialAd(this)
-        mInterstitialAd.adUnitId = MyUtil.getString(R.string.interstitial_ad_unit_id)
-        mInterstitialAd.loadAd(AdRequest.Builder().build())
+        val adRequest = AdRequest.Builder().build()
+        InterstitialAd.load(this, MyUtil.getString(R.string.interstitial_ad_unit_id), adRequest, object : InterstitialAdLoadCallback() {
+            override fun onAdFailedToLoad(adError: LoadAdError) {
+                mInterstitialAd = null
+            }
+
+            override fun onAdLoaded(interstitialAd: InterstitialAd) {
+                mInterstitialAd = interstitialAd
+
+                mInterstitialAd?.fullScreenContentCallback = object : FullScreenContentCallback() {
+                    override fun onAdDismissedFullScreenContent() {
+                        ObserverManager.root!!.startActivity(Intent(ObserverManager.context!!, ToiletActivity::class.java)
+                                .setFlags(Intent.FLAG_ACTIVITY_NO_USER_ACTION)
+                                .putExtra(ToiletActivity.TOILET, mToilet)
+                        )
+                    }
+
+                    override fun onAdFailedToShowFullScreenContent(adError: AdError?) {
+                        ObserverManager.root!!.startActivity(Intent(ObserverManager.context!!, ToiletActivity::class.java)
+                                .setFlags(Intent.FLAG_ACTIVITY_NO_USER_ACTION)
+                                .putExtra(ToiletActivity.TOILET, mToilet)
+                        )
+                    }
+
+                    override fun onAdShowedFullScreenContent() {
+                        mInterstitialAd = null
+                    }
+                }
+            }
+        })
 
         init()
         setListener()
@@ -208,22 +230,6 @@ class HomeActivity : BaseActivity(), MapView.POIItemEventListener, MapView.MapVi
             })
             dialog.show(supportFragmentManager, "Toilet2ListDialog")
         }
-        mInterstitialAd.adListener = object : AdListener() {
-            override fun onAdLoaded() {
-
-            }
-
-            override fun onAdFailedToLoad(errorCode: Int) {
-
-            }
-
-            override fun onAdClosed() {
-                ObserverManager.root!!.startActivity(Intent(ObserverManager.context!!, ToiletActivity::class.java)
-                        .setFlags(Intent.FLAG_ACTIVITY_NO_USER_ACTION)
-                        .putExtra(ToiletActivity.TOILET, mToilet)
-                )
-            }
-        }
     }
 
     override fun onMapViewDoubleTapped(p0: MapView?, p1: MapPoint?) {
@@ -290,8 +296,8 @@ class HomeActivity : BaseActivity(), MapView.POIItemEventListener, MapView.MapVi
             val dialog = ToiletDialog(
                     onDetail = {
                         mToilet = it
-                        if (mInterstitialAd.isLoaded) {
-                            mInterstitialAd.show()
+                        if (mInterstitialAd != null) {
+                            mInterstitialAd?.show(this)
                         } else {
                             map_view.removeAllViews()
                             ObserverManager.root!!.startActivity(Intent(ObserverManager.context!!, ToiletActivity::class.java)
@@ -308,8 +314,8 @@ class HomeActivity : BaseActivity(), MapView.POIItemEventListener, MapView.MapVi
                 val dialog = ToiletDialog(
                         onDetail = {
                             mToilet = it
-                            if (mInterstitialAd.isLoaded) {
-                                mInterstitialAd.show()
+                            if (mInterstitialAd != null) {
+                                mInterstitialAd?.show(this)
                             } else {
                                 map_view.removeAllViews()
                                 ObserverManager.root!!.startActivity(Intent(ObserverManager.context!!, ToiletActivity::class.java)

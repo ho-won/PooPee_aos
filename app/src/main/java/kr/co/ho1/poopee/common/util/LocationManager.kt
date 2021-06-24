@@ -42,14 +42,14 @@ object LocationManager {
         }
 
         try {
-            locationManager!!.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 3000L, 5f, locationListener)
+            locationManager!!.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 3000L, 5f, locationListener!!)
         } catch (e: Exception) {
             e.printStackTrace()
         }
     }
 
     fun removeLocationUpdate() {
-        locationManager!!.removeUpdates(locationListener)
+        locationManager!!.removeUpdates(locationListener!!)
     }
 
 }
