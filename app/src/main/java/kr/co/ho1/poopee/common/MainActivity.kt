@@ -2,7 +2,6 @@ package kr.co.ho1.poopee.common
 
 import android.Manifest
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.view.animation.AccelerateInterpolator
 import android.view.animation.Animation
@@ -148,7 +147,7 @@ class MainActivity : BaseActivity() {
 
                             },
                             onRightButton = {
-                                updateInPlayMarket()
+                                ObserverManager.updateInPlayMarket()
                                 finish()
                             }
                     )
@@ -168,7 +167,7 @@ class MainActivity : BaseActivity() {
 
                             },
                             onRightButton = {
-                                updateInPlayMarket()
+                                ObserverManager.updateInPlayMarket()
                                 finish()
                             }
                     )
@@ -187,22 +186,6 @@ class MainActivity : BaseActivity() {
             e.printStackTrace()
         }
 
-    }
-
-    /**
-     * 앱의 플레이스토어로 이동.
-     */
-    private fun updateInPlayMarket() {
-        val appPackageName = packageName
-        try {
-            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=$appPackageName"))
-                    .setFlags(Intent.FLAG_ACTIVITY_NO_USER_ACTION)
-            )
-        } catch (e: android.content.ActivityNotFoundException) {
-            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=$appPackageName"))
-                    .setFlags(Intent.FLAG_ACTIVITY_NO_USER_ACTION)
-            )
-        }
     }
 
     /**
@@ -298,6 +281,7 @@ class MainActivity : BaseActivity() {
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         var result = 0
         for (grantResult in grantResults) {
             result += grantResult

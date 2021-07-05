@@ -18,6 +18,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.gms.ads.*
 import com.google.android.gms.ads.interstitial.InterstitialAd
 import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback
+import com.google.android.play.core.review.ReviewInfo
+import com.google.android.play.core.review.ReviewManager
+import com.google.android.play.core.review.ReviewManagerFactory
 import kotlinx.android.synthetic.main.activity_home.*
 import kotlinx.android.synthetic.main.item_kakao_keyword.view.*
 import kr.co.ho1.poopee.R
@@ -29,6 +32,7 @@ import kr.co.ho1.poopee.common.http.RetrofitJSONObject
 import kr.co.ho1.poopee.common.http.RetrofitParams
 import kr.co.ho1.poopee.common.http.RetrofitService
 import kr.co.ho1.poopee.common.util.LocationManager
+import kr.co.ho1.poopee.common.util.LogManager
 import kr.co.ho1.poopee.common.util.MyUtil
 import kr.co.ho1.poopee.database.ToiletSQLiteManager
 import kr.co.ho1.poopee.home.model.KaKaoKeyword
@@ -58,6 +62,9 @@ class HomeActivity : BaseActivity(), MapView.POIItemEventListener, MapView.MapVi
     private var mLastLongitude: Double = 0.0 // 마지막 중심 longitude
 
     private var mInterstitialAd: InterstitialAd? = null
+
+    private lateinit var mReviewManager: ReviewManager
+    private var mReviewInfo: ReviewInfo? = null
 
     private var mToilet: Toilet = Toilet()
     private var mToiletList: ArrayMap<Int, Toilet> = ArrayMap()
@@ -99,6 +106,14 @@ class HomeActivity : BaseActivity(), MapView.POIItemEventListener, MapView.MapVi
                 }
             }
         })
+
+        mReviewManager = ReviewManagerFactory.create(applicationContext)
+        val manager = mReviewManager.requestReviewFlow()
+        manager.addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                mReviewInfo = task.result
+            }
+        }
 
         init()
         setListener()
@@ -499,9 +514,16 @@ class HomeActivity : BaseActivity(), MapView.POIItemEventListener, MapView.MapVi
             rv_search.visibility = View.GONE
             return
         }
-
 //        finish()
-        val dialog = FinishDialog()
+        val dialog = FinishDialog(
+                onReview = {
+                    mReviewInfo?.let {
+                        val flow = mReviewManager.launchReviewFlow(this, it)
+                        flow.addOnCompleteListener { _ ->
+
+                        }
+                    }
+                })
         dialog.show(supportFragmentManager, "FinishDialog")
     }
 

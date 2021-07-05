@@ -11,9 +11,10 @@ import kotlinx.android.synthetic.main.dialog_finish.*
 import kr.co.ho1.poopee.R
 import kr.co.ho1.poopee.common.ObserverManager
 import kr.co.ho1.poopee.common.base.BaseDialog
+import kr.co.ho1.poopee.home.model.Toilet
 
 @SuppressLint("ValidFragment")
-class FinishDialog : BaseDialog() {
+class FinishDialog(private var onReview: (() -> Unit)) : BaseDialog() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.dialog_finish, container, false)
@@ -32,13 +33,7 @@ class FinishDialog : BaseDialog() {
 
     private fun setListener() {
         btn_no.setOnClickListener {
-            val manager = ReviewManagerFactory.create(ObserverManager.context!!)
-            val request = manager.requestReviewFlow()
-            request.addOnCompleteListener {
-                if (it.isSuccessful) {
-                    ObserverManager.root!!.finish()
-                }
-            }
+            ObserverManager.updateInPlayMarket()
         }
         btn_yes.setOnClickListener {
             ObserverManager.root!!.finish()

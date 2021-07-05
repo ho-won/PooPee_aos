@@ -5,6 +5,7 @@ package kr.co.ho1.poopee.common
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import android.os.Environment
 import kr.co.ho1.poopee.R
 import kr.co.ho1.poopee.common.base.BaseActivity
@@ -45,6 +46,22 @@ object ObserverManager {
                 .setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_NO_USER_ACTION)
         )
         root!!.finish()
+    }
+
+    /**
+     * 앱의 플레이스토어로 이동.
+     */
+    fun updateInPlayMarket() {
+        val appPackageName = context!!.packageName
+        try {
+            root!!.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=$appPackageName"))
+                    .setFlags(Intent.FLAG_ACTIVITY_NO_USER_ACTION)
+            )
+        } catch (e: android.content.ActivityNotFoundException) {
+            root!!.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=$appPackageName"))
+                    .setFlags(Intent.FLAG_ACTIVITY_NO_USER_ACTION)
+            )
+        }
     }
 
     /**
