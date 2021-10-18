@@ -24,6 +24,7 @@ object SharedManager {
     private const val LONGITUDE = "LONGITUDE" // longitude
     private const val PUSH = "PUSH" // 푸쉬알림
     private const val FIRST_CHECK = "FIRST_CHECK" // 앱 최초실행체크
+    private const val REVIEW_COUNT = "REVIEW_COUNT" // 리뷰팝업 조건
 
     fun isLoginCheck(): Boolean {
         val pref = ObserverManager.context!!.getSharedPreferences(LOGIN, Context.MODE_PRIVATE)
@@ -190,6 +191,18 @@ object SharedManager {
         val pref = ObserverManager.context!!.getSharedPreferences(ETC, Context.MODE_PRIVATE)
         val editor = pref.edit()
         editor.putBoolean(FIRST_CHECK, value)
+        editor.apply()
+    }
+
+    fun getReviewCount(): Int {
+        val pref = ObserverManager.context!!.getSharedPreferences(ETC, Context.MODE_PRIVATE)
+        return pref.getInt(REVIEW_COUNT, 0)
+    }
+
+    fun setReviewCount(value: Int) {
+        val pref = ObserverManager.context!!.getSharedPreferences(ETC, Context.MODE_PRIVATE)
+        val editor = pref.edit()
+        editor.putInt(REVIEW_COUNT, value)
         editor.apply()
     }
 

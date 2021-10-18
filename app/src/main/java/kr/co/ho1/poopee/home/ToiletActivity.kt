@@ -37,6 +37,7 @@ class ToiletActivity : BaseActivity() {
 
     companion object {
         const val TOILET = "toilet"
+        const val REVIEW_COUNT = 3
     }
 
     private var mToilet: Toilet = Toilet()
@@ -76,6 +77,10 @@ class ToiletActivity : BaseActivity() {
         recycler_view.isNestedScrollingEnabled = false
         mRecyclerAdapter = ListAdapter()
         recycler_view.adapter = mRecyclerAdapter
+
+        if (SharedManager.getReviewCount() < REVIEW_COUNT) {
+            SharedManager.setReviewCount(SharedManager.getReviewCount() + 1)
+        }
     }
 
     @SuppressLint("ClickableViewAccessibility")

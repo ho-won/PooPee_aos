@@ -49,7 +49,7 @@
                 android:lineSpacingExtra="6sp"
                 android:paddingStart="16dp"
                 android:paddingEnd="16dp"
-                android:text="@string/review"
+                android:text="@string/cancel"
                 android:textColor="#a0a4aa"
                 android:textSize="12sp" />
 

@@ -12,6 +12,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
+import android.widget.Toast
 import androidx.core.view.GravityCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -63,7 +64,6 @@ class HomeActivity : BaseActivity(), MapView.POIItemEventListener, MapView.MapVi
 
     private var mInterstitialAd: InterstitialAd? = null
 
-    private lateinit var mReviewManager: ReviewManager
     private var mReviewInfo: ReviewInfo? = null
 
     private var mToilet: Toilet = Toilet()
@@ -77,43 +77,42 @@ class HomeActivity : BaseActivity(), MapView.POIItemEventListener, MapView.MapVi
         ad_view.loadAd(AdRequest.Builder().build())
 
         val adRequest = AdRequest.Builder().build()
-        InterstitialAd.load(this, MyUtil.getString(R.string.interstitial_ad_unit_id), adRequest, object : InterstitialAdLoadCallback() {
-            override fun onAdFailedToLoad(adError: LoadAdError) {
-                mInterstitialAd = null
-            }
-
-            override fun onAdLoaded(interstitialAd: InterstitialAd) {
-                mInterstitialAd = interstitialAd
-
-                mInterstitialAd?.fullScreenContentCallback = object : FullScreenContentCallback() {
-                    override fun onAdDismissedFullScreenContent() {
-                        ObserverManager.root!!.startActivity(Intent(ObserverManager.context!!, ToiletActivity::class.java)
-                                .setFlags(Intent.FLAG_ACTIVITY_NO_USER_ACTION)
-                                .putExtra(ToiletActivity.TOILET, mToilet)
-                        )
-                    }
-
-                    override fun onAdFailedToShowFullScreenContent(adError: AdError?) {
-                        ObserverManager.root!!.startActivity(Intent(ObserverManager.context!!, ToiletActivity::class.java)
-                                .setFlags(Intent.FLAG_ACTIVITY_NO_USER_ACTION)
-                                .putExtra(ToiletActivity.TOILET, mToilet)
-                        )
-                    }
-
-                    override fun onAdShowedFullScreenContent() {
-                        mInterstitialAd = null
-                    }
+        InterstitialAd.load(
+            this,
+            MyUtil.getString(R.string.interstitial_ad_unit_id),
+            adRequest,
+            object : InterstitialAdLoadCallback() {
+                override fun onAdFailedToLoad(adError: LoadAdError) {
+                    mInterstitialAd = null
                 }
-            }
-        })
 
-        mReviewManager = ReviewManagerFactory.create(applicationContext)
-        val manager = mReviewManager.requestReviewFlow()
-        manager.addOnCompleteListener { task ->
-            if (task.isSuccessful) {
-                mReviewInfo = task.result
-            }
-        }
+                override fun onAdLoaded(interstitialAd: InterstitialAd) {
+                    mInterstitialAd = interstitialAd
+
+                    mInterstitialAd?.fullScreenContentCallback =
+                        object : FullScreenContentCallback() {
+                            override fun onAdDismissedFullScreenContent() {
+                                ObserverManager.root!!.startActivity(
+                                    Intent(ObserverManager.context!!, ToiletActivity::class.java)
+                                        .setFlags(Intent.FLAG_ACTIVITY_NO_USER_ACTION)
+                                        .putExtra(ToiletActivity.TOILET, mToilet)
+                                )
+                            }
+
+                            override fun onAdFailedToShowFullScreenContent(adError: AdError?) {
+                                ObserverManager.root!!.startActivity(
+                                    Intent(ObserverManager.context!!, ToiletActivity::class.java)
+                                        .setFlags(Intent.FLAG_ACTIVITY_NO_USER_ACTION)
+                                        .putExtra(ToiletActivity.TOILET, mToilet)
+                                )
+                            }
+
+                            override fun onAdShowedFullScreenContent() {
+                                mInterstitialAd = null
+                            }
+                        }
+                }
+            })
 
         init()
         setListener()
@@ -154,8 +153,16 @@ class HomeActivity : BaseActivity(), MapView.POIItemEventListener, MapView.MapVi
         if (mIsFirstOnCreate) {
             mIsFirstOnCreate = false
             if (SharedManager.getLatitude() > 0) {
-                ObserverManager.mapView.setMapCenterPoint(MapPoint.mapPointWithGeoCoord(SharedManager.getLatitude(), SharedManager.getLongitude()), false)
-                ObserverManager.addMyPosition(SharedManager.getLatitude(), SharedManager.getLongitude())
+                ObserverManager.mapView.setMapCenterPoint(
+                    MapPoint.mapPointWithGeoCoord(
+                        SharedManager.getLatitude(),
+                        SharedManager.getLongitude()
+                    ), false
+                )
+                ObserverManager.addMyPosition(
+                    SharedManager.getLatitude(),
+                    SharedManager.getLongitude()
+                )
                 setMyPosition(View.VISIBLE)
             }
         } else {
@@ -163,12 +170,30 @@ class HomeActivity : BaseActivity(), MapView.POIItemEventListener, MapView.MapVi
                 mLastLatitude = ObserverManager.mapView.mapCenterPoint.mapPointGeoCoord.latitude
                 mLastLongitude = ObserverManager.mapView.mapCenterPoint.mapPointGeoCoord.longitude
             }
-            ObserverManager.mapView.setMapCenterPoint(MapPoint.mapPointWithGeoCoord(mLastLatitude, mLastLongitude), false)
+            ObserverManager.mapView.setMapCenterPoint(
+                MapPoint.mapPointWithGeoCoord(
+                    mLastLatitude,
+                    mLastLongitude
+                ), false
+            )
         }
 
         ObserverManager.mapView.setZoomLevel(3, true)
         ObserverManager.mapView.setPOIItemEventListener(this)
         ObserverManager.mapView.setMapViewEventListener(this)
+
+        if (SharedManager.getReviewCount() == ToiletActivity.REVIEW_COUNT) {
+            SharedManager.setReviewCount(SharedManager.getReviewCount() + 1)
+            val manager = ReviewManagerFactory.create(ObserverManager.context!!)
+            val request = manager.requestReviewFlow()
+            request.addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    val reviewInfo = task.result
+                    val flow = manager.launchReviewFlow(this, reviewInfo)
+                    flow.addOnCompleteListener { }
+                }
+            }
+        }
     }
 
     private fun setListener() {
@@ -184,7 +209,10 @@ class HomeActivity : BaseActivity(), MapView.POIItemEventListener, MapView.MapVi
                     layout_bottom_bg.visibility = View.GONE
                 } else {
                     if (rv_search.height > mRvHeight) {
-                        val layoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, mRvHeight)
+                        val layoutParams = LinearLayout.LayoutParams(
+                            LinearLayout.LayoutParams.MATCH_PARENT,
+                            mRvHeight
+                        )
                         rv_search.layoutParams = layoutParams
                     }
                 }
@@ -228,8 +256,16 @@ class HomeActivity : BaseActivity(), MapView.POIItemEventListener, MapView.MapVi
         layout_my_position.setOnClickListener {
             if (SharedManager.getLatitude() > 0) {
                 mIsMyPositionMove = true
-                ObserverManager.addMyPosition(SharedManager.getLatitude(), SharedManager.getLongitude())
-                ObserverManager.mapView.setMapCenterPoint(MapPoint.mapPointWithGeoCoord(SharedManager.getLatitude(), SharedManager.getLongitude()), false)
+                ObserverManager.addMyPosition(
+                    SharedManager.getLatitude(),
+                    SharedManager.getLongitude()
+                )
+                ObserverManager.mapView.setMapCenterPoint(
+                    MapPoint.mapPointWithGeoCoord(
+                        SharedManager.getLatitude(),
+                        SharedManager.getLongitude()
+                    ), false
+                )
                 ObserverManager.mapView.setZoomLevel(3, false)
                 setMyPosition(View.VISIBLE)
             }
@@ -240,7 +276,12 @@ class HomeActivity : BaseActivity(), MapView.POIItemEventListener, MapView.MapVi
         btn_manager.setOnClickListener {
             val dialog = Toilet2ListDialog(onMove = {
                 mIsMyPositionMove = false
-                ObserverManager.mapView.setMapCenterPoint(MapPoint.mapPointWithGeoCoord(it.latitude, it.longitude), true)
+                ObserverManager.mapView.setMapCenterPoint(
+                    MapPoint.mapPointWithGeoCoord(
+                        it.latitude,
+                        it.longitude
+                    ), true
+                )
                 setMyPosition(View.GONE)
             })
             dialog.show(supportFragmentManager, "Toilet2ListDialog")
@@ -265,7 +306,8 @@ class HomeActivity : BaseActivity(), MapView.POIItemEventListener, MapView.MapVi
         mLastLongitude = p0.mapCenterPoint.mapPointGeoCoord.longitude
 
         ObserverManager.mapView.removeAllPOIItems()
-        val toiletList = ToiletSQLiteManager.getInstance().getToiletList(mLastLatitude, mLastLongitude)
+        val toiletList =
+            ToiletSQLiteManager.getInstance().getToiletList(mLastLatitude, mLastLongitude)
         for (toilet in toiletList) {
             ObserverManager.addPOIItem(toilet)
         }
@@ -295,7 +337,11 @@ class HomeActivity : BaseActivity(), MapView.POIItemEventListener, MapView.MapVi
     override fun onCalloutBalloonOfPOIItemTouched(p0: MapView?, p1: MapPOIItem?) {
     }
 
-    override fun onCalloutBalloonOfPOIItemTouched(p0: MapView?, p1: MapPOIItem?, p2: MapPOIItem.CalloutBalloonButtonType?) {
+    override fun onCalloutBalloonOfPOIItemTouched(
+        p0: MapView?,
+        p1: MapPOIItem?,
+        p2: MapPOIItem.CalloutBalloonButtonType?
+    ) {
     }
 
     override fun onDraggablePOIItemMoved(p0: MapView?, p1: MapPOIItem?, p2: MapPoint?) {
@@ -309,36 +355,38 @@ class HomeActivity : BaseActivity(), MapView.POIItemEventListener, MapView.MapVi
             val toilet = ToiletSQLiteManager.getInstance().getToilet(p1.tag)
 
             val dialog = ToiletDialog(
-                    onDetail = {
-                        mToilet = it
-                        if (mInterstitialAd != null) {
-                            mInterstitialAd?.show(this)
-                        } else {
-                            map_view.removeAllViews()
-                            ObserverManager.root!!.startActivity(Intent(ObserverManager.context!!, ToiletActivity::class.java)
-                                    .setFlags(Intent.FLAG_ACTIVITY_NO_USER_ACTION)
-                                    .putExtra(ToiletActivity.TOILET, mToilet)
-                            )
-                        }
+                onDetail = {
+                    mToilet = it
+                    if (mInterstitialAd != null) {
+                        mInterstitialAd?.show(this)
+                    } else {
+                        map_view.removeAllViews()
+                        ObserverManager.root!!.startActivity(
+                            Intent(ObserverManager.context!!, ToiletActivity::class.java)
+                                .setFlags(Intent.FLAG_ACTIVITY_NO_USER_ACTION)
+                                .putExtra(ToiletActivity.TOILET, mToilet)
+                        )
                     }
+                }
             )
             dialog.setToilet(toilet)
             dialog.show(supportFragmentManager, "ToiletDialog")
         } else if (p1.tag < 0) {
             mToiletList[p1.tag]?.let { toilet ->
                 val dialog = ToiletDialog(
-                        onDetail = {
-                            mToilet = it
-                            if (mInterstitialAd != null) {
-                                mInterstitialAd?.show(this)
-                            } else {
-                                map_view.removeAllViews()
-                                ObserverManager.root!!.startActivity(Intent(ObserverManager.context!!, ToiletActivity::class.java)
-                                        .setFlags(Intent.FLAG_ACTIVITY_NO_USER_ACTION)
-                                        .putExtra(ToiletActivity.TOILET, mToilet)
-                                )
-                            }
+                    onDetail = {
+                        mToilet = it
+                        if (mInterstitialAd != null) {
+                            mInterstitialAd?.show(this)
+                        } else {
+                            map_view.removeAllViews()
+                            ObserverManager.root!!.startActivity(
+                                Intent(ObserverManager.context!!, ToiletActivity::class.java)
+                                    .setFlags(Intent.FLAG_ACTIVITY_NO_USER_ACTION)
+                                    .putExtra(ToiletActivity.TOILET, mToilet)
+                            )
                         }
+                    }
                 )
                 dialog.setToilet(toilet)
                 dialog.show(supportFragmentManager, "ToiletDialog")
@@ -366,7 +414,12 @@ class HomeActivity : BaseActivity(), MapView.POIItemEventListener, MapView.MapVi
         mIsMyPositionMove = false
         edt_search.setText(kaKaoKeyword.place_name)
         edt_search.setSelection(kaKaoKeyword.place_name.count())
-        ObserverManager.mapView.setMapCenterPoint(MapPoint.mapPointWithGeoCoord(kaKaoKeyword.latitude, kaKaoKeyword.longitude), true)
+        ObserverManager.mapView.setMapCenterPoint(
+            MapPoint.mapPointWithGeoCoord(
+                kaKaoKeyword.latitude,
+                kaKaoKeyword.longitude
+            ), true
+        )
         MyUtil.keyboardHide(edt_search)
         rv_search.visibility = View.GONE
         setMyPosition(View.GONE)
@@ -380,41 +433,43 @@ class HomeActivity : BaseActivity(), MapView.POIItemEventListener, MapView.MapVi
         params.put("latitude", latitude)
         params.put("longitude", longitude)
 
-        val request = RetrofitClient.getClient(RetrofitService.BASE_APP).create(RetrofitService::class.java).toiletList(params.getParams())
+        val request =
+            RetrofitClient.getClient(RetrofitService.BASE_APP).create(RetrofitService::class.java)
+                .toiletList(params.getParams())
 
         RetrofitJSONObject(request,
-                onSuccess = {
-                    try {
-                        if (it.getInt("rst_code") == 0) {
-                            val jsonArray = it.getJSONArray("toilets")
-                            mToiletList = ArrayMap()
+            onSuccess = {
+                try {
+                    if (it.getInt("rst_code") == 0) {
+                        val jsonArray = it.getJSONArray("toilets")
+                        mToiletList = ArrayMap()
 
-                            for (i in 0 until jsonArray.length()) {
-                                val jsonObject = jsonArray.getJSONObject(i)
-                                val toilet = Toilet()
-                                toilet.toilet_id = jsonObject.getInt("toilet_id")
-                                toilet.member_id = jsonObject.getString("member_id")
-                                toilet.type = "유저"
-                                toilet.m_name = jsonObject.getString("m_name")
-                                toilet.name = jsonObject.getString("name")
-                                toilet.content = jsonObject.getString("content")
-                                toilet.address_new = jsonObject.getString("address_new")
-                                toilet.address_old = jsonObject.getString("address_old")
-                                toilet.unisex = if (jsonObject.getInt("unisex") == 1) "Y" else "N"
-                                toilet.m_poo = jsonObject.getString("man")
-                                toilet.w_poo = jsonObject.getString("woman")
-                                toilet.latitude = jsonObject.getDouble("latitude")
-                                toilet.longitude = jsonObject.getDouble("longitude")
-                                mToiletList[toilet.toilet_id] = toilet
-                                ObserverManager.addPOIItem(toilet)
-                            }
+                        for (i in 0 until jsonArray.length()) {
+                            val jsonObject = jsonArray.getJSONObject(i)
+                            val toilet = Toilet()
+                            toilet.toilet_id = jsonObject.getInt("toilet_id")
+                            toilet.member_id = jsonObject.getString("member_id")
+                            toilet.type = "유저"
+                            toilet.m_name = jsonObject.getString("m_name")
+                            toilet.name = jsonObject.getString("name")
+                            toilet.content = jsonObject.getString("content")
+                            toilet.address_new = jsonObject.getString("address_new")
+                            toilet.address_old = jsonObject.getString("address_old")
+                            toilet.unisex = if (jsonObject.getInt("unisex") == 1) "Y" else "N"
+                            toilet.m_poo = jsonObject.getString("man")
+                            toilet.w_poo = jsonObject.getString("woman")
+                            toilet.latitude = jsonObject.getDouble("latitude")
+                            toilet.longitude = jsonObject.getDouble("longitude")
+                            mToiletList[toilet.toilet_id] = toilet
+                            ObserverManager.addPOIItem(toilet)
                         }
-                    } catch (e: JSONException) {
-                        e.printStackTrace()
                     }
-                },
-                onFailed = {
+                } catch (e: JSONException) {
+                    e.printStackTrace()
                 }
+            },
+            onFailed = {
+            }
         )
     }
 
@@ -425,33 +480,34 @@ class HomeActivity : BaseActivity(), MapView.POIItemEventListener, MapView.MapVi
         val params = RetrofitParams()
         params.put("query", query) // 검색을 원하는 질의어
 
-        val request = RetrofitClient.getClientKaKao(RetrofitService.KAKAO_LOCAL).create(RetrofitService::class.java).kakaoLocalSearch(params.getParams())
+        val request = RetrofitClient.getClientKaKao(RetrofitService.KAKAO_LOCAL)
+            .create(RetrofitService::class.java).kakaoLocalSearch(params.getParams())
 
         RetrofitJSONObject(request,
-                onSuccess = {
-                    try {
-                        mKeywordList = ArrayList()
-                        val jsonArray = it.getJSONArray("documents")
+            onSuccess = {
+                try {
+                    mKeywordList = ArrayList()
+                    val jsonArray = it.getJSONArray("documents")
 
-                        for (i in 0 until jsonArray.length()) {
-                            val jsonObject = jsonArray.getJSONObject(i)
-                            val keyword = KaKaoKeyword()
-                            keyword.address_name = jsonObject.getString("address_name")
-                            keyword.place_name = jsonObject.getString("place_name")
-                            keyword.latitude = jsonObject.getDouble("y")
-                            keyword.longitude = jsonObject.getDouble("x")
+                    for (i in 0 until jsonArray.length()) {
+                        val jsonObject = jsonArray.getJSONObject(i)
+                        val keyword = KaKaoKeyword()
+                        keyword.address_name = jsonObject.getString("address_name")
+                        keyword.place_name = jsonObject.getString("place_name")
+                        keyword.latitude = jsonObject.getDouble("y")
+                        keyword.longitude = jsonObject.getDouble("x")
 
-                            mKeywordList.add(keyword)
-                        }
-
-                        mKeywordAdapter.notifyDataSetChanged()
-                    } catch (e: JSONException) {
-                        e.printStackTrace()
+                        mKeywordList.add(keyword)
                     }
-                },
-                onFailed = {
 
+                    mKeywordAdapter.notifyDataSetChanged()
+                } catch (e: JSONException) {
+                    e.printStackTrace()
                 }
+            },
+            onFailed = {
+
+            }
         )
     }
 
@@ -461,7 +517,10 @@ class HomeActivity : BaseActivity(), MapView.POIItemEventListener, MapView.MapVi
     inner class ListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-            return ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_kakao_keyword, parent, false))
+            return ViewHolder(
+                LayoutInflater.from(parent.context)
+                    .inflate(R.layout.item_kakao_keyword, parent, false)
+            )
         }
 
         override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
@@ -493,7 +552,12 @@ class HomeActivity : BaseActivity(), MapView.POIItemEventListener, MapView.MapVi
     override fun onLocationChanged(location: Location) {
         // 현재위치기준으로 중심점변경
         if (mIsMyPositionMove && SharedManager.getLatitude() > 0) {
-            ObserverManager.mapView.setMapCenterPoint(MapPoint.mapPointWithGeoCoord(SharedManager.getLatitude(), SharedManager.getLongitude()), false)
+            ObserverManager.mapView.setMapCenterPoint(
+                MapPoint.mapPointWithGeoCoord(
+                    SharedManager.getLatitude(),
+                    SharedManager.getLongitude()
+                ), false
+            )
             ObserverManager.addMyPosition(SharedManager.getLatitude(), SharedManager.getLongitude())
             setMyPosition(View.VISIBLE)
         }
@@ -515,15 +579,7 @@ class HomeActivity : BaseActivity(), MapView.POIItemEventListener, MapView.MapVi
             return
         }
 //        finish()
-        val dialog = FinishDialog(
-                onReview = {
-                    mReviewInfo?.let {
-                        val flow = mReviewManager.launchReviewFlow(this, it)
-                        flow.addOnCompleteListener { _ ->
-
-                        }
-                    }
-                })
+        val dialog = FinishDialog()
         dialog.show(supportFragmentManager, "FinishDialog")
     }
 

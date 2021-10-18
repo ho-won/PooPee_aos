@@ -14,7 +14,7 @@ import kr.co.ho1.poopee.common.base.BaseDialog
 import kr.co.ho1.poopee.home.model.Toilet
 
 @SuppressLint("ValidFragment")
-class FinishDialog(private var onReview: (() -> Unit)) : BaseDialog() {
+class FinishDialog() : BaseDialog() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.dialog_finish, container, false)
@@ -33,7 +33,7 @@ class FinishDialog(private var onReview: (() -> Unit)) : BaseDialog() {
 
     private fun setListener() {
         btn_no.setOnClickListener {
-            ObserverManager.updateInPlayMarket()
+            dismiss()
         }
         btn_yes.setOnClickListener {
             ObserverManager.root!!.finish()
