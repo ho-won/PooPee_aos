@@ -83,6 +83,7 @@
     <string name="nav_text_05">PooPee 문의사항</string>
     <string name="nav_text_06">로그인하기</string>
     <string name="nav_text_07">화장실등록</string>
+    <string name="nav_text_08">공유하기</string>
 
     <!-- home -->
     <string name="home_text_01">장소,주소 검색</string>

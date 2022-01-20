@@ -16,7 +16,7 @@
             android:id="@+id/layout_login"
             android:layout_width="100dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="48dp"
+            android:layout_marginTop="36dp"
             android:gravity="center"
             android:orientation="vertical">
 
@@ -156,6 +156,32 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/layout_app_install"
+                android:layout_width="match_parent"
+                android:layout_height="64dp"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:layout_width="28dp"
+                    android:layout_height="28dp"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/ic_menu_share"
+                    tools:ignore="ContentDescription" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal"
+                    android:lineSpacingExtra="6sp"
+                    android:text="@string/nav_text_08"
+                    android:textColor="#292d34"
+                    android:textSize="13sp"
+                    tools:ignore="SmallSp" />
+
+            </LinearLayout>
+
+            <LinearLayout
                 android:id="@+id/layout_setting"
                 android:layout_width="match_parent"
                 android:layout_height="64dp"
@@ -188,7 +214,7 @@
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_gravity="center_horizontal"
-            android:layout_marginBottom="28dp"
+            android:layout_marginBottom="20dp"
             android:background="@null"
             android:scaleType="fitXY"
             android:src="@drawable/ic_logout"

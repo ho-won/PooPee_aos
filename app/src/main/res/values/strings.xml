@@ -83,6 +83,7 @@
     <string name="nav_text_05">Inquiry</string>
     <string name="nav_text_06">Login</string>
     <string name="nav_text_07">Toilet registration</string>
+    <string name="nav_text_08">Share</string>
 
     <!-- home -->
     <string name="home_text_01">Place, address search</string>

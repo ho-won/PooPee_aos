@@ -10,6 +10,7 @@ interface RetrofitService {
         val BASE_APP = if (ObserverManager.testServer) "http://poopee.ho1.co.kr/" else "http://poopee.ho1.co.kr/"
 
         const val TEST_API = "etcs/test" // test
+        const val APP_INSTALL = "etcs/appInstall" // test
         const val DB_CHECK = "etcs/dbCheck" // [GET] toilet db 버전체크
         const val SERVER_CHECK = "etcs/serverCheck" // [GET] 서버상태체크
         const val LOGIN = "members/login" // [POST] 로그인

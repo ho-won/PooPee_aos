@@ -5,6 +5,7 @@ package kr.co.ho1.poopee.common.util
 import android.annotation.SuppressLint
 import android.app.NotificationManager
 import android.content.Context
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.drawable.Drawable
 import android.os.Build
@@ -119,6 +120,17 @@ object MyUtil {
         } else {
             return NotificationManagerCompat.from(ObserverManager.context!!).areNotificationsEnabled()
         }
+    }
+
+    fun shareText(text: String) {
+        val sendIntent: Intent = Intent().apply {
+            action = Intent.ACTION_SEND
+            putExtra(Intent.EXTRA_TEXT, text)
+            type = "text/plain"
+        }
+
+        val shareIntent = Intent.createChooser(sendIntent, null)
+        ObserverManager.root!!.startActivity(shareIntent)
     }
 
     fun getString(id: Int): String {

@@ -12,6 +12,7 @@ import kotlinx.android.synthetic.main.nav_main.view.*
 import kr.co.ho1.poopee.R
 import kr.co.ho1.poopee.common.ObserverManager
 import kr.co.ho1.poopee.common.data.SharedManager
+import kr.co.ho1.poopee.common.http.RetrofitService
 import kr.co.ho1.poopee.common.util.MySpannableString
 import kr.co.ho1.poopee.common.util.MyUtil
 import kr.co.ho1.poopee.home.ToiletSearchActivity
@@ -114,6 +115,9 @@ class NavMainView : NavigationView {
                         .setFlags(Intent.FLAG_ACTIVITY_NO_USER_ACTION)
                 )
             }
+        }
+        layout_app_install.setOnClickListener {
+            MyUtil.shareText(RetrofitService.BASE_APP + RetrofitService.APP_INSTALL)
         }
         layout_setting.setOnClickListener {
             ObserverManager.root!!.startActivity(Intent(ObserverManager.context!!, SettingActivity::class.java)
