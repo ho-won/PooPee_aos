@@ -17,39 +17,85 @@ import kr.co.ho1.poopee.common.data.SharedManager
  */
 object LocationManager {
     const val DISTANCE = 0.02 // +-
-    private var locationManager: LocationManager? = null
-    private var locationListener: LocationListener? = null
+
+    private var currentLocation: Location? = null
+    lateinit var locationManager: LocationManager
+    lateinit var gpsLocationListener: LocationListener
+    lateinit var networkLocationListener: LocationListener
+    var locationByGps: Location? = null
+    var locationByNetwork: Location? = null
 
     @SuppressLint("MissingPermission")
     fun setLocationListener() {
         locationManager = ObserverManager.context!!.getSystemService(Context.LOCATION_SERVICE) as LocationManager
+        val hasGps = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)
+        val hasNetwork = locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)
 
-        locationListener = object : LocationListener {
+        gpsLocationListener = object : LocationListener {
             override fun onLocationChanged(location: Location) {
-                SharedManager.setLatitude(location.latitude)
-                SharedManager.setLongitude(location.longitude)
-                ObserverManager.root!!.onLocationChanged(location)
+                locationByGps = location
+                setCurrentLocation()
             }
 
-            override fun onStatusChanged(provider: String, status: Int, extras: Bundle) {
+            override fun onStatusChanged(provider: String, status: Int, extras: Bundle) {}
+            override fun onProviderEnabled(provider: String) {}
+            override fun onProviderDisabled(provider: String) {}
+        }
+        networkLocationListener = object : LocationListener {
+            override fun onLocationChanged(location: Location) {
+                locationByNetwork = location
+                setCurrentLocation()
             }
 
-            override fun onProviderEnabled(provider: String) {
-            }
-
-            override fun onProviderDisabled(provider: String) {
-            }
+            override fun onStatusChanged(provider: String, status: Int, extras: Bundle) {}
+            override fun onProviderEnabled(provider: String) {}
+            override fun onProviderDisabled(provider: String) {}
         }
 
-        try {
-            locationManager!!.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 3000L, 5f, locationListener!!)
-        } catch (e: Exception) {
-            e.printStackTrace()
+        if (hasGps) {
+            locationManager.requestLocationUpdates(
+                LocationManager.GPS_PROVIDER,
+                5000,
+                0F,
+                gpsLocationListener
+            )
+        }
+        if (hasNetwork) {
+            locationManager.requestLocationUpdates(
+                LocationManager.NETWORK_PROVIDER,
+                5000,
+                0F,
+                networkLocationListener
+            )
+        }
+    }
+
+    @SuppressLint("MissingPermission")
+    fun setCurrentLocation() {
+        val lastKnownLocationByGps = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER)
+        lastKnownLocationByGps?.let {
+            locationByGps = lastKnownLocationByGps
+        }
+
+        val lastKnownLocationByNetwork = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER)
+        lastKnownLocationByNetwork?.let {
+            locationByNetwork = lastKnownLocationByNetwork
+        }
+        if (locationByGps != null && locationByNetwork != null) {
+            currentLocation = if (locationByGps!!.accuracy > locationByNetwork!!.accuracy) {
+                locationByGps
+            } else {
+                locationByNetwork
+            }
+            SharedManager.setLatitude(currentLocation!!.latitude)
+            SharedManager.setLongitude(currentLocation!!.longitude)
+            ObserverManager.root!!.onLocationChanged(currentLocation!!)
         }
     }
 
     fun removeLocationUpdate() {
-        locationManager!!.removeUpdates(locationListener!!)
+        locationManager.removeUpdates(gpsLocationListener)
+        locationManager.removeUpdates(networkLocationListener)
     }
 
 }

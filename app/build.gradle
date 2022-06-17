@@ -11,8 +11,8 @@ android {
         applicationId "kr.co.ho1.poopee"
         minSdkVersion 19
         targetSdkVersion 30
-        versionCode 23
-        versionName "2.7.0"
+        versionCode 24
+        versionName "2.8.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
     }
@@ -69,10 +69,12 @@ dependencies {
     implementation group: 'com.kakao.sdk', name: 'kakaonavi', version: '1.27.0' // 카카오내비
     implementation group: 'com.kakao.sdk', name: 'kakaolink', version: '1.27.0' // 카카오톡
 
-    implementation 'com.google.firebase:firebase-analytics:19.0.0'
-    implementation 'com.google.firebase:firebase-messaging:22.0.0'
-    implementation 'com.google.firebase:firebase-core:19.0.0'
-    implementation 'com.google.firebase:firebase-crashlytics:18.0.1'
+    implementation platform('com.google.firebase:firebase-bom:29.0.4')
+    implementation 'com.google.firebase:firebase-inappmessaging-display'
+    implementation 'com.google.firebase:firebase-analytics'
+    implementation 'com.google.firebase:firebase-messaging'
+    implementation 'com.google.firebase:firebase-core'
+    implementation 'com.google.firebase:firebase-crashlytics'
 
     implementation 'com.google.android.play:core:1.10.0' // 인앱리뷰용
     implementation 'com.google.android.play:core-ktx:1.8.1' // 인앱리뷰용

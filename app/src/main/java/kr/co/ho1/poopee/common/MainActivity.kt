@@ -208,7 +208,7 @@ class MainActivity : BaseActivity() {
                     .setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_NO_USER_ACTION)
             )
             finish()
-        }).execute()
+        })
     }
 
     /**

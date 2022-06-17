@@ -50,7 +50,7 @@ class CommentUpdateDialog(private var onUpdate: ((comment: Comment) -> Unit)) : 
         SleepTask(100, onFinish = {
             edt_content.requestFocus()
             MyUtil.keyboardShow(edt_content)
-        }).execute()
+        })
     }
 
     private fun setListener() {

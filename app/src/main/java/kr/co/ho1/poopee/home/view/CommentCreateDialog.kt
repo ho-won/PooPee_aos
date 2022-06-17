@@ -37,7 +37,7 @@ class CommentCreateDialog(private var onCreate: ((comment: String) -> Unit)) : B
         SleepTask(100, onFinish = {
             edt_comment.requestFocus()
             MyUtil.keyboardShow(edt_comment)
-        }).execute()
+        })
     }
 
     private fun setListener() {

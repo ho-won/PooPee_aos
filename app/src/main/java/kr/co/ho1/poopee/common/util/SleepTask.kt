@@ -1,28 +1,24 @@
 package kr.co.ho1.poopee.common.util
 
-import android.os.AsyncTask
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
-class SleepTask() : AsyncTask<String, String, String>() {
+class SleepTask() {
     private lateinit var onFinish: (() -> Unit)
     private var millis: Int = 0
 
     constructor(millis: Int, onFinish: (() -> Unit)) : this() {
         this.millis = millis
         this.onFinish = onFinish
-    }
 
-    override fun doInBackground(vararg params: String): String {
-        try {
-            Thread.sleep(millis.toLong())
-        } catch (e: InterruptedException) {
-            e.printStackTrace()
+        GlobalScope.launch {
+            try {
+                Thread.sleep(millis.toLong())
+            } catch (e: InterruptedException) {
+                e.printStackTrace()
+            }
+            onFinish()
         }
-
-        return ""
-    }
-
-    override fun onPostExecute(result: String) {
-        onFinish()
     }
 
 }
