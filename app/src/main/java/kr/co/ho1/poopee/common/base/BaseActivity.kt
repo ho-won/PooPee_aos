@@ -12,15 +12,12 @@ import kr.co.ho1.poopee.common.ObserverManager
 abstract class BaseActivity : AppCompatActivity() {
     private var progressView: RelativeLayout? = null
 
-    private var parentRoot: BaseActivity? = null // 직전 Activity
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         init()
     }
 
     private fun init() {
-        parentRoot = ObserverManager.root
         ObserverManager.root = this
     }
 
