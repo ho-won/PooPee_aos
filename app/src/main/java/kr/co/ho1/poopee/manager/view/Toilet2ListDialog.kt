@@ -52,7 +52,7 @@ class Toilet2ListDialog(private var onMove: ((toilet: Toilet) -> Unit)) : BaseDi
     }
 
     private fun setListener() {
-        recycler_view.setOnScrollListener(object : RecyclerView.OnScrollListener() {
+        recycler_view.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 // 리스트뷰 페이징 로딩 처리
                 val recyclerViewHelper = RecyclerViewPositionHelper(recyclerView)
