@@ -31,6 +31,7 @@ import kr.co.ho1.poopee.common.http.RetrofitJSONObject
 import kr.co.ho1.poopee.common.http.RetrofitParams
 import kr.co.ho1.poopee.common.http.RetrofitService
 import kr.co.ho1.poopee.common.util.LocationManager
+import kr.co.ho1.poopee.common.util.LogManager
 import kr.co.ho1.poopee.common.util.MyUtil
 import kr.co.ho1.poopee.database.ToiletSQLiteManager
 import kr.co.ho1.poopee.home.model.KaKaoKeyword
@@ -195,7 +196,8 @@ class HomeActivity : BaseActivity(), MapView.POIItemEventListener, MapView.MapVi
 
     private fun setListener() {
         root_view.viewTreeObserver.addOnGlobalLayoutListener {
-            if (MyUtil.getDeviceHeight() > root_view.height) {
+            LogManager.e("${MyUtil.getDeviceHeight()} : ${root_view.height}")
+            if (MyUtil.getDeviceHeight() - MyUtil.dpToPx(80) > root_view.height) {
                 // keyboard show
                 mIsKeyboardShow = true
                 layout_bottom_bg.visibility = View.VISIBLE
