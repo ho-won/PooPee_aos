@@ -11,6 +11,10 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
+    <queries>
+        <package android:name="com.kakao.talk" />
+    </queries>
+
     <application
         android:name="kr.co.ho1.poopee.common.base.BaseApp"
         android:allowBackup="true"
@@ -66,7 +70,7 @@
 
                 <data
                     android:host="kakaolink"
-                    android:scheme="53565fe7d8355fff626939459a32e7d0" />
+                    android:scheme="kakao53565fe7d8355fff626939459a32e7d0" />
             </intent-filter>
         </activity>
         <activity

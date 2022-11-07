@@ -197,7 +197,7 @@ class HomeActivity : BaseActivity(), MapView.POIItemEventListener, MapView.MapVi
     private fun setListener() {
         root_view.viewTreeObserver.addOnGlobalLayoutListener {
             LogManager.e("${MyUtil.getDeviceHeight()} : ${root_view.height}")
-            if (MyUtil.getDeviceHeight() - MyUtil.dpToPx(80) > root_view.height) {
+            if (MyUtil.getDeviceHeight() - MyUtil.dpToPx(100) > root_view.height) {
                 // keyboard show
                 mIsKeyboardShow = true
                 layout_bottom_bg.visibility = View.VISIBLE

@@ -1,25 +1,23 @@
 package kr.co.ho1.poopee.home.view
 
 import android.annotation.SuppressLint
+import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.kakao.kakaolink.v2.KakaoLinkResponse
-import com.kakao.kakaolink.v2.KakaoLinkService
-import com.kakao.kakaonavi.KakaoNaviParams
-import com.kakao.kakaonavi.KakaoNaviService
-import com.kakao.kakaonavi.Location
-import com.kakao.kakaonavi.NaviOptions
-import com.kakao.kakaonavi.options.CoordType
-import com.kakao.message.template.ButtonObject
-import com.kakao.message.template.ContentObject
-import com.kakao.message.template.LinkObject
-import com.kakao.message.template.LocationTemplate
-import com.kakao.network.ErrorResult
-import com.kakao.network.callback.ResponseCallback
+import com.kakao.sdk.common.util.KakaoCustomTabsClient
+import com.kakao.sdk.navi.Constants
+import com.kakao.sdk.navi.NaviClient
+import com.kakao.sdk.navi.model.CoordType
+import com.kakao.sdk.navi.model.Location
+import com.kakao.sdk.navi.model.NaviOption
+import com.kakao.sdk.share.ShareClient
+import com.kakao.sdk.share.WebSharerClient
+import com.kakao.sdk.template.model.*
 import kotlinx.android.synthetic.main.dialog_share.*
 import kr.co.ho1.poopee.R
 import kr.co.ho1.poopee.common.ObserverManager
@@ -32,6 +30,7 @@ import kr.co.ho1.poopee.home.model.Toilet
 @SuppressLint("ValidFragment")
 class ShareDialog : BaseDialog() {
     companion object {
+        const val TAG = "KAKAO_TEST"
         const val ACTION_NAVI = "ACTION_NAVI"
         const val ACTION_SHARE = "ACTION_SHARE"
     }
@@ -85,51 +84,93 @@ class ShareDialog : BaseDialog() {
                         addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                     })
                 } catch (e: Exception) {
-                    ObserverManager.root!!.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=com.skt.tmap.ku"))
+                    ObserverManager.root!!.startActivity(
+                        Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=com.skt.tmap.ku"))
                             .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                     )
                 }
             } else if (mAction == ACTION_SHARE) {
-                val params = LocationTemplate.newBuilder(
-                        mAddressText,
-                        ContentObject.newBuilder(
-                                MyUtil.getString(R.string.home_text_14) + mAddressText,
-                                "http://poopee.ho1.co.kr/image/banner.png",
-                                LinkObject.newBuilder().build())
-                                .setImageWidth(1024)
-                                .setImageHeight(500)
-                                .build())
-                        .setAddressTitle(mToilet.name)
-                        .addButton(ButtonObject(MyUtil.getString(R.string.home_text_15), LinkObject.newBuilder().build()))
-                        .build()
-                KakaoLinkService.getInstance()
-                        .sendDefault(ObserverManager.root, params, object : ResponseCallback<KakaoLinkResponse>() {
-                            override fun onFailure(errorResult: ErrorResult) {
+                val defaultLocation = LocationTemplate(
+                    address = mAddressText,
+                    addressTitle = mToilet.name,
+                    content = Content(
+                        title = MyUtil.getString(R.string.home_text_14) + mAddressText,
+                        imageUrl = "http://poopee.ho1.co.kr/image/banner.png",
+                        imageWidth = 1024,
+                        imageHeight = 500,
+                        link = Link(
+                            webUrl = "http://poopee.ho1.co.kr/etcs/app_install",
+                            mobileWebUrl = "http://poopee.ho1.co.kr/etcs/app_install"
+                        ),
+                    ),
+                )
 
-                            }
+                // 카카오톡 설치여부 확인
+                if (ShareClient.instance.isKakaoTalkSharingAvailable(ObserverManager.context!!)) {
+                    // 카카오톡으로 카카오톡 공유 가능
+                    ShareClient.instance.shareDefault(ObserverManager.context!!, defaultLocation) { sharingResult, error ->
+                        if (error != null) {
+                            Log.e(TAG, "카카오톡 공유 실패", error)
+                        } else if (sharingResult != null) {
+                            Log.d(TAG, "카카오톡 공유 성공 ${sharingResult.intent}")
+                            startActivity(sharingResult.intent)
 
-                            override fun onSuccess(result: KakaoLinkResponse) {
+                            // 카카오톡 공유에 성공했지만 아래 경고 메시지가 존재할 경우 일부 컨텐츠가 정상 동작하지 않을 수 있습니다.
+                            Log.w(TAG, "Warning Msg: ${sharingResult.warningMsg}")
+                            Log.w(TAG, "Argument Msg: ${sharingResult.argumentMsg}")
+                        }
+                    }
+                } else {
+                    // 카카오톡 미설치: 웹 공유 사용 권장
+                    // 웹 공유 예시 코드
+                    val sharerUrl = WebSharerClient.instance.makeDefaultUrl(defaultLocation)
 
-                            }
-                        })
+                    // CustomTabs으로 웹 브라우저 열기
+
+                    // 1. CustomTabsServiceConnection 지원 브라우저 열기
+                    // ex) Chrome, 삼성 인터넷, FireFox, 웨일 등
+                    try {
+                        KakaoCustomTabsClient.openWithDefault(ObserverManager.context!!, sharerUrl)
+                    } catch (e: UnsupportedOperationException) {
+                        // CustomTabsServiceConnection 지원 브라우저가 없을 때 예외처리
+                    }
+
+                    // 2. CustomTabsServiceConnection 미지원 브라우저 열기
+                    // ex) 다음, 네이버 등
+                    try {
+                        KakaoCustomTabsClient.open(ObserverManager.context!!, sharerUrl)
+                    } catch (e: ActivityNotFoundException) {
+                        // 디바이스에 설치된 인터넷 브라우저가 없을 때 예외처리
+                    }
+                }
             }
-            dismiss()
         }
         layout_02.setOnClickListener {
             if (mAction == ACTION_NAVI) {
-                val builder = KakaoNaviParams.newBuilder(Location.newBuilder(
-                        mAddressText,
-                        mToilet.longitude,
-                        mToilet.latitude).build())
-                        .setNaviOptions(NaviOptions.newBuilder().setCoordType(CoordType.WGS84).build())
-                KakaoNaviService.getInstance().navigate(ObserverManager.root, builder.build())
+                // 카카오내비 앱으로 길 안내
+                if (NaviClient.instance.isKakaoNaviInstalled(requireContext())) {
+                    // 카카오내비 앱으로 길 안내 - WGS84
+                    startActivity(
+                        NaviClient.instance.navigateIntent(
+                            Location(mAddressText, mToilet.longitude.toString(), mToilet.latitude.toString()),
+                            NaviOption(coordType = CoordType.WGS84)
+                        )
+                    )
+                } else {
+                    // 카카오내비 설치 페이지로 이동
+                    startActivity(
+                        Intent(
+                            Intent.ACTION_VIEW,
+                            Uri.parse(Constants.WEB_NAVI_INSTALL)
+                        ).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                    )
+                }
             } else if (mAction == ACTION_SHARE) {
                 val intent = Intent(Intent.ACTION_VIEW)
                 intent.type = "vnd.android-dir/mms-sms"
                 intent.putExtra("sms_body", MyUtil.getString(R.string.home_text_14) + mAddressText)
                 startActivity(intent)
             }
-            dismiss()
         }
         btn_close.setOnClickListener {
             dismiss()

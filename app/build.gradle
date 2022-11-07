@@ -29,6 +29,10 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
 }
 
 dependencies {
@@ -65,8 +69,10 @@ dependencies {
         }
     }
 
-    implementation group: 'com.kakao.sdk', name: 'kakaonavi', version: '1.30.0' // 카카오내비
-    implementation group: 'com.kakao.sdk', name: 'kakaolink', version: '1.30.0' // 카카오톡
+    implementation "com.kakao.sdk:v2-all:2.11.1"
+
+//    implementation group: 'com.kakao.sdk', name: 'kakaonavi', version: '1.30.0' // 카카오내비
+//    implementation group: 'com.kakao.sdk', name: 'kakaolink', version: '1.30.0' // 카카오톡
 
     implementation 'androidx.work:work-runtime-ktx:2.7.1'
     implementation platform('com.google.firebase:firebase-bom:30.1.0')
