@@ -11,10 +11,19 @@ android {
         applicationId "kr.co.ho1.poopee"
         minSdk 21
         targetSdk 31
-        versionCode 24
-        versionName "2.8.0"
+        versionCode 25
+        versionName "2.9.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
+    }
+
+    signingConfigs {
+        release {
+            storeFile file('/Users/ho1/ho1/00. ho1/PooPee_aos/app/poopee.jks')
+            storePassword 'vnvl3312'
+            keyAlias = 'poopee'
+            keyPassword 'vnvl3312'
+        }
     }
     buildTypes {
         release {
