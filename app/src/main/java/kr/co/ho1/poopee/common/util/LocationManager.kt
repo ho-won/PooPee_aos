@@ -12,8 +12,8 @@ import kr.co.ho1.poopee.common.ObserverManager
 import kr.co.ho1.poopee.common.data.SharedManager
 
 /**
- * 위도 1도 : 약 110km
- * 경도 1도 : 약 88.74km
+ * 위도(latitude) 1도 : 약 110km
+ * 경도(longitude) 1도 : 약 88.74km
  */
 object LocationManager {
     const val DISTANCE = 0.02 // +-
