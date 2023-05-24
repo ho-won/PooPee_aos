@@ -4,12 +4,12 @@
 
     <string name="admob_app_id">ca-app-pub-2933424745841582~4534033734</string>
 
-    <!--    <string name="banner_ad_unit_id">ca-app-pub-2933424745841582/3959318660</string>-->
-    <!--    <string name="interstitial_ad_unit_id">ca-app-pub-2933424745841582/2251927237</string>-->
+        <string name="banner_ad_unit_id">ca-app-pub-2933424745841582/3959318660</string>
+        <string name="interstitial_ad_unit_id">ca-app-pub-2933424745841582/2251927237</string>
 
     <!-- test -->
-    <string name="banner_ad_unit_id">ca-app-pub-3940256099942544/6300978111</string>
-    <string name="interstitial_ad_unit_id">ca-app-pub-3940256099942544/1033173712</string>
+<!--    <string name="banner_ad_unit_id">ca-app-pub-3940256099942544/6300978111</string>-->
+<!--    <string name="interstitial_ad_unit_id">ca-app-pub-3940256099942544/1033173712</string>-->
 
     <!-- word -->
     <string name="yes">yes</string>
@@ -103,7 +103,7 @@
     <string name="home_text_15">App Start</string>
     <string name="home_text_16">Navigation connection</string>
     <string name="home_text_17">Location Sharing</string>
-    <string name="home_text_18">T map</string>
+    <string name="home_text_18">TMAP</string>
     <string name="home_text_19">KakaoNavi</string>
     <string name="home_text_20">KakaoTalk</string>
     <string name="home_text_21">SMS</string>
@@ -111,6 +111,7 @@
     <string name="home_text_23">Share the location of the toilet to that address</string>
     <string name="home_text_24">Inquiries/Suggestions</string>
     <string name="home_text_25">Please enter your details</string>
+    <string name="home_text_26">Naver Map</string>
 
     <!-- login -->
     <string name="login_01">Please login</string>

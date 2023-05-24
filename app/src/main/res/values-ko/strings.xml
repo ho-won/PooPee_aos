@@ -4,12 +4,12 @@
 
     <string name="admob_app_id">ca-app-pub-2933424745841582~4534033734</string>
 
-    <!--    <string name="banner_ad_unit_id">ca-app-pub-2933424745841582/3959318660</string>-->
-    <!--    <string name="interstitial_ad_unit_id">ca-app-pub-2933424745841582/2251927237</string>-->
+        <string name="banner_ad_unit_id">ca-app-pub-2933424745841582/3959318660</string>
+        <string name="interstitial_ad_unit_id">ca-app-pub-2933424745841582/2251927237</string>
 
     <!-- test -->
-    <string name="banner_ad_unit_id">ca-app-pub-3940256099942544/6300978111</string>
-    <string name="interstitial_ad_unit_id">ca-app-pub-3940256099942544/1033173712</string>
+<!--    <string name="banner_ad_unit_id">ca-app-pub-3940256099942544/6300978111</string>-->
+<!--    <string name="interstitial_ad_unit_id">ca-app-pub-3940256099942544/1033173712</string>-->
 
     <!-- word -->
     <string name="yes">예</string>
@@ -103,7 +103,7 @@
     <string name="home_text_15">앱실행</string>
     <string name="home_text_16">내비게이션연결</string>
     <string name="home_text_17">위치공유</string>
-    <string name="home_text_18">T map</string>
+    <string name="home_text_18">TMAP</string>
     <string name="home_text_19">카카오내비</string>
     <string name="home_text_20">카카오톡</string>
     <string name="home_text_21">문자전송</string>
@@ -111,6 +111,7 @@
     <string name="home_text_23">해당 주소로 화장실 위치를 공유합니다</string>
     <string name="home_text_24">문의하기/건의사항</string>
     <string name="home_text_25">내용을 입력해주세요</string>
+    <string name="home_text_26">네이버 지도</string>
 
     <!-- login -->
     <string name="login_01">로그인을 해주세요</string>

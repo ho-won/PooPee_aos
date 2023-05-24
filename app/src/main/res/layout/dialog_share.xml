@@ -124,6 +124,34 @@
 
             </LinearLayout>
 
+            <LinearLayout
+                android:id="@+id/layout_03"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="vertical"
+                tools:ignore="UseCompoundDrawables">
+
+                <ImageView
+                    android:id="@+id/iv_03"
+                    android:layout_width="52dp"
+                    android:layout_height="52dp"
+                    android:src="@drawable/ic_tmap"
+                    tools:ignore="ContentDescription" />
+
+                <TextView
+                    android:id="@+id/tv_03"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:gravity="center_horizontal"
+                    android:lineSpacingExtra="6sp"
+                    android:textColor="#292d34"
+                    android:textSize="13sp" />
+
+            </LinearLayout>
+
         </LinearLayout>
 
         <View

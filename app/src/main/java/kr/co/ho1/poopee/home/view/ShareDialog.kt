@@ -25,7 +25,6 @@ import kr.co.ho1.poopee.common.base.BaseDialog
 import kr.co.ho1.poopee.common.util.MyUtil
 import kr.co.ho1.poopee.home.model.Toilet
 
-
 @Suppress("DEPRECATION")
 @SuppressLint("ValidFragment")
 class ShareDialog : BaseDialog() {
@@ -52,13 +51,17 @@ class ShareDialog : BaseDialog() {
 
     private fun init() {
         if (mAction == ACTION_NAVI) {
+            layout_03.visibility = View.VISIBLE
             tv_title.text = MyUtil.getString(R.string.home_text_16)
             tv_content.text = MyUtil.getString(R.string.home_text_22)
-            tv_01.text = MyUtil.getString(R.string.home_text_18)
-            tv_02.text = MyUtil.getString(R.string.home_text_19)
-            iv_01.setImageDrawable(MyUtil.getDrawable(R.drawable.ic_tmap))
-            iv_02.setImageDrawable(MyUtil.getDrawable(R.drawable.ic_kakaonavi))
+            tv_01.text = MyUtil.getString(R.string.home_text_19)
+            tv_02.text = MyUtil.getString(R.string.home_text_18)
+            tv_03.text = MyUtil.getString(R.string.home_text_26)
+            iv_01.setImageDrawable(MyUtil.getDrawable(R.drawable.ic_kakaonavi))
+            iv_02.setImageDrawable(MyUtil.getDrawable(R.drawable.ic_tmap))
+            iv_03.setImageDrawable(MyUtil.getDrawable(R.drawable.ic_navermap))
         } else if (mAction == ACTION_SHARE) {
+            layout_03.visibility = View.GONE
             tv_title.text = MyUtil.getString(R.string.home_text_17)
             tv_content.text = MyUtil.getString(R.string.home_text_23)
             tv_01.text = MyUtil.getString(R.string.home_text_20)
@@ -78,15 +81,22 @@ class ShareDialog : BaseDialog() {
     private fun setListener() {
         layout_01.setOnClickListener {
             if (mAction == ACTION_NAVI) {
-                try {
-                    ObserverManager.root!!.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("tmap://route?goalx=${mToilet.longitude}&goaly=${mToilet.latitude}&goalname=${mAddressText}")).apply {
-                        `package` = "com.skt.tmap.ku"
-                        addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                    })
-                } catch (e: Exception) {
-                    ObserverManager.root!!.startActivity(
-                        Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=com.skt.tmap.ku"))
-                            .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                // 카카오내비 앱으로 길 안내
+                if (NaviClient.instance.isKakaoNaviInstalled(requireContext())) {
+                    // 카카오내비 앱으로 길 안내 - WGS84
+                    startActivity(
+                        NaviClient.instance.navigateIntent(
+                            Location(mAddressText, mToilet.longitude.toString(), mToilet.latitude.toString()),
+                            NaviOption(coordType = CoordType.WGS84)
+                        )
+                    )
+                } else {
+                    // 카카오내비 설치 페이지로 이동
+                    startActivity(
+                        Intent(
+                            Intent.ACTION_VIEW,
+                            Uri.parse(Constants.WEB_NAVI_INSTALL)
+                        ).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP)
                     )
                 }
             } else if (mAction == ACTION_SHARE) {
@@ -147,22 +157,15 @@ class ShareDialog : BaseDialog() {
         }
         layout_02.setOnClickListener {
             if (mAction == ACTION_NAVI) {
-                // 카카오내비 앱으로 길 안내
-                if (NaviClient.instance.isKakaoNaviInstalled(requireContext())) {
-                    // 카카오내비 앱으로 길 안내 - WGS84
-                    startActivity(
-                        NaviClient.instance.navigateIntent(
-                            Location(mAddressText, mToilet.longitude.toString(), mToilet.latitude.toString()),
-                            NaviOption(coordType = CoordType.WGS84)
-                        )
-                    )
-                } else {
-                    // 카카오내비 설치 페이지로 이동
-                    startActivity(
-                        Intent(
-                            Intent.ACTION_VIEW,
-                            Uri.parse(Constants.WEB_NAVI_INSTALL)
-                        ).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                try {
+                    ObserverManager.root!!.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("tmap://route?goalx=${mToilet.longitude}&goaly=${mToilet.latitude}&goalname=${mAddressText}")).apply {
+                        `package` = "com.skt.tmap.ku"
+                        addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                    })
+                } catch (e: Exception) {
+                    ObserverManager.root!!.startActivity(
+                        Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=com.skt.tmap.ku"))
+                            .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                     )
                 }
             } else if (mAction == ACTION_SHARE) {
@@ -170,6 +173,23 @@ class ShareDialog : BaseDialog() {
                 intent.type = "vnd.android-dir/mms-sms"
                 intent.putExtra("sms_body", MyUtil.getString(R.string.home_text_14) + mAddressText)
                 startActivity(intent)
+            }
+        }
+        layout_03.setOnClickListener {
+            if (mAction == ACTION_NAVI) {
+                try {
+                    ObserverManager.root!!.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("nmap://navigation?dlat=${mToilet.latitude}&dlng=${mToilet.longitude}&dname=${mAddressText}&appname=kr.co.ho1.poopee")).apply {
+                        `package` = "com.nhn.android.nmap"
+                        addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                    })
+                } catch (e: Exception) {
+                    ObserverManager.root!!.startActivity(
+                        Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=com.nhn.android.nmap"))
+                            .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                    )
+                }
+            } else if (mAction == ACTION_SHARE) {
+
             }
         }
         btn_close.setOnClickListener {
