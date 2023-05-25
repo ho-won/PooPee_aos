@@ -125,7 +125,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:background="#EFEFEF"
+        android:background="#FFFFFF"
         android:minHeight="50dp"
         ads:adSize="BANNER"
         ads:adUnitId="@string/banner_ad_unit_id" />

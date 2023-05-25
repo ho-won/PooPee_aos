@@ -384,7 +384,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:minHeight="50dp"
-        android:background="#EFEFEF"
+        android:background="#FFFFFF"
         ads:adSize="BANNER"
         ads:adUnitId="@string/banner_ad_unit_id" />
 
