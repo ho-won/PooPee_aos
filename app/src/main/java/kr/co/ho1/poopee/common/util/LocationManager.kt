@@ -18,7 +18,6 @@ import kr.co.ho1.poopee.common.data.SharedManager
 object LocationManager {
     const val DISTANCE = 0.02 // +-
 
-    private var currentLocation: Location? = null
     lateinit var locationManager: LocationManager
     lateinit var gpsLocationListener: LocationListener
     lateinit var networkLocationListener: LocationListener
@@ -81,16 +80,24 @@ object LocationManager {
         lastKnownLocationByNetwork?.let {
             locationByNetwork = lastKnownLocationByNetwork
         }
+
         if (locationByGps != null && locationByNetwork != null) {
-            currentLocation = if (locationByGps!!.accuracy > locationByNetwork!!.accuracy) {
-                locationByGps
+            if (locationByGps!!.accuracy > locationByNetwork!!.accuracy) {
+                onLocationChanged(locationByGps!!)
             } else {
-                locationByNetwork
+                onLocationChanged(locationByNetwork!!)
             }
-            SharedManager.setLatitude(currentLocation!!.latitude)
-            SharedManager.setLongitude(currentLocation!!.longitude)
-            ObserverManager.root!!.onLocationChanged(currentLocation!!)
+        } else if (locationByGps != null) {
+            onLocationChanged(locationByGps!!)
+        } else if (locationByNetwork != null) {
+            onLocationChanged(locationByNetwork!!)
         }
+    }
+
+    fun onLocationChanged(location: Location) {
+        SharedManager.setLatitude(location.latitude)
+        SharedManager.setLongitude(location.longitude)
+        ObserverManager.root!!.onLocationChanged(location)
     }
 
     fun removeLocationUpdate() {
