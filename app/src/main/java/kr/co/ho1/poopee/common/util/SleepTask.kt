@@ -1,7 +1,9 @@
 package kr.co.ho1.poopee.common.util
 
+import kotlinx.android.synthetic.main.dialog_comment_create.*
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import kr.co.ho1.poopee.common.ObserverManager
 
 class SleepTask() {
     private lateinit var onFinish: (() -> Unit)
@@ -17,7 +19,9 @@ class SleepTask() {
             } catch (e: InterruptedException) {
                 e.printStackTrace()
             }
-            onFinish()
+            ObserverManager.root?.runOnUiThread {
+                onFinish()
+            }
         }
     }
 
