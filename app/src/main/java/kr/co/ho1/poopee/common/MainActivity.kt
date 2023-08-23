@@ -2,6 +2,7 @@ package kr.co.ho1.poopee.common
 
 import android.Manifest
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.view.animation.AccelerateInterpolator
 import android.view.animation.Animation
@@ -24,6 +25,8 @@ import org.json.JSONObject
 import retrofit2.http.POST
 
 class MainActivity : BaseActivity() {
+
+    private lateinit var permissionManager: PermissionManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -62,10 +65,10 @@ class MainActivity : BaseActivity() {
                             onPermissionCheck()
                         } else {
                             val dialog = PermissionDialog(
-                                    onConfirm = {
-                                        SharedManager.setFirstCheck(true)
-                                        onPermissionCheck()
-                                    }
+                                onConfirm = {
+                                    SharedManager.setFirstCheck(true)
+                                    onPermissionCheck()
+                                }
                             )
                             dialog.isCancelable = false
                             dialog.show(supportFragmentManager, "PermissionDialog")
@@ -92,11 +95,10 @@ class MainActivity : BaseActivity() {
             finish()
         } else {
             // 퍼미션 체크
-            if (PermissionManager.permissionCheck(Manifest.permission.ACCESS_FINE_LOCATION)
-                    && PermissionManager.permissionCheck(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
-                onServiceCheck()
+            permissionManager = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                PermissionManager(this, arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), arrayOf(), onGranted = { onServiceCheck() }, onDenied = { Toast.makeText(ObserverManager.context, MyUtil.getString(R.string.toast_please_permission), Toast.LENGTH_SHORT).show() })
             } else {
-                PermissionManager.requestPermissions(arrayOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.WRITE_EXTERNAL_STORAGE), PermissionManager.Permission)
+                PermissionManager(this, arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), arrayOf(), onGranted = { onServiceCheck() }, onDenied = { Toast.makeText(ObserverManager.context, MyUtil.getString(R.string.toast_please_permission), Toast.LENGTH_SHORT).show() })
             }
         }
     }
@@ -104,26 +106,26 @@ class MainActivity : BaseActivity() {
     private fun onServiceCheck() {
         LocationManager.setLocationListener() // 현재위치 리스너 추가
         DBVersionTask(progress_file_download,
-                onSuccess = {
-                    taskServerCheck()
-                },
-                onFailed = {
-                    val dialog = BasicDialog(
-                            onLeftButton = {
+            onSuccess = {
+                taskServerCheck()
+            },
+            onFailed = {
+                val dialog = BasicDialog(
+                    onLeftButton = {
 
-                            },
-                            onCenterButton = {
+                    },
+                    onCenterButton = {
 
-                            },
-                            onRightButton = {
-                                finish()
-                            }
-                    )
-                    dialog.isCancelable = false
-                    dialog.setTextContent(MyUtil.getString(R.string.dialog_download_request))
-                    dialog.setBtnRight(MyUtil.getString(R.string.yes))
-                    dialog.show(supportFragmentManager, "BasicDialog")
-                }
+                    },
+                    onRightButton = {
+                        finish()
+                    }
+                )
+                dialog.isCancelable = false
+                dialog.setTextContent(MyUtil.getString(R.string.dialog_download_request))
+                dialog.setBtnRight(MyUtil.getString(R.string.yes))
+                dialog.show(supportFragmentManager, "BasicDialog")
+            }
         )
     }
 
@@ -140,16 +142,16 @@ class MainActivity : BaseActivity() {
                 Integer.parseInt(versions[0]) > Integer.parseInt(appVersions[0]) -> {
                     // 첫번째 자리 버전 업데이트로 무조건 업데이트받아야 앱 실행
                     val dialog = BasicDialog(
-                            onLeftButton = {
-                                finish()
-                            },
-                            onCenterButton = {
+                        onLeftButton = {
+                            finish()
+                        },
+                        onCenterButton = {
 
-                            },
-                            onRightButton = {
-                                ObserverManager.updateInPlayMarket()
-                                finish()
-                            }
+                        },
+                        onRightButton = {
+                            ObserverManager.updateInPlayMarket()
+                            finish()
+                        }
                     )
                     dialog.isCancelable = false
                     dialog.setTextContent(MyUtil.getString(R.string.dialog_force_new_version_update))
@@ -160,16 +162,16 @@ class MainActivity : BaseActivity() {
                 Integer.parseInt(versions[1]) > Integer.parseInt(appVersions[1]) -> {
                     // 두번째 자리 버전 업데이트로 업데이트 팝업 선택 후 앱 실행
                     val dialog = BasicDialog(
-                            onLeftButton = {
-                                loginCheck()
-                            },
-                            onCenterButton = {
+                        onLeftButton = {
+                            loginCheck()
+                        },
+                        onCenterButton = {
 
-                            },
-                            onRightButton = {
-                                ObserverManager.updateInPlayMarket()
-                                finish()
-                            }
+                        },
+                        onRightButton = {
+                            ObserverManager.updateInPlayMarket()
+                            finish()
+                        }
                     )
                     dialog.isCancelable = false
                     dialog.setTextContent(MyUtil.getString(R.string.dialog_assign_new_version_update))
@@ -204,7 +206,8 @@ class MainActivity : BaseActivity() {
      */
     private fun gotoHomeActivity() {
         SleepTask(1000, onFinish = {
-            startActivity(Intent(ObserverManager.context!!, HomeActivity::class.java)
+            startActivity(
+                Intent(ObserverManager.context!!, HomeActivity::class.java)
                     .setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_NO_USER_ACTION)
             )
             finish()
@@ -224,27 +227,27 @@ class MainActivity : BaseActivity() {
         val request = RetrofitClient.getClient(RetrofitService.BASE_APP).create(RetrofitService::class.java).login(params.getParams())
 
         RetrofitJSONObject(request,
-                onSuccess = {
-                    try {
-                        if (it.getInt("rst_code") == 0) {
-                            SharedManager.setMemberId(it.getString("member_id"))
-                            SharedManager.setMemberName(it.getString("name"))
-                            SharedManager.setMemberGender(it.getString("gender"))
-                            gotoHomeActivity()
-                        } else {
-                            ObserverManager.logout()
-                            gotoHomeActivity()
-                        }
-                    } catch (e: JSONException) {
-                        e.printStackTrace()
+            onSuccess = {
+                try {
+                    if (it.getInt("rst_code") == 0) {
+                        SharedManager.setMemberId(it.getString("member_id"))
+                        SharedManager.setMemberName(it.getString("name"))
+                        SharedManager.setMemberGender(it.getString("gender"))
+                        gotoHomeActivity()
+                    } else {
                         ObserverManager.logout()
                         gotoHomeActivity()
                     }
-                },
-                onFailed = {
+                } catch (e: JSONException) {
+                    e.printStackTrace()
                     ObserverManager.logout()
                     gotoHomeActivity()
                 }
+            },
+            onFailed = {
+                ObserverManager.logout()
+                gotoHomeActivity()
+            }
         )
     }
 
@@ -258,44 +261,49 @@ class MainActivity : BaseActivity() {
         val request = RetrofitClient.getClient(RetrofitService.BASE_APP).create(RetrofitService::class.java).serverCheck(params.getParams())
 
         RetrofitJSONObject(request,
-                onSuccess = {
-                    try {
-                        if (it.getString("server") == "success") {
-                            SharedManager.setNoticeImage(it.getString("notice_image"))
-                            onVersionCheck(it) // 버전체크
-                        } else {
-                            Toast.makeText(ObserverManager.context!!, it.getString("server"), Toast.LENGTH_SHORT).show()
-                            finish()
-                        }
-                    } catch (e: JSONException) {
-                        e.printStackTrace()
-                        Toast.makeText(ObserverManager.context!!, MyUtil.getString(R.string.toast_checking_service), Toast.LENGTH_SHORT).show()
+            onSuccess = {
+                try {
+                    if (it.getString("server") == "success") {
+                        SharedManager.setNoticeImage(it.getString("notice_image"))
+                        onVersionCheck(it) // 버전체크
+                    } else {
+                        Toast.makeText(ObserverManager.context!!, it.getString("server"), Toast.LENGTH_SHORT).show()
                         finish()
                     }
-                },
-                onFailed = {
+                } catch (e: JSONException) {
+                    e.printStackTrace()
                     Toast.makeText(ObserverManager.context!!, MyUtil.getString(R.string.toast_checking_service), Toast.LENGTH_SHORT).show()
                     finish()
                 }
+            },
+            onFailed = {
+                Toast.makeText(ObserverManager.context!!, MyUtil.getString(R.string.toast_checking_service), Toast.LENGTH_SHORT).show()
+                finish()
+            }
         )
     }
 
+//    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
+//        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+//        var result = 0
+//        for (grantResult in grantResults) {
+//            result += grantResult
+//        }
+//
+//        if (result == 0) {
+//            when (requestCode) {
+//                PermissionManager.Permission -> {
+//                    onServiceCheck()
+//                }
+//            }
+//        } else {
+//            Toast.makeText(ObserverManager.context, MyUtil.getString(R.string.toast_please_permission), Toast.LENGTH_SHORT).show()
+//        }
+//    }
+
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        var result = 0
-        for (grantResult in grantResults) {
-            result += grantResult
-        }
-
-        if (result == 0) {
-            when (requestCode) {
-                PermissionManager.Permission -> {
-                    onServiceCheck()
-                }
-            }
-        } else {
-            Toast.makeText(ObserverManager.context, MyUtil.getString(R.string.toast_please_permission), Toast.LENGTH_SHORT).show()
-        }
+        permissionManager.onRequestPermissionsResult(requestCode, permissions, grantResults)
     }
 
 }

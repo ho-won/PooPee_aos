@@ -1,22 +1,62 @@
 package kr.co.ho1.poopee.common.util
 
+import android.app.Activity
 import android.content.pm.PackageManager
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import kr.co.ho1.poopee.common.ObserverManager
+import kotlinx.coroutines.DelicateCoroutinesApi
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
-object PermissionManager {
-    const val Permission = 9000
-    const val ACCESS_FINE_LOCATION = 9001
+@OptIn(DelicateCoroutinesApi::class)
+class PermissionManager(var activity: Activity, var requiredPermissions: Array<String>, var optionalPermissions: Array<String>, var onGranted: (() -> Unit), var onDenied: (() -> Unit)) {
+    var isRequired = true
+    var position = -1
 
-    fun permissionCheck(permission: String): Boolean {
-        val permissionCheck = ContextCompat.checkSelfPermission(ObserverManager.context!!, permission)
-
-        return permissionCheck != PackageManager.PERMISSION_DENIED
+    init {
+        GlobalScope.launch(Dispatchers.Main) {
+            requestPermission()
+        }
     }
 
-    fun requestPermissions(permissions: Array<String>, requestCode: Int) {
-        ActivityCompat.requestPermissions(ObserverManager.root!!, permissions, requestCode)
+    private fun requestPermission() {
+        position++
+        if (isRequired && position < requiredPermissions.size) {
+            if (ContextCompat.checkSelfPermission(activity, requiredPermissions[position]) == PackageManager.PERMISSION_GRANTED) {
+                requestPermission()
+            } else {
+                ActivityCompat.requestPermissions(activity, arrayOf(requiredPermissions[position]), 0)
+            }
+        } else {
+            if (isRequired) {
+                position = 0
+            }
+            isRequired = false
+            if (position < optionalPermissions.size) {
+                if (ContextCompat.checkSelfPermission(activity, optionalPermissions[position]) == PackageManager.PERMISSION_GRANTED) {
+                    requestPermission()
+                } else {
+                    ActivityCompat.requestPermissions(activity, arrayOf(optionalPermissions[position]), 0)
+                }
+            } else {
+                onGranted()
+            }
+        }
+    }
+
+    fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
+        if (permissions.isNotEmpty() && grantResults.isNotEmpty()) {
+            if (isRequired && position < requiredPermissions.size) {
+                if (grantResults[0] == 0 && permissions[0] == requiredPermissions[position]) {
+                    requestPermission()
+                } else {
+                    onDenied()
+                }
+            } else {
+                requestPermission()
+            }
+        }
     }
 
 }

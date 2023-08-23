@@ -8,6 +8,10 @@ import android.location.Location
 import android.location.LocationListener
 import android.location.LocationManager
 import android.os.Bundle
+import kotlinx.coroutines.DelicateCoroutinesApi
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import kr.co.ho1.poopee.common.ObserverManager
 import kr.co.ho1.poopee.common.data.SharedManager
 
@@ -24,48 +28,52 @@ object LocationManager {
     var locationByGps: Location? = null
     var locationByNetwork: Location? = null
 
+    @OptIn(DelicateCoroutinesApi::class)
     @SuppressLint("MissingPermission")
     fun setLocationListener() {
-        locationManager = ObserverManager.context!!.getSystemService(Context.LOCATION_SERVICE) as LocationManager
-        val hasGps = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)
-        val hasNetwork = locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)
+        GlobalScope.launch(Dispatchers.Main) {
 
-        gpsLocationListener = object : LocationListener {
-            override fun onLocationChanged(location: Location) {
-                locationByGps = location
-                setCurrentLocation()
+            locationManager = ObserverManager.context!!.getSystemService(Context.LOCATION_SERVICE) as LocationManager
+            val hasGps = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)
+            val hasNetwork = locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)
+
+            gpsLocationListener = object : LocationListener {
+                override fun onLocationChanged(location: Location) {
+                    locationByGps = location
+                    setCurrentLocation()
+                }
+
+                override fun onStatusChanged(provider: String, status: Int, extras: Bundle) {}
+                override fun onProviderEnabled(provider: String) {}
+                override fun onProviderDisabled(provider: String) {}
+            }
+            networkLocationListener = object : LocationListener {
+                override fun onLocationChanged(location: Location) {
+                    locationByNetwork = location
+                    setCurrentLocation()
+                }
+
+                override fun onStatusChanged(provider: String, status: Int, extras: Bundle) {}
+                override fun onProviderEnabled(provider: String) {}
+                override fun onProviderDisabled(provider: String) {}
             }
 
-            override fun onStatusChanged(provider: String, status: Int, extras: Bundle) {}
-            override fun onProviderEnabled(provider: String) {}
-            override fun onProviderDisabled(provider: String) {}
-        }
-        networkLocationListener = object : LocationListener {
-            override fun onLocationChanged(location: Location) {
-                locationByNetwork = location
-                setCurrentLocation()
+            if (hasGps) {
+                locationManager.requestLocationUpdates(
+                    LocationManager.GPS_PROVIDER,
+                    5000,
+                    0F,
+                    gpsLocationListener
+                )
             }
-
-            override fun onStatusChanged(provider: String, status: Int, extras: Bundle) {}
-            override fun onProviderEnabled(provider: String) {}
-            override fun onProviderDisabled(provider: String) {}
-        }
-
-        if (hasGps) {
-            locationManager.requestLocationUpdates(
-                LocationManager.GPS_PROVIDER,
-                5000,
-                0F,
-                gpsLocationListener
-            )
-        }
-        if (hasNetwork) {
-            locationManager.requestLocationUpdates(
-                LocationManager.NETWORK_PROVIDER,
-                5000,
-                0F,
-                networkLocationListener
-            )
+            if (hasNetwork) {
+                locationManager.requestLocationUpdates(
+                    LocationManager.NETWORK_PROVIDER,
+                    5000,
+                    0F,
+                    networkLocationListener
+                )
+            }
         }
     }
 
