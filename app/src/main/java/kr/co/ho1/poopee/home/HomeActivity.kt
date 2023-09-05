@@ -1,7 +1,13 @@
 package kr.co.ho1.poopee.home
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.hardware.Sensor
+import android.hardware.SensorEvent
+import android.hardware.SensorEventListener
+import android.hardware.SensorManager
 import android.location.Location
 import android.os.Bundle
 import android.text.Editable
@@ -67,6 +73,16 @@ class HomeActivity : BaseActivity(), MapView.POIItemEventListener, MapView.MapVi
     private var mToilet: Toilet = Toilet()
     private var mToiletList: ArrayMap<Int, Toilet> = ArrayMap()
 
+    private lateinit var sensorManager: SensorManager
+    private lateinit var accelerometer: Sensor
+    private lateinit var magnetometer: Sensor
+
+    private val accelerometerReading = FloatArray(3)
+    private val magnetometerReading = FloatArray(3)
+
+    private val rotationMatrix = FloatArray(9)
+    private val orientationAngles = FloatArray(3)
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
@@ -112,6 +128,27 @@ class HomeActivity : BaseActivity(), MapView.POIItemEventListener, MapView.MapVi
                 }
             })
 
+        sensorManager = getSystemService(Context.SENSOR_SERVICE) as SensorManager
+
+        if (packageManager.hasSystemFeature(PackageManager.FEATURE_SENSOR_ACCELEROMETER) &&
+            packageManager.hasSystemFeature(PackageManager.FEATURE_SENSOR_COMPASS)
+        ) {
+
+            accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER)
+            magnetometer = sensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD)
+
+            sensorManager.registerListener(
+                sensorEventListener,
+                accelerometer,
+                SensorManager.SENSOR_DELAY_NORMAL
+            )
+            sensorManager.registerListener(
+                sensorEventListener,
+                magnetometer,
+                SensorManager.SENSOR_DELAY_NORMAL
+            )
+        }
+
         init()
         setListener()
     }
@@ -119,6 +156,18 @@ class HomeActivity : BaseActivity(), MapView.POIItemEventListener, MapView.MapVi
     override fun onResume() {
         super.onResume()
         LocationManager.setLocationListener() // 현재위치 리스너 추가
+
+        sensorManager.registerListener(
+            sensorEventListener,
+            accelerometer,
+            SensorManager.SENSOR_DELAY_NORMAL
+        )
+        sensorManager.registerListener(
+            sensorEventListener,
+            magnetometer,
+            SensorManager.SENSOR_DELAY_NORMAL
+        )
+
         refresh()
     }
 
@@ -126,6 +175,7 @@ class HomeActivity : BaseActivity(), MapView.POIItemEventListener, MapView.MapVi
         super.onPause()
         LocationManager.removeLocationUpdate()
         map_view.removeAllViews()
+        sensorManager.unregisterListener(sensorEventListener)
     }
 
     private fun init() {
@@ -285,6 +335,48 @@ class HomeActivity : BaseActivity(), MapView.POIItemEventListener, MapView.MapVi
                 setMyPosition(View.GONE)
             })
             dialog.show(supportFragmentManager, "Toilet2ListDialog")
+        }
+    }
+
+    private val sensorEventListener = object : SensorEventListener {
+        override fun onAccuracyChanged(sensor: Sensor?, accuracy: Int) {
+            // 센서 정확도 변경 처리
+        }
+
+        override fun onSensorChanged(event: SensorEvent?) {
+            if (event?.sensor == null) return
+
+            when (event.sensor.type) {
+                Sensor.TYPE_ACCELEROMETER -> System.arraycopy(
+                    event.values,
+                    0,
+                    accelerometerReading,
+                    0,
+                    accelerometerReading.size
+                )
+                Sensor.TYPE_MAGNETIC_FIELD -> System.arraycopy(
+                    event.values,
+                    0,
+                    magnetometerReading,
+                    0,
+                    magnetometerReading.size
+                )
+            }
+
+            SensorManager.getRotationMatrix(
+                rotationMatrix,
+                null,
+                accelerometerReading,
+                magnetometerReading
+            )
+            SensorManager.getOrientation(rotationMatrix, orientationAngles)
+
+            // 방향 각도는 orientationAngles 배열에 저장됩니다.
+            // val pitch = Math.toDegrees(orientationAngles[1].toDouble()).toFloat()
+            // val roll = Math.toDegrees(orientationAngles[2].toDouble()).toFloat()
+            val azimuth = Math.toDegrees(orientationAngles[0].toDouble()).toFloat()
+
+            ObserverManager.my_position!!.rotation = azimuth
         }
     }
 
