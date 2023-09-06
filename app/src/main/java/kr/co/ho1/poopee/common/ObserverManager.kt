@@ -27,6 +27,7 @@ object ObserverManager {
     var context: Context? = null
     lateinit var mapView: MapView
     var my_position: MapPOIItem? = null // 내위치마커
+    var my_position_rotation: Float = 0f
 
     fun getPath(): String {
         return Environment.getExternalStorageDirectory().toString() + File.separator + "PooPee" + File.separator
@@ -104,6 +105,7 @@ object ObserverManager {
         my_position!!.isShowCalloutBalloonOnTouch = false
         my_position!!.setCustomImageAnchor(0.5f, 0.5f)
         mapView.addPOIItem(my_position!!)
+        my_position!!.rotation = my_position_rotation
     }
 
 }

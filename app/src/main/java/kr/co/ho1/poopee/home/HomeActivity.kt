@@ -375,8 +375,10 @@ class HomeActivity : BaseActivity(), MapView.POIItemEventListener, MapView.MapVi
             // val pitch = Math.toDegrees(orientationAngles[1].toDouble()).toFloat()
             // val roll = Math.toDegrees(orientationAngles[2].toDouble()).toFloat()
             val azimuth = Math.toDegrees(orientationAngles[0].toDouble()).toFloat()
-
-            ObserverManager.my_position!!.rotation = azimuth
+            ObserverManager.my_position_rotation = azimuth
+            if (ObserverManager.my_position != null) {
+                ObserverManager.my_position!!.rotation = ObserverManager.my_position_rotation
+            }
         }
     }
 
