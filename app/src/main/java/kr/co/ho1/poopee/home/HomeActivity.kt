@@ -316,7 +316,6 @@ class HomeActivity : BaseActivity(), MapView.POIItemEventListener, MapView.MapVi
                         SharedManager.getLongitude()
                     ), false
                 )
-                ObserverManager.mapView.setZoomLevel(3, false)
                 setMyPosition(View.VISIBLE)
             }
         }
