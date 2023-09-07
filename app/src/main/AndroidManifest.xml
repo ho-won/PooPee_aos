@@ -10,8 +10,6 @@
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-feature android:name="android.hardware.sensor.accelerometer" />
-    <uses-feature android:name="android.hardware.sensor.magnetometer" />
 
     <queries>
         <package android:name="com.kakao.talk" />
@@ -61,8 +59,8 @@
         <!-- home -->
         <activity
             android:name="kr.co.ho1.poopee.home.HomeActivity"
-            android:screenOrientation="portrait"
             android:exported="true"
+            android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize|stateHidden">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
