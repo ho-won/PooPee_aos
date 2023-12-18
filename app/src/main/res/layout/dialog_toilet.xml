@@ -213,7 +213,7 @@
 
     </LinearLayout>
 
-    <kr.co.ho1.poopee.common.view.HoAdView
+    <kr.co.ho1.poopee.common.view.AdView
         android:id="@+id/ad_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

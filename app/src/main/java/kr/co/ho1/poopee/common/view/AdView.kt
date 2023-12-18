@@ -11,7 +11,7 @@ import com.google.android.gms.ads.AdView
 import kr.co.ho1.poopee.R
 import kr.co.ho1.poopee.common.ObserverManager
 
-class HoAdView : FrameLayout {
+class AdView : FrameLayout {
     private var context: Context
     private lateinit var adView: AdView
     private var initialLayoutComplete = false
@@ -22,8 +22,8 @@ class HoAdView : FrameLayout {
             val display = ObserverManager.root!!.windowManager.defaultDisplay
             val outMetrics = DisplayMetrics()
             display.getMetrics(outMetrics)
-            val widthPixels = outMetrics.widthPixels;
-            val density = outMetrics.density;
+            val widthPixels = outMetrics.widthPixels
+            val density = outMetrics.density
             val adWidth = (widthPixels / density).toInt()
             return AdSize.getCurrentOrientationAnchoredAdaptiveBannerAdSize(context, adWidth)
         }
