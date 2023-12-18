@@ -29,8 +29,6 @@ class MyInfoActivity : BaseActivity() {
         setContentView(R.layout.activity_my_info)
         setToolbar()
 
-        ad_view.loadAd(AdRequest.Builder().build())
-
         init()
         setListener()
     }

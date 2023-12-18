@@ -21,8 +21,6 @@ class SettingActivity : BaseActivity() {
         setContentView(R.layout.activity_setting)
         setToolbar()
 
-        ad_view.loadAd(AdRequest.Builder().build())
-
         init()
         setListener()
     }

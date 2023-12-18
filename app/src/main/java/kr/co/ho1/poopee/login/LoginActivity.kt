@@ -27,8 +27,6 @@ class LoginActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
-        ad_view.loadAd(AdRequest.Builder().build())
-
         init()
         setListener()
     }

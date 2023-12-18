@@ -27,8 +27,6 @@ class JoinActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_join)
 
-        ad_view.loadAd(AdRequest.Builder().build())
-
         init()
         setListener()
     }

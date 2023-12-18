@@ -39,7 +39,6 @@ class ToiletDialog(private var onDetail: ((toilet: Toilet) -> Unit)) : BaseDialo
     }
 
     private fun init() {
-        ad_view.loadAd(AdRequest.Builder().build())
         tv_title.text = mToilet.name
 
         mAddressText = ""

@@ -44,8 +44,6 @@ class NoticeActivity : BaseActivity() {
         setContentView(R.layout.activity_notice)
         setToolbar()
 
-        ad_view.loadAd(AdRequest.Builder().build())
-
         init()
         setListener()
     }

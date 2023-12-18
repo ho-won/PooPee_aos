@@ -10,7 +10,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.gms.ads.AdRequest
 import kotlinx.android.synthetic.main.activity_toilet_search.*
 import kotlinx.android.synthetic.main.item_kakao_keyword.view.*
 import kr.co.ho1.poopee.R
@@ -29,14 +28,12 @@ class ToiletSearchActivity : BaseActivity() {
         const val RESULT_CREATE = 1001
     }
 
-    private var mKeywordAdapter: ListAdapter = ListAdapter()
-    private var mKeywordList: ArrayList<KaKaoKeyword> = ArrayList()
+    private var keywordAdapter: ListAdapter = ListAdapter()
+    private var keywordList: ArrayList<KaKaoKeyword> = ArrayList()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_toilet_search)
-
-        ad_view.loadAd(AdRequest.Builder().build())
 
         init()
         setListener()
@@ -44,8 +41,8 @@ class ToiletSearchActivity : BaseActivity() {
 
     private fun init() {
         rv_search.layoutManager = LinearLayoutManager(this)
-        mKeywordAdapter = ListAdapter()
-        rv_search.adapter = mKeywordAdapter
+        keywordAdapter = ListAdapter()
+        rv_search.adapter = keywordAdapter
     }
 
     private fun setListener() {
@@ -56,9 +53,9 @@ class ToiletSearchActivity : BaseActivity() {
             edt_search.setText("")
         }
         btn_map.setOnClickListener {
-            ObserverManager.root!!.startActivityForResult(Intent(ObserverManager.context!!, ToiletCreateActivity::class.java)
-                    .setFlags(Intent.FLAG_ACTIVITY_NO_USER_ACTION)
-                    , RESULT_CREATE
+            ObserverManager.root!!.startActivityForResult(
+                Intent(ObserverManager.context!!, ToiletCreateActivity::class.java)
+                    .setFlags(Intent.FLAG_ACTIVITY_NO_USER_ACTION), RESULT_CREATE
             )
         }
         btn_bottom.setOnClickListener {
@@ -100,30 +97,30 @@ class ToiletSearchActivity : BaseActivity() {
         val request = RetrofitClient.getClientKaKao(RetrofitService.KAKAO_LOCAL).create(RetrofitService::class.java).kakaoLocalSearch(params.getParams())
 
         RetrofitJSONObject(request,
-                onSuccess = {
-                    try {
-                        mKeywordList = ArrayList()
-                        val jsonArray = it.getJSONArray("documents")
+            onSuccess = {
+                try {
+                    keywordList = ArrayList()
+                    val jsonArray = it.getJSONArray("documents")
 
-                        for (i in 0 until jsonArray.length()) {
-                            val jsonObject = jsonArray.getJSONObject(i)
-                            val keyword = KaKaoKeyword()
-                            keyword.address_name = jsonObject.getString("address_name")
-                            keyword.place_name = jsonObject.getString("place_name")
-                            keyword.latitude = jsonObject.getDouble("y")
-                            keyword.longitude = jsonObject.getDouble("x")
+                    for (i in 0 until jsonArray.length()) {
+                        val jsonObject = jsonArray.getJSONObject(i)
+                        val keyword = KaKaoKeyword()
+                        keyword.address_name = jsonObject.getString("address_name")
+                        keyword.place_name = jsonObject.getString("place_name")
+                        keyword.latitude = jsonObject.getDouble("y")
+                        keyword.longitude = jsonObject.getDouble("x")
 
-                            mKeywordList.add(keyword)
-                        }
-
-                        mKeywordAdapter.notifyDataSetChanged()
-                    } catch (e: JSONException) {
-                        e.printStackTrace()
+                        keywordList.add(keyword)
                     }
-                },
-                onFailed = {
 
+                    keywordAdapter.notifyDataSetChanged()
+                } catch (e: JSONException) {
+                    e.printStackTrace()
                 }
+            },
+            onFailed = {
+
+            }
         )
     }
 
@@ -141,7 +138,7 @@ class ToiletSearchActivity : BaseActivity() {
         }
 
         override fun getItemCount(): Int {
-            return mKeywordList.size
+            return keywordList.size
         }
 
         override fun getItemViewType(position: Int): Int {
@@ -152,14 +149,14 @@ class ToiletSearchActivity : BaseActivity() {
 
             @SuppressLint("SetTextI18n")
             fun update(position: Int) {
-                itemView.tv_title.text = mKeywordList[position].place_name
-                itemView.tv_sub.text = mKeywordList[position].address_name
+                itemView.tv_title.text = keywordList[position].place_name
+                itemView.tv_sub.text = keywordList[position].address_name
 
                 itemView.setOnClickListener {
-                    ObserverManager.root!!.startActivityForResult(Intent(ObserverManager.context!!, ToiletCreateActivity::class.java)
+                    ObserverManager.root!!.startActivityForResult(
+                        Intent(ObserverManager.context!!, ToiletCreateActivity::class.java)
                             .setFlags(Intent.FLAG_ACTIVITY_NO_USER_ACTION)
-                            .putExtra(ToiletCreateActivity.KAKAO_KEYWORD, mKeywordList[position])
-                            , RESULT_CREATE
+                            .putExtra(ToiletCreateActivity.KAKAO_KEYWORD, keywordList[position]), RESULT_CREATE
                     )
                 }
             }

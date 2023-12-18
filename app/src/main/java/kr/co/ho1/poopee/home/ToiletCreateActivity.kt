@@ -4,8 +4,10 @@ import android.app.Activity
 import android.content.Intent
 import android.location.Location
 import android.os.Bundle
-import com.google.android.gms.ads.AdRequest
-import kotlinx.android.synthetic.main.activity_toilet_create.*
+import kotlinx.android.synthetic.main.activity_toilet_create.btn_bottom
+import kotlinx.android.synthetic.main.activity_toilet_create.btn_my_position
+import kotlinx.android.synthetic.main.activity_toilet_create.map_view
+import kotlinx.android.synthetic.main.activity_toilet_create.toolbar
 import kr.co.ho1.poopee.R
 import kr.co.ho1.poopee.common.ObserverManager
 import kr.co.ho1.poopee.common.base.BaseActivity
@@ -23,14 +25,12 @@ class ToiletCreateActivity : BaseActivity() {
         const val KAKAO_KEYWORD = "KaKaoKeyword"
     }
 
-    private var mKeyword: KaKaoKeyword? = null
+    private var keyword: KaKaoKeyword? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_toilet_create)
         setToolbar()
-
-        ad_view.loadAd(AdRequest.Builder().build())
 
         init()
         setListener()
@@ -47,14 +47,14 @@ class ToiletCreateActivity : BaseActivity() {
     }
 
     private fun init() {
-        mKeyword = intent.getSerializableExtra(KAKAO_KEYWORD) as? KaKaoKeyword
+        keyword = intent.getSerializableExtra(KAKAO_KEYWORD) as? KaKaoKeyword
 
         ObserverManager.mapView = MapView(this)
         map_view.addView(ObserverManager.mapView)
 
-        if (mKeyword != null) {
+        if (keyword != null) {
             // 카카오검색기준으로 중심점변경
-            ObserverManager.mapView.setMapCenterPoint(MapPoint.mapPointWithGeoCoord(mKeyword!!.latitude, mKeyword!!.longitude), false)
+            ObserverManager.mapView.setMapCenterPoint(MapPoint.mapPointWithGeoCoord(keyword!!.latitude, keyword!!.longitude), false)
         } else if (SharedManager.getLatitude() > 0) {
             // 현재위치기준으로 중심점변경
             ObserverManager.mapView.setMapCenterPoint(MapPoint.mapPointWithGeoCoord(SharedManager.getLatitude(), SharedManager.getLongitude()), false)
@@ -77,13 +77,13 @@ class ToiletCreateActivity : BaseActivity() {
         }
         btn_bottom.setOnClickListener {
             val dialog = ToiletCreateDialog(
-                    ObserverManager.mapView.mapCenterPoint.mapPointGeoCoord.latitude,
-                    ObserverManager.mapView.mapCenterPoint.mapPointGeoCoord.longitude,
-                    onCreate = {
-                        val intent = Intent()
-                        setResult(Activity.RESULT_OK, intent)
-                        finish()
-                    }
+                ObserverManager.mapView.mapCenterPoint.mapPointGeoCoord.latitude,
+                ObserverManager.mapView.mapCenterPoint.mapPointGeoCoord.longitude,
+                onCreate = {
+                    val intent = Intent()
+                    setResult(Activity.RESULT_OK, intent)
+                    finish()
+                }
             )
             dialog.show(supportFragmentManager, "ToiletCreateDialog")
         }
@@ -97,18 +97,18 @@ class ToiletCreateActivity : BaseActivity() {
         toolbar.setTitle(MyUtil.getString(R.string.toilet_create_text_03))
         toolbar.setImageLeftOne(MyUtil.getDrawable(R.drawable.ic_navigationbar_back))
         toolbar.setSelectedListener(
-                onBtnLeftOne = {
-                    finish()
-                },
-                onBtnLeftTwo = {
+            onBtnLeftOne = {
+                finish()
+            },
+            onBtnLeftTwo = {
 
-                },
-                onBtnRightOne = {
+            },
+            onBtnRightOne = {
 
-                },
-                onBtnRightTwo = {
+            },
+            onBtnRightTwo = {
 
-                }
+            }
         )
     }
 

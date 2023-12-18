@@ -51,24 +51,21 @@ import net.daum.mf.map.api.MapPoint
 import net.daum.mf.map.api.MapView
 import org.json.JSONException
 
-
 @Suppress("DEPRECATION")
 class HomeActivity : BaseActivity(), MapView.POIItemEventListener, MapView.MapViewEventListener {
 
-    private var mKeywordAdapter: ListAdapter = ListAdapter()
-    private var mKeywordList: ArrayList<KaKaoKeyword> = ArrayList()
+    private var keywordAdapter: ListAdapter = ListAdapter()
+    private var keywordList: ArrayList<KaKaoKeyword> = ArrayList()
 
-    private var mIsKeyboardShow = false // 키보드 노출 상태
-    private val mRvHeight = MyUtil.dpToPx(240)
+    private var isKeyboardShow = false // 키보드 노출 상태
+    private val rvHeight = MyUtil.dpToPx(240)
 
-    private var mIsMyPositionMove = true // 내위치기준으로 맵중심이동여부
-    private var mIsFirstOnCreate = true // onCreate 체크 (내위치기준으로 맵중심을 이동할지 확인하기위해)
-    private var mLastLatitude: Double = 0.0 // 마지막 중심 latitude
-    private var mLastLongitude: Double = 0.0 // 마지막 중심 longitude
+    private var isMyPositionMove = true // 내위치기준으로 맵중심이동여부
+    private var isFirstOnCreate = true // onCreate 체크 (내위치기준으로 맵중심을 이동할지 확인하기위해)
+    private var lastLatitude: Double = 0.0 // 마지막 중심 latitude
+    private var lastLongitude: Double = 0.0 // 마지막 중심 longitude
 
-    private var mInterstitialAd: InterstitialAd? = null
-
-    private var mReviewInfo: ReviewInfo? = null
+    private var interstitialAd1: InterstitialAd? = null
 
     private var mToilet: Toilet = Toilet()
     private var mToiletList: ArrayMap<Int, Toilet> = ArrayMap()
@@ -88,8 +85,8 @@ class HomeActivity : BaseActivity(), MapView.POIItemEventListener, MapView.MapVi
         setContentView(R.layout.activity_home)
 
         MobileAds.initialize(this) {}
-        ad_view.loadAd(AdRequest.Builder().build())
 
+        // 전면광고
         val adRequest = AdRequest.Builder().build()
         InterstitialAd.load(
             this,
@@ -97,13 +94,13 @@ class HomeActivity : BaseActivity(), MapView.POIItemEventListener, MapView.MapVi
             adRequest,
             object : InterstitialAdLoadCallback() {
                 override fun onAdFailedToLoad(adError: LoadAdError) {
-                    mInterstitialAd = null
+                    interstitialAd1 = null
                 }
 
                 override fun onAdLoaded(interstitialAd: InterstitialAd) {
-                    mInterstitialAd = interstitialAd
+                    interstitialAd1 = interstitialAd
 
-                    mInterstitialAd?.fullScreenContentCallback =
+                    interstitialAd1?.fullScreenContentCallback =
                         object : FullScreenContentCallback() {
                             override fun onAdDismissedFullScreenContent() {
                                 ObserverManager.root!!.startActivity(
@@ -122,7 +119,7 @@ class HomeActivity : BaseActivity(), MapView.POIItemEventListener, MapView.MapVi
                             }
 
                             override fun onAdShowedFullScreenContent() {
-                                mInterstitialAd = null
+                                interstitialAd1 = null
                             }
                         }
                 }
@@ -180,8 +177,8 @@ class HomeActivity : BaseActivity(), MapView.POIItemEventListener, MapView.MapVi
 
     private fun init() {
         rv_search.layoutManager = LinearLayoutManager(this)
-        mKeywordAdapter = ListAdapter()
-        rv_search.adapter = mKeywordAdapter
+        keywordAdapter = ListAdapter()
+        rv_search.adapter = keywordAdapter
 
         checkPopup()
     }
@@ -198,8 +195,8 @@ class HomeActivity : BaseActivity(), MapView.POIItemEventListener, MapView.MapVi
         map_view.addView(ObserverManager.mapView)
 
         // 현재위치기준으로 중심점변경
-        if (mIsFirstOnCreate) {
-            mIsFirstOnCreate = false
+        if (isFirstOnCreate) {
+            isFirstOnCreate = false
             if (SharedManager.getLatitude() > 0) {
                 ObserverManager.mapView.setMapCenterPoint(
                     MapPoint.mapPointWithGeoCoord(
@@ -214,14 +211,14 @@ class HomeActivity : BaseActivity(), MapView.POIItemEventListener, MapView.MapVi
                 setMyPosition(View.VISIBLE)
             }
         } else {
-            if (mLastLatitude == 0.0) {
-                mLastLatitude = ObserverManager.mapView.mapCenterPoint.mapPointGeoCoord.latitude
-                mLastLongitude = ObserverManager.mapView.mapCenterPoint.mapPointGeoCoord.longitude
+            if (lastLatitude == 0.0) {
+                lastLatitude = ObserverManager.mapView.mapCenterPoint.mapPointGeoCoord.latitude
+                lastLongitude = ObserverManager.mapView.mapCenterPoint.mapPointGeoCoord.longitude
             }
             ObserverManager.mapView.setMapCenterPoint(
                 MapPoint.mapPointWithGeoCoord(
-                    mLastLatitude,
-                    mLastLongitude
+                    lastLatitude,
+                    lastLongitude
                 ), false
             )
         }
@@ -249,18 +246,18 @@ class HomeActivity : BaseActivity(), MapView.POIItemEventListener, MapView.MapVi
             LogManager.e("${MyUtil.getDeviceHeight()} : ${root_view.height}")
             if (MyUtil.getDeviceHeight() - MyUtil.dpToPx(100) > root_view.height) {
                 // keyboard show
-                mIsKeyboardShow = true
+                isKeyboardShow = true
                 layout_bottom_bg.visibility = View.VISIBLE
             } else {
                 // keyboard hide
-                mIsKeyboardShow = false
+                isKeyboardShow = false
                 if (rv_search.visibility == View.GONE) {
                     layout_bottom_bg.visibility = View.GONE
                 } else {
-                    if (rv_search.height > mRvHeight) {
+                    if (rv_search.height > rvHeight) {
                         val layoutParams = LinearLayout.LayoutParams(
                             LinearLayout.LayoutParams.MATCH_PARENT,
-                            mRvHeight
+                            rvHeight
                         )
                         rv_search.layoutParams = layoutParams
                     }
@@ -279,8 +276,8 @@ class HomeActivity : BaseActivity(), MapView.POIItemEventListener, MapView.MapVi
             rv_search.visibility = View.GONE
         }
         edt_search.setOnKeyListener { _, keyCode, event ->
-            if (event.action == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_ENTER && mKeywordList.size > 0) {
-                setKakaoLocal(mKeywordList[0])
+            if (event.action == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_ENTER && keywordList.size > 0) {
+                setKakaoLocal(keywordList[0])
                 return@setOnKeyListener true
             }
             false
@@ -305,7 +302,7 @@ class HomeActivity : BaseActivity(), MapView.POIItemEventListener, MapView.MapVi
         })
         layout_my_position.setOnClickListener {
             if (SharedManager.getLatitude() > 0) {
-                mIsMyPositionMove = true
+                isMyPositionMove = true
                 ObserverManager.addMyPosition(
                     SharedManager.getLatitude(),
                     SharedManager.getLongitude()
@@ -324,7 +321,7 @@ class HomeActivity : BaseActivity(), MapView.POIItemEventListener, MapView.MapVi
         }
         btn_manager.setOnClickListener {
             val dialog = Toilet2ListDialog(onMove = {
-                mIsMyPositionMove = false
+                isMyPositionMove = false
                 ObserverManager.mapView.setMapCenterPoint(
                     MapPoint.mapPointWithGeoCoord(
                         it.latitude,
@@ -353,6 +350,7 @@ class HomeActivity : BaseActivity(), MapView.POIItemEventListener, MapView.MapVi
                     0,
                     accelerometerReading.size
                 )
+
                 Sensor.TYPE_MAGNETIC_FIELD -> System.arraycopy(
                     event.values,
                     0,
@@ -388,23 +386,23 @@ class HomeActivity : BaseActivity(), MapView.POIItemEventListener, MapView.MapVi
     }
 
     override fun onMapViewDragStarted(p0: MapView?, p1: MapPoint?) {
-        mIsMyPositionMove = false
+        isMyPositionMove = false
     }
 
     /**
      * 카카오지도 이동완료 콜백
      */
     override fun onMapViewMoveFinished(p0: MapView?, p1: MapPoint?) {
-        mLastLatitude = p0!!.mapCenterPoint.mapPointGeoCoord.latitude
-        mLastLongitude = p0.mapCenterPoint.mapPointGeoCoord.longitude
+        lastLatitude = p0!!.mapCenterPoint.mapPointGeoCoord.latitude
+        lastLongitude = p0.mapCenterPoint.mapPointGeoCoord.longitude
 
         ObserverManager.mapView.removeAllPOIItems()
         val toiletList =
-            ToiletSQLiteManager.getInstance().getToiletList(mLastLatitude, mLastLongitude)
+            ToiletSQLiteManager.getInstance().getToiletList(lastLatitude, lastLongitude)
         for (toilet in toiletList) {
             ObserverManager.addPOIItem(toilet)
         }
-        taskToiletList(mLastLatitude, mLastLongitude)
+        taskToiletList(lastLatitude, lastLongitude)
 
         if (SharedManager.getLatitude() > 0) {
             ObserverManager.addMyPosition(SharedManager.getLatitude(), SharedManager.getLongitude())
@@ -450,8 +448,8 @@ class HomeActivity : BaseActivity(), MapView.POIItemEventListener, MapView.MapVi
             val dialog = ToiletDialog(
                 onDetail = {
                     mToilet = it
-                    if (mInterstitialAd != null) {
-                        mInterstitialAd?.show(this)
+                    if (interstitialAd1 != null) {
+                        interstitialAd1?.show(this)
                     } else {
                         map_view.removeAllViews()
                         ObserverManager.root!!.startActivity(
@@ -469,8 +467,8 @@ class HomeActivity : BaseActivity(), MapView.POIItemEventListener, MapView.MapVi
                 val dialog = ToiletDialog(
                     onDetail = {
                         mToilet = it
-                        if (mInterstitialAd != null) {
-                            mInterstitialAd?.show(this)
+                        if (interstitialAd1 != null) {
+                            interstitialAd1?.show(this)
                         } else {
                             map_view.removeAllViews()
                             ObserverManager.root!!.startActivity(
@@ -504,7 +502,7 @@ class HomeActivity : BaseActivity(), MapView.POIItemEventListener, MapView.MapVi
     }
 
     private fun setKakaoLocal(kaKaoKeyword: KaKaoKeyword) {
-        mIsMyPositionMove = false
+        isMyPositionMove = false
         edt_search.setText(kaKaoKeyword.place_name)
         edt_search.setSelection(kaKaoKeyword.place_name.count())
         ObserverManager.mapView.setMapCenterPoint(
@@ -579,7 +577,7 @@ class HomeActivity : BaseActivity(), MapView.POIItemEventListener, MapView.MapVi
         RetrofitJSONObject(request,
             onSuccess = {
                 try {
-                    mKeywordList = ArrayList()
+                    keywordList = ArrayList()
                     val jsonArray = it.getJSONArray("documents")
 
                     for (i in 0 until jsonArray.length()) {
@@ -590,10 +588,10 @@ class HomeActivity : BaseActivity(), MapView.POIItemEventListener, MapView.MapVi
                         keyword.latitude = jsonObject.getDouble("y")
                         keyword.longitude = jsonObject.getDouble("x")
 
-                        mKeywordList.add(keyword)
+                        keywordList.add(keyword)
                     }
 
-                    mKeywordAdapter.notifyDataSetChanged()
+                    keywordAdapter.notifyDataSetChanged()
                 } catch (e: JSONException) {
                     e.printStackTrace()
                 }
@@ -621,7 +619,7 @@ class HomeActivity : BaseActivity(), MapView.POIItemEventListener, MapView.MapVi
         }
 
         override fun getItemCount(): Int {
-            return mKeywordList.size
+            return keywordList.size
         }
 
         override fun getItemViewType(position: Int): Int {
@@ -632,11 +630,11 @@ class HomeActivity : BaseActivity(), MapView.POIItemEventListener, MapView.MapVi
 
             @SuppressLint("SetTextI18n")
             fun update(position: Int) {
-                itemView.tv_title.text = mKeywordList[position].place_name
-                itemView.tv_sub.text = mKeywordList[position].address_name
+                itemView.tv_title.text = keywordList[position].place_name
+                itemView.tv_sub.text = keywordList[position].address_name
 
                 itemView.setOnClickListener {
-                    setKakaoLocal(mKeywordList[position])
+                    setKakaoLocal(keywordList[position])
                 }
             }
         }
@@ -644,7 +642,7 @@ class HomeActivity : BaseActivity(), MapView.POIItemEventListener, MapView.MapVi
 
     override fun onLocationChanged(location: Location) {
         // 현재위치기준으로 중심점변경
-        if (mIsMyPositionMove && SharedManager.getLatitude() > 0) {
+        if (isMyPositionMove && SharedManager.getLatitude() > 0) {
             ObserverManager.mapView.setMapCenterPoint(
                 MapPoint.mapPointWithGeoCoord(
                     SharedManager.getLatitude(),
