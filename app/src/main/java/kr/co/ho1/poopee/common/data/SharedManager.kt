@@ -25,6 +25,7 @@ object SharedManager {
     private const val PUSH = "PUSH" // 푸쉬알림
     private const val FIRST_CHECK = "FIRST_CHECK" // 앱 최초실행체크
     private const val REVIEW_COUNT = "REVIEW_COUNT" // 리뷰팝업 조건
+    private const val AD_BANNER_HEIGHT = "AD_BANNER_HEIGHT" // 배너광고 높이
 
     fun isLoginCheck(): Boolean {
         val pref = ObserverManager.context!!.getSharedPreferences(LOGIN, Context.MODE_PRIVATE)
@@ -203,6 +204,18 @@ object SharedManager {
         val pref = ObserverManager.context!!.getSharedPreferences(ETC, Context.MODE_PRIVATE)
         val editor = pref.edit()
         editor.putInt(REVIEW_COUNT, value)
+        editor.apply()
+    }
+
+    fun getAdBannerHeight(): Int {
+        val pref = ObserverManager.context!!.getSharedPreferences(ETC, Context.MODE_PRIVATE)
+        return pref.getInt(AD_BANNER_HEIGHT, 50)
+    }
+
+    fun setAdBannerHeight(value: Int) {
+        val pref = ObserverManager.context!!.getSharedPreferences(ETC, Context.MODE_PRIVATE)
+        val editor = pref.edit()
+        editor.putInt(AD_BANNER_HEIGHT, value)
         editor.apply()
     }
 
