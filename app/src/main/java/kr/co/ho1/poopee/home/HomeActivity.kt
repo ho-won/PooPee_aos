@@ -669,9 +669,9 @@ class HomeActivity : BaseActivity(), MapView.POIItemEventListener, MapView.MapVi
             rv_search.visibility = View.GONE
             return
         }
-//        finish()
-        val dialog = FinishDialog()
-        dialog.show(supportFragmentManager, "FinishDialog")
+        finish()
+//        val dialog = FinishDialog()
+//        dialog.show(supportFragmentManager, "FinishDialog")
     }
 
 }

@@ -11,8 +11,8 @@ android {
         applicationId "kr.co.ho1.poopee"
         minSdk 21
         targetSdk 33
-        versionCode 35
-        versionName "2.18.1"
+        versionCode 36
+        versionName "2.18.2"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
     }
