@@ -12,7 +12,7 @@ import org.json.JSONException
 
 @Suppress("DEPRECATION")
 class CopyActivity : BaseActivity() {
-
+    // test master
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_copy)
