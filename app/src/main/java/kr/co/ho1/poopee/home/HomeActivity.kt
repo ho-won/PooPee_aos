@@ -24,8 +24,13 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.gms.ads.*
 import com.google.android.gms.ads.interstitial.InterstitialAd
 import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback
-import com.google.android.play.core.review.ReviewInfo
 import com.google.android.play.core.review.ReviewManagerFactory
+import com.kakao.vectormap.KakaoMap
+import com.kakao.vectormap.KakaoMapReadyCallback
+import com.kakao.vectormap.LatLng
+import com.kakao.vectormap.MapLifeCycleCallback
+import com.kakao.vectormap.camera.CameraAnimation
+import com.kakao.vectormap.camera.CameraUpdateFactory
 import kotlinx.android.synthetic.main.activity_home.*
 import kotlinx.android.synthetic.main.item_kakao_keyword.view.*
 import kr.co.ho1.poopee.R
@@ -42,17 +47,13 @@ import kr.co.ho1.poopee.common.util.MyUtil
 import kr.co.ho1.poopee.database.ToiletSQLiteManager
 import kr.co.ho1.poopee.home.model.KaKaoKeyword
 import kr.co.ho1.poopee.home.model.Toilet
-import kr.co.ho1.poopee.home.view.FinishDialog
 import kr.co.ho1.poopee.home.view.PopupDialog
 import kr.co.ho1.poopee.home.view.ToiletDialog
 import kr.co.ho1.poopee.manager.view.Toilet2ListDialog
-import net.daum.mf.map.api.MapPOIItem
-import net.daum.mf.map.api.MapPoint
-import net.daum.mf.map.api.MapView
 import org.json.JSONException
 
-@Suppress("DEPRECATION")
-class HomeActivity : BaseActivity(), MapView.POIItemEventListener, MapView.MapViewEventListener {
+
+class HomeActivity : BaseActivity() {
 
     private var keywordAdapter: ListAdapter = ListAdapter()
     private var keywordList: ArrayList<KaKaoKeyword> = ArrayList()
@@ -80,6 +81,7 @@ class HomeActivity : BaseActivity(), MapView.POIItemEventListener, MapView.MapVi
     private val rotationMatrix = FloatArray(9)
     private val orientationAngles = FloatArray(3)
 
+    @SuppressLint("VisibleForTests")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
@@ -87,11 +89,10 @@ class HomeActivity : BaseActivity(), MapView.POIItemEventListener, MapView.MapVi
         MobileAds.initialize(this) {}
 
         // 전면광고
-        val adRequest = AdRequest.Builder().build()
         InterstitialAd.load(
             this,
             MyUtil.getString(R.string.interstitial_ad_unit_id),
-            adRequest,
+            AdRequest.Builder().build(),
             object : InterstitialAdLoadCallback() {
                 override fun onAdFailedToLoad(adError: LoadAdError) {
                     interstitialAd1 = null
@@ -152,6 +153,7 @@ class HomeActivity : BaseActivity(), MapView.POIItemEventListener, MapView.MapVi
 
     override fun onResume() {
         super.onResume()
+        map_view.resume()
         LocationManager.setLocationListener() // 현재위치 리스너 추가
 
         sensorManager.registerListener(
@@ -170,6 +172,7 @@ class HomeActivity : BaseActivity(), MapView.POIItemEventListener, MapView.MapVi
 
     override fun onPause() {
         super.onPause()
+        map_view.pause()
         LocationManager.removeLocationUpdate()
         map_view.removeAllViews()
         sensorManager.unregisterListener(sensorEventListener)
@@ -191,41 +194,105 @@ class HomeActivity : BaseActivity(), MapView.POIItemEventListener, MapView.MapVi
         }
 
         nav_view.refresh()
-        ObserverManager.mapView = MapView(this)
-        map_view.addView(ObserverManager.mapView)
 
-        // 현재위치기준으로 중심점변경
-        if (isFirstOnCreate) {
-            isFirstOnCreate = false
-            if (SharedManager.getLatitude() > 0) {
-                ObserverManager.mapView.setMapCenterPoint(
-                    MapPoint.mapPointWithGeoCoord(
-                        SharedManager.getLatitude(),
-                        SharedManager.getLongitude()
-                    ), false
-                )
-                ObserverManager.addMyPosition(
-                    SharedManager.getLatitude(),
-                    SharedManager.getLongitude()
-                )
-                setMyPosition(View.VISIBLE)
+        map_view.start(object : MapLifeCycleCallback() {
+            override fun onMapDestroy() {
+                // 지도 API 가 정상적으로 종료될 때 호출됨
             }
-        } else {
-            if (lastLatitude == 0.0) {
-                lastLatitude = ObserverManager.mapView.mapCenterPoint.mapPointGeoCoord.latitude
-                lastLongitude = ObserverManager.mapView.mapCenterPoint.mapPointGeoCoord.longitude
-            }
-            ObserverManager.mapView.setMapCenterPoint(
-                MapPoint.mapPointWithGeoCoord(
-                    lastLatitude,
-                    lastLongitude
-                ), false
-            )
-        }
 
-        ObserverManager.mapView.setZoomLevel(3, true)
-        ObserverManager.mapView.setPOIItemEventListener(this)
-        ObserverManager.mapView.setMapViewEventListener(this)
+            override fun onMapError(error: Exception) {
+                // 인증 실패 및 지도 사용 중 에러가 발생할 때 호출됨
+            }
+        }, object : KakaoMapReadyCallback() {
+            override fun onMapReady(kakaoMap: KakaoMap) {
+                // 인증 후 API 가 정상적으로 실행될 때 호출됨
+                ObserverManager.kakaoMap = kakaoMap
+
+                // 현재위치기준으로 중심점변경
+                if (isFirstOnCreate) {
+                    isFirstOnCreate = false
+                    if (SharedManager.getLatitude() > 0) {
+                        ObserverManager.kakaoMap.moveCamera(CameraUpdateFactory.newCenterPosition(LatLng.from(SharedManager.getLatitude(), SharedManager.getLongitude())))
+                        ObserverManager.addMyPosition(
+                            SharedManager.getLatitude(),
+                            SharedManager.getLongitude()
+                        )
+                        setMyPosition(View.VISIBLE)
+                    }
+                } else {
+                    if (lastLatitude == 0.0) {
+                        lastLatitude = ObserverManager.kakaoMap.cameraPosition?.position?.latitude!!
+                        lastLongitude = ObserverManager.kakaoMap.cameraPosition?.position?.longitude!!
+                    }
+                    ObserverManager.kakaoMap.moveCamera(CameraUpdateFactory.newCenterPosition(LatLng.from(lastLatitude, lastLongitude)))
+                }
+
+                ObserverManager.kakaoMap.moveCamera(CameraUpdateFactory.zoomTo(ObserverManager.BASE_ZOOM_LEVEL))
+
+                ObserverManager.kakaoMap.setOnCameraMoveStartListener { kakaoMap, gestureType ->
+                    isMyPositionMove = false
+                    setMyPosition(View.GONE)
+                }
+                ObserverManager.kakaoMap.setOnCameraMoveEndListener { kakaoMap, cameraPosition, gestureType ->
+                    lastLatitude = kakaoMap.cameraPosition?.position?.latitude!!
+                    lastLongitude = kakaoMap.cameraPosition?.position?.longitude!!
+
+                    ObserverManager.kakaoMap.labelManager!!.removeAllLabelLayer()
+                    val toiletList = ToiletSQLiteManager.getInstance().getToiletList(lastLatitude, lastLongitude)
+                    for (toilet in toiletList) {
+                        ObserverManager.addPOIItem(toilet)
+                    }
+                    taskToiletList(lastLatitude, lastLongitude)
+
+                    if (SharedManager.getLatitude() > 0) {
+                        ObserverManager.addMyPosition(SharedManager.getLatitude(), SharedManager.getLongitude())
+                    }
+                }
+                ObserverManager.kakaoMap.setOnLabelClickListener { kakaoMap, labelLayer, label ->
+                    if (label.labelId.toInt() > 0) {
+                        val toilet = ToiletSQLiteManager.getInstance().getToilet(label.labelId.toInt())
+
+                        val dialog = ToiletDialog(
+                            onDetail = {
+                                mToilet = it
+                                if (interstitialAd1 != null) {
+                                    interstitialAd1?.show(this@HomeActivity)
+                                } else {
+                                    map_view.removeAllViews()
+                                    ObserverManager.root!!.startActivity(
+                                        Intent(ObserverManager.context!!, ToiletActivity::class.java)
+                                            .setFlags(Intent.FLAG_ACTIVITY_NO_USER_ACTION)
+                                            .putExtra(ToiletActivity.TOILET, mToilet)
+                                    )
+                                }
+                            }
+                        )
+                        dialog.setToilet(toilet)
+                        dialog.show(supportFragmentManager, "ToiletDialog")
+                    } else if (label.labelId.toInt() < 0) {
+                        mToiletList[label.labelId.toInt()]?.let { toilet ->
+                            val dialog = ToiletDialog(
+                                onDetail = {
+                                    mToilet = it
+                                    if (interstitialAd1 != null) {
+                                        interstitialAd1?.show(this@HomeActivity)
+                                    } else {
+                                        map_view.removeAllViews()
+                                        ObserverManager.root!!.startActivity(
+                                            Intent(ObserverManager.context!!, ToiletActivity::class.java)
+                                                .setFlags(Intent.FLAG_ACTIVITY_NO_USER_ACTION)
+                                                .putExtra(ToiletActivity.TOILET, mToilet)
+                                        )
+                                    }
+                                }
+                            )
+                            dialog.setToilet(toilet)
+                            dialog.show(supportFragmentManager, "ToiletDialog")
+                        }
+                    }
+                }
+            }
+        })
 
         if (SharedManager.getReviewCount() == ToiletActivity.REVIEW_COUNT) {
             SharedManager.setReviewCount(SharedManager.getReviewCount() + 1)
@@ -241,6 +308,7 @@ class HomeActivity : BaseActivity(), MapView.POIItemEventListener, MapView.MapVi
         }
     }
 
+    @SuppressLint("SetTextI18n")
     private fun setListener() {
         root_view.viewTreeObserver.addOnGlobalLayoutListener {
             LogManager.e("${MyUtil.getDeviceHeight()} : ${root_view.height}")
@@ -307,12 +375,7 @@ class HomeActivity : BaseActivity(), MapView.POIItemEventListener, MapView.MapVi
                     SharedManager.getLatitude(),
                     SharedManager.getLongitude()
                 )
-                ObserverManager.mapView.setMapCenterPoint(
-                    MapPoint.mapPointWithGeoCoord(
-                        SharedManager.getLatitude(),
-                        SharedManager.getLongitude()
-                    ), false
-                )
+                ObserverManager.kakaoMap.moveCamera(CameraUpdateFactory.newCenterPosition(LatLng.from(SharedManager.getLatitude(), SharedManager.getLongitude())))
                 setMyPosition(View.VISIBLE)
             }
         }
@@ -322,12 +385,7 @@ class HomeActivity : BaseActivity(), MapView.POIItemEventListener, MapView.MapVi
         btn_manager.setOnClickListener {
             val dialog = Toilet2ListDialog(onMove = {
                 isMyPositionMove = false
-                ObserverManager.mapView.setMapCenterPoint(
-                    MapPoint.mapPointWithGeoCoord(
-                        it.latitude,
-                        it.longitude
-                    ), true
-                )
+                ObserverManager.kakaoMap.moveCamera(CameraUpdateFactory.newCenterPosition(LatLng.from(it.latitude, it.longitude)))
                 setMyPosition(View.GONE)
             })
             dialog.show(supportFragmentManager, "Toilet2ListDialog")
@@ -374,113 +432,7 @@ class HomeActivity : BaseActivity(), MapView.POIItemEventListener, MapView.MapVi
             val azimuth = Math.toDegrees(orientationAngles[0].toDouble()).toFloat()
             ObserverManager.my_position_rotation = azimuth
             if (ObserverManager.my_position != null) {
-                ObserverManager.my_position!!.rotation = ObserverManager.my_position_rotation
-            }
-        }
-    }
-
-    override fun onMapViewDoubleTapped(p0: MapView?, p1: MapPoint?) {
-    }
-
-    override fun onMapViewInitialized(p0: MapView?) {
-    }
-
-    override fun onMapViewDragStarted(p0: MapView?, p1: MapPoint?) {
-        isMyPositionMove = false
-    }
-
-    /**
-     * 카카오지도 이동완료 콜백
-     */
-    override fun onMapViewMoveFinished(p0: MapView?, p1: MapPoint?) {
-        lastLatitude = p0!!.mapCenterPoint.mapPointGeoCoord.latitude
-        lastLongitude = p0.mapCenterPoint.mapPointGeoCoord.longitude
-
-        ObserverManager.mapView.removeAllPOIItems()
-        val toiletList =
-            ToiletSQLiteManager.getInstance().getToiletList(lastLatitude, lastLongitude)
-        for (toilet in toiletList) {
-            ObserverManager.addPOIItem(toilet)
-        }
-        taskToiletList(lastLatitude, lastLongitude)
-
-        if (SharedManager.getLatitude() > 0) {
-            ObserverManager.addMyPosition(SharedManager.getLatitude(), SharedManager.getLongitude())
-        }
-    }
-
-    override fun onMapViewCenterPointMoved(p0: MapView?, p1: MapPoint?) {
-        setMyPosition(View.GONE)
-    }
-
-    override fun onMapViewDragEnded(p0: MapView?, p1: MapPoint?) {
-    }
-
-    override fun onMapViewSingleTapped(p0: MapView?, p1: MapPoint?) {
-    }
-
-    override fun onMapViewZoomLevelChanged(p0: MapView?, p1: Int) {
-    }
-
-    override fun onMapViewLongPressed(p0: MapView?, p1: MapPoint?) {
-    }
-
-    override fun onCalloutBalloonOfPOIItemTouched(p0: MapView?, p1: MapPOIItem?) {
-    }
-
-    override fun onCalloutBalloonOfPOIItemTouched(
-        p0: MapView?,
-        p1: MapPOIItem?,
-        p2: MapPOIItem.CalloutBalloonButtonType?
-    ) {
-    }
-
-    override fun onDraggablePOIItemMoved(p0: MapView?, p1: MapPOIItem?, p2: MapPoint?) {
-    }
-
-    /**
-     * 카카오지도 아이템 클릭
-     */
-    override fun onPOIItemSelected(p0: MapView?, p1: MapPOIItem?) {
-        if (p1!!.tag > 0) {
-            val toilet = ToiletSQLiteManager.getInstance().getToilet(p1.tag)
-
-            val dialog = ToiletDialog(
-                onDetail = {
-                    mToilet = it
-                    if (interstitialAd1 != null) {
-                        interstitialAd1?.show(this)
-                    } else {
-                        map_view.removeAllViews()
-                        ObserverManager.root!!.startActivity(
-                            Intent(ObserverManager.context!!, ToiletActivity::class.java)
-                                .setFlags(Intent.FLAG_ACTIVITY_NO_USER_ACTION)
-                                .putExtra(ToiletActivity.TOILET, mToilet)
-                        )
-                    }
-                }
-            )
-            dialog.setToilet(toilet)
-            dialog.show(supportFragmentManager, "ToiletDialog")
-        } else if (p1.tag < 0) {
-            mToiletList[p1.tag]?.let { toilet ->
-                val dialog = ToiletDialog(
-                    onDetail = {
-                        mToilet = it
-                        if (interstitialAd1 != null) {
-                            interstitialAd1?.show(this)
-                        } else {
-                            map_view.removeAllViews()
-                            ObserverManager.root!!.startActivity(
-                                Intent(ObserverManager.context!!, ToiletActivity::class.java)
-                                    .setFlags(Intent.FLAG_ACTIVITY_NO_USER_ACTION)
-                                    .putExtra(ToiletActivity.TOILET, mToilet)
-                            )
-                        }
-                    }
-                )
-                dialog.setToilet(toilet)
-                dialog.show(supportFragmentManager, "ToiletDialog")
+//                ObserverManager.my_position!!.rotation = ObserverManager.my_position_rotation
             }
         }
     }
@@ -505,12 +457,7 @@ class HomeActivity : BaseActivity(), MapView.POIItemEventListener, MapView.MapVi
         isMyPositionMove = false
         edt_search.setText(kaKaoKeyword.place_name)
         edt_search.setSelection(kaKaoKeyword.place_name.count())
-        ObserverManager.mapView.setMapCenterPoint(
-            MapPoint.mapPointWithGeoCoord(
-                kaKaoKeyword.latitude,
-                kaKaoKeyword.longitude
-            ), true
-        )
+        ObserverManager.kakaoMap.moveCamera(CameraUpdateFactory.newCenterPosition(LatLng.from(kaKaoKeyword.latitude, kaKaoKeyword.longitude)), CameraAnimation.from(500, true, true))
         MyUtil.keyboardHide(edt_search)
         rv_search.visibility = View.GONE
         setMyPosition(View.GONE)
@@ -643,12 +590,7 @@ class HomeActivity : BaseActivity(), MapView.POIItemEventListener, MapView.MapVi
     override fun onLocationChanged(location: Location) {
         // 현재위치기준으로 중심점변경
         if (isMyPositionMove && SharedManager.getLatitude() > 0) {
-            ObserverManager.mapView.setMapCenterPoint(
-                MapPoint.mapPointWithGeoCoord(
-                    SharedManager.getLatitude(),
-                    SharedManager.getLongitude()
-                ), false
-            )
+            ObserverManager.kakaoMap.moveCamera(CameraUpdateFactory.newCenterPosition(LatLng.from(SharedManager.getLatitude(), SharedManager.getLongitude())))
             ObserverManager.addMyPosition(SharedManager.getLatitude(), SharedManager.getLongitude())
             setMyPosition(View.VISIBLE)
         }

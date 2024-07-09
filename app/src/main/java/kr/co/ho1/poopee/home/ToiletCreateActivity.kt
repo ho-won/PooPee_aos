@@ -4,10 +4,12 @@ import android.app.Activity
 import android.content.Intent
 import android.location.Location
 import android.os.Bundle
-import kotlinx.android.synthetic.main.activity_toilet_create.btn_bottom
-import kotlinx.android.synthetic.main.activity_toilet_create.btn_my_position
-import kotlinx.android.synthetic.main.activity_toilet_create.map_view
-import kotlinx.android.synthetic.main.activity_toilet_create.toolbar
+import com.kakao.vectormap.KakaoMap
+import com.kakao.vectormap.KakaoMapReadyCallback
+import com.kakao.vectormap.LatLng
+import com.kakao.vectormap.MapLifeCycleCallback
+import com.kakao.vectormap.camera.CameraUpdateFactory
+import kotlinx.android.synthetic.main.activity_toilet_create.*
 import kr.co.ho1.poopee.R
 import kr.co.ho1.poopee.common.ObserverManager
 import kr.co.ho1.poopee.common.base.BaseActivity
@@ -16,8 +18,6 @@ import kr.co.ho1.poopee.common.util.LocationManager
 import kr.co.ho1.poopee.common.util.MyUtil
 import kr.co.ho1.poopee.home.model.KaKaoKeyword
 import kr.co.ho1.poopee.home.view.ToiletCreateDialog
-import net.daum.mf.map.api.MapPoint
-import net.daum.mf.map.api.MapView
 
 class ToiletCreateActivity : BaseActivity() {
 
@@ -49,36 +49,43 @@ class ToiletCreateActivity : BaseActivity() {
     private fun init() {
         keyword = intent.getSerializableExtra(KAKAO_KEYWORD) as? KaKaoKeyword
 
-        ObserverManager.mapView = MapView(this)
-        map_view.addView(ObserverManager.mapView)
+        map_view.start(object : MapLifeCycleCallback() {
+            override fun onMapDestroy() {
+                // 지도 API 가 정상적으로 종료될 때 호출됨
+            }
 
-        if (keyword != null) {
-            // 카카오검색기준으로 중심점변경
-            ObserverManager.mapView.setMapCenterPoint(MapPoint.mapPointWithGeoCoord(keyword!!.latitude, keyword!!.longitude), false)
-        } else if (SharedManager.getLatitude() > 0) {
-            // 현재위치기준으로 중심점변경
-            ObserverManager.mapView.setMapCenterPoint(MapPoint.mapPointWithGeoCoord(SharedManager.getLatitude(), SharedManager.getLongitude()), false)
-        }
+            override fun onMapError(error: Exception) {
+                // 인증 실패 및 지도 사용 중 에러가 발생할 때 호출됨
+            }
+        }, object : KakaoMapReadyCallback() {
+            override fun onMapReady(kakaoMap: KakaoMap) {
+                // 인증 후 API 가 정상적으로 실행될 때 호출됨
+                ObserverManager.kakaoMap = kakaoMap
 
-        ObserverManager.mapView.setZoomLevel(3, true)
+                if (keyword != null) {
+                    // 카카오검색기준으로 중심점변경
+                    ObserverManager.kakaoMap.moveCamera(CameraUpdateFactory.newCenterPosition(LatLng.from(keyword!!.latitude, keyword!!.longitude)))
+                } else if (SharedManager.getLatitude() > 0) {
+                    // 현재위치기준으로 중심점변경
+                    ObserverManager.kakaoMap.moveCamera(CameraUpdateFactory.newCenterPosition(LatLng.from(SharedManager.getLatitude(), SharedManager.getLongitude())))
+                }
 
-    }
-
-    private fun refresh() {
-
+                ObserverManager.kakaoMap.moveCamera(CameraUpdateFactory.zoomTo(ObserverManager.BASE_ZOOM_LEVEL))
+            }
+        })
     }
 
     private fun setListener() {
         btn_my_position.setOnClickListener {
             if (SharedManager.getLatitude() > 0) {
-                ObserverManager.mapView.setMapCenterPoint(MapPoint.mapPointWithGeoCoord(SharedManager.getLatitude(), SharedManager.getLongitude()), false)
-                ObserverManager.mapView.setZoomLevel(3, false)
+                ObserverManager.kakaoMap.moveCamera(CameraUpdateFactory.newCenterPosition(LatLng.from(SharedManager.getLatitude(), SharedManager.getLongitude())))
+                ObserverManager.kakaoMap.moveCamera(CameraUpdateFactory.zoomTo(ObserverManager.BASE_ZOOM_LEVEL))
             }
         }
         btn_bottom.setOnClickListener {
             val dialog = ToiletCreateDialog(
-                ObserverManager.mapView.mapCenterPoint.mapPointGeoCoord.latitude,
-                ObserverManager.mapView.mapCenterPoint.mapPointGeoCoord.longitude,
+                ObserverManager.kakaoMap.cameraPosition?.position?.latitude!!,
+                ObserverManager.kakaoMap.cameraPosition?.position?.longitude!!,
                 onCreate = {
                     val intent = Intent()
                     setResult(Activity.RESULT_OK, intent)

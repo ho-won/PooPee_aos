@@ -21,7 +21,7 @@
         android:layout_above="@+id/ad_view"
         android:layout_below="@+id/line_01">
 
-        <RelativeLayout
+        <com.kakao.vectormap.MapView
             android:id="@+id/map_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />

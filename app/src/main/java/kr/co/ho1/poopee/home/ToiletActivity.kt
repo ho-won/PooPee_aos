@@ -9,6 +9,11 @@ import android.widget.Toast
 import androidx.appcompat.widget.PopupMenu
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.kakao.vectormap.KakaoMap
+import com.kakao.vectormap.KakaoMapReadyCallback
+import com.kakao.vectormap.LatLng
+import com.kakao.vectormap.MapLifeCycleCallback
+import com.kakao.vectormap.camera.CameraUpdateFactory
 import kotlinx.android.synthetic.main.activity_toilet.*
 import kotlinx.android.synthetic.main.item_toilet_comment.view.*
 import kr.co.ho1.poopee.R
@@ -27,8 +32,6 @@ import kr.co.ho1.poopee.home.model.Comment
 import kr.co.ho1.poopee.home.model.Toilet
 import kr.co.ho1.poopee.home.view.*
 import kr.co.ho1.poopee.login.LoginActivity
-import net.daum.mf.map.api.MapPoint
-import net.daum.mf.map.api.MapView
 import org.json.JSONException
 
 @Suppress("DEPRECATION")
@@ -82,14 +85,28 @@ class ToiletActivity : BaseActivity() {
 
     @SuppressLint("ClickableViewAccessibility")
     private fun refresh() {
-        map_view.removeAllViews()
-        ObserverManager.mapView = MapView(this)
-        map_view.addView(ObserverManager.mapView)
-        LogManager.e("HO_TEST", toilet.latitude.toString())
-        ObserverManager.mapView.setMapCenterPoint(MapPoint.mapPointWithGeoCoord(toilet.latitude, toilet.longitude), true)
-        ObserverManager.addPOIItem(toilet)
-        ObserverManager.mapView.setZoomLevel(2, true)
-        ObserverManager.mapView.setOnTouchListener { _, event ->
+
+        map_view.start(object : MapLifeCycleCallback() {
+            override fun onMapDestroy() {
+                // 지도 API 가 정상적으로 종료될 때 호출됨
+            }
+
+            override fun onMapError(error: Exception) {
+                // 인증 실패 및 지도 사용 중 에러가 발생할 때 호출됨
+            }
+        }, object : KakaoMapReadyCallback() {
+            override fun onMapReady(kakaoMap: KakaoMap) {
+                // 인증 후 API 가 정상적으로 실행될 때 호출됨
+                ObserverManager.kakaoMap = kakaoMap
+
+                LogManager.e("HO_TEST", toilet.latitude.toString())
+                ObserverManager.kakaoMap.moveCamera(CameraUpdateFactory.newCenterPosition(LatLng.from(toilet.latitude, toilet.longitude)))
+                ObserverManager.addPOIItem(toilet)
+                ObserverManager.kakaoMap.moveCamera(CameraUpdateFactory.zoomTo(15))
+            }
+        })
+
+        map_view.setOnTouchListener { _, event ->
             when (event.action) {
                 MotionEvent.ACTION_DOWN -> {
                     scroll_view.requestDisallowInterceptTouchEvent(true)

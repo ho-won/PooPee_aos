@@ -7,26 +7,28 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Environment
+import com.kakao.vectormap.KakaoMap
+import com.kakao.vectormap.LatLng
+import com.kakao.vectormap.label.Label
+import com.kakao.vectormap.label.LabelOptions
+import com.kakao.vectormap.label.LabelStyle
 import kr.co.ho1.poopee.R
 import kr.co.ho1.poopee.common.base.BaseActivity
 import kr.co.ho1.poopee.common.data.SharedManager
 import kr.co.ho1.poopee.home.model.Toilet
-import net.daum.mf.map.api.MapPOIItem
-import net.daum.mf.map.api.MapPoint
-import net.daum.mf.map.api.MapView
 import java.io.File
-
 
 @SuppressLint("StaticFieldLeak")
 object ObserverManager {
+    val BASE_ZOOM_LEVEL = 14
     var testServer = false // 테스트용인지 체크
     var isShowLog = true // Log 노출여부 체크
     var serverException = false // Exception 통합관리 및 서버로 보낼지 체크
 
     var root: BaseActivity? = null  // 현재 Activity
     var context: Context? = null
-    lateinit var mapView: MapView
-    var my_position: MapPOIItem? = null // 내위치마커
+    lateinit var kakaoMap: KakaoMap
+    var my_position: Label? = null // 내위치마커
     var my_position_rotation: Float = 0f
 
     fun getPath(): String {
@@ -43,7 +45,8 @@ object ObserverManager {
     }
 
     fun restart() {
-        context!!.startActivity(Intent(context, MainActivity::class.java)
+        context!!.startActivity(
+            Intent(context, MainActivity::class.java)
                 .setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_NO_USER_ACTION)
         )
         root!!.finish()
@@ -55,11 +58,13 @@ object ObserverManager {
     fun updateInPlayMarket() {
         val appPackageName = context!!.packageName
         try {
-            root!!.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=$appPackageName"))
+            root!!.startActivity(
+                Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=$appPackageName"))
                     .setFlags(Intent.FLAG_ACTIVITY_NO_USER_ACTION)
             )
         } catch (e: android.content.ActivityNotFoundException) {
-            root!!.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=$appPackageName"))
+            root!!.startActivity(
+                Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=$appPackageName"))
                     .setFlags(Intent.FLAG_ACTIVITY_NO_USER_ACTION)
             )
         }
@@ -73,18 +78,7 @@ object ObserverManager {
         if (toilet.toilet_id < 0) {
             imageResourceId = R.drawable.ic_position_up
         }
-
-        val marker = MapPOIItem()
-        marker.itemName = toilet.name
-        marker.tag = toilet.toilet_id
-        marker.mapPoint = MapPoint.mapPointWithGeoCoord(toilet.latitude, toilet.longitude)
-        marker.markerType = MapPOIItem.MarkerType.CustomImage // 마커타입을 커스텀 마커로 지정.
-        marker.customImageResourceId = imageResourceId // 마커 이미지.
-        marker.selectedMarkerType = MapPOIItem.MarkerType.CustomImage // 마커를 클릭했을때, 기본으로 제공하는 RedPin 마커 모양.
-        marker.customSelectedImageResourceId = imageResourceId // 마커 이미지.
-        marker.isShowCalloutBalloonOnTouch = false
-        marker.showAnimationType = MapPOIItem.ShowAnimationType.SpringFromGround
-        mapView.addPOIItem(marker)
+        kakaoMap.labelManager!!.layer!!.addLabel(LabelOptions.from("${toilet.toilet_id}", LatLng.from(toilet.latitude, toilet.longitude)).setStyles(LabelStyle.from(imageResourceId).setApplyDpScale(false)))
     }
 
     /**
@@ -92,20 +86,10 @@ object ObserverManager {
      */
     fun addMyPosition(latitude: Double, longitude: Double) {
         if (my_position != null) {
-            mapView.removePOIItem(my_position)
+            kakaoMap.labelManager!!.layer!!.remove(my_position!!)
         }
-        my_position = MapPOIItem()
-        my_position!!.itemName = "내위치"
-        my_position!!.tag = 0
-        my_position!!.mapPoint = MapPoint.mapPointWithGeoCoord(latitude, longitude)
-        my_position!!.markerType = MapPOIItem.MarkerType.CustomImage // 마커타입을 커스텀 마커로 지정.
-        my_position!!.customImageResourceId = R.drawable.ic_marker // 마커 이미지.
-        my_position!!.selectedMarkerType = MapPOIItem.MarkerType.CustomImage // 마커를 클릭했을때, 기본으로 제공하는 RedPin 마커 모양.
-        my_position!!.customSelectedImageResourceId = R.drawable.ic_marker // 마커 이미지.
-        my_position!!.isShowCalloutBalloonOnTouch = false
-        my_position!!.setCustomImageAnchor(0.5f, 0.5f)
-        mapView.addPOIItem(my_position!!)
-        my_position!!.rotation = my_position_rotation
+        my_position = kakaoMap.labelManager!!.layer!!.addLabel(LabelOptions.from("0", LatLng.from(latitude, longitude)).setStyles(LabelStyle.from(R.drawable.ic_marker).setApplyDpScale(false)))
+        //my_position!!.rotation = my_position_rotation
     }
 
 }

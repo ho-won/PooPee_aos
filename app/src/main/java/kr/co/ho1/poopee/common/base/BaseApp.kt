@@ -6,6 +6,7 @@ import android.os.Bundle
 import androidx.core.app.ActivityCompat
 import androidx.multidex.MultiDexApplication
 import com.kakao.sdk.common.KakaoSdk
+import com.kakao.vectormap.KakaoMapSdk
 import kr.co.ho1.poopee.common.ObserverManager
 import kotlin.system.exitProcess
 
@@ -22,6 +23,7 @@ class BaseApp : MultiDexApplication() {
 
         ObserverManager.context = this // context 저장
         KakaoSdk.init(this, "53565fe7d8355fff626939459a32e7d0")
+        KakaoMapSdk.init(this, "53565fe7d8355fff626939459a32e7d0")
 
         // 앱버전체크
         try {
