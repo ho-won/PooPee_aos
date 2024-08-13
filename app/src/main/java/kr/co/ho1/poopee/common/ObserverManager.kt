@@ -12,6 +12,8 @@ import com.kakao.vectormap.LatLng
 import com.kakao.vectormap.label.Label
 import com.kakao.vectormap.label.LabelOptions
 import com.kakao.vectormap.label.LabelStyle
+import com.kakao.vectormap.label.LabelStyles
+import com.kakao.vectormap.label.TransformMethod
 import kr.co.ho1.poopee.R
 import kr.co.ho1.poopee.common.base.BaseActivity
 import kr.co.ho1.poopee.common.data.SharedManager
@@ -27,9 +29,7 @@ object ObserverManager {
 
     var root: BaseActivity? = null  // 현재 Activity
     var context: Context? = null
-    lateinit var kakaoMap: KakaoMap
-    var my_position: Label? = null // 내위치마커
-    var my_position_rotation: Float = 0f
+    //var kakaoMap: KakaoMap? = null
 
     fun getPath(): String {
         return Environment.getExternalStorageDirectory().toString() + File.separator + "PooPee" + File.separator
@@ -68,28 +68,6 @@ object ObserverManager {
                     .setFlags(Intent.FLAG_ACTIVITY_NO_USER_ACTION)
             )
         }
-    }
-
-    /**
-     * 카카오지도 아이템 추가
-     */
-    fun addPOIItem(toilet: Toilet) {
-        var imageResourceId = R.drawable.ic_position
-        if (toilet.toilet_id < 0) {
-            imageResourceId = R.drawable.ic_position_up
-        }
-        kakaoMap.labelManager!!.layer!!.addLabel(LabelOptions.from("${toilet.toilet_id}", LatLng.from(toilet.latitude, toilet.longitude)).setStyles(LabelStyle.from(imageResourceId).setApplyDpScale(false)))
-    }
-
-    /**
-     * 카카오지도 나의위치 추가
-     */
-    fun addMyPosition(latitude: Double, longitude: Double) {
-        if (my_position != null) {
-            kakaoMap.labelManager!!.layer!!.remove(my_position!!)
-        }
-        my_position = kakaoMap.labelManager!!.layer!!.addLabel(LabelOptions.from("0", LatLng.from(latitude, longitude)).setStyles(LabelStyle.from(R.drawable.ic_marker).setApplyDpScale(false)))
-        //my_position!!.rotation = my_position_rotation
     }
 
 }

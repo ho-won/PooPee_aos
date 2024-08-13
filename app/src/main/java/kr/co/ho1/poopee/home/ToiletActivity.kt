@@ -14,6 +14,8 @@ import com.kakao.vectormap.KakaoMapReadyCallback
 import com.kakao.vectormap.LatLng
 import com.kakao.vectormap.MapLifeCycleCallback
 import com.kakao.vectormap.camera.CameraUpdateFactory
+import com.kakao.vectormap.label.LabelOptions
+import com.kakao.vectormap.label.LabelStyle
 import kotlinx.android.synthetic.main.activity_toilet.*
 import kotlinx.android.synthetic.main.item_toilet_comment.view.*
 import kr.co.ho1.poopee.R
@@ -47,6 +49,8 @@ class ToiletActivity : BaseActivity() {
 
     private var recyclerAdapter: ListAdapter = ListAdapter()
     private var commentList: ArrayList<Comment> = ArrayList()
+
+    var kakaoMap: KakaoMap? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -95,14 +99,14 @@ class ToiletActivity : BaseActivity() {
                 // 인증 실패 및 지도 사용 중 에러가 발생할 때 호출됨
             }
         }, object : KakaoMapReadyCallback() {
-            override fun onMapReady(kakaoMap: KakaoMap) {
+            override fun onMapReady(map: KakaoMap) {
                 // 인증 후 API 가 정상적으로 실행될 때 호출됨
-                ObserverManager.kakaoMap = kakaoMap
+                kakaoMap = map
 
                 LogManager.e("HO_TEST", toilet.latitude.toString())
-                ObserverManager.kakaoMap.moveCamera(CameraUpdateFactory.newCenterPosition(LatLng.from(toilet.latitude, toilet.longitude)))
-                ObserverManager.addPOIItem(toilet)
-                ObserverManager.kakaoMap.moveCamera(CameraUpdateFactory.zoomTo(15))
+                kakaoMap?.moveCamera(CameraUpdateFactory.newCenterPosition(LatLng.from(toilet.latitude, toilet.longitude)))
+                addPOIItem(toilet)
+                kakaoMap?.moveCamera(CameraUpdateFactory.zoomTo(15))
             }
         })
 
@@ -331,6 +335,19 @@ class ToiletActivity : BaseActivity() {
                         .setFlags(Intent.FLAG_ACTIVITY_NO_USER_ACTION)
                 )
             }
+        }
+    }
+
+    /**
+     * 카카오지도 아이템 추가
+     */
+    fun addPOIItem(toilet: Toilet) {
+        kakaoMap?.let {
+            var imageResourceId = R.drawable.ic_position
+            if (toilet.toilet_id < 0) {
+                imageResourceId = R.drawable.ic_position_up
+            }
+            it.labelManager!!.layer!!.addLabel(LabelOptions.from("${toilet.toilet_id}", LatLng.from(toilet.latitude, toilet.longitude)).setStyles(LabelStyle.from(imageResourceId).setApplyDpScale(false)))
         }
     }
 

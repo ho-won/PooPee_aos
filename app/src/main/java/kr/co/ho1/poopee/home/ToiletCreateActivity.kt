@@ -27,6 +27,8 @@ class ToiletCreateActivity : BaseActivity() {
 
     private var keyword: KaKaoKeyword? = null
 
+    var kakaoMap: KakaoMap? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_toilet_create)
@@ -58,19 +60,19 @@ class ToiletCreateActivity : BaseActivity() {
                 // 인증 실패 및 지도 사용 중 에러가 발생할 때 호출됨
             }
         }, object : KakaoMapReadyCallback() {
-            override fun onMapReady(kakaoMap: KakaoMap) {
+            override fun onMapReady(map: KakaoMap) {
                 // 인증 후 API 가 정상적으로 실행될 때 호출됨
-                ObserverManager.kakaoMap = kakaoMap
+                kakaoMap = map
 
                 if (keyword != null) {
                     // 카카오검색기준으로 중심점변경
-                    ObserverManager.kakaoMap.moveCamera(CameraUpdateFactory.newCenterPosition(LatLng.from(keyword!!.latitude, keyword!!.longitude)))
+                    kakaoMap?.moveCamera(CameraUpdateFactory.newCenterPosition(LatLng.from(keyword!!.latitude, keyword!!.longitude)))
                 } else if (SharedManager.getLatitude() > 0) {
                     // 현재위치기준으로 중심점변경
-                    ObserverManager.kakaoMap.moveCamera(CameraUpdateFactory.newCenterPosition(LatLng.from(SharedManager.getLatitude(), SharedManager.getLongitude())))
+                    kakaoMap?.moveCamera(CameraUpdateFactory.newCenterPosition(LatLng.from(SharedManager.getLatitude(), SharedManager.getLongitude())))
                 }
 
-                ObserverManager.kakaoMap.moveCamera(CameraUpdateFactory.zoomTo(ObserverManager.BASE_ZOOM_LEVEL))
+                kakaoMap?.moveCamera(CameraUpdateFactory.zoomTo(ObserverManager.BASE_ZOOM_LEVEL))
             }
         })
     }
@@ -78,14 +80,14 @@ class ToiletCreateActivity : BaseActivity() {
     private fun setListener() {
         btn_my_position.setOnClickListener {
             if (SharedManager.getLatitude() > 0) {
-                ObserverManager.kakaoMap.moveCamera(CameraUpdateFactory.newCenterPosition(LatLng.from(SharedManager.getLatitude(), SharedManager.getLongitude())))
-                ObserverManager.kakaoMap.moveCamera(CameraUpdateFactory.zoomTo(ObserverManager.BASE_ZOOM_LEVEL))
+                kakaoMap?.moveCamera(CameraUpdateFactory.newCenterPosition(LatLng.from(SharedManager.getLatitude(), SharedManager.getLongitude())))
+                kakaoMap?.moveCamera(CameraUpdateFactory.zoomTo(ObserverManager.BASE_ZOOM_LEVEL))
             }
         }
         btn_bottom.setOnClickListener {
             val dialog = ToiletCreateDialog(
-                ObserverManager.kakaoMap.cameraPosition?.position?.latitude!!,
-                ObserverManager.kakaoMap.cameraPosition?.position?.longitude!!,
+                kakaoMap?.cameraPosition?.position?.latitude!!,
+                kakaoMap?.cameraPosition?.position?.longitude!!,
                 onCreate = {
                     val intent = Intent()
                     setResult(Activity.RESULT_OK, intent)

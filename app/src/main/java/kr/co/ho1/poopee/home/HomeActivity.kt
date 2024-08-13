@@ -13,6 +13,7 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.ArrayMap
+import android.util.Log
 import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
@@ -31,6 +32,10 @@ import com.kakao.vectormap.LatLng
 import com.kakao.vectormap.MapLifeCycleCallback
 import com.kakao.vectormap.camera.CameraAnimation
 import com.kakao.vectormap.camera.CameraUpdateFactory
+import com.kakao.vectormap.label.Label
+import com.kakao.vectormap.label.LabelOptions
+import com.kakao.vectormap.label.LabelStyle
+import com.kakao.vectormap.label.TransformMethod
 import kotlinx.android.synthetic.main.activity_home.*
 import kotlinx.android.synthetic.main.item_kakao_keyword.view.*
 import kr.co.ho1.poopee.R
@@ -51,7 +56,6 @@ import kr.co.ho1.poopee.home.view.PopupDialog
 import kr.co.ho1.poopee.home.view.ToiletDialog
 import kr.co.ho1.poopee.manager.view.Toilet2ListDialog
 import org.json.JSONException
-
 
 class HomeActivity : BaseActivity() {
 
@@ -80,6 +84,10 @@ class HomeActivity : BaseActivity() {
 
     private val rotationMatrix = FloatArray(9)
     private val orientationAngles = FloatArray(3)
+
+    var kakaoMap: KakaoMap? = null
+    var my_position: Label? = null // 내위치마커
+    var my_position_rotation: Float = 0f
 
     @SuppressLint("VisibleForTests")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -132,8 +140,9 @@ class HomeActivity : BaseActivity() {
             packageManager.hasSystemFeature(PackageManager.FEATURE_SENSOR_COMPASS)
         ) {
 
-            accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER)
-            magnetometer = sensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD)
+
+            accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER)!!
+            magnetometer = sensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD)!!
 
             sensorManager.registerListener(
                 sensorEventListener,
@@ -174,7 +183,6 @@ class HomeActivity : BaseActivity() {
         super.onPause()
         map_view.pause()
         LocationManager.removeLocationUpdate()
-        map_view.removeAllViews()
         sensorManager.unregisterListener(sensorEventListener)
     }
 
@@ -204,80 +212,68 @@ class HomeActivity : BaseActivity() {
                 // 인증 실패 및 지도 사용 중 에러가 발생할 때 호출됨
             }
         }, object : KakaoMapReadyCallback() {
-            override fun onMapReady(kakaoMap: KakaoMap) {
+            @SuppressLint("DefaultLocale")
+            override fun onMapReady(map: KakaoMap) {
                 // 인증 후 API 가 정상적으로 실행될 때 호출됨
-                ObserverManager.kakaoMap = kakaoMap
+                kakaoMap = map
 
-                // 현재위치기준으로 중심점변경
-                if (isFirstOnCreate) {
-                    isFirstOnCreate = false
-                    if (SharedManager.getLatitude() > 0) {
-                        ObserverManager.kakaoMap.moveCamera(CameraUpdateFactory.newCenterPosition(LatLng.from(SharedManager.getLatitude(), SharedManager.getLongitude())))
-                        ObserverManager.addMyPosition(
-                            SharedManager.getLatitude(),
-                            SharedManager.getLongitude()
-                        )
-                        setMyPosition(View.VISIBLE)
+                kakaoMap?.let {
+                    // 현재위치기준으로 중심점변경
+                    if (isFirstOnCreate) {
+                        isFirstOnCreate = false
+                        if (SharedManager.getLatitude() > 0) {
+                            it.moveCamera(CameraUpdateFactory.newCenterPosition(LatLng.from(SharedManager.getLatitude(), SharedManager.getLongitude())))
+                            addMyPosition(SharedManager.getLatitude(), SharedManager.getLongitude())
+                            setMyPosition(View.VISIBLE)
+                        }
+                    } else {
+                        if (lastLatitude == 0.0) {
+                            lastLatitude = it.cameraPosition?.position?.latitude!!
+                            lastLongitude = it.cameraPosition?.position?.longitude!!
+                        }
+                        it.moveCamera(CameraUpdateFactory.newCenterPosition(LatLng.from(lastLatitude, lastLongitude)))
                     }
-                } else {
-                    if (lastLatitude == 0.0) {
-                        lastLatitude = ObserverManager.kakaoMap.cameraPosition?.position?.latitude!!
-                        lastLongitude = ObserverManager.kakaoMap.cameraPosition?.position?.longitude!!
+
+                    it.moveCamera(CameraUpdateFactory.zoomTo(ObserverManager.BASE_ZOOM_LEVEL))
+
+                    it.setOnCameraMoveStartListener { kakaoMap, gestureType ->
+                        isMyPositionMove = false
+                        setMyPosition(View.GONE)
                     }
-                    ObserverManager.kakaoMap.moveCamera(CameraUpdateFactory.newCenterPosition(LatLng.from(lastLatitude, lastLongitude)))
-                }
+                    it.setOnCameraMoveEndListener { kakaoMap, cameraPosition, gestureType ->
+                        lastLatitude = kakaoMap.cameraPosition?.position?.latitude!!
+                        lastLongitude = kakaoMap.cameraPosition?.position?.longitude!!
 
-                ObserverManager.kakaoMap.moveCamera(CameraUpdateFactory.zoomTo(ObserverManager.BASE_ZOOM_LEVEL))
+                        it.labelManager!!.removeAllLabelLayer()
+                        val toiletList = ToiletSQLiteManager.getInstance().getToiletList(lastLatitude, lastLongitude)
+                        for (toilet in toiletList) {
+                            addPOIItem(toilet)
+                        }
+                        taskToiletList(lastLatitude, lastLongitude)
 
-                ObserverManager.kakaoMap.setOnCameraMoveStartListener { kakaoMap, gestureType ->
-                    isMyPositionMove = false
-                    setMyPosition(View.GONE)
-                }
-                ObserverManager.kakaoMap.setOnCameraMoveEndListener { kakaoMap, cameraPosition, gestureType ->
-                    lastLatitude = kakaoMap.cameraPosition?.position?.latitude!!
-                    lastLongitude = kakaoMap.cameraPosition?.position?.longitude!!
+                        if (SharedManager.getLatitude() > 0) {
+                            addMyPosition(SharedManager.getLatitude(), SharedManager.getLongitude())
+                        }
 
-                    ObserverManager.kakaoMap.labelManager!!.removeAllLabelLayer()
-                    val toiletList = ToiletSQLiteManager.getInstance().getToiletList(lastLatitude, lastLongitude)
-                    for (toilet in toiletList) {
-                        ObserverManager.addPOIItem(toilet)
+                        LogManager.e("${kakaoMap.cameraPosition?.position?.latitude!!}, ${SharedManager.getLatitude()}, ${kakaoMap.cameraPosition?.position?.longitude!!}, ${SharedManager.getLongitude()}")
+                        if (String.format("%.3f", kakaoMap.cameraPosition?.position?.latitude!!) == String.format("%.3f", SharedManager.getLatitude())
+                            && String.format("%.3f", kakaoMap.cameraPosition?.position?.longitude!!) == String.format("%.3f", SharedManager.getLongitude())
+                        ) {
+                            setMyPosition(View.VISIBLE)
+                        } else {
+                            setMyPosition(View.GONE)
+                        }
                     }
-                    taskToiletList(lastLatitude, lastLongitude)
+                    it.setOnLabelClickListener { kakaoMap, labelLayer, label ->
+                        if (label.labelId.toInt() > 0) {
+                            val toilet = ToiletSQLiteManager.getInstance().getToilet(label.labelId.toInt())
 
-                    if (SharedManager.getLatitude() > 0) {
-                        ObserverManager.addMyPosition(SharedManager.getLatitude(), SharedManager.getLongitude())
-                    }
-                }
-                ObserverManager.kakaoMap.setOnLabelClickListener { kakaoMap, labelLayer, label ->
-                    if (label.labelId.toInt() > 0) {
-                        val toilet = ToiletSQLiteManager.getInstance().getToilet(label.labelId.toInt())
-
-                        val dialog = ToiletDialog(
-                            onDetail = {
-                                mToilet = it
-                                if (interstitialAd1 != null) {
-                                    interstitialAd1?.show(this@HomeActivity)
-                                } else {
-                                    map_view.removeAllViews()
-                                    ObserverManager.root!!.startActivity(
-                                        Intent(ObserverManager.context!!, ToiletActivity::class.java)
-                                            .setFlags(Intent.FLAG_ACTIVITY_NO_USER_ACTION)
-                                            .putExtra(ToiletActivity.TOILET, mToilet)
-                                    )
-                                }
-                            }
-                        )
-                        dialog.setToilet(toilet)
-                        dialog.show(supportFragmentManager, "ToiletDialog")
-                    } else if (label.labelId.toInt() < 0) {
-                        mToiletList[label.labelId.toInt()]?.let { toilet ->
                             val dialog = ToiletDialog(
                                 onDetail = {
                                     mToilet = it
                                     if (interstitialAd1 != null) {
                                         interstitialAd1?.show(this@HomeActivity)
                                     } else {
-                                        map_view.removeAllViews()
                                         ObserverManager.root!!.startActivity(
                                             Intent(ObserverManager.context!!, ToiletActivity::class.java)
                                                 .setFlags(Intent.FLAG_ACTIVITY_NO_USER_ACTION)
@@ -288,6 +284,25 @@ class HomeActivity : BaseActivity() {
                             )
                             dialog.setToilet(toilet)
                             dialog.show(supportFragmentManager, "ToiletDialog")
+                        } else if (label.labelId.toInt() < 0) {
+                            mToiletList[label.labelId.toInt()]?.let { toilet ->
+                                val dialog = ToiletDialog(
+                                    onDetail = {
+                                        mToilet = it
+                                        if (interstitialAd1 != null) {
+                                            interstitialAd1?.show(this@HomeActivity)
+                                        } else {
+                                            ObserverManager.root!!.startActivity(
+                                                Intent(ObserverManager.context!!, ToiletActivity::class.java)
+                                                    .setFlags(Intent.FLAG_ACTIVITY_NO_USER_ACTION)
+                                                    .putExtra(ToiletActivity.TOILET, mToilet)
+                                            )
+                                        }
+                                    }
+                                )
+                                dialog.setToilet(toilet)
+                                dialog.show(supportFragmentManager, "ToiletDialog")
+                            }
                         }
                     }
                 }
@@ -369,24 +384,25 @@ class HomeActivity : BaseActivity() {
             }
         })
         layout_my_position.setOnClickListener {
-            if (SharedManager.getLatitude() > 0) {
-                isMyPositionMove = true
-                ObserverManager.addMyPosition(
-                    SharedManager.getLatitude(),
-                    SharedManager.getLongitude()
-                )
-                ObserverManager.kakaoMap.moveCamera(CameraUpdateFactory.newCenterPosition(LatLng.from(SharedManager.getLatitude(), SharedManager.getLongitude())))
-                setMyPosition(View.VISIBLE)
+            kakaoMap?.let {
+                if (SharedManager.getLatitude() > 0) {
+                    isMyPositionMove = true
+                    addMyPosition(SharedManager.getLatitude(), SharedManager.getLongitude())
+                    it.moveCamera(CameraUpdateFactory.newCenterPosition(LatLng.from(SharedManager.getLatitude(), SharedManager.getLongitude())))
+                    setMyPosition(View.VISIBLE)
+                }
             }
         }
         btn_menu.setOnClickListener {
             drawer_layout.openDrawer(GravityCompat.START)
         }
         btn_manager.setOnClickListener {
-            val dialog = Toilet2ListDialog(onMove = {
-                isMyPositionMove = false
-                ObserverManager.kakaoMap.moveCamera(CameraUpdateFactory.newCenterPosition(LatLng.from(it.latitude, it.longitude)))
-                setMyPosition(View.GONE)
+            val dialog = Toilet2ListDialog(onMove = { toilet ->
+                kakaoMap?.let {
+                    isMyPositionMove = false
+                    it.moveCamera(CameraUpdateFactory.newCenterPosition(LatLng.from(toilet.latitude, toilet.longitude)))
+                    setMyPosition(View.GONE)
+                }
             })
             dialog.show(supportFragmentManager, "Toilet2ListDialog")
         }
@@ -426,25 +442,26 @@ class HomeActivity : BaseActivity() {
             )
             SensorManager.getOrientation(rotationMatrix, orientationAngles)
 
-            // 방향 각도는 orientationAngles 배열에 저장됩니다.
-            // val pitch = Math.toDegrees(orientationAngles[1].toDouble()).toFloat()
-            // val roll = Math.toDegrees(orientationAngles[2].toDouble()).toFloat()
             val azimuth = Math.toDegrees(orientationAngles[0].toDouble()).toFloat()
-            ObserverManager.my_position_rotation = azimuth
-            if (ObserverManager.my_position != null) {
-//                ObserverManager.my_position!!.rotation = ObserverManager.my_position_rotation
+            if (my_position_rotation.toInt() != azimuth.toInt()) {
+                my_position_rotation = azimuth
+                LogManager.e("azimuth : $azimuth")
+            }
+            if (my_position != null) {
+                //my_position!!.rotateTo(my_position_rotation)
             }
         }
     }
 
     private fun checkPopup() {
-        if (SharedManager.getNoticeImage().count() > 0) {
+        if (SharedManager.getNoticeImage().isNotEmpty()) {
             val dialog = PopupDialog()
             dialog.show(supportFragmentManager, "PopupDialog")
         }
     }
 
     private fun setMyPosition(visibility: Int) {
+        LogManager.e("visibility : $visibility")
         lottie_my_position.visibility = visibility
         if (visibility == View.VISIBLE) {
             lottie_my_position.playAnimation()
@@ -457,10 +474,37 @@ class HomeActivity : BaseActivity() {
         isMyPositionMove = false
         edt_search.setText(kaKaoKeyword.place_name)
         edt_search.setSelection(kaKaoKeyword.place_name.count())
-        ObserverManager.kakaoMap.moveCamera(CameraUpdateFactory.newCenterPosition(LatLng.from(kaKaoKeyword.latitude, kaKaoKeyword.longitude)), CameraAnimation.from(500, true, true))
+        kakaoMap?.moveCamera(CameraUpdateFactory.newCenterPosition(LatLng.from(kaKaoKeyword.latitude, kaKaoKeyword.longitude)), CameraAnimation.from(500, true, true))
         MyUtil.keyboardHide(edt_search)
         rv_search.visibility = View.GONE
         setMyPosition(View.GONE)
+    }
+
+    /**
+     * 카카오지도 아이템 추가
+     */
+    fun addPOIItem(toilet: Toilet) {
+        kakaoMap?.let {
+            var imageResourceId = R.drawable.ic_position
+            if (toilet.toilet_id < 0) {
+                imageResourceId = R.drawable.ic_position_up
+            }
+            it.labelManager!!.layer!!.addLabel(LabelOptions.from("${toilet.toilet_id}", LatLng.from(toilet.latitude, toilet.longitude)).setStyles(LabelStyle.from(imageResourceId).setApplyDpScale(false)))
+        }
+    }
+
+    /**
+     * 카카오지도 나의위치 추가
+     */
+    fun addMyPosition(latitude: Double, longitude: Double) {
+        kakaoMap?.let {
+            if (my_position != null) {
+                it.labelManager!!.layer!!.remove(my_position!!)
+            }
+
+            my_position = it.labelManager!!.layer!!.addLabel(LabelOptions.from("0", LatLng.from(latitude, longitude)).setTransform(TransformMethod.AbsoluteRotation).setStyles(LabelStyle.from(R.drawable.ic_marker).setApplyDpScale(false).setAnchorPoint(0.5f, 0.5f)))
+            //my_position!!.rotateTo(my_position_rotation)
+        }
     }
 
     /**
@@ -499,7 +543,7 @@ class HomeActivity : BaseActivity() {
                             toilet.latitude = jsonObject.getDouble("latitude")
                             toilet.longitude = jsonObject.getDouble("longitude")
                             mToiletList[toilet.toilet_id] = toilet
-                            ObserverManager.addPOIItem(toilet)
+                            addPOIItem(toilet)
                         }
                     }
                 } catch (e: JSONException) {
@@ -590,8 +634,8 @@ class HomeActivity : BaseActivity() {
     override fun onLocationChanged(location: Location) {
         // 현재위치기준으로 중심점변경
         if (isMyPositionMove && SharedManager.getLatitude() > 0) {
-            ObserverManager.kakaoMap.moveCamera(CameraUpdateFactory.newCenterPosition(LatLng.from(SharedManager.getLatitude(), SharedManager.getLongitude())))
-            ObserverManager.addMyPosition(SharedManager.getLatitude(), SharedManager.getLongitude())
+            kakaoMap?.moveCamera(CameraUpdateFactory.newCenterPosition(LatLng.from(SharedManager.getLatitude(), SharedManager.getLongitude())))
+            addMyPosition(SharedManager.getLatitude(), SharedManager.getLongitude())
             setMyPosition(View.VISIBLE)
         }
     }
