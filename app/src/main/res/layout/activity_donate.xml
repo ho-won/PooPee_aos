@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/main_content_background"
+    android:fitsSystemWindows="true"
+    android:focusable="true"
+    android:focusableInTouchMode="true">
+
+    <kr.co.ho1.poopee.common.view.ToolbarView
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/main_content_background" />
+
+
+    <View
+        android:id="@+id/line_01"
+        style="@style/line_main"
+        android:layout_below="@+id/toolbar" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/line_01"
+        android:animateLayoutChanges="true"
+        android:background="#f2f6ff"
+        android:scrollbars="none">
+
+        <LinearLayout
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:gravity="center_horizontal"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tv_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="80dp"
+                android:gravity="center"
+                android:textColor="@color/text_main"
+                android:textSize="20dp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:gravity="center"
+                android:text="@string/menu_donate_02"
+                android:textColor="#8991a2"
+                android:textSize="14dp" />
+
+            <ImageView
+                android:layout_width="300dp"
+                android:layout_height="192dp"
+                android:layout_marginTop="24dp"
+                android:scaleType="fitXY"
+                android:src="@drawable/img_cash" />
+
+            <Button
+                android:id="@+id/btn_price_01"
+                style="@style/base_btn"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_marginTop="32dp"
+                android:background="@drawable/bg_button"
+                android:textColor="@color/text_white"
+                android:visibility="gone" />
+
+            <Button
+                android:id="@+id/btn_price_02"
+                style="@style/base_btn"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/bg_button"
+                android:textColor="@color/text_white"
+                android:visibility="gone" />
+
+            <Button
+                android:id="@+id/btn_price_03"
+                style="@style/base_btn"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/bg_button"
+                android:textColor="@color/text_white"
+                android:visibility="gone" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="24dp" />
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</RelativeLayout>

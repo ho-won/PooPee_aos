@@ -207,6 +207,32 @@
 
             </LinearLayout>
 
+            <LinearLayout
+                android:id="@+id/layout_donate"
+                android:layout_width="match_parent"
+                android:layout_height="64dp"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:layout_width="28dp"
+                    android:layout_height="28dp"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/ic_menu_sponsor"
+                    tools:ignore="ContentDescription" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal"
+                    android:lineSpacingExtra="6sp"
+                    android:text="@string/nav_text_09"
+                    android:textColor="#292d34"
+                    android:textSize="13sp"
+                    tools:ignore="SmallSp" />
+
+            </LinearLayout>
+
         </LinearLayout>
 
         <ImageButton

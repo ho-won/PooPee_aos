@@ -11,8 +11,8 @@ android {
         applicationId "kr.co.ho1.poopee"
         minSdk 23
         targetSdk 34
-        versionCode 37
-        versionName "2.19.0"
+        versionCode 39
+        versionName "2.20.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
     }
@@ -85,6 +85,7 @@ dependencies {
 
     implementation 'com.google.android.play:review:2.0.1' // 인앱리뷰용
     implementation 'com.google.android.play:review-ktx:2.0.1' // 인앱리뷰용
+    implementation 'com.android.billingclient:billing:7.0.0' // 인앱결제용
 
     implementation 'com.kakao.maps.open:android:2.9.5'
 

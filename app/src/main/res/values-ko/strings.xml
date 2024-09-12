@@ -84,6 +84,7 @@
     <string name="nav_text_06">로그인하기</string>
     <string name="nav_text_07">화장실등록</string>
     <string name="nav_text_08">공유하기</string>
+    <string name="nav_text_09">후원하기</string>
 
     <!-- home -->
     <string name="home_text_01">장소,주소 검색</string>
@@ -139,6 +140,10 @@
     <string name="menu_setting_04">개인정보 처리방침</string>
     <string name="menu_setting_05">서비스 이용약관</string>
     <string name="menu_setting_06">위치정보기반 서비스 이용약관</string>
+
+    <string name="menu_donate_01">PooPee가 도움이 되셨나요?</string>
+    <string name="menu_donate_02">후원을 해주시면 서비스를 유지하는 데\n개발자에게 큰 힘이 됩니다!</string>
+    <string name="menu_donate_03">후원해 주셔서 감사합니다.\n더 노력하는 PooPee가 되겠습니다!!</string>
 
     <!-- toilet -->
     <string name="toilet_option_01">남성용</string>

@@ -17,6 +17,7 @@ import kr.co.ho1.poopee.common.util.MySpannableString
 import kr.co.ho1.poopee.common.util.MyUtil
 import kr.co.ho1.poopee.home.ToiletSearchActivity
 import kr.co.ho1.poopee.login.LoginActivity
+import kr.co.ho1.poopee.menu.DonateActivity
 import kr.co.ho1.poopee.menu.MyInfoActivity
 import kr.co.ho1.poopee.menu.NoticeActivity
 import kr.co.ho1.poopee.menu.SettingActivity
@@ -122,6 +123,11 @@ class NavMainView : NavigationView {
         layout_setting.setOnClickListener {
             ObserverManager.root!!.startActivity(Intent(ObserverManager.context!!, SettingActivity::class.java)
                     .setFlags(Intent.FLAG_ACTIVITY_NO_USER_ACTION)
+            )
+        }
+        layout_donate.setOnClickListener {
+            ObserverManager.root!!.startActivity(Intent(ObserverManager.context!!, DonateActivity::class.java)
+                .setFlags(Intent.FLAG_ACTIVITY_NO_USER_ACTION)
             )
         }
         btn_logout.setOnClickListener {

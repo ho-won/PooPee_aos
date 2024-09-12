@@ -84,6 +84,7 @@
     <string name="nav_text_06">Login</string>
     <string name="nav_text_07">Toilet registration</string>
     <string name="nav_text_08">Share</string>
+    <string name="nav_text_09">Donate</string>
 
     <!-- home -->
     <string name="home_text_01">Place, address search</string>
@@ -139,6 +140,10 @@
     <string name="menu_setting_04">Privacy Policy</string>
     <string name="menu_setting_05">Terms of Service</string>
     <string name="menu_setting_06">Terms of Service for Location-Based Services</string>
+
+    <string name="menu_donate_01">Was PooPee helpful to you?</string>
+    <string name="menu_donate_02">Your donations greatly help the developer\nin maintaining the service!</string>
+    <string name="menu_donate_03">Thank you for your donation. PooPee will strive to work even harder!!</string>
 
     <!-- toilet -->
     <string name="toilet_option_01">Man</string>
