@@ -7,7 +7,7 @@ import retrofit2.http.*
 
 interface RetrofitService {
     companion object {
-        val BASE_APP = if (ObserverManager.testServer) "http://poopee.ho1.co.kr/" else "http://poopee.ho1.co.kr/"
+        val BASE_APP = if (ObserverManager.testServer) "https://poopee.ho1.co.kr/" else "https://poopee.ho1.co.kr/"
 
         const val TEST_API = "etcs/test" // test
         const val APP_INSTALL = "etcs/appInstall" // test
