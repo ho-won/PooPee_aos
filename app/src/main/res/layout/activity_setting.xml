@@ -196,6 +196,34 @@
 
             <View style="@style/line_main" />
 
+            <LinearLayout
+                android:id="@+id/layout_withdraw"
+                android:layout_width="match_parent"
+                android:layout_height="52dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_weight="1"
+                    android:lineSpacingExtra="6sp"
+                    android:text="@string/menu_setting_07"
+                    android:textColor="#292d34"
+                    android:textSize="13sp" />
+
+                <ImageView
+                    android:layout_width="52dp"
+                    android:layout_height="52dp"
+                    android:contentDescription="@string/contentDescription"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/ic_menu_next" />
+
+            </LinearLayout>
+
+            <View style="@style/line_main" />
+
         </LinearLayout>
 
     </ScrollView>

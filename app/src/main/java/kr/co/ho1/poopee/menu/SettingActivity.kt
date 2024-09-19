@@ -3,15 +3,22 @@ package kr.co.ho1.poopee.menu
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import com.google.android.gms.ads.AdRequest
 import kotlinx.android.synthetic.main.activity_setting.*
 import kr.co.ho1.poopee.R
 import kr.co.ho1.poopee.common.ObserverManager
 import kr.co.ho1.poopee.common.base.BaseActivity
 import kr.co.ho1.poopee.common.data.SharedManager
+import kr.co.ho1.poopee.common.dialog.BasicDialog
+import kr.co.ho1.poopee.common.http.RetrofitClient
+import kr.co.ho1.poopee.common.http.RetrofitJSONObject
+import kr.co.ho1.poopee.common.http.RetrofitParams
+import kr.co.ho1.poopee.common.http.RetrofitService
 import kr.co.ho1.poopee.common.util.MyUtil
 import kr.co.ho1.poopee.login.LoginActivity
 import kr.co.ho1.poopee.login.TermsActivity
+import org.json.JSONException
 
 @Suppress("DEPRECATION")
 class SettingActivity : BaseActivity() {
@@ -83,6 +90,52 @@ class SettingActivity : BaseActivity() {
                     .setAction(TermsActivity.ACTION_TERMS_03)
             )
         }
+        layout_withdraw.setOnClickListener {
+            val dialog = BasicDialog(
+                onLeftButton = {
+                    taskWithdraw()
+                },
+                onCenterButton = {
+
+                },
+                onRightButton = {
+
+                }
+            )
+            dialog.setTextContent(MyUtil.getString(R.string.menu_setting_08))
+            dialog.setBtnLeft(MyUtil.getString(R.string.confirm))
+            dialog.setBtnRight(MyUtil.getString(R.string.cancel))
+            dialog.show(supportFragmentManager, "BasicDialog")
+        }
+    }
+
+    /**
+     * [DELETE] 회원탈퇴
+     */
+    private fun taskWithdraw() {
+        showLoading()
+        val params = RetrofitParams()
+        params.put("member_id", SharedManager.getMemberId())
+
+        val request = RetrofitClient.getClient(RetrofitService.BASE_APP).create(RetrofitService::class.java).deleteUser(params.getParams())
+
+        RetrofitJSONObject(request,
+            onSuccess = {
+                try {
+                    if (it.getInt("rst_code") == 0) {
+                        ObserverManager.logout()
+                        Toast.makeText(ObserverManager.context!!, MyUtil.getString(R.string.toast_withdraw), Toast.LENGTH_SHORT).show()
+                        refresh()
+                    }
+                } catch (e: JSONException) {
+                    e.printStackTrace()
+                }
+                hideLoading()
+            },
+            onFailed = {
+                hideLoading()
+            }
+        )
     }
 
     override fun setToolbar() {

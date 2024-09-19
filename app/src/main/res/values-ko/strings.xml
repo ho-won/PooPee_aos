@@ -68,6 +68,7 @@
     <string name="toast_terms_check">모든약관에 동의해주세요</string>
     <string name="toast_send_complete">전송했습니다</string>
     <string name="toast_please_permission">권한이 필요한 작업입니다</string>
+    <string name="toast_withdraw">탈퇴했습니다</string>
 
     <!-- gallery -->
     <string name="gallery_select_dir">폴더선택</string>
@@ -140,6 +141,8 @@
     <string name="menu_setting_04">개인정보 처리방침</string>
     <string name="menu_setting_05">서비스 이용약관</string>
     <string name="menu_setting_06">위치정보기반 서비스 이용약관</string>
+    <string name="menu_setting_07">회원탈퇴</string>
+    <string name="menu_setting_08">탈퇴하시겠습니까?</string>
 
     <string name="menu_donate_01">PooPee가 도움이 되셨나요?</string>
     <string name="menu_donate_02">후원을 해주시면 서비스를 유지하는 데\n개발자에게 큰 힘이 됩니다!</string>

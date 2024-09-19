@@ -70,7 +70,12 @@
 
                 <data
                     android:host="kakaolink"
-                    android:scheme="kakao53565fe7d8355fff626939459a32e7d0" />
+                    android:scheme="kakao53565fe7d8355fff626939459a32e7d0"
+                    tools:ignore="IntentFilterUniqueDataAttributes" />
+                <data
+                    android:host="settings"
+                    android:scheme="poopee"
+                    tools:ignore="IntentFilterUniqueDataAttributes" />
             </intent-filter>
         </activity>
         <activity

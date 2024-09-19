@@ -16,6 +16,7 @@ interface RetrofitService {
         const val LOGIN = "members/login" // [POST] 로그인
         const val JOIN = "members/join" // [POST] 회원가입
         const val USER_UPDATE = "members/updateUser" // [PUT] 회원정보수정
+        const val USER_DELETE = "members/deleteUser" // [DELETE] 회원탈퇴
         const val OVER_LAP = "members/getOverlap" // [GET] 아이디 중복체크
         const val NOTICE_LIST = "notices/getNoticeList" // [GET] 공지사항목록
         const val TOILET_INFO = "toilets/getToiletInfo" // [GET] 화장실 정보
@@ -70,6 +71,9 @@ interface RetrofitService {
     @FormUrlEncoded
     @PUT(USER_UPDATE)
     fun updateUser(@FieldMap params: Map<String, @JvmSuppressWildcards Any>): Call<ResponseBody>
+
+    @DELETE(USER_DELETE)
+    fun deleteUser(@QueryMap params: Map<String, @JvmSuppressWildcards Any>): Call<ResponseBody>
 
     @GET(OVER_LAP)
     fun overLap(@QueryMap params: Map<String, @JvmSuppressWildcards Any>): Call<ResponseBody>

@@ -68,6 +68,7 @@
     <string name="toast_terms_check">Agree to all terms</string>
     <string name="toast_send_complete">Send is complete</string>
     <string name="toast_please_permission">This is a task that requires permission</string>
+    <string name="toast_withdraw">Withdraw completed</string>
 
     <!-- gallery -->
     <string name="gallery_select_dir">Select folder</string>
@@ -140,6 +141,8 @@
     <string name="menu_setting_04">Privacy Policy</string>
     <string name="menu_setting_05">Terms of Service</string>
     <string name="menu_setting_06">Terms of Service for Location-Based Services</string>
+    <string name="menu_setting_07">withdraw</string>
+    <string name="menu_setting_08">Would you like to withdraw?</string>
 
     <string name="menu_donate_01">Was PooPee helpful to you?</string>
     <string name="menu_donate_02">Your donations greatly help the developer\nin maintaining the service!</string>
