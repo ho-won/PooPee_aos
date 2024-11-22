@@ -12,7 +12,16 @@ import java.io.BufferedInputStream
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
+import java.net.HttpURLConnection
 import java.net.URL
+import java.security.SecureRandom
+import java.security.cert.X509Certificate
+import javax.net.ssl.HostnameVerifier
+import javax.net.ssl.HttpsURLConnection
+import javax.net.ssl.SSLContext
+import javax.net.ssl.SSLSocketFactory
+import javax.net.ssl.TrustManager
+import javax.net.ssl.X509TrustManager
 
 class DBVersionTask(progress: ProgressBar, private var onSuccess: (() -> Unit), private var onFailed: (() -> Unit)) {
     private val progressBar: ProgressBar? // 프로그레스바
@@ -71,23 +80,50 @@ class DBVersionTask(progress: ProgressBar, private var onSuccess: (() -> Unit), 
             }
         }
 
+        private fun createTrustManager(): SSLSocketFactory {
+            val trustAllCerts = arrayOf<TrustManager>(object : X509TrustManager {
+                override fun checkClientTrusted(chain: Array<out X509Certificate>?, authType: String?) {}
+                override fun checkServerTrusted(chain: Array<out X509Certificate>?, authType: String?) {}
+                override fun getAcceptedIssuers(): Array<X509Certificate> = arrayOf()
+            })
+
+            try {
+                val sslContext = SSLContext.getInstance("TLS")
+                sslContext.init(null, trustAllCerts, SecureRandom())
+                return sslContext.socketFactory
+            } catch (e: Exception) {
+                throw RuntimeException(e)
+            }
+        }
+
         override fun doInBackground(vararg params: String): String? {
-            // 진행상황률을 표현한 원형 프로그레스바 세팅
             var count: Int
             var filePath: String? = null
 
             try {
                 val url = URL(params[0])
-                val connection = url.openConnection()
-                connection.connect()
+                val connection = if (params[0].startsWith("https", ignoreCase = true)) {
+                    val httpsConnection = url.openConnection() as HttpsURLConnection
+                    httpsConnection.sslSocketFactory = createTrustManager()
+                    httpsConnection.hostnameVerifier = HostnameVerifier { _, _ -> true }
+                    httpsConnection
+                } else {
+                    url.openConnection() as HttpURLConnection
+                }
+
+                connection.apply {
+                    connectTimeout = 30000  // 30초
+                    readTimeout = 30000     // 30초
+                    connect()
+                }
 
                 val lengthOfFile = connection.contentLength
 
-                val input = BufferedInputStream(url.openStream())
-                filePath = ObserverManager.context!!.getExternalFilesDir(null)!!.absolutePath  + File.separator + params[1]
+                val input = BufferedInputStream(connection.inputStream)
+                filePath = ObserverManager.context!!.getExternalFilesDir(null)!!.absolutePath + File.separator + params[1]
                 val output = FileOutputStream(filePath)
 
-                val data = ByteArray(1024)
+                val data = ByteArray(8192)  // 버퍼 크기를 8KB로 증가
 
                 var total: Long = 0
 
@@ -100,8 +136,10 @@ class DBVersionTask(progress: ProgressBar, private var onSuccess: (() -> Unit), 
                 output.flush()
                 output.close()
                 input.close()
-            } catch (e: IOException) {
+                connection.disconnect()
+            } catch (e: Exception) {
                 e.printStackTrace()
+                return null
             }
 
             return filePath
