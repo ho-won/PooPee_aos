@@ -10,19 +10,19 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.android.synthetic.main.activity_toilet_search.*
-import kotlinx.android.synthetic.main.item_kakao_keyword.view.*
-import kr.co.ho1.poopee.R
 import kr.co.ho1.poopee.common.ObserverManager
 import kr.co.ho1.poopee.common.base.BaseActivity
 import kr.co.ho1.poopee.common.http.RetrofitClient
 import kr.co.ho1.poopee.common.http.RetrofitJSONObject
 import kr.co.ho1.poopee.common.http.RetrofitParams
 import kr.co.ho1.poopee.common.http.RetrofitService
+import kr.co.ho1.poopee.databinding.ActivityToiletSearchBinding
+import kr.co.ho1.poopee.databinding.ItemKakaoKeywordBinding
 import kr.co.ho1.poopee.home.model.KaKaoKeyword
 import org.json.JSONException
 
 class ToiletSearchActivity : BaseActivity() {
+    private lateinit var binding: ActivityToiletSearchBinding
 
     companion object {
         const val RESULT_CREATE = 1001
@@ -33,35 +33,36 @@ class ToiletSearchActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_toilet_search)
+        binding = ActivityToiletSearchBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         init()
         setListener()
     }
 
     private fun init() {
-        rv_search.layoutManager = LinearLayoutManager(this)
+        binding.rvSearch.layoutManager = LinearLayoutManager(this)
         keywordAdapter = ListAdapter()
-        rv_search.adapter = keywordAdapter
+        binding.rvSearch.adapter = keywordAdapter
     }
 
     private fun setListener() {
-        btn_back.setOnClickListener {
+        binding.btnBack.setOnClickListener {
             finish()
         }
-        btn_delete.setOnClickListener {
-            edt_search.setText("")
+        binding.btnDelete.setOnClickListener {
+            binding.edtSearch.setText("")
         }
-        btn_map.setOnClickListener {
+        binding.btnMap.setOnClickListener {
             ObserverManager.root!!.startActivityForResult(
                 Intent(ObserverManager.context!!, ToiletCreateActivity::class.java)
                     .setFlags(Intent.FLAG_ACTIVITY_NO_USER_ACTION), RESULT_CREATE
             )
         }
-        btn_bottom.setOnClickListener {
-            btn_map.performClick()
+        binding.btnBottom.setOnClickListener {
+            binding.btnMap.performClick()
         }
-        edt_search.addTextChangedListener(object : TextWatcher {
+        binding.edtSearch.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(p0: Editable?) {
 
             }
@@ -72,15 +73,15 @@ class ToiletSearchActivity : BaseActivity() {
 
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
                 if (p0.toString().isEmpty()) {
-                    rv_search.visibility = View.GONE
-                    layout_no_list.visibility = View.VISIBLE
-                    btn_delete.visibility = View.GONE
-                    btn_map.visibility = View.VISIBLE
+                    binding.rvSearch.visibility = View.GONE
+                    binding.layoutNoList.visibility = View.VISIBLE
+                    binding.btnDelete.visibility = View.GONE
+                    binding.btnMap.visibility = View.VISIBLE
                 } else {
-                    rv_search.visibility = View.VISIBLE
-                    layout_no_list.visibility = View.GONE
-                    btn_delete.visibility = View.VISIBLE
-                    btn_map.visibility = View.GONE
+                    binding.rvSearch.visibility = View.VISIBLE
+                    binding.layoutNoList.visibility = View.GONE
+                    binding.btnDelete.visibility = View.VISIBLE
+                    binding.btnMap.visibility = View.GONE
                     taskKakaoLocalSearch(p0.toString())
                 }
             }
@@ -130,7 +131,8 @@ class ToiletSearchActivity : BaseActivity() {
     inner class ListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-            return ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_kakao_keyword, parent, false))
+            val binding = ItemKakaoKeywordBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+            return ViewHolder(binding)
         }
 
         override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
@@ -145,12 +147,12 @@ class ToiletSearchActivity : BaseActivity() {
             return 0
         }
 
-        inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        inner class ViewHolder(private val binding: ItemKakaoKeywordBinding) : RecyclerView.ViewHolder(binding.root) {
 
             @SuppressLint("SetTextI18n")
             fun update(position: Int) {
-                itemView.tv_title.text = keywordList[position].place_name
-                itemView.tv_sub.text = keywordList[position].address_name
+                binding.tvTitle.text = keywordList[position].place_name
+                binding.tvSub.text = keywordList[position].address_name
 
                 itemView.setOnClickListener {
                     ObserverManager.root!!.startActivityForResult(

@@ -5,8 +5,6 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.widget.Toast
-import com.google.android.gms.ads.AdRequest
-import kotlinx.android.synthetic.main.activity_login.*
 import kr.co.ho1.poopee.R
 import kr.co.ho1.poopee.common.ObserverManager
 import kr.co.ho1.poopee.common.base.BaseActivity
@@ -17,42 +15,46 @@ import kr.co.ho1.poopee.common.http.RetrofitParams
 import kr.co.ho1.poopee.common.http.RetrofitService
 import kr.co.ho1.poopee.common.util.MyUtil
 import kr.co.ho1.poopee.common.util.StringFilter
+import kr.co.ho1.poopee.databinding.ActivityLoginBinding
 import org.json.JSONException
 import retrofit2.http.POST
 
 @Suppress("DEPRECATION")
 class LoginActivity : BaseActivity() {
+    private lateinit var binding: ActivityLoginBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_login)
+        binding = ActivityLoginBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         init()
         setListener()
     }
 
     private fun init() {
-        edt_username.filters = StringFilter.getAlphanumeric(20)
-        edt_password.filters = StringFilter.getAlphanumeric(20)
+        binding.edtUsername.filters = StringFilter.getAlphanumeric(20)
+        binding.edtPassword.filters = StringFilter.getAlphanumeric(20)
     }
 
     private fun setListener() {
-        btn_close.setOnClickListener {
+        binding.btnClose.setOnClickListener {
             finish()
         }
-        btn_login.setOnClickListener {
-            if (edt_username.text.toString().isEmpty() || edt_password.text.toString().isEmpty()) {
+        binding.btnLogin.setOnClickListener {
+            if (binding.edtUsername.text.toString().isEmpty() || binding.edtPassword.text.toString().isEmpty()) {
                 Toast.makeText(ObserverManager.context!!, MyUtil.getString(R.string.toast_login_condition), Toast.LENGTH_SHORT).show()
             } else {
-                taskLogin(edt_username.text.toString(), edt_password.text.toString())
+                taskLogin(binding.edtUsername.text.toString(), binding.edtPassword.text.toString())
             }
         }
-        layout_join.setOnClickListener {
-            startActivity(Intent(ObserverManager.context!!, JoinActivity::class.java)
+        binding.layoutJoin.setOnClickListener {
+            startActivity(
+                Intent(ObserverManager.context!!, JoinActivity::class.java)
                     .setFlags(Intent.FLAG_ACTIVITY_NO_USER_ACTION)
             )
         }
-        edt_username.addTextChangedListener(object : TextWatcher {
+        binding.edtUsername.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(p0: Editable?) {
 
             }
@@ -65,7 +67,7 @@ class LoginActivity : BaseActivity() {
                 checkIdPw()
             }
         })
-        edt_password.addTextChangedListener(object : TextWatcher {
+        binding.edtPassword.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(p0: Editable?) {
 
             }
@@ -81,7 +83,7 @@ class LoginActivity : BaseActivity() {
     }
 
     private fun checkIdPw() {
-        btn_login.isEnabled = edt_username.text.isNotEmpty() && edt_password.text.isNotEmpty()
+        binding.btnLogin.isEnabled = binding.edtUsername.text.isNotEmpty() && binding.edtPassword.text.isNotEmpty()
     }
 
     /**
@@ -98,28 +100,28 @@ class LoginActivity : BaseActivity() {
         val request = RetrofitClient.getClient(RetrofitService.BASE_APP).create(RetrofitService::class.java).login(params.getParams())
 
         RetrofitJSONObject(request,
-                onSuccess = {
-                    try {
-                        if (it.getInt("rst_code") == 0) {
-                            SharedManager.setLoginCheck(true)
-                            SharedManager.setMemberId(it.getString("member_id"))
-                            SharedManager.setMemberUsername(username)
-                            SharedManager.setMemberPassword(password)
-                            SharedManager.setMemberName(it.getString("name"))
-                            SharedManager.setMemberGender(it.getString("gender"))
-                            MyUtil.keyboardHide(edt_username)
-                            finish()
-                        } else {
-                            Toast.makeText(ObserverManager.context!!, MyUtil.getString(R.string.toast_login_fail), Toast.LENGTH_SHORT).show()
-                        }
-                    } catch (e: JSONException) {
-                        e.printStackTrace()
+            onSuccess = {
+                try {
+                    if (it.getInt("rst_code") == 0) {
+                        SharedManager.setLoginCheck(true)
+                        SharedManager.setMemberId(it.getString("member_id"))
+                        SharedManager.setMemberUsername(username)
+                        SharedManager.setMemberPassword(password)
+                        SharedManager.setMemberName(it.getString("name"))
+                        SharedManager.setMemberGender(it.getString("gender"))
+                        MyUtil.keyboardHide(binding.edtUsername)
+                        finish()
+                    } else {
+                        Toast.makeText(ObserverManager.context!!, MyUtil.getString(R.string.toast_login_fail), Toast.LENGTH_SHORT).show()
                     }
-                    hideLoading()
-                },
-                onFailed = {
-                    hideLoading()
+                } catch (e: JSONException) {
+                    e.printStackTrace()
                 }
+                hideLoading()
+            },
+            onFailed = {
+                hideLoading()
+            }
         )
     }
 

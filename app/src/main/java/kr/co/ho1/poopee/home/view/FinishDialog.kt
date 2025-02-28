@@ -6,18 +6,23 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.google.android.gms.ads.AdRequest
-import com.google.android.play.core.review.ReviewManagerFactory
-import kotlinx.android.synthetic.main.dialog_finish.*
-import kr.co.ho1.poopee.R
 import kr.co.ho1.poopee.common.ObserverManager
 import kr.co.ho1.poopee.common.base.BaseDialog
-import kr.co.ho1.poopee.home.model.Toilet
+import kr.co.ho1.poopee.databinding.DialogFinishBinding
 
 @SuppressLint("ValidFragment")
 class FinishDialog() : BaseDialog() {
+    private var _binding: DialogFinishBinding? = null
+    private val binding get() = _binding!!
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.dialog_finish, container, false)
+        _binding = DialogFinishBinding.inflate(layoutInflater)
+        return binding.root
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -28,14 +33,14 @@ class FinishDialog() : BaseDialog() {
     }
 
     private fun init() {
-        ad_view.loadAd(AdRequest.Builder().build())
+        binding.adView.loadAd(AdRequest.Builder().build())
     }
 
     private fun setListener() {
-        btn_no.setOnClickListener {
+        binding.btnNo.setOnClickListener {
             dismiss()
         }
-        btn_yes.setOnClickListener {
+        binding.btnYes.setOnClickListener {
             ObserverManager.root!!.finish()
         }
     }

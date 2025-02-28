@@ -7,8 +7,6 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
 import android.widget.Toast
-import com.google.android.gms.ads.AdRequest
-import kotlinx.android.synthetic.main.activity_join.*
 import kr.co.ho1.poopee.R
 import kr.co.ho1.poopee.common.ObserverManager
 import kr.co.ho1.poopee.common.base.BaseActivity
@@ -18,28 +16,31 @@ import kr.co.ho1.poopee.common.http.RetrofitParams
 import kr.co.ho1.poopee.common.http.RetrofitService
 import kr.co.ho1.poopee.common.util.MyUtil
 import kr.co.ho1.poopee.common.util.StringFilter
+import kr.co.ho1.poopee.databinding.ActivityJoinBinding
 import org.json.JSONException
 
 @Suppress("DEPRECATION")
 class JoinActivity : BaseActivity() {
+    private lateinit var binding: ActivityJoinBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_join)
+        binding = ActivityJoinBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         init()
         setListener()
     }
 
     private fun init() {
-        edt_username.filters = StringFilter.getAlphanumeric(20)
-        edt_password.filters = StringFilter.getAlphanumeric(20)
-        edt_password_confirm.filters = StringFilter.getAlphanumeric(20)
-        edt_name.filters = StringFilter.getAlphanumericHangul(20)
+        binding.edtUsername.filters = StringFilter.getAlphanumeric(20)
+        binding.edtPassword.filters = StringFilter.getAlphanumeric(20)
+        binding.edtPasswordConfirm.filters = StringFilter.getAlphanumeric(20)
+        binding.edtName.filters = StringFilter.getAlphanumericHangul(20)
     }
 
     private fun setListener() {
-        edt_name.addTextChangedListener(object : TextWatcher {
+        binding.edtName.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(p0: Editable?) {
 
             }
@@ -49,15 +50,15 @@ class JoinActivity : BaseActivity() {
             }
 
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                if (edt_name.text.isEmpty()) {
-                    btn_name_delete.visibility = View.GONE
+                if (binding.edtName.text.isEmpty()) {
+                    binding.btnNameDelete.visibility = View.GONE
                 } else {
-                    btn_name_delete.visibility = View.VISIBLE
+                    binding.btnNameDelete.visibility = View.VISIBLE
                 }
                 checkAllInput()
             }
         })
-        edt_username.addTextChangedListener(object : TextWatcher {
+        binding.edtUsername.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(p0: Editable?) {
 
             }
@@ -67,14 +68,14 @@ class JoinActivity : BaseActivity() {
             }
 
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                tv_id_ex.text = MyUtil.getString(R.string.login_11)
-                tv_id_ex.setTextColor(Color.parseColor("#d0d2d5"))
-                iv_id_ex.setImageDrawable(MyUtil.getDrawable(R.drawable.ic_alret))
-                tv_overlap.isEnabled = edt_username.text.length > 5
+                binding.tvIdEx.text = MyUtil.getString(R.string.login_11)
+                binding.tvIdEx.setTextColor(Color.parseColor("#d0d2d5"))
+                binding.ivIdEx.setImageDrawable(MyUtil.getDrawable(R.drawable.ic_alret))
+                binding.tvOverlap.isEnabled = binding.edtUsername.text.length > 5
                 checkAllInput()
             }
         })
-        edt_password.addTextChangedListener(object : TextWatcher {
+        binding.edtPassword.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(p0: Editable?) {
 
             }
@@ -84,24 +85,24 @@ class JoinActivity : BaseActivity() {
             }
 
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                if (edt_password.text.isEmpty()) {
-                    btn_password_delete.visibility = View.GONE
+                if (binding.edtPassword.text.isEmpty()) {
+                    binding.btnPasswordDelete.visibility = View.GONE
                 } else {
-                    btn_password_delete.visibility = View.VISIBLE
+                    binding.btnPasswordDelete.visibility = View.VISIBLE
                 }
-                if (edt_password.text.toString() != edt_password_confirm.text.toString()) {
-                    tv_password_ex.text = MyUtil.getString(R.string.toast_join_condition_01)
-                    tv_password_ex.setTextColor(Color.parseColor("#ff4a5c"))
-                    iv_password_ex.setImageDrawable(MyUtil.getDrawable(R.drawable.ic_alret_error))
+                if (binding.edtPassword.text.toString() != binding.edtPasswordConfirm.text.toString()) {
+                    binding.tvPasswordEx.text = MyUtil.getString(R.string.toast_join_condition_01)
+                    binding.tvPasswordEx.setTextColor(Color.parseColor("#ff4a5c"))
+                    binding.ivPasswordEx.setImageDrawable(MyUtil.getDrawable(R.drawable.ic_alret_error))
                 } else {
-                    tv_password_ex.text = MyUtil.getString(R.string.login_14)
-                    tv_password_ex.setTextColor(Color.parseColor("#d0d2d5"))
-                    iv_password_ex.setImageDrawable(MyUtil.getDrawable(R.drawable.ic_alret))
+                    binding.tvPasswordEx.text = MyUtil.getString(R.string.login_14)
+                    binding.tvPasswordEx.setTextColor(Color.parseColor("#d0d2d5"))
+                    binding.ivPasswordEx.setImageDrawable(MyUtil.getDrawable(R.drawable.ic_alret))
                 }
                 checkAllInput()
             }
         })
-        edt_password_confirm.addTextChangedListener(object : TextWatcher {
+        binding.edtPasswordConfirm.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(p0: Editable?) {
 
             }
@@ -111,107 +112,110 @@ class JoinActivity : BaseActivity() {
             }
 
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                if (edt_password_confirm.text.isEmpty()) {
-                    btn_password_confirm_delete.visibility = View.GONE
+                if (binding.edtPasswordConfirm.text.isEmpty()) {
+                    binding.btnPasswordConfirmDelete.visibility = View.GONE
                 } else {
-                    btn_password_confirm_delete.visibility = View.VISIBLE
+                    binding.btnPasswordConfirmDelete.visibility = View.VISIBLE
                 }
-                if (edt_password.text.toString() != edt_password_confirm.text.toString()) {
-                    tv_password_ex.text = MyUtil.getString(R.string.toast_join_condition_01)
-                    tv_password_ex.setTextColor(Color.parseColor("#ff4a5c"))
-                    iv_password_ex.setImageDrawable(MyUtil.getDrawable(R.drawable.ic_alret_error))
+                if (binding.edtPassword.text.toString() != binding.edtPasswordConfirm.text.toString()) {
+                    binding.tvPasswordEx.text = MyUtil.getString(R.string.toast_join_condition_01)
+                    binding.tvPasswordEx.setTextColor(Color.parseColor("#ff4a5c"))
+                    binding.ivPasswordEx.setImageDrawable(MyUtil.getDrawable(R.drawable.ic_alret_error))
                 } else {
-                    tv_password_ex.text = MyUtil.getString(R.string.login_14)
-                    tv_password_ex.setTextColor(Color.parseColor("#d0d2d5"))
-                    iv_password_ex.setImageDrawable(MyUtil.getDrawable(R.drawable.ic_alret))
+                    binding.tvPasswordEx.text = MyUtil.getString(R.string.login_14)
+                    binding.tvPasswordEx.setTextColor(Color.parseColor("#d0d2d5"))
+                    binding.ivPasswordEx.setImageDrawable(MyUtil.getDrawable(R.drawable.ic_alret))
                 }
                 checkAllInput()
             }
         })
-        btn_name_delete.setOnClickListener {
-            edt_name.setText("")
+        binding.btnNameDelete.setOnClickListener {
+            binding.edtName.setText("")
         }
-        btn_password_delete.setOnClickListener {
-            edt_password.setText("")
+        binding.btnPasswordDelete.setOnClickListener {
+            binding.edtPassword.setText("")
         }
-        btn_password_confirm_delete.setOnClickListener {
-            edt_password_confirm.setText("")
+        binding.btnPasswordConfirmDelete.setOnClickListener {
+            binding.edtPasswordConfirm.setText("")
         }
-        tv_overlap.setOnClickListener {
-            taskOverlap(edt_username.text.toString())
+        binding.tvOverlap.setOnClickListener {
+            taskOverlap(binding.edtUsername.text.toString())
         }
-        cb_terms_01.setOnCheckedChangeListener { _, _ ->
+        binding.cbTerms01.setOnCheckedChangeListener { _, _ ->
             checkAllInput()
         }
-        cb_terms_02.setOnCheckedChangeListener { _, _ ->
+        binding.cbTerms02.setOnCheckedChangeListener { _, _ ->
             checkAllInput()
         }
-        cb_terms_03.setOnCheckedChangeListener { _, _ ->
+        binding.cbTerms03.setOnCheckedChangeListener { _, _ ->
             checkAllInput()
         }
-        tv_terms_01_detail.setOnClickListener {
-            startActivity(Intent(ObserverManager.context!!, TermsActivity::class.java)
+        binding.tvTerms01Detail.setOnClickListener {
+            startActivity(
+                Intent(ObserverManager.context!!, TermsActivity::class.java)
                     .setFlags(Intent.FLAG_ACTIVITY_NO_USER_ACTION)
                     .setAction(TermsActivity.ACTION_TERMS_01)
             )
         }
-        tv_terms_02_detail.setOnClickListener {
-            startActivity(Intent(ObserverManager.context!!, TermsActivity::class.java)
+        binding.tvTerms02Detail.setOnClickListener {
+            startActivity(
+                Intent(ObserverManager.context!!, TermsActivity::class.java)
                     .setFlags(Intent.FLAG_ACTIVITY_NO_USER_ACTION)
                     .setAction(TermsActivity.ACTION_TERMS_02)
             )
         }
-        tv_terms_03_detail.setOnClickListener {
-            startActivity(Intent(ObserverManager.context!!, TermsActivity::class.java)
+        binding.tvTerms03Detail.setOnClickListener {
+            startActivity(
+                Intent(ObserverManager.context!!, TermsActivity::class.java)
                     .setFlags(Intent.FLAG_ACTIVITY_NO_USER_ACTION)
                     .setAction(TermsActivity.ACTION_TERMS_03)
             )
         }
-        layout_back.setOnClickListener {
+        binding.layoutBack.setOnClickListener {
             finish()
         }
-        layout_join.setOnClickListener {
-            if (edt_username.text.toString().isEmpty() || edt_password.text.toString().isEmpty() || edt_password_confirm.text.toString().isEmpty() || edt_name.text.toString().isEmpty()) {
+        binding.layoutJoin.setOnClickListener {
+            if (binding.edtUsername.text.toString().isEmpty() || binding.edtPassword.text.toString().isEmpty() || binding.edtPasswordConfirm.text.toString().isEmpty() || binding.edtName.text.toString().isEmpty()) {
                 Toast.makeText(ObserverManager.context!!, MyUtil.getString(R.string.toast_please_all_input), Toast.LENGTH_SHORT).show()
-            } else if (edt_password.text.toString() != edt_password_confirm.text.toString()) {
+            } else if (binding.edtPassword.text.toString() != binding.edtPasswordConfirm.text.toString()) {
                 Toast.makeText(ObserverManager.context!!, MyUtil.getString(R.string.toast_join_condition_01), Toast.LENGTH_SHORT).show()
-            } else if (!rb_man.isChecked && !rb_woman.isChecked) {
+            } else if (!binding.rbMan.isChecked && !binding.rbWoman.isChecked) {
                 Toast.makeText(ObserverManager.context!!, MyUtil.getString(R.string.toast_join_condition_02), Toast.LENGTH_SHORT).show()
-            } else if (!cb_terms_01.isChecked || !cb_terms_02.isChecked || !cb_terms_03.isChecked) {
+            } else if (!binding.cbTerms01.isChecked || !binding.cbTerms02.isChecked || !binding.cbTerms03.isChecked) {
                 Toast.makeText(ObserverManager.context!!, MyUtil.getString(R.string.toast_terms_check), Toast.LENGTH_SHORT).show()
             } else {
-                taskJoin(edt_username.text.toString(), edt_password.text.toString(), edt_name.text.toString(), if (rb_man.isChecked) "0" else "1")
+                taskJoin(binding.edtUsername.text.toString(), binding.edtPassword.text.toString(), binding.edtName.text.toString(), if (binding.rbMan.isChecked) "0" else "1")
             }
         }
     }
 
     private fun checkAllInput() {
-        layout_join.isEnabled = false
-        tv_join.setTextColor(Color.parseColor("#6b9bff"))
-        iv_join.setImageDrawable(MyUtil.getDrawable(R.drawable.ic_join_nonext))
+        binding.layoutJoin.isEnabled = false
+        binding.tvJoin.setTextColor(Color.parseColor("#6b9bff"))
+        binding.ivJoin.setImageDrawable(MyUtil.getDrawable(R.drawable.ic_join_nonext))
 
-        if (edt_name.text.isEmpty()) {
+        if (binding.edtName.text.isEmpty()) {
             return
         }
-        if (!rb_man.isChecked && !rb_woman.isChecked) {
+        if (!binding.rbMan.isChecked && !binding.rbWoman.isChecked) {
             return
         }
-        if (edt_username.text.isEmpty() || edt_username.text.length < 6) {
+        if (binding.edtUsername.text.isEmpty() || binding.edtUsername.text.length < 6) {
             return
         }
-        if (edt_password.text.isEmpty() || edt_password_confirm.text.isEmpty()) {
+        if (binding.edtPassword.text.isEmpty() || binding.edtPasswordConfirm.text.isEmpty()) {
             return
         }
-        if (edt_password.text.toString() != edt_password_confirm.text.toString()) {
+        if (binding.edtPassword.text.toString() != binding.edtPasswordConfirm.text.toString()) {
             return
         }
-        if (!cb_terms_01.isChecked || !cb_terms_02.isChecked || !cb_terms_03.isChecked) {
+        if (!binding.cbTerms01.isChecked || !binding.cbTerms02.isChecked || !binding.cbTerms03.isChecked) {
             return
         }
 
-        layout_join.isEnabled = true
-        tv_join.setTextColor(Color.parseColor("#ffffff"))
-        iv_join.setImageDrawable(MyUtil.getDrawable(R.drawable.ic_join_next))
+        binding.layoutJoin.isEnabled = true
+        binding.tvJoin.setTextColor(Color.parseColor("#ffffff"))
+        binding.ivJoin.setImageDrawable(MyUtil.getDrawable(R.drawable.ic_join_next))
     }
 
     /**
@@ -225,25 +229,25 @@ class JoinActivity : BaseActivity() {
         val request = RetrofitClient.getClient(RetrofitService.BASE_APP).create(RetrofitService::class.java).overLap(params.getParams())
 
         RetrofitJSONObject(request,
-                onSuccess = {
-                    try {
-                        if (it.getInt("rst_code") == 0) {
-                            tv_id_ex.text = MyUtil.getString(R.string.login_12)
-                            tv_id_ex.setTextColor(Color.parseColor("#2470ff"))
-                            iv_id_ex.setImageDrawable(MyUtil.getDrawable(R.drawable.ic_alret_check))
-                        } else if (it.getInt("rst_code") == 1) {
-                            tv_id_ex.text = MyUtil.getString(R.string.toast_join_id_fail)
-                            tv_id_ex.setTextColor(Color.parseColor("#ff4a5c"))
-                            iv_id_ex.setImageDrawable(MyUtil.getDrawable(R.drawable.ic_alret_error))
-                        }
-                    } catch (e: JSONException) {
-                        e.printStackTrace()
+            onSuccess = {
+                try {
+                    if (it.getInt("rst_code") == 0) {
+                        binding.tvIdEx.text = MyUtil.getString(R.string.login_12)
+                        binding.tvIdEx.setTextColor(Color.parseColor("#2470ff"))
+                        binding.ivIdEx.setImageDrawable(MyUtil.getDrawable(R.drawable.ic_alret_check))
+                    } else if (it.getInt("rst_code") == 1) {
+                        binding.tvIdEx.text = MyUtil.getString(R.string.toast_join_id_fail)
+                        binding.tvIdEx.setTextColor(Color.parseColor("#ff4a5c"))
+                        binding.ivIdEx.setImageDrawable(MyUtil.getDrawable(R.drawable.ic_alret_error))
                     }
-                    hideLoading()
-                },
-                onFailed = {
-                    hideLoading()
+                } catch (e: JSONException) {
+                    e.printStackTrace()
                 }
+                hideLoading()
+            },
+            onFailed = {
+                hideLoading()
+            }
         )
     }
 
@@ -261,23 +265,23 @@ class JoinActivity : BaseActivity() {
         val request = RetrofitClient.getClient(RetrofitService.BASE_APP).create(RetrofitService::class.java).join(params.getParams())
 
         RetrofitJSONObject(request,
-                onSuccess = {
-                    try {
-                        if (it.getInt("rst_code") == 0) {
-                            Toast.makeText(ObserverManager.context!!, MyUtil.getString(R.string.toast_join_complete), Toast.LENGTH_SHORT).show()
-                            MyUtil.keyboardHide(edt_username)
-                            finish()
-                        } else if (it.getInt("rst_code") == 1) {
-                            Toast.makeText(ObserverManager.context!!, MyUtil.getString(R.string.toast_join_id_fail), Toast.LENGTH_SHORT).show()
-                        }
-                    } catch (e: JSONException) {
-                        e.printStackTrace()
+            onSuccess = {
+                try {
+                    if (it.getInt("rst_code") == 0) {
+                        Toast.makeText(ObserverManager.context!!, MyUtil.getString(R.string.toast_join_complete), Toast.LENGTH_SHORT).show()
+                        MyUtil.keyboardHide(binding.edtUsername)
+                        finish()
+                    } else if (it.getInt("rst_code") == 1) {
+                        Toast.makeText(ObserverManager.context!!, MyUtil.getString(R.string.toast_join_id_fail), Toast.LENGTH_SHORT).show()
                     }
-                    hideLoading()
-                },
-                onFailed = {
-                    hideLoading()
+                } catch (e: JSONException) {
+                    e.printStackTrace()
                 }
+                hideLoading()
+            },
+            onFailed = {
+                hideLoading()
+            }
         )
     }
 

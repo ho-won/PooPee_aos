@@ -6,10 +6,13 @@ import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.RelativeLayout
-import kotlinx.android.synthetic.main.view_toolbar.view.*
 import kr.co.ho1.poopee.R
+import kr.co.ho1.poopee.databinding.ActivityCopyBinding
+import kr.co.ho1.poopee.databinding.ViewToolbarBinding
 
 class ToolbarView : RelativeLayout {
+    public lateinit var binding: ViewToolbarBinding
+
     private lateinit var onBtnLeftOne: (() -> Unit)
     private lateinit var onBtnLeftTwo: (() -> Unit)
     private lateinit var onBtnRightTwo: (() -> Unit)
@@ -28,15 +31,15 @@ class ToolbarView : RelativeLayout {
     }
 
     private fun init(context: Context) {
-        LayoutInflater.from(context).inflate(R.layout.view_toolbar, this, true)
+        binding = ViewToolbarBinding.inflate(LayoutInflater.from(context), this, true)
         setListener()
     }
 
     private fun setListener() {
-        btn_left_one.setOnClickListener { onBtnLeftOne() }
-        btn_left_two.setOnClickListener { onBtnLeftTwo() }
-        btn_right_two.setOnClickListener { onBtnRightTwo() }
-        btn_right_one.setOnClickListener { onBtnRightOne() }
+        binding.btnLeftOne.setOnClickListener { onBtnLeftOne() }
+        binding.btnLeftTwo.setOnClickListener { onBtnLeftTwo() }
+        binding.btnRightTwo.setOnClickListener { onBtnRightTwo() }
+        binding.btnRightOne.setOnClickListener { onBtnRightOne() }
     }
 
     fun setSelectedListener(onBtnLeftOne: (() -> Unit), onBtnLeftTwo: (() -> Unit), onBtnRightTwo: (() -> Unit), onBtnRightOne: (() -> Unit)) {
@@ -47,48 +50,48 @@ class ToolbarView : RelativeLayout {
     }
 
     fun setTitle(title: String) {
-        tv_toolbar_title.visibility = View.VISIBLE
-        tv_toolbar_title.text = title
+        binding.tvToolbarTitle.visibility = View.VISIBLE
+        binding.tvToolbarTitle.text = title
     }
 
     fun setImageLeftOne(drawable: Drawable?) {
         if (drawable == null) {
-            btn_left_one.visibility = View.INVISIBLE
+            binding.btnLeftOne.visibility = View.INVISIBLE
         } else {
-            btn_left_one.visibility = View.VISIBLE
-            btn_left_one.setImageDrawable(drawable)
+            binding.btnLeftOne.visibility = View.VISIBLE
+            binding.btnLeftOne.setImageDrawable(drawable)
         }
     }
 
     fun setImageLeftTwo(drawable: Drawable?) {
         if (drawable == null) {
-            btn_left_two.visibility = View.INVISIBLE
+            binding.btnLeftTwo.visibility = View.INVISIBLE
         } else {
-            btn_left_two.visibility = View.VISIBLE
-            btn_left_two.setImageDrawable(drawable)
+            binding.btnLeftTwo.visibility = View.VISIBLE
+            binding.btnLeftTwo.setImageDrawable(drawable)
         }
     }
 
     fun setImageRightTwo(drawable: Drawable?) {
         if (drawable == null) {
-            btn_right_two.visibility = View.INVISIBLE
+            binding.btnRightTwo.visibility = View.INVISIBLE
         } else {
-            btn_right_two.visibility = View.VISIBLE
-            btn_right_two.setImageDrawable(drawable)
+            binding.btnRightTwo.visibility = View.VISIBLE
+            binding.btnRightTwo.setImageDrawable(drawable)
         }
     }
 
     fun setImageRightOne(drawable: Drawable?) {
         if (drawable == null) {
-            btn_right_one.visibility = View.INVISIBLE
+            binding.btnRightOne.visibility = View.INVISIBLE
         } else {
-            btn_right_one.visibility = View.VISIBLE
-            btn_right_one.setImageDrawable(drawable)
+            binding.btnRightOne.visibility = View.VISIBLE
+            binding.btnRightOne.setImageDrawable(drawable)
         }
     }
 
     override fun getRootView(): RelativeLayout? {
-        return root_view
+        return binding.rootView
     }
 
 }

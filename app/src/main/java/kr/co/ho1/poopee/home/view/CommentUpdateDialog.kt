@@ -8,11 +8,6 @@ import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import kotlinx.android.synthetic.main.dialog_comment_update.*
-import kotlinx.android.synthetic.main.dialog_comment_update.btn_close
-import kotlinx.android.synthetic.main.dialog_comment_update.edt_content
-import kotlinx.android.synthetic.main.dialog_suggest.*
-import kr.co.ho1.poopee.R
 import kr.co.ho1.poopee.common.base.BaseDialog
 import kr.co.ho1.poopee.common.data.SharedManager
 import kr.co.ho1.poopee.common.http.RetrofitClient
@@ -21,16 +16,26 @@ import kr.co.ho1.poopee.common.http.RetrofitParams
 import kr.co.ho1.poopee.common.http.RetrofitService
 import kr.co.ho1.poopee.common.util.MyUtil
 import kr.co.ho1.poopee.common.util.SleepTask
+import kr.co.ho1.poopee.databinding.DialogCommentUpdateBinding
 import kr.co.ho1.poopee.home.model.Comment
 import org.json.JSONException
 import retrofit2.http.PUT
 
 @SuppressLint("ValidFragment")
 class CommentUpdateDialog(private var onUpdate: ((comment: Comment) -> Unit)) : BaseDialog() {
+    private var _binding: DialogCommentUpdateBinding? = null
+    private val binding get() = _binding!!
+
     private var mComment: Comment = Comment()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.dialog_comment_update, container, false)
+        _binding = DialogCommentUpdateBinding.inflate(layoutInflater)
+        return binding.root
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -41,20 +46,20 @@ class CommentUpdateDialog(private var onUpdate: ((comment: Comment) -> Unit)) : 
     }
 
     override fun dismiss() {
-        MyUtil.keyboardHide(edt_content)
+        MyUtil.keyboardHide(binding.edtContent)
         super.dismiss()
     }
 
     private fun init() {
-        edt_content.setText(mComment.content)
+        binding.edtContent.setText(mComment.content)
         SleepTask(100, onFinish = {
-            edt_content.requestFocus()
-            MyUtil.keyboardShow(edt_content)
+            binding.edtContent.requestFocus()
+            MyUtil.keyboardShow(binding.edtContent)
         })
     }
 
     private fun setListener() {
-        edt_content.addTextChangedListener(object : TextWatcher {
+        binding.edtContent.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(p0: Editable?) {
 
             }
@@ -65,20 +70,20 @@ class CommentUpdateDialog(private var onUpdate: ((comment: Comment) -> Unit)) : 
 
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
                 if (p0.toString().isEmpty()) {
-                    btn_update.setTextColor(Color.parseColor("#a0a4aa"))
-                    btn_update.isEnabled = false
+                    binding.btnUpdate.setTextColor(Color.parseColor("#a0a4aa"))
+                    binding.btnUpdate.isEnabled = false
                 } else {
-                    btn_update.setTextColor(Color.parseColor("#2470ff"))
-                    btn_update.isEnabled = true
+                    binding.btnUpdate.setTextColor(Color.parseColor("#2470ff"))
+                    binding.btnUpdate.isEnabled = true
                 }
             }
         })
-        btn_update.setOnClickListener {
-            mComment.content = edt_content.text.toString()
+        binding.btnUpdate.setOnClickListener {
+            mComment.content = binding.edtContent.text.toString()
             taskCommentUpdate()
         }
 
-        btn_close.setOnClickListener {
+        binding.btnClose.setOnClickListener {
             dismiss()
         }
     }
@@ -99,19 +104,19 @@ class CommentUpdateDialog(private var onUpdate: ((comment: Comment) -> Unit)) : 
         val request = RetrofitClient.getClient(RetrofitService.BASE_APP).create(RetrofitService::class.java).commentUpdate(params.getParams())
 
         RetrofitJSONObject(request,
-                onSuccess = {
-                    try {
-                        if (it.getInt("rst_code") == 0) {
-                            onUpdate(mComment)
-                            dismiss()
-                        }
-                    } catch (e: JSONException) {
-                        e.printStackTrace()
+            onSuccess = {
+                try {
+                    if (it.getInt("rst_code") == 0) {
+                        onUpdate(mComment)
+                        dismiss()
                     }
-                },
-                onFailed = {
-
+                } catch (e: JSONException) {
+                    e.printStackTrace()
                 }
+            },
+            onFailed = {
+
+            }
         )
     }
 

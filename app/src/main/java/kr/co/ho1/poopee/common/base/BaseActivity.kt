@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.RelativeLayout
+import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import kr.co.ho1.poopee.R
 import kr.co.ho1.poopee.common.ObserverManager
@@ -15,6 +16,12 @@ import kr.co.ho1.poopee.menu.SettingActivity
 
 abstract class BaseActivity : AppCompatActivity() {
     private var progressView: RelativeLayout? = null
+
+    private val onBackPressedCallback = object : OnBackPressedCallback(true) {
+        override fun handleOnBackPressed() {
+            onBack()
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -79,6 +86,10 @@ abstract class BaseActivity : AppCompatActivity() {
 
     open fun onLocationChanged(location: Location) {
         kr.co.ho1.poopee.common.util.LogManager.e(location.bearing)
+    }
+
+    open fun onBack() {
+        finish()
     }
 
 }

@@ -5,12 +5,14 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import kotlinx.android.synthetic.main.dialog_basic.*
-import kr.co.ho1.poopee.R
 import kr.co.ho1.poopee.common.base.BaseDialog
+import kr.co.ho1.poopee.databinding.DialogBasicBinding
 
 @SuppressLint("ValidFragment")
 class BasicDialog(private var onLeftButton: (() -> Unit), private var onCenterButton: (() -> Unit), private var onRightButton: (() -> Unit)) : BaseDialog() {
+    private var _binding: DialogBasicBinding? = null
+    private val binding get() = _binding!!
+
     private var textTitle: String? = null // 제목
     private var textContent: String? = null // 내용
     private var textContentSub: String? = null // 서브내용
@@ -19,61 +21,60 @@ class BasicDialog(private var onLeftButton: (() -> Unit), private var onCenterBu
     private var btnCenter: String? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.dialog_basic, container, false)
+        _binding = DialogBasicBinding.inflate(layoutInflater)
+        return binding.root
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         if (textTitle != null) {
-            tv_title.text = textTitle
-            tv_title.visibility = View.VISIBLE
+            binding.tvTitle.text = textTitle
+            binding.tvTitle.visibility = View.VISIBLE
         } else {
-            tv_title.visibility = View.GONE
+            binding.tvTitle.visibility = View.GONE
         }
 
         if (textContent != null) {
-            tv_content.text = textContent
-            tv_content.visibility = View.VISIBLE
+            binding.tvContent.text = textContent
+            binding.tvContent.visibility = View.VISIBLE
         } else {
-            tv_content.visibility = View.GONE
+            binding.tvContent.visibility = View.GONE
         }
 
         if (textContentSub != null) {
-            tv_content_sub.text = textContentSub
-            tv_content_sub.visibility = View.VISIBLE
+            binding.tvContentSub.text = textContentSub
+            binding.tvContentSub.visibility = View.VISIBLE
         } else {
-            tv_content_sub.visibility = View.GONE
-        }
-
-        if (textContentSub != null) {
-            tv_content_sub.text = textContentSub
-            tv_content_sub.visibility = View.VISIBLE
-        } else {
-            tv_content_sub.visibility = View.GONE
+            binding.tvContentSub.visibility = View.GONE
         }
 
         if (btnCenter != null) {
-            btn_center.text = btnCenter
-            btn_center.visibility = View.VISIBLE
+            binding.btnCenter.text = btnCenter
+            binding.btnCenter.visibility = View.VISIBLE
         } else {
-            btn_center.visibility = View.GONE
+            binding.btnCenter.visibility = View.GONE
         }
 
-        btn_left.text = btnLeft
-        btn_right.text = btnRight
+        binding.btnLeft.text = btnLeft
+        binding.btnRight.text = btnRight
 
-        btn_left.setOnClickListener {
+        binding.btnLeft.setOnClickListener {
             onLeftButton()
             dismiss()
         }
 
-        btn_center.setOnClickListener {
+        binding.btnCenter.setOnClickListener {
             onCenterButton()
             dismiss()
         }
 
-        btn_right.setOnClickListener {
+        binding.btnRight.setOnClickListener {
             onRightButton()
             dismiss()
         }

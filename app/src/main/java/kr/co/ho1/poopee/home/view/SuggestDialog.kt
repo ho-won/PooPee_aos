@@ -9,7 +9,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import kotlinx.android.synthetic.main.dialog_suggest.*
 import kr.co.ho1.poopee.R
 import kr.co.ho1.poopee.common.ObserverManager
 import kr.co.ho1.poopee.common.base.BaseDialog
@@ -19,13 +18,22 @@ import kr.co.ho1.poopee.common.http.RetrofitJSONObject
 import kr.co.ho1.poopee.common.http.RetrofitParams
 import kr.co.ho1.poopee.common.http.RetrofitService
 import kr.co.ho1.poopee.common.util.MyUtil
+import kr.co.ho1.poopee.databinding.DialogSuggestBinding
 import org.json.JSONException
 
 @SuppressLint("ValidFragment")
 class SuggestDialog : BaseDialog() {
+    private var _binding: DialogSuggestBinding? = null
+    private val binding get() = _binding!!
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.dialog_suggest, container, false)
+        _binding = DialogSuggestBinding.inflate(layoutInflater)
+        return binding.root
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -36,7 +44,7 @@ class SuggestDialog : BaseDialog() {
     }
 
     override fun dismiss() {
-        MyUtil.keyboardHide(edt_content)
+        MyUtil.keyboardHide(binding.edtContent)
         super.dismiss()
     }
 
@@ -45,7 +53,7 @@ class SuggestDialog : BaseDialog() {
     }
 
     private fun setListener() {
-        edt_content.addTextChangedListener(object : TextWatcher {
+        binding.edtContent.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(p0: Editable?) {
 
             }
@@ -56,19 +64,19 @@ class SuggestDialog : BaseDialog() {
 
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
                 if (p0.toString().isEmpty()) {
-                    btn_send.setTextColor(Color.parseColor("#a0a4aa"))
-                    btn_send.isEnabled = false
+                    binding.btnSend.setTextColor(Color.parseColor("#a0a4aa"))
+                    binding.btnSend.isEnabled = false
                 } else {
-                    btn_send.setTextColor(Color.parseColor("#2470ff"))
-                    btn_send.isEnabled = true
+                    binding.btnSend.setTextColor(Color.parseColor("#2470ff"))
+                    binding.btnSend.isEnabled = true
                 }
             }
         })
-        btn_send.setOnClickListener {
+        binding.btnSend.setOnClickListener {
             taskCreateSuggest()
         }
 
-        btn_close.setOnClickListener {
+        binding.btnClose.setOnClickListener {
             dismiss()
         }
     }
@@ -79,24 +87,24 @@ class SuggestDialog : BaseDialog() {
     private fun taskCreateSuggest() {
         val params = RetrofitParams()
         params.put("member_id", SharedManager.getMemberId())
-        params.put("content", edt_content.text)
+        params.put("content", binding.edtContent.text)
 
         val request = RetrofitClient.getClient(RetrofitService.BASE_APP).create(RetrofitService::class.java).createSuggest(params.getParams())
 
         RetrofitJSONObject(request,
-                onSuccess = {
-                    try {
-                        if (it.getInt("rst_code") == 0) {
-                            Toast.makeText(ObserverManager.context!!, MyUtil.getString(R.string.toast_send_complete), Toast.LENGTH_SHORT).show()
-                            dismiss()
-                        }
-                    } catch (e: JSONException) {
-                        e.printStackTrace()
+            onSuccess = {
+                try {
+                    if (it.getInt("rst_code") == 0) {
+                        Toast.makeText(ObserverManager.context!!, MyUtil.getString(R.string.toast_send_complete), Toast.LENGTH_SHORT).show()
+                        dismiss()
                     }
-                },
-                onFailed = {
-
+                } catch (e: JSONException) {
+                    e.printStackTrace()
                 }
+            },
+            onFailed = {
+
+            }
         )
     }
 

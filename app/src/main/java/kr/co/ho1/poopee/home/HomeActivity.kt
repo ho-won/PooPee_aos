@@ -13,7 +13,6 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.ArrayMap
-import android.util.Log
 import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
@@ -36,8 +35,6 @@ import com.kakao.vectormap.label.Label
 import com.kakao.vectormap.label.LabelOptions
 import com.kakao.vectormap.label.LabelStyle
 import com.kakao.vectormap.label.TransformMethod
-import kotlinx.android.synthetic.main.activity_home.*
-import kotlinx.android.synthetic.main.item_kakao_keyword.view.*
 import kr.co.ho1.poopee.R
 import kr.co.ho1.poopee.common.ObserverManager
 import kr.co.ho1.poopee.common.base.BaseActivity
@@ -50,6 +47,8 @@ import kr.co.ho1.poopee.common.util.LocationManager
 import kr.co.ho1.poopee.common.util.LogManager
 import kr.co.ho1.poopee.common.util.MyUtil
 import kr.co.ho1.poopee.database.ToiletSQLiteManager
+import kr.co.ho1.poopee.databinding.ActivityHomeBinding
+import kr.co.ho1.poopee.databinding.ItemKakaoKeywordBinding
 import kr.co.ho1.poopee.home.model.KaKaoKeyword
 import kr.co.ho1.poopee.home.model.Toilet
 import kr.co.ho1.poopee.home.view.PopupDialog
@@ -58,6 +57,7 @@ import kr.co.ho1.poopee.manager.view.Toilet2ListDialog
 import org.json.JSONException
 
 class HomeActivity : BaseActivity() {
+    private lateinit var binding: ActivityHomeBinding
 
     private var keywordAdapter: ListAdapter = ListAdapter()
     private var keywordList: ArrayList<KaKaoKeyword> = ArrayList()
@@ -92,7 +92,8 @@ class HomeActivity : BaseActivity() {
     @SuppressLint("VisibleForTests")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_home)
+        binding = ActivityHomeBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         MobileAds.initialize(this) {}
 
@@ -162,7 +163,7 @@ class HomeActivity : BaseActivity() {
 
     override fun onResume() {
         super.onResume()
-        map_view.resume()
+        binding.mapView.resume()
         LocationManager.setLocationListener() // 현재위치 리스너 추가
 
         sensorManager.registerListener(
@@ -181,29 +182,29 @@ class HomeActivity : BaseActivity() {
 
     override fun onPause() {
         super.onPause()
-        map_view.pause()
+        binding.mapView.pause()
         LocationManager.removeLocationUpdate()
         sensorManager.unregisterListener(sensorEventListener)
     }
 
     private fun init() {
-        rv_search.layoutManager = LinearLayoutManager(this)
+        binding.rvSearch.layoutManager = LinearLayoutManager(this)
         keywordAdapter = ListAdapter()
-        rv_search.adapter = keywordAdapter
+        binding.rvSearch.adapter = keywordAdapter
 
         checkPopup()
     }
 
     private fun refresh() {
         if (SharedManager.getMemberUsername() == "master") {
-            btn_manager.visibility = View.VISIBLE
+            binding.btnManager.visibility = View.VISIBLE
         } else {
-            btn_manager.visibility = View.GONE
+            binding.btnManager.visibility = View.GONE
         }
 
-        nav_view.refresh()
+        binding.navView.refresh()
 
-        map_view.start(object : MapLifeCycleCallback() {
+        binding.mapView.start(object : MapLifeCycleCallback() {
             override fun onMapDestroy() {
                 // 지도 API 가 정상적으로 종료될 때 호출됨
             }
@@ -325,47 +326,47 @@ class HomeActivity : BaseActivity() {
 
     @SuppressLint("SetTextI18n")
     private fun setListener() {
-        root_view.viewTreeObserver.addOnGlobalLayoutListener {
-            LogManager.e("${MyUtil.getDeviceHeight()} : ${root_view.height}")
-            if (MyUtil.getDeviceHeight() - MyUtil.dpToPx(100) > root_view.height) {
+        binding.rootView.viewTreeObserver.addOnGlobalLayoutListener {
+            LogManager.e("${MyUtil.getDeviceHeight()} : ${binding.rootView.height}")
+            if (MyUtil.getDeviceHeight() - MyUtil.dpToPx(100) > binding.rootView.height) {
                 // keyboard show
                 isKeyboardShow = true
-                layout_bottom_bg.visibility = View.VISIBLE
+                binding.layoutBottomBg.visibility = View.VISIBLE
             } else {
                 // keyboard hide
                 isKeyboardShow = false
-                if (rv_search.visibility == View.GONE) {
-                    layout_bottom_bg.visibility = View.GONE
+                if (binding.rvSearch.visibility == View.GONE) {
+                    binding.layoutBottomBg.visibility = View.GONE
                 } else {
-                    if (rv_search.height > rvHeight) {
+                    if (binding.rvSearch.height > rvHeight) {
                         val layoutParams = LinearLayout.LayoutParams(
                             LinearLayout.LayoutParams.MATCH_PARENT,
                             rvHeight
                         )
-                        rv_search.layoutParams = layoutParams
+                        binding.rvSearch.layoutParams = layoutParams
                     }
                 }
-                layout_bottom_bg.visibility = View.GONE
+                binding.layoutBottomBg.visibility = View.GONE
             }
         }
-        root_view.setOnClickListener {
-            MyUtil.keyboardHide(edt_search)
+        binding.rootView.setOnClickListener {
+            MyUtil.keyboardHide(binding.edtSearch)
         }
-        layout_bottom_bg.setOnClickListener {
-            MyUtil.keyboardHide(edt_search)
+        binding.layoutBottomBg.setOnClickListener {
+            MyUtil.keyboardHide(binding.edtSearch)
         }
-        btn_search_delete.setOnClickListener {
-            edt_search.setText("")
-            rv_search.visibility = View.GONE
+        binding.btnSearchDelete.setOnClickListener {
+            binding.edtSearch.setText("")
+            binding.rvSearch.visibility = View.GONE
         }
-        edt_search.setOnKeyListener { _, keyCode, event ->
+        binding.edtSearch.setOnKeyListener { _, keyCode, event ->
             if (event.action == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_ENTER && keywordList.size > 0) {
                 setKakaoLocal(keywordList[0])
                 return@setOnKeyListener true
             }
             false
         }
-        edt_search.addTextChangedListener(object : TextWatcher {
+        binding.edtSearch.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(p0: Editable?) {
 
             }
@@ -376,14 +377,14 @@ class HomeActivity : BaseActivity() {
 
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
                 if (p0.toString().isEmpty()) {
-                    rv_search.visibility = View.GONE
+                    binding.rvSearch.visibility = View.GONE
                 } else {
-                    rv_search.visibility = View.VISIBLE
+                    binding.rvSearch.visibility = View.VISIBLE
                     taskKakaoLocalSearch(p0.toString())
                 }
             }
         })
-        layout_my_position.setOnClickListener {
+        binding.layoutMyPosition.setOnClickListener {
             kakaoMap?.let {
                 if (SharedManager.getLatitude() > 0) {
                     isMyPositionMove = true
@@ -393,10 +394,10 @@ class HomeActivity : BaseActivity() {
                 }
             }
         }
-        btn_menu.setOnClickListener {
-            drawer_layout.openDrawer(GravityCompat.START)
+        binding.btnMenu.setOnClickListener {
+            binding.drawerLayout.openDrawer(GravityCompat.START)
         }
-        btn_manager.setOnClickListener {
+        binding.btnManager.setOnClickListener {
             val dialog = Toilet2ListDialog(onMove = { toilet ->
                 kakaoMap?.let {
                     isMyPositionMove = false
@@ -462,21 +463,21 @@ class HomeActivity : BaseActivity() {
 
     private fun setMyPosition(visibility: Int) {
         LogManager.e("visibility : $visibility")
-        lottie_my_position.visibility = visibility
+        binding.lottieMyPosition.visibility = visibility
         if (visibility == View.VISIBLE) {
-            lottie_my_position.playAnimation()
+            binding.lottieMyPosition.playAnimation()
         } else {
-            lottie_my_position.cancelAnimation()
+            binding.lottieMyPosition.cancelAnimation()
         }
     }
 
     private fun setKakaoLocal(kaKaoKeyword: KaKaoKeyword) {
         isMyPositionMove = false
-        edt_search.setText(kaKaoKeyword.place_name)
-        edt_search.setSelection(kaKaoKeyword.place_name.count())
+        binding.edtSearch.setText(kaKaoKeyword.place_name)
+        binding.edtSearch.setSelection(kaKaoKeyword.place_name.count())
         kakaoMap?.moveCamera(CameraUpdateFactory.newCenterPosition(LatLng.from(kaKaoKeyword.latitude, kaKaoKeyword.longitude)), CameraAnimation.from(500, true, true))
-        MyUtil.keyboardHide(edt_search)
-        rv_search.visibility = View.GONE
+        MyUtil.keyboardHide(binding.edtSearch)
+        binding.rvSearch.visibility = View.GONE
         setMyPosition(View.GONE)
     }
 
@@ -599,10 +600,8 @@ class HomeActivity : BaseActivity() {
     inner class ListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-            return ViewHolder(
-                LayoutInflater.from(parent.context)
-                    .inflate(R.layout.item_kakao_keyword, parent, false)
-            )
+            val binding = ItemKakaoKeywordBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+            return ViewHolder(binding)
         }
 
         override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
@@ -617,12 +616,12 @@ class HomeActivity : BaseActivity() {
             return 0
         }
 
-        inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        inner class ViewHolder(private val binding: ItemKakaoKeywordBinding) : RecyclerView.ViewHolder(binding.root) {
 
             @SuppressLint("SetTextI18n")
             fun update(position: Int) {
-                itemView.tv_title.text = keywordList[position].place_name
-                itemView.tv_sub.text = keywordList[position].address_name
+                binding.tvTitle.text = keywordList[position].place_name
+                binding.tvSub.text = keywordList[position].address_name
 
                 itemView.setOnClickListener {
                     setKakaoLocal(keywordList[position])
@@ -640,19 +639,19 @@ class HomeActivity : BaseActivity() {
         }
     }
 
-    override fun onBackPressed() {
+    override fun onBack() {
         if (isShowLoading()) {
             return
         }
 
-        if (drawer_layout.isDrawerOpen(GravityCompat.START)) {
-            drawer_layout.closeDrawer(GravityCompat.START)
+        if (binding.drawerLayout.isDrawerOpen(GravityCompat.START)) {
+            binding.drawerLayout.closeDrawer(GravityCompat.START)
             return
         }
 
-        if (layout_bottom_bg.visibility == View.VISIBLE || rv_search.visibility == View.VISIBLE) {
-            layout_bottom_bg.visibility = View.GONE
-            rv_search.visibility = View.GONE
+        if (binding.layoutBottomBg.visibility == View.VISIBLE || binding.rvSearch.visibility == View.VISIBLE) {
+            binding.layoutBottomBg.visibility = View.GONE
+            binding.rvSearch.visibility = View.GONE
             return
         }
         finish()

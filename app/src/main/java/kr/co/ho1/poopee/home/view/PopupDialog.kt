@@ -6,20 +6,26 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.bumptech.glide.Glide
-import kotlinx.android.synthetic.main.dialog_popup.*
-import kr.co.ho1.poopee.R
 import kr.co.ho1.poopee.common.base.BaseDialog
 import kr.co.ho1.poopee.common.data.SharedManager
 import kr.co.ho1.poopee.common.http.RetrofitService
-import kr.co.ho1.poopee.common.util.PicassoManager
 import kr.co.ho1.poopee.common.util.StrManager
+import kr.co.ho1.poopee.databinding.DialogPopupBinding
 import java.util.*
 
 @SuppressLint("ValidFragment")
 class PopupDialog : BaseDialog() {
+    private var _binding: DialogPopupBinding? = null
+    private val binding get() = _binding!!
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.dialog_popup, container, false)
+        _binding = DialogPopupBinding.inflate(layoutInflater)
+        return binding.root
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -37,17 +43,17 @@ class PopupDialog : BaseDialog() {
         }
         Glide.with(this)
             .load(RetrofitService.BASE_APP + imageName)
-            .into(iv_popup)
+            .into(binding.ivPopup)
     }
 
     private fun setListener() {
-        btn_show.setOnClickListener {
+        binding.btnShow.setOnClickListener {
             SharedManager.setNoticeImage("")
             SharedManager.setNoticeDate(StrManager.getCurrentDate())
             dismiss()
         }
 
-        btn_close.setOnClickListener {
+        binding.btnClose.setOnClickListener {
             dismiss()
         }
     }

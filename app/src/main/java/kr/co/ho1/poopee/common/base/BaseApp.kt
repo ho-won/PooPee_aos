@@ -28,7 +28,7 @@ class BaseApp : MultiDexApplication() {
         // 앱버전체크
         try {
             val packageInfo = packageManager.getPackageInfo(packageName, 0)
-            APP_VERSION = packageInfo.versionName
+            APP_VERSION = packageInfo.versionName!!
         } catch (e: PackageManager.NameNotFoundException) {
             e.printStackTrace()
         }

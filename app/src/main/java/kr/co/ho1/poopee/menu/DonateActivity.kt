@@ -17,21 +17,24 @@ import com.android.billingclient.api.ProductDetails
 import com.android.billingclient.api.Purchase
 import com.android.billingclient.api.PurchasesUpdatedListener
 import com.android.billingclient.api.QueryProductDetailsParams
-import kotlinx.android.synthetic.main.activity_donate.*
 import kr.co.ho1.poopee.R
 import kr.co.ho1.poopee.common.base.BaseActivity
 import kr.co.ho1.poopee.common.dialog.BasicDialog
 import kr.co.ho1.poopee.common.util.CustomBackgroundSpan
 import kr.co.ho1.poopee.common.util.LogManager
 import kr.co.ho1.poopee.common.util.MyUtil
+import kr.co.ho1.poopee.databinding.ActivityDonateBinding
 
 class DonateActivity : BaseActivity(), PurchasesUpdatedListener {
+    private lateinit var binding: ActivityDonateBinding
+
     private lateinit var billingClient: BillingClient
     private var productList: List<ProductDetails> = arrayListOf()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_donate)
+        binding = ActivityDonateBinding.inflate(layoutInflater)
+        setContentView(binding.root)
         setToolbar()
 
         init()
@@ -44,17 +47,17 @@ class DonateActivity : BaseActivity(), PurchasesUpdatedListener {
     }
 
     private fun setListener() {
-        btn_price_01.setOnClickListener {
+        binding.btnPrice01.setOnClickListener {
             if (productList.size > 0) {
                 makePurchase(productList[0])
             }
         }
-        btn_price_02.setOnClickListener {
+        binding.btnPrice02.setOnClickListener {
             if (productList.size > 1) {
                 makePurchase(productList[1])
             }
         }
-        btn_price_03.setOnClickListener {
+        binding.btnPrice03.setOnClickListener {
             if (productList.size > 2) {
                 makePurchase(productList[2])
             }
@@ -73,7 +76,7 @@ class DonateActivity : BaseActivity(), PurchasesUpdatedListener {
             end,
             Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
         )
-        tv_title.text = spannableString
+        binding.tvTitle.text = spannableString
     }
 
 
@@ -120,19 +123,19 @@ class DonateActivity : BaseActivity(), PurchasesUpdatedListener {
         billingClient.queryProductDetailsAsync(queryProductDetailsParams) { billingResult, productDetailsList ->
             if (billingResult.responseCode == BillingClient.BillingResponseCode.OK) {
                 this.productList = productDetailsList
-                LogManager.e("this.productDetailsList${this.productList.size}")
+                LogManager.e("this.productDetailsList : ${this.productList.size}")
                 Handler(Looper.getMainLooper()).post {
                     if (this.productList.size > 0) {
-                        btn_price_01.text = getProductPrice(this.productList[0])
-                        btn_price_01.visibility = View.VISIBLE
+                        binding.btnPrice01.text = getProductPrice(this.productList[0])
+                        binding.btnPrice01.visibility = View.VISIBLE
                     }
                     if (this.productList.size > 1) {
-                        btn_price_02.text = getProductPrice(this.productList[1])
-                        btn_price_02.visibility = View.VISIBLE
+                        binding.btnPrice02.text = getProductPrice(this.productList[1])
+                        binding.btnPrice02.visibility = View.VISIBLE
                     }
                     if (this.productList.size > 2) {
-                        btn_price_03.text = getProductPrice(this.productList[2])
-                        btn_price_03.visibility = View.VISIBLE
+                        binding.btnPrice03.text = getProductPrice(this.productList[2])
+                        binding.btnPrice03.visibility = View.VISIBLE
                     }
                 }
             }
@@ -228,9 +231,9 @@ class DonateActivity : BaseActivity(), PurchasesUpdatedListener {
     }
 
     override fun setToolbar() {
-        toolbar.setTitle(MyUtil.getString(R.string.nav_text_09))
-        toolbar.setImageLeftOne(MyUtil.getDrawable(R.drawable.ic_navigationbar_back))
-        toolbar.setSelectedListener(
+        binding.toolbar.setTitle(MyUtil.getString(R.string.nav_text_09))
+        binding.toolbar.setImageLeftOne(MyUtil.getDrawable(R.drawable.ic_navigationbar_back))
+        binding.toolbar.setSelectedListener(
             onBtnLeftOne = {
                 finish()
             },

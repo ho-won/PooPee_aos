@@ -10,7 +10,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.CheckBox
 import android.widget.Toast
-import kotlinx.android.synthetic.main.dialog_toilet_create.*
 import kr.co.ho1.poopee.R
 import kr.co.ho1.poopee.common.ObserverManager
 import kr.co.ho1.poopee.common.base.BaseDialog
@@ -20,14 +19,23 @@ import kr.co.ho1.poopee.common.http.RetrofitJSONObject
 import kr.co.ho1.poopee.common.http.RetrofitParams
 import kr.co.ho1.poopee.common.http.RetrofitService
 import kr.co.ho1.poopee.common.util.MyUtil
+import kr.co.ho1.poopee.databinding.DialogToiletCreateBinding
 import kr.co.ho1.poopee.home.model.Toilet
 import org.json.JSONException
 
 @SuppressLint("ValidFragment")
 class ToiletUpdateDialog(private var toilet: Toilet, private var onUpdate: ((toilet: Toilet) -> Unit)) : BaseDialog() {
+    private var _binding: DialogToiletCreateBinding? = null
+    private val binding get() = _binding!!
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.dialog_toilet_create, container, false)
+        _binding = DialogToiletCreateBinding.inflate(layoutInflater)
+        return binding.root
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -38,34 +46,34 @@ class ToiletUpdateDialog(private var toilet: Toilet, private var onUpdate: ((toi
     }
 
     override fun dismiss() {
-        MyUtil.keyboardHide(edt_content)
+        MyUtil.keyboardHide(binding.edtContent)
         super.dismiss()
     }
 
     private fun init() {
-        btn_send.text = MyUtil.getString(R.string.modified)
+        binding.btnSend.text = MyUtil.getString(R.string.modified)
 
-        edt_title.setText(toilet.name)
-        edt_content.setText(toilet.content)
-        tv_content_cnt.text = toilet.content.length.toString() + "/100"
+        binding.edtTitle.setText(toilet.name)
+        binding.edtContent.setText(toilet.content)
+        binding.tvContentCnt.text = toilet.content.length.toString() + "/100"
 
         if (toilet.m_poo.toInt() > 0) {
-            cb_man.isChecked = true
-            cb_woman.isChecked = false
-            cb_public.isChecked = false
+            binding.cbMan.isChecked = true
+            binding.cbWoman.isChecked = false
+            binding.cbPublic.isChecked = false
         } else if (toilet.w_poo.toInt() > 0) {
-            cb_man.isChecked = false
-            cb_woman.isChecked = true
-            cb_public.isChecked = false
+            binding.cbMan.isChecked = false
+            binding.cbWoman.isChecked = true
+            binding.cbPublic.isChecked = false
         } else {
-            cb_man.isChecked = false
-            cb_woman.isChecked = false
-            cb_public.isChecked = true
+            binding.cbMan.isChecked = false
+            binding.cbWoman.isChecked = false
+            binding.cbPublic.isChecked = true
         }
     }
 
     private fun setListener() {
-        edt_title.addTextChangedListener(object : TextWatcher {
+        binding.edtTitle.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(p0: Editable?) {
 
             }
@@ -76,15 +84,15 @@ class ToiletUpdateDialog(private var toilet: Toilet, private var onUpdate: ((toi
 
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
                 if (p0.toString().isNotEmpty() && isGubunChecked()) {
-                    btn_send.setTextColor(Color.parseColor("#2470ff"))
-                    btn_send.isEnabled = true
+                    binding.btnSend.setTextColor(Color.parseColor("#2470ff"))
+                    binding.btnSend.isEnabled = true
                 } else {
-                    btn_send.setTextColor(Color.parseColor("#a0a4aa"))
-                    btn_send.isEnabled = false
+                    binding.btnSend.setTextColor(Color.parseColor("#a0a4aa"))
+                    binding.btnSend.isEnabled = false
                 }
             }
         })
-        edt_content.addTextChangedListener(object : TextWatcher {
+        binding.edtContent.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(p0: Editable?) {
 
             }
@@ -95,50 +103,50 @@ class ToiletUpdateDialog(private var toilet: Toilet, private var onUpdate: ((toi
 
             @SuppressLint("SetTextI18n")
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                tv_content_cnt.text = p0.toString().length.toString() + "/100"
+                binding.tvContentCnt.text = p0.toString().length.toString() + "/100"
             }
         })
-        cb_public.setOnClickListener {
-            setGubunCheck(cb_public)
+        binding.cbPublic.setOnClickListener {
+            setGubunCheck(binding.cbPublic)
         }
-        cb_man.setOnClickListener {
-            setGubunCheck(cb_man)
+        binding.cbMan.setOnClickListener {
+            setGubunCheck(binding.cbMan)
         }
-        cb_woman.setOnClickListener {
-            setGubunCheck(cb_woman)
+        binding.cbWoman.setOnClickListener {
+            setGubunCheck(binding.cbWoman)
         }
-        btn_send.setOnClickListener {
+        binding.btnSend.setOnClickListener {
             taskUpdateToilet()
         }
-        btn_close.setOnClickListener {
+        binding.btnClose.setOnClickListener {
             dismiss()
         }
     }
 
     private fun setGubunCheck(checkBox: CheckBox) {
-        cb_public.isChecked = false
-        cb_man.isChecked = false
-        cb_woman.isChecked = false
+        binding.cbPublic.isChecked = false
+        binding.cbMan.isChecked = false
+        binding.cbWoman.isChecked = false
         checkBox.isChecked = true
-        if (edt_title.text.toString().isNotEmpty()) {
-            btn_send.setTextColor(Color.parseColor("#2470ff"))
-            btn_send.isEnabled = true
+        if (binding.edtTitle.text.toString().isNotEmpty()) {
+            binding.btnSend.setTextColor(Color.parseColor("#2470ff"))
+            binding.btnSend.isEnabled = true
         } else {
-            btn_send.setTextColor(Color.parseColor("#a0a4aa"))
-            btn_send.isEnabled = false
+            binding.btnSend.setTextColor(Color.parseColor("#a0a4aa"))
+            binding.btnSend.isEnabled = false
         }
     }
 
     private fun isGubunChecked(): Boolean {
-        return cb_public.isChecked || cb_man.isChecked || cb_woman.isChecked
+        return binding.cbPublic.isChecked || binding.cbMan.isChecked || binding.cbWoman.isChecked
     }
 
     /**
      * [POST] 화장실추가
      */
     private fun taskUpdateToilet() {
-        toilet.name = edt_title.text.toString()
-        toilet.content = edt_content.text.toString()
+        toilet.name = binding.edtTitle.text.toString()
+        toilet.content = binding.edtContent.text.toString()
 
         val params = RetrofitParams()
         params.put("member_id", SharedManager.getMemberId())
@@ -147,18 +155,20 @@ class ToiletUpdateDialog(private var toilet: Toilet, private var onUpdate: ((toi
         params.put("content", toilet.content) // 화장실설명
 
         when {
-            cb_man.isChecked -> {
+            binding.cbMan.isChecked -> {
                 params.put("type", 1) // 0(공용) 1(남자) 2(여자)
                 toilet.m_poo = "1"
                 toilet.w_poo = "0"
                 toilet.unisex = "N"
             }
-            cb_woman.isChecked -> {
+
+            binding.cbWoman.isChecked -> {
                 params.put("type", 2) // 0(공용) 1(남자) 2(여자)
                 toilet.m_poo = "0"
                 toilet.w_poo = "1"
                 toilet.unisex = "N"
             }
+
             else -> {
                 params.put("type", 0) // 0(공용) 1(남자) 2(여자)
                 toilet.m_poo = "0"
@@ -170,20 +180,20 @@ class ToiletUpdateDialog(private var toilet: Toilet, private var onUpdate: ((toi
         val request = RetrofitClient.getClient(RetrofitService.BASE_APP).create(RetrofitService::class.java).toiletUpdate(params.getParams())
 
         RetrofitJSONObject(request,
-                onSuccess = {
-                    try {
-                        if (it.getInt("rst_code") == 0) {
-                            Toast.makeText(ObserverManager.context!!, MyUtil.getString(R.string.toast_update_complete), Toast.LENGTH_SHORT).show()
-                            onUpdate(toilet)
-                            dismiss()
-                        }
-                    } catch (e: JSONException) {
-                        e.printStackTrace()
+            onSuccess = {
+                try {
+                    if (it.getInt("rst_code") == 0) {
+                        Toast.makeText(ObserverManager.context!!, MyUtil.getString(R.string.toast_update_complete), Toast.LENGTH_SHORT).show()
+                        onUpdate(toilet)
+                        dismiss()
                     }
-                },
-                onFailed = {
-
+                } catch (e: JSONException) {
+                    e.printStackTrace()
                 }
+            },
+            onFailed = {
+
+            }
         )
     }
 

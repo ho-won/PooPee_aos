@@ -10,7 +10,6 @@ import android.view.animation.AnimationUtils
 import android.widget.Toast
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.messaging.FirebaseMessaging
-import kotlinx.android.synthetic.main.activity_main.*
 import kr.co.ho1.poopee.R
 import kr.co.ho1.poopee.common.base.BaseActivity
 import kr.co.ho1.poopee.common.base.BaseApp
@@ -19,18 +18,21 @@ import kr.co.ho1.poopee.common.dialog.BasicDialog
 import kr.co.ho1.poopee.common.dialog.PermissionDialog
 import kr.co.ho1.poopee.common.http.*
 import kr.co.ho1.poopee.common.util.*
+import kr.co.ho1.poopee.databinding.ActivityMainBinding
 import kr.co.ho1.poopee.home.HomeActivity
 import org.json.JSONException
 import org.json.JSONObject
 import retrofit2.http.POST
 
 class MainActivity : BaseActivity() {
+    private lateinit var binding: ActivityMainBinding
 
     private lateinit var permissionManager: PermissionManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         init()
     }
@@ -79,14 +81,14 @@ class MainActivity : BaseActivity() {
 
                     }
                 })
-                layout_drop.startAnimation(animationUp)
+                binding.layoutDrop.startAnimation(animationUp)
             }
 
             override fun onAnimationRepeat(animation: Animation) {
 
             }
         })
-        layout_drop.startAnimation(animation)
+        binding.layoutDrop.startAnimation(animation)
     }
 
     private fun onPermissionCheck() {
@@ -105,7 +107,7 @@ class MainActivity : BaseActivity() {
 
     private fun onServiceCheck() {
         LocationManager.setLocationListener() // 현재위치 리스너 추가
-        DBVersionTask(progress_file_download,
+        DBVersionTask(binding.progressFileDownload,
             onSuccess = {
                 taskServerCheck()
             },
@@ -159,6 +161,7 @@ class MainActivity : BaseActivity() {
                     dialog.setBtnRight(MyUtil.getString(R.string.yes))
                     dialog.show(supportFragmentManager, "BasicDialog")
                 }
+
                 Integer.parseInt(versions[1]) > Integer.parseInt(appVersions[1]) -> {
                     // 두번째 자리 버전 업데이트로 업데이트 팝업 선택 후 앱 실행
                     val dialog = BasicDialog(
@@ -179,8 +182,10 @@ class MainActivity : BaseActivity() {
                     dialog.setBtnRight(MyUtil.getString(R.string.yes))
                     dialog.show(supportFragmentManager, "BasicDialog")
                 }
+
                 Integer.parseInt(versions[0]) < Integer.parseInt(appVersions[0]) -> // 세번째 자리 버전 업데이트로 무시하고 앱실행
                     loginCheck()
+
                 else -> // 현재 앱버전이 최신버전일경우
                     loginCheck()
             }

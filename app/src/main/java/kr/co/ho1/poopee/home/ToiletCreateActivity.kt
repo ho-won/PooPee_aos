@@ -9,17 +9,19 @@ import com.kakao.vectormap.KakaoMapReadyCallback
 import com.kakao.vectormap.LatLng
 import com.kakao.vectormap.MapLifeCycleCallback
 import com.kakao.vectormap.camera.CameraUpdateFactory
-import kotlinx.android.synthetic.main.activity_toilet_create.*
 import kr.co.ho1.poopee.R
 import kr.co.ho1.poopee.common.ObserverManager
 import kr.co.ho1.poopee.common.base.BaseActivity
 import kr.co.ho1.poopee.common.data.SharedManager
 import kr.co.ho1.poopee.common.util.LocationManager
 import kr.co.ho1.poopee.common.util.MyUtil
+import kr.co.ho1.poopee.databinding.ActivityCopyBinding
+import kr.co.ho1.poopee.databinding.ActivityToiletCreateBinding
 import kr.co.ho1.poopee.home.model.KaKaoKeyword
 import kr.co.ho1.poopee.home.view.ToiletCreateDialog
 
 class ToiletCreateActivity : BaseActivity() {
+    private lateinit var binding: ActivityToiletCreateBinding
 
     companion object {
         const val KAKAO_KEYWORD = "KaKaoKeyword"
@@ -31,7 +33,8 @@ class ToiletCreateActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_toilet_create)
+        binding = ActivityToiletCreateBinding.inflate(layoutInflater)
+        setContentView(binding.root)
         setToolbar()
 
         init()
@@ -51,7 +54,7 @@ class ToiletCreateActivity : BaseActivity() {
     private fun init() {
         keyword = intent.getSerializableExtra(KAKAO_KEYWORD) as? KaKaoKeyword
 
-        map_view.start(object : MapLifeCycleCallback() {
+        binding.mapView.start(object : MapLifeCycleCallback() {
             override fun onMapDestroy() {
                 // 지도 API 가 정상적으로 종료될 때 호출됨
             }
@@ -78,13 +81,13 @@ class ToiletCreateActivity : BaseActivity() {
     }
 
     private fun setListener() {
-        btn_my_position.setOnClickListener {
+        binding.btnMyPosition.setOnClickListener {
             if (SharedManager.getLatitude() > 0) {
                 kakaoMap?.moveCamera(CameraUpdateFactory.newCenterPosition(LatLng.from(SharedManager.getLatitude(), SharedManager.getLongitude())))
                 kakaoMap?.moveCamera(CameraUpdateFactory.zoomTo(ObserverManager.BASE_ZOOM_LEVEL))
             }
         }
-        btn_bottom.setOnClickListener {
+        binding.btnBottom.setOnClickListener {
             val dialog = ToiletCreateDialog(
                 kakaoMap?.cameraPosition?.position?.latitude!!,
                 kakaoMap?.cameraPosition?.position?.longitude!!,
@@ -103,9 +106,9 @@ class ToiletCreateActivity : BaseActivity() {
     }
 
     override fun setToolbar() {
-        toolbar.setTitle(MyUtil.getString(R.string.toilet_create_text_03))
-        toolbar.setImageLeftOne(MyUtil.getDrawable(R.drawable.ic_navigationbar_back))
-        toolbar.setSelectedListener(
+        binding.toolbar.setTitle(MyUtil.getString(R.string.toilet_create_text_03))
+        binding.toolbar.setImageLeftOne(MyUtil.getDrawable(R.drawable.ic_navigationbar_back))
+        binding.toolbar.setSelectedListener(
             onBtnLeftOne = {
                 finish()
             },
@@ -122,7 +125,7 @@ class ToiletCreateActivity : BaseActivity() {
     }
 
     override fun finish() {
-        map_view.removeAllViews()
+        binding.mapView.removeAllViews()
         super.finish()
     }
 

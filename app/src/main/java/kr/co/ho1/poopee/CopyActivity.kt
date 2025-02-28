@@ -1,23 +1,25 @@
 package kr.co.ho1.poopee
 
 import android.os.Bundle
-import kotlinx.android.synthetic.main.activity_copy.*
 import kr.co.ho1.poopee.common.base.BaseActivity
 import kr.co.ho1.poopee.common.http.RetrofitClient
 import kr.co.ho1.poopee.common.http.RetrofitJSONObject
 import kr.co.ho1.poopee.common.http.RetrofitParams
 import kr.co.ho1.poopee.common.http.RetrofitService
 import kr.co.ho1.poopee.common.util.MyUtil
+import kr.co.ho1.poopee.databinding.ActivityCopyBinding
 import org.json.JSONException
 
 @Suppress("DEPRECATION")
 class CopyActivity : BaseActivity() {
-    // test master
+    private lateinit var binding: ActivityCopyBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_copy)
+        binding = ActivityCopyBinding.inflate(layoutInflater)
+        setContentView(binding.root)
         setToolbar()
-        // test a
+
         init()
         setListener()
     }
@@ -53,8 +55,8 @@ class CopyActivity : BaseActivity() {
     }
 
     override fun setToolbar() {
-        toolbar.setImageLeftOne(MyUtil.getDrawable(R.drawable.ic_navigationbar_back))
-        toolbar.setSelectedListener(
+        binding.toolbar.setImageLeftOne(MyUtil.getDrawable(R.drawable.ic_navigationbar_back))
+        binding.toolbar.setSelectedListener(
                 onBtnLeftOne = {
                     finish()
                 },

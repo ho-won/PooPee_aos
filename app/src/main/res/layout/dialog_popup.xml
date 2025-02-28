@@ -17,17 +17,13 @@
         android:orientation="vertical"
         tools:ignore="UselessParent">
 
-        <com.makeramen.roundedimageview.RoundedImageView
+        <ImageView
             android:id="@+id/iv_popup"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:adjustViewBounds="true"
-            android:contentDescription="@string/contentDescription"
-            android:minHeight="100dp"
             android:scaleType="fitXY"
-            app:riv_corner_radius_top_left="2dp"
-            app:riv_corner_radius_top_right="2dp"
-            app:riv_mutate_background="true" />
+            android:contentDescription="@string/contentDescription" />
 
         <View style="@style/line_main" />
 

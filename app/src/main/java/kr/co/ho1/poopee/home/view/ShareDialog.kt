@@ -17,17 +17,22 @@ import com.kakao.sdk.navi.model.Location
 import com.kakao.sdk.navi.model.NaviOption
 import com.kakao.sdk.share.ShareClient
 import com.kakao.sdk.share.WebSharerClient
-import com.kakao.sdk.template.model.*
-import kotlinx.android.synthetic.main.dialog_share.*
+import com.kakao.sdk.template.model.Content
+import com.kakao.sdk.template.model.Link
+import com.kakao.sdk.template.model.LocationTemplate
 import kr.co.ho1.poopee.R
 import kr.co.ho1.poopee.common.ObserverManager
 import kr.co.ho1.poopee.common.base.BaseDialog
 import kr.co.ho1.poopee.common.util.MyUtil
+import kr.co.ho1.poopee.databinding.DialogShareBinding
 import kr.co.ho1.poopee.home.model.Toilet
 
 @Suppress("DEPRECATION")
 @SuppressLint("ValidFragment")
 class ShareDialog : BaseDialog() {
+    private var _binding: DialogShareBinding? = null
+    private val binding get() = _binding!!
+
     companion object {
         const val TAG = "KAKAO_TEST"
         const val ACTION_NAVI = "ACTION_NAVI"
@@ -39,7 +44,13 @@ class ShareDialog : BaseDialog() {
     private var mAddressText: String = ""
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.dialog_share, container, false)
+        _binding = DialogShareBinding.inflate(layoutInflater)
+        return binding.root
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -51,23 +62,23 @@ class ShareDialog : BaseDialog() {
 
     private fun init() {
         if (mAction == ACTION_NAVI) {
-            layout_03.visibility = View.VISIBLE
-            tv_title.text = MyUtil.getString(R.string.home_text_16)
-            tv_content.text = MyUtil.getString(R.string.home_text_22)
-            tv_01.text = MyUtil.getString(R.string.home_text_19)
-            tv_02.text = MyUtil.getString(R.string.home_text_18)
-            tv_03.text = MyUtil.getString(R.string.home_text_26)
-            iv_01.setImageDrawable(MyUtil.getDrawable(R.drawable.ic_kakaonavi))
-            iv_02.setImageDrawable(MyUtil.getDrawable(R.drawable.ic_tmap))
-            iv_03.setImageDrawable(MyUtil.getDrawable(R.drawable.ic_navermap))
+            binding.layout03.visibility = View.VISIBLE
+            binding.tvTitle.text = MyUtil.getString(R.string.home_text_16)
+            binding.tvContent.text = MyUtil.getString(R.string.home_text_22)
+            binding.tv01.text = MyUtil.getString(R.string.home_text_19)
+            binding.tv02.text = MyUtil.getString(R.string.home_text_18)
+            binding.tv03.text = MyUtil.getString(R.string.home_text_26)
+            binding.iv01.setImageDrawable(MyUtil.getDrawable(R.drawable.ic_kakaonavi))
+            binding.iv02.setImageDrawable(MyUtil.getDrawable(R.drawable.ic_tmap))
+            binding.iv03.setImageDrawable(MyUtil.getDrawable(R.drawable.ic_navermap))
         } else if (mAction == ACTION_SHARE) {
-            layout_03.visibility = View.GONE
-            tv_title.text = MyUtil.getString(R.string.home_text_17)
-            tv_content.text = MyUtil.getString(R.string.home_text_23)
-            tv_01.text = MyUtil.getString(R.string.home_text_20)
-            tv_02.text = MyUtil.getString(R.string.home_text_21)
-            iv_01.setImageDrawable(MyUtil.getDrawable(R.drawable.ic_kakaotalk))
-            iv_02.setImageDrawable(MyUtil.getDrawable(R.drawable.ic_sms))
+            binding.layout03.visibility = View.GONE
+            binding.tvTitle.text = MyUtil.getString(R.string.home_text_17)
+            binding.tvContent.text = MyUtil.getString(R.string.home_text_23)
+            binding.tv01.text = MyUtil.getString(R.string.home_text_20)
+            binding.tv02.text = MyUtil.getString(R.string.home_text_21)
+            binding.iv01.setImageDrawable(MyUtil.getDrawable(R.drawable.ic_kakaotalk))
+            binding.iv02.setImageDrawable(MyUtil.getDrawable(R.drawable.ic_sms))
         }
 
         mAddressText = ""
@@ -79,7 +90,7 @@ class ShareDialog : BaseDialog() {
     }
 
     private fun setListener() {
-        layout_01.setOnClickListener {
+        binding.layout01.setOnClickListener {
             if (mAction == ACTION_NAVI) {
                 // 카카오내비 앱으로 길 안내
                 if (NaviClient.instance.isKakaoNaviInstalled(requireContext())) {
@@ -155,7 +166,7 @@ class ShareDialog : BaseDialog() {
                 }
             }
         }
-        layout_02.setOnClickListener {
+        binding.layout02.setOnClickListener {
             if (mAction == ACTION_NAVI) {
                 try {
                     ObserverManager.root!!.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("tmap://route?goalx=${mToilet.longitude}&goaly=${mToilet.latitude}&goalname=${mAddressText}")).apply {
@@ -175,7 +186,7 @@ class ShareDialog : BaseDialog() {
                 startActivity(intent)
             }
         }
-        layout_03.setOnClickListener {
+        binding.layout03.setOnClickListener {
             if (mAction == ACTION_NAVI) {
                 try {
                     ObserverManager.root!!.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("nmap://navigation?dlat=${mToilet.latitude}&dlng=${mToilet.longitude}&dname=${mAddressText}&appname=kr.co.ho1.poopee")).apply {
@@ -192,7 +203,7 @@ class ShareDialog : BaseDialog() {
 
             }
         }
-        btn_close.setOnClickListener {
+        binding.btnClose.setOnClickListener {
             dismiss()
         }
     }

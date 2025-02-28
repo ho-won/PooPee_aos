@@ -7,17 +7,24 @@ import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import kotlinx.android.synthetic.main.dialog_comment_create.*
-import kr.co.ho1.poopee.R
 import kr.co.ho1.poopee.common.base.BaseDialog
 import kr.co.ho1.poopee.common.util.MyUtil
 import kr.co.ho1.poopee.common.util.SleepTask
+import kr.co.ho1.poopee.databinding.DialogCommentCreateBinding
 
 @SuppressLint("ValidFragment")
 class CommentCreateDialog(private var onCreate: ((comment: String) -> Unit)) : BaseDialog() {
+    private var _binding: DialogCommentCreateBinding? = null
+    private val binding get() = _binding!!
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.dialog_comment_create, container, false)
+        _binding = DialogCommentCreateBinding.inflate(inflater, container, false)
+        return binding.root
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -28,20 +35,20 @@ class CommentCreateDialog(private var onCreate: ((comment: String) -> Unit)) : B
     }
 
     override fun dismiss() {
-        MyUtil.keyboardHide(edt_comment)
+        MyUtil.keyboardHide(binding.edtComment)
         super.dismiss()
     }
 
     private fun init() {
-        btn_send.isEnabled = false
+        binding.btnSend.isEnabled = false
         SleepTask(100, onFinish = {
-            edt_comment.requestFocus()
-            MyUtil.keyboardShow(edt_comment)
+            binding.edtComment.requestFocus()
+            MyUtil.keyboardShow(binding.edtComment)
         })
     }
 
     private fun setListener() {
-        edt_comment.addTextChangedListener(object : TextWatcher {
+        binding.edtComment.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(p0: Editable?) {
 
             }
@@ -52,19 +59,19 @@ class CommentCreateDialog(private var onCreate: ((comment: String) -> Unit)) : B
 
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
                 if (p0.toString().isEmpty()) {
-                    btn_comment_delete.visibility = View.GONE
-                    btn_send.isEnabled = false
+                    binding.btnCommentDelete.visibility = View.GONE
+                    binding.btnSend.isEnabled = false
                 } else {
-                    btn_comment_delete.visibility = View.VISIBLE
-                    btn_send.isEnabled = true
+                    binding.btnCommentDelete.visibility = View.VISIBLE
+                    binding.btnSend.isEnabled = true
                 }
             }
         })
-        btn_comment_delete.setOnClickListener {
-            edt_comment.setText("")
+        binding.btnCommentDelete.setOnClickListener {
+            binding.edtComment.setText("")
         }
-        btn_send.setOnClickListener {
-            onCreate(edt_comment.text.toString())
+        binding.btnSend.setOnClickListener {
+            onCreate(binding.edtComment.text.toString())
             dismiss()
         }
     }
