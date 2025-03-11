@@ -11,8 +11,8 @@ android {
     defaultConfig {
         applicationId "kr.co.ho1.poopee"
         minSdk 26
-        versionCode 44
-        versionName "2.22.0"
+        versionCode 45
+        versionName "2.23.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
     }

@@ -26,6 +26,9 @@ abstract class BaseActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         LogManager.e("Activity_onCreate", javaClass.name)
+
+        this.onBackPressedDispatcher.addCallback(this, onBackPressedCallback)
+
         handleIntent(intent)
         init()
     }

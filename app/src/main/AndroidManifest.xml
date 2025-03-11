@@ -79,6 +79,10 @@
             </intent-filter>
         </activity>
         <activity
+            android:name="kr.co.ho1.poopee.home.CoupangAdActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize|stateHidden" />
+        <activity
             android:name="kr.co.ho1.poopee.home.ToiletActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize|stateHidden" />

@@ -5,6 +5,8 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.view.*
+import android.webkit.WebSettings
+import android.webkit.WebViewClient
 import android.widget.Toast
 import androidx.appcompat.widget.PopupMenu
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -28,9 +30,7 @@ import kr.co.ho1.poopee.common.http.RetrofitService
 import kr.co.ho1.poopee.common.util.LogManager
 import kr.co.ho1.poopee.common.util.MyUtil
 import kr.co.ho1.poopee.common.util.StrManager
-import kr.co.ho1.poopee.databinding.ActivityCopyBinding
 import kr.co.ho1.poopee.databinding.ActivityToiletBinding
-import kr.co.ho1.poopee.databinding.ItemKakaoKeywordBinding
 import kr.co.ho1.poopee.databinding.ItemToiletCommentBinding
 import kr.co.ho1.poopee.home.model.Comment
 import kr.co.ho1.poopee.home.model.Toilet
@@ -239,6 +239,7 @@ class ToiletActivity : BaseActivity() {
         binding.tvCommentCount.text = toilet.comment_count
 
         taskCommentList()
+        setCoupangAd()
     }
 
     private fun setListener() {
@@ -345,6 +346,41 @@ class ToiletActivity : BaseActivity() {
                 )
             }
         }
+    }
+
+    @SuppressLint("SetJavaScriptEnabled")
+    fun setCoupangAd() {
+        val webSettings: WebSettings = binding.webView.settings
+        webSettings.javaScriptEnabled = true
+        webSettings.loadWithOverviewMode = true
+        webSettings.useWideViewPort = true
+        webSettings.domStorageEnabled = true
+
+        binding.webView.webViewClient = WebViewClient()
+
+        val htmlData = """
+            <html>
+            <head>
+                <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                <script src="https://ads-partners.coupang.com/g.js"></script>
+            </head>
+            <body style="margin:0;padding:0;display:flex;justify-content:center;align-items:center;">
+                <script>
+                    new PartnersCoupang.G({
+                        "id": 846359,
+                        "template": "carousel",
+                        "trackingCode": "AF3689916",
+                        "width": "360",
+                        "height": "60",
+                        "tsource": ""
+                    });
+                </script>
+            </body>
+            </html>
+        """.trimIndent()
+
+
+        binding.webView.loadDataWithBaseURL(null, htmlData, "text/html", "UTF-8", null)
     }
 
     /**

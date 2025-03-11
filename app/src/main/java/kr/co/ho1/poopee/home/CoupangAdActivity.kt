@@ -1,33 +1,32 @@
-package kr.co.ho1.poopee.home.view
+package kr.co.ho1.poopee.home
 
 import android.annotation.SuppressLint
+import android.app.Activity
+import android.content.Intent
+import android.os.Build
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
+import android.view.WindowInsets
 import android.webkit.WebSettings
 import android.webkit.WebViewClient
-import kr.co.ho1.poopee.common.ObserverManager
-import kr.co.ho1.poopee.common.base.BaseDialog
-import kr.co.ho1.poopee.databinding.DialogFinishBinding
+import kr.co.ho1.poopee.common.base.BaseActivity
+import kr.co.ho1.poopee.databinding.ActivityCoupangAdBinding
 
-@SuppressLint("ValidFragment")
-class FinishDialog() : BaseDialog() {
-    private var _binding: DialogFinishBinding? = null
-    private val binding get() = _binding!!
+class CoupangAdActivity : BaseActivity() {
+    private lateinit var binding: ActivityCoupangAdBinding
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        _binding = DialogFinishBinding.inflate(layoutInflater)
-        return binding.root
-    }
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        binding = ActivityCoupangAdBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            window.insetsController?.hide(WindowInsets.Type.statusBars())
+            window.insetsController?.hide(WindowInsets.Type.navigationBars())
+        } else {
+            @Suppress("DEPRECATION")
+            window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_FULLSCREEN
+        }
 
         init()
         setListener()
@@ -68,11 +67,10 @@ class FinishDialog() : BaseDialog() {
     }
 
     private fun setListener() {
-        binding.btnNo.setOnClickListener {
-            dismiss()
-        }
-        binding.btnYes.setOnClickListener {
-            ObserverManager.root!!.finish()
+        binding.btnClose.setOnClickListener {
+            val intent = Intent()
+            setResult(Activity.RESULT_OK, intent)
+            finish()
         }
     }
 

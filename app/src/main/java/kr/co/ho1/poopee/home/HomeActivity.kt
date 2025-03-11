@@ -51,6 +51,7 @@ import kr.co.ho1.poopee.databinding.ActivityHomeBinding
 import kr.co.ho1.poopee.databinding.ItemKakaoKeywordBinding
 import kr.co.ho1.poopee.home.model.KaKaoKeyword
 import kr.co.ho1.poopee.home.model.Toilet
+import kr.co.ho1.poopee.home.view.FinishDialog
 import kr.co.ho1.poopee.home.view.PopupDialog
 import kr.co.ho1.poopee.home.view.ToiletDialog
 import kr.co.ho1.poopee.manager.view.Toilet2ListDialog
@@ -58,6 +59,10 @@ import org.json.JSONException
 
 class HomeActivity : BaseActivity() {
     private lateinit var binding: ActivityHomeBinding
+
+    companion object {
+        const val RESULT_COUPANG = 1001
+    }
 
     private var keywordAdapter: ListAdapter = ListAdapter()
     private var keywordList: ArrayList<KaKaoKeyword> = ArrayList()
@@ -266,44 +271,37 @@ class HomeActivity : BaseActivity() {
                         }
                     }
                     it.setOnLabelClickListener { kakaoMap, labelLayer, label ->
+                        var toilet: Toilet? = null
                         if (label.labelId.toInt() > 0) {
-                            val toilet = ToiletSQLiteManager.getInstance().getToilet(label.labelId.toInt())
+                            toilet = ToiletSQLiteManager.getInstance().getToilet(label.labelId.toInt())
+                        } else if (label.labelId.toInt() < 0) {
+                            mToiletList[label.labelId.toInt()]?.let { toilet1 ->
+                                toilet = toilet1
+                            }
+                        }
 
+                        toilet?.let { toilet1 ->
                             val dialog = ToiletDialog(
-                                onDetail = {
-                                    mToilet = it
-                                    if (interstitialAd1 != null) {
-                                        interstitialAd1?.show(this@HomeActivity)
-                                    } else {
-                                        ObserverManager.root!!.startActivity(
-                                            Intent(ObserverManager.context!!, ToiletActivity::class.java)
-                                                .setFlags(Intent.FLAG_ACTIVITY_NO_USER_ACTION)
-                                                .putExtra(ToiletActivity.TOILET, mToilet)
-                                        )
-                                    }
+                                onDetail = { toilet2 ->
+                                    mToilet = toilet2
+//                                    if (interstitialAd1 != null) {
+//                                        interstitialAd1?.show(this@HomeActivity)
+//                                    } else {
+//                                        ObserverManager.root!!.startActivity(
+//                                            Intent(ObserverManager.context!!, ToiletActivity::class.java)
+//                                                .setFlags(Intent.FLAG_ACTIVITY_NO_USER_ACTION)
+//                                                .putExtra(ToiletActivity.TOILET, mToilet)
+//                                        )
+//                                    }
+
+                                    ObserverManager.root!!.startActivityForResult(
+                                        Intent(ObserverManager.context!!, CoupangAdActivity::class.java)
+                                            .setFlags(Intent.FLAG_ACTIVITY_NO_USER_ACTION), RESULT_COUPANG
+                                    )
                                 }
                             )
-                            dialog.setToilet(toilet)
+                            dialog.setToilet(toilet1)
                             dialog.show(supportFragmentManager, "ToiletDialog")
-                        } else if (label.labelId.toInt() < 0) {
-                            mToiletList[label.labelId.toInt()]?.let { toilet ->
-                                val dialog = ToiletDialog(
-                                    onDetail = {
-                                        mToilet = it
-                                        if (interstitialAd1 != null) {
-                                            interstitialAd1?.show(this@HomeActivity)
-                                        } else {
-                                            ObserverManager.root!!.startActivity(
-                                                Intent(ObserverManager.context!!, ToiletActivity::class.java)
-                                                    .setFlags(Intent.FLAG_ACTIVITY_NO_USER_ACTION)
-                                                    .putExtra(ToiletActivity.TOILET, mToilet)
-                                            )
-                                        }
-                                    }
-                                )
-                                dialog.setToilet(toilet)
-                                dialog.show(supportFragmentManager, "ToiletDialog")
-                            }
                         }
                     }
                 }
@@ -654,9 +652,23 @@ class HomeActivity : BaseActivity() {
             binding.rvSearch.visibility = View.GONE
             return
         }
-        finish()
-//        val dialog = FinishDialog()
-//        dialog.show(supportFragmentManager, "FinishDialog")
+        val dialog = FinishDialog()
+        dialog.show(supportFragmentManager, "FinishDialog")
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (resultCode != RESULT_OK) {
+            return
+        }
+
+        if (requestCode == RESULT_COUPANG) {
+            ObserverManager.root!!.startActivity(
+                Intent(ObserverManager.context!!, ToiletActivity::class.java)
+                    .setFlags(Intent.FLAG_ACTIVITY_NO_USER_ACTION)
+                    .putExtra(ToiletActivity.TOILET, mToilet)
+            )
+        }
     }
 
 }
