@@ -4,12 +4,12 @@
 
     <string name="admob_app_id">ca-app-pub-2933424745841582~4534033734</string>
 
-        <string name="banner_ad_unit_id">ca-app-pub-2933424745841582/3959318660</string>
-        <string name="interstitial_ad_unit_id">ca-app-pub-2933424745841582/2251927237</string>
+    <string name="banner_ad_unit_id">ca-app-pub-2933424745841582/3959318660</string>
+    <string name="interstitial_ad_unit_id">ca-app-pub-2933424745841582/2251927237</string>
 
     <!-- test -->
-<!--    <string name="banner_ad_unit_id">ca-app-pub-3940256099942544/6300978111</string>-->
-<!--    <string name="interstitial_ad_unit_id">ca-app-pub-3940256099942544/1033173712</string>-->
+    <!--    <string name="banner_ad_unit_id">ca-app-pub-3940256099942544/6300978111</string>-->
+    <!--    <string name="interstitial_ad_unit_id">ca-app-pub-3940256099942544/1033173712</string>-->
 
     <!-- word -->
     <string name="yes">yes</string>
@@ -114,6 +114,11 @@
     <string name="home_text_24">Inquiries/Suggestions</string>
     <string name="home_text_25">Please enter your details</string>
     <string name="home_text_26">Naver Map</string>
+    <string name="home_text_27">Once the report is completed, it will be reviewed and processed within 24 hours.</string>
+    <string name="home_text_28">Maps</string>
+    <string name="home_text_29">🔥 How to remove ads 🔥\n\nViewing a Coupang deal will remove full-screen ads for the rest of the day!</string>
+    <string name="home_text_30">Continue Without</string>
+    <string name="home_text_31">Remove Ads</string>
 
     <!-- login -->
     <string name="login_01">Please login</string>

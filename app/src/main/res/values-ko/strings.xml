@@ -4,12 +4,12 @@
 
     <string name="admob_app_id">ca-app-pub-2933424745841582~4534033734</string>
 
-        <string name="banner_ad_unit_id">ca-app-pub-2933424745841582/3959318660</string>
-        <string name="interstitial_ad_unit_id">ca-app-pub-2933424745841582/2251927237</string>
+    <string name="banner_ad_unit_id">ca-app-pub-2933424745841582/3959318660</string>
+    <string name="interstitial_ad_unit_id">ca-app-pub-2933424745841582/2251927237</string>
 
     <!-- test -->
-<!--    <string name="banner_ad_unit_id">ca-app-pub-3940256099942544/6300978111</string>-->
-<!--    <string name="interstitial_ad_unit_id">ca-app-pub-3940256099942544/1033173712</string>-->
+    <!--    <string name="banner_ad_unit_id">ca-app-pub-3940256099942544/6300978111</string>-->
+    <!--    <string name="interstitial_ad_unit_id">ca-app-pub-3940256099942544/1033173712</string>-->
 
     <!-- word -->
     <string name="yes">예</string>
@@ -114,6 +114,11 @@
     <string name="home_text_24">문의하기/건의사항</string>
     <string name="home_text_25">내용을 입력해주세요</string>
     <string name="home_text_26">네이버 지도</string>
+    <string name="home_text_27">신고가 완료되면 24시간 이내에 검토 후 처리 예정입니다.</string>
+    <string name="home_text_28">지도</string>
+    <string name="home_text_29">🔥 광고 제거 방법 🔥\n\n쿠팡 할인 상품을 보면 오늘 하루 전체화면 광고가 제거됩니다!</string>
+    <string name="home_text_30">그냥 보기</string>
+    <string name="home_text_31">광고 제거</string>
 
     <!-- login -->
     <string name="login_01">로그인을 해주세요</string>

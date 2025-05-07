@@ -9,6 +9,7 @@ import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
 import android.hardware.SensorManager
 import android.location.Location
+import android.net.Uri
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -39,6 +40,7 @@ import kr.co.ho1.poopee.R
 import kr.co.ho1.poopee.common.ObserverManager
 import kr.co.ho1.poopee.common.base.BaseActivity
 import kr.co.ho1.poopee.common.data.SharedManager
+import kr.co.ho1.poopee.common.dialog.BasicDialog
 import kr.co.ho1.poopee.common.http.RetrofitClient
 import kr.co.ho1.poopee.common.http.RetrofitJSONObject
 import kr.co.ho1.poopee.common.http.RetrofitParams
@@ -75,7 +77,7 @@ class HomeActivity : BaseActivity() {
     private var lastLatitude: Double = 0.0 // 마지막 중심 latitude
     private var lastLongitude: Double = 0.0 // 마지막 중심 longitude
 
-    private var interstitialAd1: InterstitialAd? = null
+    private var interstitialAd: InterstitialAd? = null
 
     private var mToilet: Toilet = Toilet()
     private var mToiletList: ArrayMap<Int, Toilet> = ArrayMap()
@@ -103,42 +105,7 @@ class HomeActivity : BaseActivity() {
         MobileAds.initialize(this) {}
 
         // 전면광고
-        InterstitialAd.load(
-            this,
-            MyUtil.getString(R.string.interstitial_ad_unit_id),
-            AdRequest.Builder().build(),
-            object : InterstitialAdLoadCallback() {
-                override fun onAdFailedToLoad(adError: LoadAdError) {
-                    interstitialAd1 = null
-                }
-
-                override fun onAdLoaded(interstitialAd: InterstitialAd) {
-                    interstitialAd1 = interstitialAd
-
-                    interstitialAd1?.fullScreenContentCallback =
-                        object : FullScreenContentCallback() {
-                            override fun onAdDismissedFullScreenContent() {
-                                ObserverManager.root!!.startActivity(
-                                    Intent(ObserverManager.context!!, ToiletActivity::class.java)
-                                        .setFlags(Intent.FLAG_ACTIVITY_NO_USER_ACTION)
-                                        .putExtra(ToiletActivity.TOILET, mToilet)
-                                )
-                            }
-
-                            override fun onAdFailedToShowFullScreenContent(p0: AdError) {
-                                ObserverManager.root!!.startActivity(
-                                    Intent(ObserverManager.context!!, ToiletActivity::class.java)
-                                        .setFlags(Intent.FLAG_ACTIVITY_NO_USER_ACTION)
-                                        .putExtra(ToiletActivity.TOILET, mToilet)
-                                )
-                            }
-
-                            override fun onAdShowedFullScreenContent() {
-                                interstitialAd1 = null
-                            }
-                        }
-                }
-            })
+        loadAdMobInterstitial()
 
         sensorManager = getSystemService(Context.SENSOR_SERVICE) as SensorManager
 
@@ -284,20 +251,15 @@ class HomeActivity : BaseActivity() {
                             val dialog = ToiletDialog(
                                 onDetail = { toilet2 ->
                                     mToilet = toilet2
-//                                    if (interstitialAd1 != null) {
-//                                        interstitialAd1?.show(this@HomeActivity)
-//                                    } else {
-//                                        ObserverManager.root!!.startActivity(
-//                                            Intent(ObserverManager.context!!, ToiletActivity::class.java)
-//                                                .setFlags(Intent.FLAG_ACTIVITY_NO_USER_ACTION)
-//                                                .putExtra(ToiletActivity.TOILET, mToilet)
-//                                        )
-//                                    }
-
-                                    ObserverManager.root!!.startActivityForResult(
-                                        Intent(ObserverManager.context!!, CoupangAdActivity::class.java)
-                                            .setFlags(Intent.FLAG_ACTIVITY_NO_USER_ACTION), RESULT_COUPANG
-                                    )
+                                    if (!isAdRemoved()) {
+                                        showAdRemovalPopup() // 광고 제거 유도 팝업 띄우기
+                                    } else {
+                                        openToiletDetailActivity() // 광고 제거된 경우 바로 상세보기로 이동
+                                    }
+//                                    ObserverManager.root!!.startActivityForResult(
+//                                        Intent(ObserverManager.context!!, CoupangAdActivity::class.java)
+//                                            .setFlags(Intent.FLAG_ACTIVITY_NO_USER_ACTION), RESULT_COUPANG
+//                                    )
                                 }
                             )
                             dialog.setToilet(toilet1)
@@ -450,6 +412,90 @@ class HomeActivity : BaseActivity() {
                 //my_position!!.rotateTo(my_position_rotation)
             }
         }
+    }
+
+    fun showAdRemovalPopup() {
+        val dialog = BasicDialog(
+            onLeftButton = {
+                showAdMobInterstitial()
+            },
+            onCenterButton = {
+
+            },
+            onRightButton = {
+                openCoupangAd()
+            }
+        )
+        dialog.setTextContent(MyUtil.getString(R.string.home_text_29))
+        dialog.setBtnLeft(MyUtil.getString(R.string.home_text_30))
+        dialog.setBtnRight(MyUtil.getString(R.string.home_text_31))
+        dialog.show(supportFragmentManager, "BasicDialog")
+    }
+
+    fun loadAdMobInterstitial() {
+        InterstitialAd.load(
+            this,
+            MyUtil.getString(R.string.interstitial_ad_unit_id),
+            AdRequest.Builder().build(),
+            object : InterstitialAdLoadCallback() {
+                override fun onAdFailedToLoad(adError: LoadAdError) {
+                    interstitialAd = null
+                }
+
+                override fun onAdLoaded(interstitialAd: InterstitialAd) {
+                    this@HomeActivity.interstitialAd = interstitialAd
+                }
+            })
+    }
+
+    fun showAdMobInterstitial() {
+        if (interstitialAd != null) {
+            interstitialAd?.fullScreenContentCallback = object : FullScreenContentCallback() {
+                override fun onAdDismissedFullScreenContent() {
+                    // 광고가 닫혔을 때 화장실 상세보기 화면으로 이동
+                    openToiletDetailActivity()
+
+                    // 광고 객체 초기화 (다음 광고 로드를 위해)
+                    interstitialAd = null
+                    loadAdMobInterstitial() // 다음 광고 미리 로드
+                }
+
+                override fun onAdFailedToShowFullScreenContent(adError: AdError) {
+                    // 광고 표시 실패 시 바로 상세보기 화면으로 이동
+                    openToiletDetailActivity()
+                }
+            }
+
+            interstitialAd?.show(this)
+        } else {
+            // 광고가 없을 경우 바로 상세보기 화면으로 이동
+            openToiletDetailActivity()
+        }
+    }
+
+    private fun openToiletDetailActivity() {
+        ObserverManager.root!!.startActivity(
+            Intent(ObserverManager.context!!, ToiletActivity::class.java)
+                .setFlags(Intent.FLAG_ACTIVITY_NO_USER_ACTION)
+                .putExtra(ToiletActivity.TOILET, mToilet)
+        )
+    }
+
+    fun openCoupangAd() {
+        val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://link.coupang.com/a/cspD9C"))
+        startActivity(intent)
+
+        // 광고 제거 적용 (24시간 유지)
+        val sharedPreferences = getSharedPreferences("ad_prefs", MODE_PRIVATE)
+        sharedPreferences.edit().putLong("coupang_click_time", System.currentTimeMillis()).apply()
+    }
+
+    fun isAdRemoved(): Boolean {
+        val sharedPreferences = getSharedPreferences("ad_prefs", MODE_PRIVATE)
+        val lastClickTime = sharedPreferences.getLong("coupang_click_time", 0)
+
+        // 쿠팡 광고 클릭 후 24시간이 지나지 않았으면 광고 제거
+        return System.currentTimeMillis() < lastClickTime + 24 * 60 * 60 * 1000
     }
 
     private fun checkPopup() {
