@@ -16,11 +16,7 @@ import java.io.FileOutputStream
 import java.io.IOException
 import java.net.URL
 
-class DBVersionTask(
-    private val progressBar: ProgressBar?,
-    private val onSuccess: () -> Unit,
-    private val onFailed: () -> Unit
-) {
+class DBVersionTask(private val progressBar: ProgressBar?, private val onSuccess: () -> Unit, private val onFailed: () -> Unit) {
     private var dbVer = 0
 
     init {
@@ -36,36 +32,33 @@ class DBVersionTask(
         val params = RetrofitParams()
         val request = RetrofitClient.getClient(RetrofitService.BASE_APP).create(RetrofitService::class.java).dbCheck(params.getParams())
 
-        RetrofitJSONObject(request,
-            onSuccess = {
+        RetrofitJSONObject(request, onSuccess = {
+            try {
                 try {
-                    try {
-                        if (it.getInt("rst_code") == 0) {
-                            dbVer = it.getInt("db_ver")
+                    if (it.getInt("rst_code") == 0) {
+                        dbVer = it.getInt("db_ver")
 
-                            if (SharedManager.getDbVer() == dbVer) {
-                                onSuccess()
-                            } else {
-                                val fileName = it.getString("file_name")
-                                val url = RetrofitService.BASE_APP + "sql/" + fileName
-                                CoroutineScope(Dispatchers.Main).launch {
-                                    downloadDatabase(url, fileName)
-                                }
-                            }
+                        if (SharedManager.dbVer == dbVer) {
+                            onSuccess()
                         } else {
-                            onFailed()
+                            val fileName = it.getString("file_name")
+                            val url = RetrofitService.BASE_APP + "sql/" + fileName
+                            CoroutineScope(Dispatchers.Main).launch {
+                                downloadDatabase(url, fileName)
+                            }
                         }
-                    } catch (e: Exception) {
+                    } else {
                         onFailed()
                     }
-                } catch (e: JSONException) {
-                    e.printStackTrace()
+                } catch (e: Exception) {
+                    onFailed()
                 }
-            },
-            onFailed = {
-
+            } catch (e: JSONException) {
+                e.printStackTrace()
             }
-        )
+        }, onFailed = {
+
+        })
     }
 
     private suspend fun downloadDatabase(url: String, fileName: String) {
@@ -83,8 +76,7 @@ class DBVersionTask(
 
                     val lengthOfFile = connection.contentLength
                     val input = BufferedInputStream(URL(url).openStream())
-                    filePath = ObserverManager.context!!.getExternalFilesDir(null)!!.absolutePath +
-                            File.separator + fileName
+                    filePath = ObserverManager.context!!.getExternalFilesDir(null)!!.absolutePath + File.separator + fileName
                     val output = FileOutputStream(filePath)
                     val data = ByteArray(1024)
                     var total: Long = 0
@@ -115,7 +107,7 @@ class DBVersionTask(
 
             // Process downloaded file
             if (ToiletSQLiteManager.getInstance().importDatabase(filePath!!)) {
-                val oldDbVersion = SharedManager.getDbVer()
+                val oldDbVersion = SharedManager.dbVer
                 val newDbVersion = dbVer
 
                 for (i in newDbVersion downTo oldDbVersion) {
@@ -125,7 +117,7 @@ class DBVersionTask(
                     }
                 }
 
-                SharedManager.setDbVer(dbVer)
+                SharedManager.dbVer = dbVer
                 onSuccess()
             } else {
                 onFailed()

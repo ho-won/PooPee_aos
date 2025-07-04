@@ -149,7 +149,7 @@ class ToiletUpdateDialog(private var toilet: Toilet, private var onUpdate: ((toi
         toilet.content = binding.edtContent.text.toString()
 
         val params = RetrofitParams()
-        params.put("member_id", SharedManager.getMemberId())
+        params.put("member_id", SharedManager.memberId)
         params.put("toilet_id", toilet.toilet_id)
         params.put("name", toilet.name) // 화장실명
         params.put("content", toilet.content) // 화장실설명

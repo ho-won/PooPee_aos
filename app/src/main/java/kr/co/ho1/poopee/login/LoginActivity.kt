@@ -103,12 +103,12 @@ class LoginActivity : BaseActivity() {
             onSuccess = {
                 try {
                     if (it.getInt("rst_code") == 0) {
-                        SharedManager.setLoginCheck(true)
-                        SharedManager.setMemberId(it.getString("member_id"))
-                        SharedManager.setMemberUsername(username)
-                        SharedManager.setMemberPassword(password)
-                        SharedManager.setMemberName(it.getString("name"))
-                        SharedManager.setMemberGender(it.getString("gender"))
+                        SharedManager.isLoginCheck = true
+                        SharedManager.memberId = it.getString("member_id")
+                        SharedManager.memberUsername = username
+                        SharedManager.memberPassword = password
+                        SharedManager.memberName = it.getString("name")
+                        SharedManager.memberGender = it.getString("gender")
                         MyUtil.keyboardHide(binding.edtUsername)
                         finish()
                     } else {

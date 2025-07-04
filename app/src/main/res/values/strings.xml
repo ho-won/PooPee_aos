@@ -2,14 +2,18 @@
     <string name="app_name">PooPee</string>
     <string name="contentDescription">contentDescription</string>
 
-    <string name="admob_app_id">ca-app-pub-2933424745841582~4534033734</string>
+    <string name="admob_app_id" tools:ignore="MissingTranslation">ca-app-pub-2933424745841582~4534033734</string>
 
-    <string name="banner_ad_unit_id">ca-app-pub-2933424745841582/3959318660</string>
-    <string name="interstitial_ad_unit_id">ca-app-pub-2933424745841582/2251927237</string>
+    <string name="banner_ad_unit_id" tools:ignore="MissingTranslation">ca-app-pub-2933424745841582/3959318660</string>
+    <string name="interstitial_ad_unit_id" tools:ignore="MissingTranslation">ca-app-pub-2933424745841582/2251927237</string>
+    <string name="rewarded_interstitial_ad_unit_id" tools:ignore="MissingTranslation">ca-app-pub-2933424745841582/4125087382</string>
+    <string name="rewarded_interstitial_id" tools:ignore="MissingTranslation">ca-app-pub-2933424745841582/3347477742</string>
 
     <!-- test -->
-    <!--    <string name="banner_ad_unit_id">ca-app-pub-3940256099942544/6300978111</string>-->
-    <!--    <string name="interstitial_ad_unit_id">ca-app-pub-3940256099942544/1033173712</string>-->
+<!--    <string name="banner_ad_unit_id" tools:ignore="MissingTranslation">ca-app-pub-3940256099942544/6300978111</string>-->
+<!--    <string name="interstitial_ad_unit_id" tools:ignore="MissingTranslation">ca-app-pub-3940256099942544/1033173712</string>-->
+<!--    <string name="rewarded_interstitial_ad_unit_id" tools:ignore="MissingTranslation">ca-app-pub-3940256099942544/5354046379</string>-->
+<!--    <string name="rewarded_interstitial_id" tools:ignore="MissingTranslation">ca-app-pub-3940256099942544/5224354917</string>-->
 
     <!-- word -->
     <string name="yes">yes</string>
@@ -46,6 +50,10 @@
     <string name="dialog_download_request">Toilet information download is required. Please check the communication environment and try again.</string>
     <string name="dialog_no_show">Never see again</string>
     <string name="dialog_finish">Are you sure you want to exit PooPee?</string>
+    <string name="dialog_reward_01">View restroom details</string>
+    <string name="dialog_reward_02">Watch an ad once and enjoy 24 hours\nwithout full-screen ads!</string>
+    <string name="dialog_reward_03">Watch Ad to Continue</string>
+    <string name="dialog_reward_04">Continue without Ad</string>
 
     <!-- toast -->
     <string name="toast_checking_service">Under service inspection</string>
@@ -119,6 +127,7 @@
     <string name="home_text_29">🔥 How to remove ads 🔥\n\nViewing a Coupang deal will remove full-screen ads for the rest of the day!</string>
     <string name="home_text_30">Continue Without</string>
     <string name="home_text_31">Remove Ads</string>
+    <string name="home_text_32">"Ad isn't ready yet. Please try again soon."</string>
 
     <!-- login -->
     <string name="login_01">Please login</string>

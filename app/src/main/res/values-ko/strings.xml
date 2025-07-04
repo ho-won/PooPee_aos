@@ -2,15 +2,6 @@
     <string name="app_name">PooPee</string>
     <string name="contentDescription">contentDescription</string>
 
-    <string name="admob_app_id">ca-app-pub-2933424745841582~4534033734</string>
-
-    <string name="banner_ad_unit_id">ca-app-pub-2933424745841582/3959318660</string>
-    <string name="interstitial_ad_unit_id">ca-app-pub-2933424745841582/2251927237</string>
-
-    <!-- test -->
-    <!--    <string name="banner_ad_unit_id">ca-app-pub-3940256099942544/6300978111</string>-->
-    <!--    <string name="interstitial_ad_unit_id">ca-app-pub-3940256099942544/1033173712</string>-->
-
     <!-- word -->
     <string name="yes">예</string>
     <string name="no">아니오</string>
@@ -46,6 +37,10 @@
     <string name="dialog_download_request">화장실정보 다운로드가 필요합니다. 통신환경을 확인 후 재시도해주세요.</string>
     <string name="dialog_no_show">다시보지않기</string>
     <string name="dialog_finish">PooPee를 종료하시겠습니까?</string>
+    <string name="dialog_reward_01">화장실 상세정보 보기</string>
+    <string name="dialog_reward_02">광고를 한 번 보면 24시간 동안\n전체화면 광고 없이 쾌적하게 사용할 수 있어요!</string>
+    <string name="dialog_reward_03">광고 보고 보기</string>
+    <string name="dialog_reward_04">그냥 보기</string>
 
     <!-- toast -->
     <string name="toast_checking_service">서비스점검중입니다</string>
@@ -119,6 +114,7 @@
     <string name="home_text_29">🔥 광고 제거 방법 🔥\n\n쿠팡 할인 상품을 보면 오늘 하루 전체화면 광고가 제거됩니다!</string>
     <string name="home_text_30">그냥 보기</string>
     <string name="home_text_31">광고 제거</string>
+    <string name="home_text_32">광고를 불러오지 못했습니다. 잠시 후 다시 시도해주세요.</string>
 
     <!-- login -->
     <string name="login_01">로그인을 해주세요</string>

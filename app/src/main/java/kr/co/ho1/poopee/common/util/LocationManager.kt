@@ -103,8 +103,8 @@ object LocationManager {
     }
 
     fun onLocationChanged(location: Location) {
-        SharedManager.setLatitude(location.latitude)
-        SharedManager.setLongitude(location.longitude)
+        SharedManager.latitude = location.latitude
+        SharedManager.longitude = location.longitude
         ObserverManager.root!!.onLocationChanged(location)
     }
 

@@ -43,10 +43,10 @@ class SettingActivity : BaseActivity() {
     }
 
     private fun refresh() {
-        if (SharedManager.isLoginCheck()) {
-            binding.tvLogin.text = SharedManager.getMemberName()
+        if (SharedManager.isLoginCheck) {
+            binding.tvLogin.text = SharedManager.memberName
             binding.tvLogout.visibility = View.VISIBLE
-            if (SharedManager.getMemberGender() == "0") {
+            if (SharedManager.memberGender == "0") {
                 binding.ivLogin.setImageDrawable(MyUtil.getDrawable(R.drawable.ic_man_profile))
             } else {
                 binding.ivLogin.setImageDrawable(MyUtil.getDrawable(R.drawable.ic_woman_profile))
@@ -56,12 +56,12 @@ class SettingActivity : BaseActivity() {
             binding.tvLogout.visibility = View.GONE
             binding.ivLogin.setImageDrawable(MyUtil.getDrawable(R.drawable.ic_profile))
         }
-        binding.switchPush.isChecked = SharedManager.isPush()
+        binding.switchPush.isChecked = SharedManager.isPush
     }
 
     private fun setListener() {
         binding.layoutLogin.setOnClickListener {
-            if (SharedManager.isLoginCheck()) {
+            if (SharedManager.isLoginCheck) {
                 ObserverManager.logout()
                 refresh()
             } else {
@@ -72,7 +72,7 @@ class SettingActivity : BaseActivity() {
             }
         }
         binding.switchPush.setOnCheckedChangeListener { _, _ ->
-            SharedManager.setPush(binding.switchPush.isChecked)
+            SharedManager.isPush = binding.switchPush.isChecked
         }
         binding.layoutTerms01.setOnClickListener {
             startActivity(
@@ -120,7 +120,7 @@ class SettingActivity : BaseActivity() {
     private fun taskWithdraw() {
         showLoading()
         val params = RetrofitParams()
-        params.put("member_id", SharedManager.getMemberId())
+        params.put("member_id", SharedManager.memberId)
 
         val request = RetrofitClient.getClient(RetrofitService.BASE_APP).create(RetrofitService::class.java).deleteUser(params.getParams())
 

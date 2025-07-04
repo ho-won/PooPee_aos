@@ -86,7 +86,7 @@ class SuggestDialog : BaseDialog() {
      */
     private fun taskCreateSuggest() {
         val params = RetrofitParams()
-        params.put("member_id", SharedManager.getMemberId())
+        params.put("member_id", SharedManager.memberId)
         params.put("content", binding.edtContent.text)
 
         val request = RetrofitClient.getClient(RetrofitService.BASE_APP).create(RetrofitService::class.java).createSuggest(params.getParams())

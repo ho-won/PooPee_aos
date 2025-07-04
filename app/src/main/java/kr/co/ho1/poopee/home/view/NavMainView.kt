@@ -49,8 +49,8 @@ class NavMainView : NavigationView {
     }
 
     fun refresh() {
-        if (SharedManager.isLoginCheck()) {
-            binding.tvName.text = SharedManager.getMemberName()
+        if (SharedManager.isLoginCheck) {
+            binding.tvName.text = SharedManager.memberName
             binding.ivLogin.setImageDrawable(MyUtil.getDrawable(R.drawable.img_profile))
             binding.btnLogout.setImageDrawable(MyUtil.getDrawable(R.drawable.ic_logout))
         } else {
@@ -65,7 +65,7 @@ class NavMainView : NavigationView {
 
     private fun setListener() {
         binding.layoutLogin.setOnClickListener {
-            if (SharedManager.getMemberUsername() == "master") {
+            if (SharedManager.memberUsername == "master") {
                 try {
                     val clipboard = ObserverManager.context!!.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager?
                     val clip = ClipData.newPlainText("PooPee", MyUtil.getHashKey())
@@ -75,7 +75,7 @@ class NavMainView : NavigationView {
                     e.printStackTrace()
                 }
             }
-            if (!SharedManager.isLoginCheck()) {
+            if (!SharedManager.isLoginCheck) {
                 ObserverManager.root!!.startActivity(
                     Intent(ObserverManager.context!!, LoginActivity::class.java)
                         .setFlags(Intent.FLAG_ACTIVITY_NO_USER_ACTION)
@@ -83,7 +83,7 @@ class NavMainView : NavigationView {
             }
         }
         binding.layoutToiletCreate.setOnClickListener {
-            if (SharedManager.isLoginCheck()) {
+            if (SharedManager.isLoginCheck) {
                 ObserverManager.root!!.startActivity(
                     Intent(ObserverManager.context!!, ToiletSearchActivity::class.java)
                         .setFlags(Intent.FLAG_ACTIVITY_NO_USER_ACTION)
@@ -96,7 +96,7 @@ class NavMainView : NavigationView {
             }
         }
         binding.layoutMyInfo.setOnClickListener {
-            if (SharedManager.isLoginCheck()) {
+            if (SharedManager.isLoginCheck) {
                 ObserverManager.root!!.startActivity(
                     Intent(ObserverManager.context!!, MyInfoActivity::class.java)
                         .setFlags(Intent.FLAG_ACTIVITY_NO_USER_ACTION)
@@ -116,7 +116,7 @@ class NavMainView : NavigationView {
         }
         binding.layoutRequest.setOnClickListener {
             // EmailSender.send("ho1.poopee@gmail.com", ObserverManager.context!!.getString(R.string.nav_text_05))
-            if (SharedManager.isLoginCheck()) {
+            if (SharedManager.isLoginCheck) {
                 val dialog = SuggestDialog()
                 dialog.show(ObserverManager.root!!.supportFragmentManager, "SuggestDialog")
             } else {
@@ -142,7 +142,7 @@ class NavMainView : NavigationView {
             )
         }
         binding.btnLogout.setOnClickListener {
-            if (SharedManager.isLoginCheck()) {
+            if (SharedManager.isLoginCheck) {
                 ObserverManager.logout()
                 refresh()
             }

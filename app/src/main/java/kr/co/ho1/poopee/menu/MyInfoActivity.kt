@@ -38,8 +38,8 @@ class MyInfoActivity : BaseActivity() {
         binding.edtPasswordConfirm.filters = StringFilter.getAlphanumeric(20)
         binding.edtName.filters = StringFilter.getAlphanumericHangul(20)
 
-        binding.edtName.setText(SharedManager.getMemberName())
-        if (SharedManager.getMemberGender() == "0") {
+        binding.edtName.setText(SharedManager.memberName)
+        if (SharedManager.memberGender == "0") {
             binding.rbMan.isChecked = true
         } else {
             binding.rbWoman.isChecked = true
@@ -133,9 +133,9 @@ class MyInfoActivity : BaseActivity() {
     private fun taskUpdateUser(password: String, name: String, gender: String) {
         showLoading()
         val params = RetrofitParams()
-        params.put("member_id", SharedManager.getMemberId())
+        params.put("member_id", SharedManager.memberId)
 
-        var pw = SharedManager.getMemberPassword()
+        var pw = SharedManager.memberPassword
         if (password.isNotEmpty()) {
             pw = password
         }
@@ -150,9 +150,9 @@ class MyInfoActivity : BaseActivity() {
             onSuccess = {
                 try {
                     if (it.getInt("rst_code") == 0) {
-                        SharedManager.setMemberPassword(pw)
-                        SharedManager.setMemberName(name)
-                        SharedManager.setMemberGender(gender)
+                        SharedManager.memberPassword = pw
+                        SharedManager.memberName = name
+                        SharedManager.memberGender = gender
                         Toast.makeText(ObserverManager.context!!, MyUtil.getString(R.string.toast_update_complete), Toast.LENGTH_SHORT).show()
                         finish()
                     }

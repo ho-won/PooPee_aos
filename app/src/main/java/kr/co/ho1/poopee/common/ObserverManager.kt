@@ -7,17 +7,8 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Environment
-import com.kakao.vectormap.KakaoMap
-import com.kakao.vectormap.LatLng
-import com.kakao.vectormap.label.Label
-import com.kakao.vectormap.label.LabelOptions
-import com.kakao.vectormap.label.LabelStyle
-import com.kakao.vectormap.label.LabelStyles
-import com.kakao.vectormap.label.TransformMethod
-import kr.co.ho1.poopee.R
 import kr.co.ho1.poopee.common.base.BaseActivity
 import kr.co.ho1.poopee.common.data.SharedManager
-import kr.co.ho1.poopee.home.model.Toilet
 import java.io.File
 
 @SuppressLint("StaticFieldLeak")
@@ -29,19 +20,18 @@ object ObserverManager {
 
     var root: BaseActivity? = null  // 현재 Activity
     var context: Context? = null
-    //var kakaoMap: KakaoMap? = null
 
     fun getPath(): String {
         return Environment.getExternalStorageDirectory().toString() + File.separator + "PooPee" + File.separator
     }
 
     fun logout() {
-        SharedManager.setLoginCheck(false)
-        SharedManager.setMemberId("")
-        SharedManager.setMemberUsername("")
-        SharedManager.setMemberPassword("")
-        SharedManager.setMemberName("")
-        SharedManager.setMemberGender("1")
+        SharedManager.isLoginCheck = false
+        SharedManager.memberId = ""
+        SharedManager.memberUsername = ""
+        SharedManager.memberPassword = ""
+        SharedManager.memberName = ""
+        SharedManager.memberGender = "1"
     }
 
     fun restart() {

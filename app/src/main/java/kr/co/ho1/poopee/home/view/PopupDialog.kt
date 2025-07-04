@@ -36,7 +36,7 @@ class PopupDialog : BaseDialog() {
     }
 
     private fun init() {
-        var imageName = SharedManager.getNoticeImage()
+        var imageName = SharedManager.noticeImage
         if (Locale.getDefault().language != "ko") {
             val array = imageName.split(".")
             imageName = array[0] + "_en." + array[1]
@@ -48,8 +48,8 @@ class PopupDialog : BaseDialog() {
 
     private fun setListener() {
         binding.btnShow.setOnClickListener {
-            SharedManager.setNoticeImage("")
-            SharedManager.setNoticeDate(StrManager.getCurrentDate())
+            SharedManager.noticeImage = ""
+            SharedManager.noticeDate = StrManager.getCurrentDate()
             dismiss()
         }
 

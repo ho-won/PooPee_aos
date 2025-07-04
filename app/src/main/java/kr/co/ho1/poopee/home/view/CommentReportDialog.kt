@@ -94,7 +94,7 @@ class CommentReportDialog : BaseDialog() {
      */
     private fun taskCommentReport() {
         val params = RetrofitParams()
-        params.put("member_id", SharedManager.getMemberId())
+        params.put("member_id", SharedManager.memberId)
         params.put("comment_id", mComment.comment_id)
         params.put("content", binding.edtContent.text)
 

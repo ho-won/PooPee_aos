@@ -43,7 +43,7 @@ class MainActivity : BaseActivity() {
                 return@OnCompleteListener
             }
             val token = task.result!!
-            SharedManager.setFcmKey(token)
+            SharedManager.fcmKey = token
             LogManager.e(token)
         })
 
@@ -63,12 +63,12 @@ class MainActivity : BaseActivity() {
                     }
 
                     override fun onAnimationEnd(animation: Animation) {
-                        if (SharedManager.isFirstCheck()) {
+                        if (SharedManager.isFirstCheck) {
                             onPermissionCheck()
                         } else {
                             val dialog = PermissionDialog(
                                 onConfirm = {
-                                    SharedManager.setFirstCheck(true)
+                                    SharedManager.isFirstCheck = true
                                     onPermissionCheck()
                                 }
                             )
@@ -107,7 +107,8 @@ class MainActivity : BaseActivity() {
 
     private fun onServiceCheck() {
         LocationManager.setLocationListener() // 현재위치 리스너 추가
-        DBVersionTask(binding.progressFileDownload,
+        DBVersionTask(
+            binding.progressFileDownload,
             onSuccess = {
                 taskServerCheck()
             },
@@ -199,7 +200,7 @@ class MainActivity : BaseActivity() {
      * 로그인 체크
      */
     private fun loginCheck() {
-        if (SharedManager.isLoginCheck()) {
+        if (SharedManager.isLoginCheck) {
             taskLogin()
         } else {
             gotoHomeActivity()
@@ -224,20 +225,21 @@ class MainActivity : BaseActivity() {
      */
     private fun taskLogin() {
         val params = RetrofitParams()
-        params.put("username", SharedManager.getMemberUsername())
-        params.put("password", SharedManager.getMemberPassword())
+        params.put("username", SharedManager.memberUsername)
+        params.put("password", SharedManager.memberPassword)
         params.put("pushkey", "test")
         params.put("os", "aos")
 
         val request = RetrofitClient.getClient(RetrofitService.BASE_APP).create(RetrofitService::class.java).login(params.getParams())
 
-        RetrofitJSONObject(request,
+        RetrofitJSONObject(
+            request,
             onSuccess = {
                 try {
                     if (it.getInt("rst_code") == 0) {
-                        SharedManager.setMemberId(it.getString("member_id"))
-                        SharedManager.setMemberName(it.getString("name"))
-                        SharedManager.setMemberGender(it.getString("gender"))
+                        SharedManager.memberId = it.getString("member_id")
+                        SharedManager.memberName = it.getString("name")
+                        SharedManager.memberGender = it.getString("gender")
                         gotoHomeActivity()
                     } else {
                         ObserverManager.logout()
@@ -261,15 +263,16 @@ class MainActivity : BaseActivity() {
      */
     private fun taskServerCheck() {
         val params = RetrofitParams()
-        params.put("date", SharedManager.getNoticeDate())
+        params.put("date", SharedManager.noticeDate)
 
         val request = RetrofitClient.getClient(RetrofitService.BASE_APP).create(RetrofitService::class.java).serverCheck(params.getParams())
 
-        RetrofitJSONObject(request,
+        RetrofitJSONObject(
+            request,
             onSuccess = {
                 try {
                     if (it.getString("server") == "success") {
-                        SharedManager.setNoticeImage(it.getString("notice_image"))
+                        SharedManager.noticeImage = it.getString("notice_image")
                         onVersionCheck(it) // 버전체크
                     } else {
                         Toast.makeText(ObserverManager.context!!, it.getString("server"), Toast.LENGTH_SHORT).show()
@@ -287,24 +290,6 @@ class MainActivity : BaseActivity() {
             }
         )
     }
-
-//    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
-//        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-//        var result = 0
-//        for (grantResult in grantResults) {
-//            result += grantResult
-//        }
-//
-//        if (result == 0) {
-//            when (requestCode) {
-//                PermissionManager.Permission -> {
-//                    onServiceCheck()
-//                }
-//            }
-//        } else {
-//            Toast.makeText(ObserverManager.context, MyUtil.getString(R.string.toast_please_permission), Toast.LENGTH_SHORT).show()
-//        }
-//    }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)

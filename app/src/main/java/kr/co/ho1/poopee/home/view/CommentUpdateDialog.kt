@@ -97,7 +97,7 @@ class CommentUpdateDialog(private var onUpdate: ((comment: Comment) -> Unit)) : 
      */
     private fun taskCommentUpdate() {
         val params = RetrofitParams()
-        params.put("member_id", SharedManager.getMemberId())
+        params.put("member_id", SharedManager.memberId)
         params.put("comment_id", mComment.comment_id)
         params.put("content", mComment.content)
 

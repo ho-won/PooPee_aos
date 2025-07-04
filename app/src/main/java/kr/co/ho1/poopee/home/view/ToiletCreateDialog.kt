@@ -165,7 +165,7 @@ class ToiletCreateDialog(private var latitude: Double, private var longitude: Do
     private fun taskCreateToilet(address_new: String, address_old: String) {
         showLoading()
         val params = RetrofitParams()
-        params.put("member_id", SharedManager.getMemberId())
+        params.put("member_id", SharedManager.memberId)
         params.put("name", binding.edtTitle.text) // 화장실명
         params.put("content", binding.edtContent.text) // 화장실설명
 

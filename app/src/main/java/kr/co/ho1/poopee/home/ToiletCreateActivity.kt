@@ -70,9 +70,9 @@ class ToiletCreateActivity : BaseActivity() {
                 if (keyword != null) {
                     // 카카오검색기준으로 중심점변경
                     kakaoMap?.moveCamera(CameraUpdateFactory.newCenterPosition(LatLng.from(keyword!!.latitude, keyword!!.longitude)))
-                } else if (SharedManager.getLatitude() > 0) {
+                } else if (SharedManager.latitude > 0) {
                     // 현재위치기준으로 중심점변경
-                    kakaoMap?.moveCamera(CameraUpdateFactory.newCenterPosition(LatLng.from(SharedManager.getLatitude(), SharedManager.getLongitude())))
+                    kakaoMap?.moveCamera(CameraUpdateFactory.newCenterPosition(LatLng.from(SharedManager.latitude, SharedManager.longitude)))
                 }
 
                 kakaoMap?.moveCamera(CameraUpdateFactory.zoomTo(ObserverManager.BASE_ZOOM_LEVEL))
@@ -82,8 +82,8 @@ class ToiletCreateActivity : BaseActivity() {
 
     private fun setListener() {
         binding.btnMyPosition.setOnClickListener {
-            if (SharedManager.getLatitude() > 0) {
-                kakaoMap?.moveCamera(CameraUpdateFactory.newCenterPosition(LatLng.from(SharedManager.getLatitude(), SharedManager.getLongitude())))
+            if (SharedManager.latitude > 0) {
+                kakaoMap?.moveCamera(CameraUpdateFactory.newCenterPosition(LatLng.from(SharedManager.latitude, SharedManager.longitude)))
                 kakaoMap?.moveCamera(CameraUpdateFactory.zoomTo(ObserverManager.BASE_ZOOM_LEVEL))
             }
         }

@@ -94,7 +94,7 @@ class ToiletReportDialog : BaseDialog() {
      */
     private fun taskToiletReport() {
         val params = RetrofitParams()
-        params.put("member_id", SharedManager.getMemberId())
+        params.put("member_id", SharedManager.memberId)
         params.put("toilet_id", mToilet.toilet_id)
         params.put("content", binding.edtContent.text)
 

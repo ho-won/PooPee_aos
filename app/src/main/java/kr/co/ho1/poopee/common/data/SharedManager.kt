@@ -1,222 +1,104 @@
 package kr.co.ho1.poopee.common.data
 
 import android.content.Context
+import android.content.SharedPreferences
 import kr.co.ho1.poopee.common.ObserverManager
+import androidx.core.content.edit
 
-@Suppress("NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS")
 object SharedManager {
-    private const val LOGIN = "LOGIN"
-    private const val LOGIN_CHECK = "LOGIN_CHECK" // 로그인체크
-    private const val FCM_KEY = "FCM_KEY" // push key
+    private const val PREF_LOGIN = "LOGIN"
+    private const val PREF_MEMBER = "MEMBER"
+    private const val PREF_ETC = "ETC"
 
-    private const val MEMBER = "MEMBER"
-    private const val MEMBER_ID = "MEMBER_ID" // 멤버 아이디
-    private const val MEMBER_USERNAME = "MEMBER_USERNAME" // 유저 아이디
-    private const val MEMBER_PASSWORD = "MEMBER_PASSWORD" // 유저 비밀번호
-    private const val MEMBER_NAME = "MEMBER_NAME" // 유저 닉네임
-    private const val MEMBER_GENDER = "MEMBER_GENDER" // 유저 성별 0(남자) 1(여자)
-
-    private const val ETC = "ETC"
-    private const val DB_VER = "DB_VER" // toilet db 버전
-    private const val NOTICE_DATE = "NOTICE_DATE" // 서버공지 다시보지않기 체크시간(Y-m-d)
-    private const val NOTICE_IMAGE = "NOTICE_IMAGE" // 서버공지 이미지
-    private const val LATITUDE = "LATITUDE" // latitude
-    private const val LONGITUDE = "LONGITUDE" // longitude
-    private const val PUSH = "PUSH" // 푸쉬알림
-    private const val FIRST_CHECK = "FIRST_CHECK" // 앱 최초실행체크
-    private const val REVIEW_COUNT = "REVIEW_COUNT" // 리뷰팝업 조건
-    private const val AD_BANNER_HEIGHT = "AD_BANNER_HEIGHT" // 배너광고 높이
-
-    fun isLoginCheck(): Boolean {
-        val pref = ObserverManager.context!!.getSharedPreferences(LOGIN, Context.MODE_PRIVATE)
-        return pref.getBoolean(LOGIN_CHECK, false)
+    private val loginPrefs: SharedPreferences by lazy {
+        ObserverManager.context!!.getSharedPreferences(PREF_LOGIN, Context.MODE_PRIVATE)
     }
 
-    fun setLoginCheck(value: Boolean) {
-        val pref = ObserverManager.context!!.getSharedPreferences(LOGIN, Context.MODE_PRIVATE)
-        val editor = pref.edit()
-        editor.putBoolean(LOGIN_CHECK, value)
-        editor.apply()
+    private val memberPrefs: SharedPreferences by lazy {
+        ObserverManager.context!!.getSharedPreferences(PREF_MEMBER, Context.MODE_PRIVATE)
     }
 
-    fun getFcmKey(): String {
-        val pref = ObserverManager.context!!.getSharedPreferences(LOGIN, Context.MODE_PRIVATE)
-        return pref.getString(FCM_KEY, "").toString()
+    private val etcPrefs: SharedPreferences by lazy {
+        ObserverManager.context!!.getSharedPreferences(PREF_ETC, Context.MODE_PRIVATE)
     }
 
-    fun setFcmKey(value: String) {
-        val pref = ObserverManager.context!!.getSharedPreferences(LOGIN, Context.MODE_PRIVATE)
-        val editor = pref.edit()
-        editor.putString(FCM_KEY, value)
-        editor.apply()
-    }
+    // 로그인 체크 여부
+    var isLoginCheck: Boolean
+        get() = loginPrefs.getBoolean("LOGIN_CHECK", false)
+        set(value) = loginPrefs.edit { putBoolean("LOGIN_CHECK", value) }
 
-    fun getMemberId(): String {
-        val pref = ObserverManager.context!!.getSharedPreferences(MEMBER, Context.MODE_PRIVATE)
-        return pref.getString(MEMBER_ID, "").toString()
-    }
+    // FCM Push 키
+    var fcmKey: String
+        get() = loginPrefs.getString("FCM_KEY", "").orEmpty()
+        set(value) = loginPrefs.edit { putString("FCM_KEY", value) }
 
-    fun setMemberId(value: String) {
-        val pref = ObserverManager.context!!.getSharedPreferences(MEMBER, Context.MODE_PRIVATE)
-        val editor = pref.edit()
-        editor.putString(MEMBER_ID, value)
-        editor.apply()
-    }
+    // 멤버 ID
+    var memberId: String
+        get() = memberPrefs.getString("MEMBER_ID", "").orEmpty()
+        set(value) = memberPrefs.edit { putString("MEMBER_ID", value) }
 
-    fun getMemberUsername(): String {
-        val pref = ObserverManager.context!!.getSharedPreferences(MEMBER, Context.MODE_PRIVATE)
-        return pref.getString(MEMBER_USERNAME, "").toString()
-    }
+    // 유저 아이디 (Username)
+    var memberUsername: String
+        get() = memberPrefs.getString("MEMBER_USERNAME", "").orEmpty()
+        set(value) = memberPrefs.edit { putString("MEMBER_USERNAME", value) }
 
-    fun setMemberUsername(value: String) {
-        val pref = ObserverManager.context!!.getSharedPreferences(MEMBER, Context.MODE_PRIVATE)
-        val editor = pref.edit()
-        editor.putString(MEMBER_USERNAME, value)
-        editor.apply()
-    }
+    // 유저 비밀번호
+    var memberPassword: String
+        get() = memberPrefs.getString("MEMBER_PASSWORD", "").orEmpty()
+        set(value) = memberPrefs.edit { putString("MEMBER_PASSWORD", value) }
 
-    fun getMemberPassword(): String {
-        val pref = ObserverManager.context!!.getSharedPreferences(MEMBER, Context.MODE_PRIVATE)
-        return pref.getString(MEMBER_PASSWORD, "").toString()
-    }
+    // 유저 닉네임
+    var memberName: String
+        get() = memberPrefs.getString("MEMBER_NAME", "").orEmpty()
+        set(value) = memberPrefs.edit { putString("MEMBER_NAME", value) }
 
-    fun setMemberPassword(value: String) {
-        val pref = ObserverManager.context!!.getSharedPreferences(MEMBER, Context.MODE_PRIVATE)
-        val editor = pref.edit()
-        editor.putString(MEMBER_PASSWORD, value)
-        editor.apply()
-    }
+    // 유저 성별 (0: 남자, 1: 여자)
+    var memberGender: String
+        get() = memberPrefs.getString("MEMBER_GENDER", "1").orEmpty()
+        set(value) = memberPrefs.edit { putString("MEMBER_GENDER", value) }
 
-    fun getMemberName(): String {
-        val pref = ObserverManager.context!!.getSharedPreferences(MEMBER, Context.MODE_PRIVATE)
-        return pref.getString(MEMBER_NAME, "").toString()
-    }
+    // Toilet DB 버전
+    var dbVer: Int
+        get() = etcPrefs.getInt("DB_VER", 0)
+        set(value) = etcPrefs.edit { putInt("DB_VER", value) }
 
-    fun setMemberName(value: String) {
-        val pref = ObserverManager.context!!.getSharedPreferences(MEMBER, Context.MODE_PRIVATE)
-        val editor = pref.edit()
-        editor.putString(MEMBER_NAME, value)
-        editor.apply()
-    }
+    // 서버 공지 다시보지 않기 체크 날짜 (Y-m-d)
+    var noticeDate: String
+        get() = etcPrefs.getString("NOTICE_DATE", "2000-01-01").orEmpty()
+        set(value) = etcPrefs.edit { putString("NOTICE_DATE", value) }
 
-    fun getMemberGender(): String {
-        val pref = ObserverManager.context!!.getSharedPreferences(MEMBER, Context.MODE_PRIVATE)
-        return pref.getString(MEMBER_GENDER, "1").toString()
-    }
+    // 서버 공지 이미지
+    var noticeImage: String
+        get() = etcPrefs.getString("NOTICE_IMAGE", "").orEmpty()
+        set(value) = etcPrefs.edit { putString("NOTICE_IMAGE", value) }
 
-    fun setMemberGender(value: String) {
-        val pref = ObserverManager.context!!.getSharedPreferences(MEMBER, Context.MODE_PRIVATE)
-        val editor = pref.edit()
-        editor.putString(MEMBER_GENDER, value)
-        editor.apply()
-    }
+    // 현재 위도
+    var latitude: Double
+        get() = etcPrefs.getString("LATITUDE", "0.0").orEmpty().toDouble()
+        set(value) = etcPrefs.edit { putString("LATITUDE", value.toString()) }
 
-    fun getDbVer(): Int {
-        val pref = ObserverManager.context!!.getSharedPreferences(ETC, Context.MODE_PRIVATE)
-        return pref.getInt(DB_VER, 0)
-    }
+    // 현재 경도
+    var longitude: Double
+        get() = etcPrefs.getString("LONGITUDE", "0.0").orEmpty().toDouble()
+        set(value) = etcPrefs.edit { putString("LONGITUDE", value.toString()) }
 
-    fun setDbVer(value: Int) {
-        val pref = ObserverManager.context!!.getSharedPreferences(ETC, Context.MODE_PRIVATE)
-        val editor = pref.edit()
-        editor.putInt(DB_VER, value)
-        editor.apply()
-    }
+    // 푸시 알림 설정 여부
+    var isPush: Boolean
+        get() = etcPrefs.getBoolean("PUSH", true)
+        set(value) = etcPrefs.edit { putBoolean("PUSH", value) }
 
-    fun getNoticeDate(): String {
-        val pref = ObserverManager.context!!.getSharedPreferences(ETC, Context.MODE_PRIVATE)
-        return pref.getString(NOTICE_DATE, "2000-01-01").toString()
-    }
+    // 앱 최초 실행 여부 체크
+    var isFirstCheck: Boolean
+        get() = etcPrefs.getBoolean("FIRST_CHECK", false)
+        set(value) = etcPrefs.edit { putBoolean("FIRST_CHECK", value) }
 
-    fun setNoticeDate(value: String) {
-        val pref = ObserverManager.context!!.getSharedPreferences(ETC, Context.MODE_PRIVATE)
-        val editor = pref.edit()
-        editor.putString(NOTICE_DATE, value)
-        editor.apply()
-    }
+    // 리뷰 팝업 카운트 (조건 체크용)
+    var reviewCount: Int
+        get() = etcPrefs.getInt("REVIEW_COUNT", 0)
+        set(value) = etcPrefs.edit { putInt("REVIEW_COUNT", value) }
 
-    fun getNoticeImage(): String {
-        val pref = ObserverManager.context!!.getSharedPreferences(ETC, Context.MODE_PRIVATE)
-        return pref.getString(NOTICE_IMAGE, "").toString()
-    }
-
-    fun setNoticeImage(value: String) {
-        val pref = ObserverManager.context!!.getSharedPreferences(ETC, Context.MODE_PRIVATE)
-        val editor = pref.edit()
-        editor.putString(NOTICE_IMAGE, value)
-        editor.apply()
-    }
-
-    fun getLatitude(): Double {
-        val pref = ObserverManager.context!!.getSharedPreferences(ETC, Context.MODE_PRIVATE)
-        return pref.getString(LATITUDE, "0.0").toString().toDouble()
-    }
-
-    fun setLatitude(value: Double) {
-        val pref = ObserverManager.context!!.getSharedPreferences(ETC, Context.MODE_PRIVATE)
-        val editor = pref.edit()
-        editor.putString(LATITUDE, value.toString())
-        editor.apply()
-    }
-
-    fun getLongitude(): Double {
-        val pref = ObserverManager.context!!.getSharedPreferences(ETC, Context.MODE_PRIVATE)
-        return pref.getString(LONGITUDE, "0.0").toString().toDouble()
-    }
-
-    fun setLongitude(value: Double) {
-        val pref = ObserverManager.context!!.getSharedPreferences(ETC, Context.MODE_PRIVATE)
-        val editor = pref.edit()
-        editor.putString(LONGITUDE, value.toString())
-        editor.apply()
-    }
-
-    fun isPush(): Boolean {
-        val pref = ObserverManager.context!!.getSharedPreferences(ETC, Context.MODE_PRIVATE)
-        return pref.getBoolean(PUSH, true)
-    }
-
-    fun setPush(value: Boolean) {
-        val pref = ObserverManager.context!!.getSharedPreferences(ETC, Context.MODE_PRIVATE)
-        val editor = pref.edit()
-        editor.putBoolean(PUSH, value)
-        editor.apply()
-    }
-
-    fun isFirstCheck(): Boolean {
-        val pref = ObserverManager.context!!.getSharedPreferences(ETC, Context.MODE_PRIVATE)
-        return pref.getBoolean(FIRST_CHECK, false)
-    }
-
-    fun setFirstCheck(value: Boolean) {
-        val pref = ObserverManager.context!!.getSharedPreferences(ETC, Context.MODE_PRIVATE)
-        val editor = pref.edit()
-        editor.putBoolean(FIRST_CHECK, value)
-        editor.apply()
-    }
-
-    fun getReviewCount(): Int {
-        val pref = ObserverManager.context!!.getSharedPreferences(ETC, Context.MODE_PRIVATE)
-        return pref.getInt(REVIEW_COUNT, 0)
-    }
-
-    fun setReviewCount(value: Int) {
-        val pref = ObserverManager.context!!.getSharedPreferences(ETC, Context.MODE_PRIVATE)
-        val editor = pref.edit()
-        editor.putInt(REVIEW_COUNT, value)
-        editor.apply()
-    }
-
-    fun getAdBannerHeight(): Int {
-        val pref = ObserverManager.context!!.getSharedPreferences(ETC, Context.MODE_PRIVATE)
-        return pref.getInt(AD_BANNER_HEIGHT, 50)
-    }
-
-    fun setAdBannerHeight(value: Int) {
-        val pref = ObserverManager.context!!.getSharedPreferences(ETC, Context.MODE_PRIVATE)
-        val editor = pref.edit()
-        editor.putInt(AD_BANNER_HEIGHT, value)
-        editor.apply()
-    }
-
+    // 리워드
+    var rewardEarnedTime: Long
+        get() = etcPrefs.getLong("REWORD_EARNED_TIME", 0)
+        set(value) = etcPrefs.edit { putLong("REWORD_EARNED_TIME", value) }
 }

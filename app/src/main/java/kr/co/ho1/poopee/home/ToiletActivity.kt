@@ -88,8 +88,8 @@ class ToiletActivity : BaseActivity() {
         recyclerAdapter = ListAdapter()
         binding.recyclerView.adapter = recyclerAdapter
 
-        if (SharedManager.getReviewCount() < REVIEW_COUNT) {
-            SharedManager.setReviewCount(SharedManager.getReviewCount() + 1)
+        if (SharedManager.reviewCount < REVIEW_COUNT) {
+            SharedManager.reviewCount += 1
         }
     }
 
@@ -142,7 +142,7 @@ class ToiletActivity : BaseActivity() {
             binding.tvToiletContent.visibility = View.GONE
         }
 
-        if (toilet.member_id == SharedManager.getMemberId()) {
+        if (toilet.member_id == SharedManager.memberId) {
             binding.layoutBtnMine.visibility = View.VISIBLE
             binding.layoutBtnNormal.visibility = View.GONE
         } else {
@@ -249,7 +249,7 @@ class ToiletActivity : BaseActivity() {
             finish()
         }
         binding.layoutReport.setOnClickListener {
-            if (SharedManager.isLoginCheck()) {
+            if (SharedManager.isLoginCheck) {
                 val dialog = ToiletReportDialog()
                 dialog.setToilet(toilet)
                 dialog.show(supportFragmentManager, "ToiletReportDialog")
@@ -298,7 +298,7 @@ class ToiletActivity : BaseActivity() {
         }
         binding.layoutLike.setOnClickListener {
             binding.cbLike.isChecked = !binding.cbLike.isChecked
-            if (SharedManager.isLoginCheck()) {
+            if (SharedManager.isLoginCheck) {
                 taskToiletLike()
             } else {
                 binding.cbLike.isChecked = false
@@ -334,7 +334,7 @@ class ToiletActivity : BaseActivity() {
             }
         }
         binding.btnComment.setOnClickListener {
-            if (SharedManager.isLoginCheck()) {
+            if (SharedManager.isLoginCheck) {
                 val dialog = CommentCreateDialog(
                     onCreate = {
                         taskCommentCreate(it)
@@ -414,7 +414,7 @@ class ToiletActivity : BaseActivity() {
     private fun taskCommentList() {
         showLoading()
         val params = RetrofitParams()
-        params.put("member_id", SharedManager.getMemberId())
+        params.put("member_id", SharedManager.memberId)
         params.put("toilet_id", toilet.toilet_id)
 
         val request = RetrofitClient.getClient(RetrofitService.BASE_APP).create(RetrofitService::class.java).commentList(params.getParams())
@@ -462,7 +462,7 @@ class ToiletActivity : BaseActivity() {
      */
     private fun taskToiletLike() {
         val params = RetrofitParams()
-        params.put("member_id", SharedManager.getMemberId())
+        params.put("member_id", SharedManager.memberId)
         params.put("toilet_id", toilet.toilet_id)
 
         val request = RetrofitClient.getClient(RetrofitService.BASE_APP).create(RetrofitService::class.java).toiletLike(params.getParams())
@@ -490,7 +490,7 @@ class ToiletActivity : BaseActivity() {
     private fun taskCommentCreate(comment: String) {
         showLoading()
         val params = RetrofitParams()
-        params.put("member_id", SharedManager.getMemberId())
+        params.put("member_id", SharedManager.memberId)
         params.put("toilet_id", toilet.toilet_id)
         params.put("content", comment)
 
@@ -519,7 +519,7 @@ class ToiletActivity : BaseActivity() {
     private fun taskCommentDelete(comment: Comment) {
         showLoading()
         val params = RetrofitParams()
-        params.put("member_id", SharedManager.getMemberId())
+        params.put("member_id", SharedManager.memberId)
         params.put("comment_id", comment.comment_id)
 
         val request = RetrofitClient.getClient(RetrofitService.BASE_APP).create(RetrofitService::class.java).commentDelete(params.getParams())
@@ -548,7 +548,7 @@ class ToiletActivity : BaseActivity() {
     private fun taskToiletDelete() {
         showLoading()
         val params = RetrofitParams()
-        params.put("member_id", SharedManager.getMemberId())
+        params.put("member_id", SharedManager.memberId)
         params.put("toilet_id", toilet.toilet_id)
 
         val request = RetrofitClient.getClient(RetrofitService.BASE_APP).create(RetrofitService::class.java).toiletDelete(params.getParams())
@@ -619,7 +619,7 @@ class ToiletActivity : BaseActivity() {
                 popupMenu.menu.findItem(R.id.item_update).title = resources.getString(R.string.modified)
                 popupMenu.menu.findItem(R.id.item_report).title = resources.getString(R.string.report)
 
-                if (commentList[position].member_id == SharedManager.getMemberId()) {
+                if (commentList[position].member_id == SharedManager.memberId) {
                     popupMenu.menu.findItem(R.id.item_delete).isVisible = true
                     popupMenu.menu.findItem(R.id.item_update).isVisible = true
                     popupMenu.menu.findItem(R.id.item_report).isVisible = false
@@ -663,7 +663,7 @@ class ToiletActivity : BaseActivity() {
                         }
 
                         R.id.item_report -> {
-                            if (SharedManager.isLoginCheck()) {
+                            if (SharedManager.isLoginCheck) {
                                 val dialog = CommentReportDialog()
                                 dialog.setComment(commentList[position])
                                 dialog.show(supportFragmentManager, "CommentReportDialog")
