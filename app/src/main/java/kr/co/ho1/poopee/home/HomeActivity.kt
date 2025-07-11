@@ -24,6 +24,8 @@ import androidx.core.view.GravityCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.gms.ads.*
+import com.google.android.gms.ads.interstitial.InterstitialAd
+import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback
 import com.google.android.gms.ads.rewarded.RewardedAd
 import com.google.android.gms.ads.rewarded.RewardedAdLoadCallback
 import com.google.android.gms.ads.rewardedinterstitial.RewardedInterstitialAd
@@ -97,9 +99,11 @@ class HomeActivity : BaseActivity() {
     var my_position: Label? = null // 내위치마커
     var my_position_rotation: Float = 0f
 
-    //    private var interstitialAd: InterstitialAd? = null // 전면광고
+    private var interstitialAd: InterstitialAd? = null // 전면광고
+
     private var rewardedAd: RewardedAd? = null // 리워드
     private var rewardEarned = false // 리워드 광고 시청 체크
+
     private var rewardedInterstitialAd: RewardedInterstitialAd? = null // 보상형 전면광고
 
     @SuppressLint("VisibleForTests")
@@ -110,7 +114,7 @@ class HomeActivity : BaseActivity() {
 
         MobileAds.initialize(this) {}
 
-        //loadAdMobInterstitial() // 전면광고
+        loadAdMobInterstitial() // 전면광고
         loadAdMobRewardedAd() // 리워드
         loadAdMobRewardedInterstitialAd() // 보상형 전면광고
 
@@ -281,7 +285,7 @@ class HomeActivity : BaseActivity() {
                                     if (!isAdRemoved()) {
                                         showAdRemovalPopup() // 광고 제거 유도 팝업 띄우기
                                     } else {
-                                        openToiletDetailActivity() // 광고 제거된 경우 바로 상세보기로 이동
+                                        openToiletDetail() // 광고 제거된 경우 바로 상세보기로 이동
                                     }
 //                                    ObserverManager.root!!.startActivityForResult(
 //                                        Intent(ObserverManager.context!!, CoupangAdActivity::class.java)
@@ -456,59 +460,67 @@ class HomeActivity : BaseActivity() {
 
     // 광고제거 팝업
     fun showAdRemovalPopup() {
-        val dialog = RewardDialog(
-            onRewardedAd = {
-                showAdMobRewardedAd()
-            },
-            onRewardedInterstitialAd = {
-                showAdMobRewardedInterstitialAd()
-            }
-        )
-        dialog.show(supportFragmentManager, "BasicDialog")
+        if (SharedManager.rewardPopupCount == 0 || SharedManager.rewardPopupCount >= 5) {
+            SharedManager.rewardPopupCount = 1
+            val dialog = RewardDialog(
+                onRewardedAd = {
+                    showAdMobRewardedAd()
+                },
+                onRewardedInterstitialAd = {
+                    showAdMobInterstitial()
+                }
+            )
+            dialog.show(supportFragmentManager, "BasicDialog")
+        } else {
+            SharedManager.rewardPopupCount += 1
+            showAdMobInterstitial()
+        }
     }
 
-//    // 전면광고 준비
-//    private fun loadAdMobInterstitial() {
-//        InterstitialAd.load(
-//            this,
-//            MyUtil.getString(R.string.interstitial_ad_unit_id),
-//            AdRequest.Builder().build(),
-//            object : InterstitialAdLoadCallback() {
-//                override fun onAdFailedToLoad(adError: LoadAdError) {
-//                    interstitialAd = null
-//                }
-//
-//                override fun onAdLoaded(interstitialAd: InterstitialAd) {
-//                    this@HomeActivity.interstitialAd = interstitialAd
-//                }
-//            })
-//    }
-//
-//    // 전면광고 표시
-//    private fun showAdMobInterstitial() {
-//        if (interstitialAd != null) {
-//            interstitialAd?.fullScreenContentCallback = object : FullScreenContentCallback() {
-//                override fun onAdDismissedFullScreenContent() {
-//                    // 광고가 닫혔을 때 화장실 상세보기 화면으로 이동
-//                    openToiletDetailActivity()
-//
-//                    // 광고 객체 초기화 (다음 광고 로드를 위해)
-//                    interstitialAd = null
-//                    loadAdMobInterstitial() // 다음 광고 미리 로드
-//                }
-//
-//                override fun onAdFailedToShowFullScreenContent(adError: AdError) {
-//                    // 광고 표시 실패 시 바로 상세보기 화면으로 이동
-//                    openToiletDetailActivity()
-//                }
-//            }
-//
-//            interstitialAd?.show(this)
-//        } else {
-//            // 광고가 없을 경우 바로 상세보기 화면으로 이동
-//            openToiletDetailActivity()
-//        }
-//    }
+    // 전면광고 준비
+    @SuppressLint("VisibleForTests")
+    private fun loadAdMobInterstitial() {
+        InterstitialAd.load(
+            this,
+            MyUtil.getString(R.string.interstitial_ad_unit_id),
+            AdRequest.Builder().build(),
+            object : InterstitialAdLoadCallback() {
+                override fun onAdLoaded(ad: InterstitialAd) {
+                    interstitialAd = ad
+                }
+
+                override fun onAdFailedToLoad(adError: LoadAdError) {
+                    interstitialAd = null
+                }
+            },
+        )
+    }
+
+    // 전면광고 표시
+    private fun showAdMobInterstitial() {
+        if (interstitialAd != null) {
+            interstitialAd?.fullScreenContentCallback = object : FullScreenContentCallback() {
+                override fun onAdDismissedFullScreenContent() {
+                    // 광고가 닫혔을 때 화장실 상세보기 화면으로 이동
+                    openToiletDetail()
+
+                    // 광고 객체 초기화 (다음 광고 로드를 위해)
+                    interstitialAd = null
+                    loadAdMobInterstitial() // 다음 광고 미리 로드
+                }
+
+                override fun onAdFailedToShowFullScreenContent(adError: AdError) {
+                    // 광고 표시 실패 시 바로 상세보기 화면으로 이동
+                    openToiletDetail()
+                }
+            }
+
+            interstitialAd?.show(this)
+        } else {
+            // 광고가 없을 경우 바로 상세보기 화면으로 이동
+            openToiletDetail()
+        }
+    }
 
     // 리워드 준비
     private fun loadAdMobRewardedAd() {
@@ -536,7 +548,7 @@ class HomeActivity : BaseActivity() {
                             // Set the ad reference to null so you don't show the ad a second time.
                             LogManager.e("Ad dismissed fullscreen content.")
                             if (rewardEarned) {
-                                openToiletDetailActivity()
+                                openToiletDetail()
                             }
 
                             rewardedAd = null
@@ -599,7 +611,7 @@ class HomeActivity : BaseActivity() {
                             // Called when ad is dismissed.
                             // Set the ad reference to null so you don't show the ad a second time.
                             LogManager.e("Ad dismissed fullscreen content.")
-                            openToiletDetailActivity()
+                            openToiletDetail()
                             rewardedInterstitialAd = null
                             loadAdMobRewardedInterstitialAd()
                         }
@@ -639,7 +651,7 @@ class HomeActivity : BaseActivity() {
         }
     }
 
-    private fun openToiletDetailActivity() {
+    private fun openToiletDetail() {
         ObserverManager.root!!.startActivity(
             Intent(ObserverManager.context!!, ToiletActivity::class.java)
                 .setFlags(Intent.FLAG_ACTIVITY_NO_USER_ACTION)
@@ -902,7 +914,7 @@ class HomeActivity : BaseActivity() {
         }
 
         if (requestCode == RESULT_COUPANG) {
-            openToiletDetailActivity()
+            openToiletDetail()
         }
     }
 

@@ -101,4 +101,9 @@ object SharedManager {
     var rewardEarnedTime: Long
         get() = etcPrefs.getLong("REWORD_EARNED_TIME", 0)
         set(value) = etcPrefs.edit { putLong("REWORD_EARNED_TIME", value) }
+
+    // 리워드 유도 팝업 카운트
+    var rewardPopupCount: Int
+        get() = etcPrefs.getInt("REWARD_POPUP_COUNT", 0)
+        set(value) = etcPrefs.edit { putInt("REWARD_POPUP_COUNT", value) }
 }
